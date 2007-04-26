@@ -51,6 +51,19 @@ Print(
 }
 
 
+/// <summary>
+/// Emit a formatted message from within a test
+/// </summary>
+public static void
+Print(
+    string          message,
+    params object[] args
+)
+{
+    TestProgram.TestMessage( String.Format( message, args ) );
+}
+
+
 
 public static void
 Assert(
