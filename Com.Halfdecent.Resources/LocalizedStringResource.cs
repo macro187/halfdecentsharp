@@ -106,13 +106,11 @@ this[ CultureInfo culture ]
         if( r == null )
             r = this.untranslated;
         if( this.formatargs.Length > 0 ) {
-            CultureInfo cc = CultureInfo.CurrentUICulture;
-            //Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo cc = CultureInfo.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = culture;
             try {
                 r = String.Format( r, this.formatargs );
             } finally {
-                //Thread.CurrentThread.CurrentUICulture = cc;
                 Thread.CurrentThread.CurrentCulture = cc;
             }
         }
