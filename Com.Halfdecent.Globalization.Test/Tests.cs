@@ -193,6 +193,11 @@ Test_LocalizedString_Format()
     CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
     CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
+    Print( "Create a localized format string" );
+    Localized<string> format = new InMemoryLocalized<string>( "..." );
+    format[en] = "It's {0} : {1}";
+    format[fr] = "C'est {0} : {1}";
+
     Print( "Create a couple of Localized<string>s" );
     Localized<string> a = new InMemoryLocalized<string>( "..." );
     a[en] = "a(english)";
@@ -202,16 +207,17 @@ Test_LocalizedString_Format()
     b[en] = "b(english)";
     b[fr] = "b(french)";
 
-    Print( "LocalizedString.Format() them both into a new Localized<string>" );
+    Print( "LocalizedString.Format() them according to the localized " +
+        "format string, into a new Localized<string>" );
     Localized<string> both = LocalizedString.Format(
-        "{0} : {1}",
+        format,
         a, b
     );
 
-    Print( "Check that the new Localized<string> appears correctly for " +
+    Print( "Check that the resultant Localized<string> appears correctly in " +
         "different cultures" );
-    AssertEqual( both[en], "a(english) : b(english)" );
-    AssertEqual( both[fr], "a(french) : b(french)" );
+    AssertEqual( both[en], "It's a(english) : b(english)" );
+    AssertEqual( both[fr], "C'est a(french) : b(french)" );
 }
 
 

@@ -68,8 +68,8 @@ private LocalizedString() {}
 /// </remarks>
 public static Localized<string>
 Format(
-    string          format,
-    params object[] args
+    Localized<string>   format,
+    params object[]     args
 )
 {
     if( format == null ) throw new ArgumentNullException( "format" );
@@ -90,8 +90,8 @@ FormattedLocalizedString
 {
     internal
     FormattedLocalizedString(
-        string          format,
-        params object[] args
+        Localized<string>   format,
+        params object[]     args
     )
     {
         // (assume params are prevalidated)
@@ -99,7 +99,7 @@ FormattedLocalizedString
         this.args = args;
     }
 
-    private string
+    private Localized<string>
     format;
 
     private object[]
