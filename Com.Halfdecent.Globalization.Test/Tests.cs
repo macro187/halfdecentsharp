@@ -122,27 +122,27 @@ Test_AssignmentRetrieval()
     ls[ ja_JP ] = "Konnichiwa from Japan";
 
 
-    CultureInfo ci = Thread.CurrentThread.CurrentUICulture;
+    CultureInfo ci = Thread.CurrentThread.CurrentCulture;
     try {
 
 
         Print( "Correct value when exact culture is available" );
-        Thread.CurrentThread.CurrentUICulture = ja_JP;
+        Thread.CurrentThread.CurrentCulture = ja_JP;
         AssertEqual<string>( ls, "Konnichiwa from Japan" );
 
 
         Print( "Correct value when only neutral is available" );
-        Thread.CurrentThread.CurrentUICulture = fr_CA;
+        Thread.CurrentThread.CurrentCulture = fr_CA;
         AssertEqual<string>( ls, "Bonjour" );
 
 
         Print( "Correct value when only invariant is available" );
-        Thread.CurrentThread.CurrentUICulture = en_AU;
+        Thread.CurrentThread.CurrentCulture = en_AU;
         AssertEqual<string>( ls, "(invariant)" );
 
 
     } finally {
-        Thread.CurrentThread.CurrentUICulture = ci;
+        Thread.CurrentThread.CurrentCulture = ci;
     }
 }
 
@@ -182,6 +182,36 @@ Test_LocalizedException()
     AssertEqual( le.InnerException, ie );
 
     if( e == null ) {}
+}
+
+
+
+[Test( "LocalizedString.Format()" )]
+public static void
+Test_LocalizedString_Format()
+{
+    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+
+    Print( "Create a couple of Localized<string>s" );
+    Localized<string> a = new InMemoryLocalized<string>( "..." );
+    a[en] = "a(english)";
+    a[fr] = "a(french)";
+
+    Localized<string> b = new InMemoryLocalized<string>( "..." );
+    b[en] = "b(english)";
+    b[fr] = "b(french)";
+
+    Print( "LocalizedString.Format() them both into a new Localized<string>" );
+    Localized<string> both = LocalizedString.Format(
+        "{0} : {1}",
+        a, b
+    );
+
+    Print( "Check that the new Localized<string> appears correctly for " +
+        "different cultures" );
+    AssertEqual( both[en], "a(english) : b(english)" );
+    AssertEqual( both[fr], "a(french) : b(french)" );
 }
 
 

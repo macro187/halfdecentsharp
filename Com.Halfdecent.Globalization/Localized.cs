@@ -68,7 +68,11 @@ Localized<T>
 /// subclass is read-only.
 /// </p>
 /// </remarks>
-abstract public T this[ CultureInfo c ]
+/// <param name="culture">
+/// A <c>CultureInfo</c> (which must not be a neutral culture) indicating
+/// the desired version of the item
+/// </param>
+abstract public T this[ CultureInfo culture ]
 {
     get;
     set;
@@ -138,7 +142,7 @@ public static implicit operator Localized<T>( T t )
 protected T
 ForCurrentCulture()
 {
-     return this[ CultureInfo.CurrentUICulture ];
+     return this[ CultureInfo.CurrentCulture ];
 }
 
 
