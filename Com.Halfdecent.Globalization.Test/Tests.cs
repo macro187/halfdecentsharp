@@ -152,8 +152,9 @@ Test_AssignmentRetrieval()
 public static void
 Test_LocalizedException()
 {
-    CultureInfo en = CultureInfo.GetCultureInfo( "en" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr" );
+    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    CultureInfo current;
 
     Localized<string> msg = new InMemoryLocalized<string>( "message" );
     msg[fr] = "la message";
@@ -171,9 +172,20 @@ Test_LocalizedException()
 
     Print( "LocalizedException( Localized<string> )" );
     le = new LocalizedException( msg );
-    Print( "Check localied messages" );
+    Print( "Check localized messages" );
     AssertEqual<string>( le.Message[en], "message" );
     AssertEqual<string>( le.Message[fr], "la message" );
+    Print( "Check localized messages (via Exception)" );
+    e = le;
+    current = Thread.CurrentThread.CurrentCulture;
+    try {
+        Thread.CurrentThread.CurrentCulture = en;
+        AssertEqual( e.Message, "message" );
+        Thread.CurrentThread.CurrentCulture = fr;
+        AssertEqual( e.Message, "la message" );
+    } finally {
+        Thread.CurrentThread.CurrentCulture = current;
+    }
 
     Print( "LocalizedException( Localized<string>, Exception )" );
     Exception ie = new ArgumentException();

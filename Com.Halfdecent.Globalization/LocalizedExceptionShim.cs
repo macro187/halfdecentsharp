@@ -26,11 +26,12 @@ Com.Halfdecent.Globalization
 
 
 /// <summary>
-/// An exception whose <c>Message</c> is a <c>Localized&lt;string&gt;
+/// INTERNAL: Shim to rename/redirect <c>Message</c> so we can effectively both
+/// override and shadow it in <c>LocalizedException</c>
 /// </summary>
-public class
-LocalizedException
-    : LocalizedExceptionShim
+public abstract class
+LocalizedExceptionShim
+    : Exception
 {
 
 
@@ -40,31 +41,13 @@ LocalizedException
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Create a new <c>LocalizedException</c> with a given message
-/// <summary>
-public
-LocalizedException(
-    Localized<string> message
-)
-    : this( message, null )
-{
-    this.message = message;
-}
-
-
-/// <summary>
-/// Create a new <c>LocalizedException</c> with a given message and inner
-/// exception
-/// <summary>
-public
-LocalizedException(
-    Localized<string> message,
-    Exception innerexception
+internal
+LocalizedExceptionShim(
+    string      message,
+    Exception   innerexception
 )
     : base( message, innerexception )
 {
-    this.message = message;
 }
 
 
@@ -74,36 +57,17 @@ LocalizedException(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Localized message
-/// </summary>
-new public Localized<string>
+override public string
 Message
 {
-    get { return this.message; }
+    get { return this.BaseMessage; }
 }
 
-
-
-/// <summary>
-/// INTERNAL: Return a <c>string</c> if being used as a plain <c>Exception</c>,
-/// see <c>LocalizedExceptionShim</c>
-/// </summary>
-protected override string
+abstract protected string
 BaseMessage
 {
-    get { return this.Message; }
+    get;
 }
-
-
-
-
-// -----------------------------------------------------------------------------
-// Private
-// -----------------------------------------------------------------------------
-
-private Localized<string>
-message;
 
 
 
