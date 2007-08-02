@@ -26,11 +26,12 @@ Com.Halfdecent.Globalization
 
 
 /// <summary>
-/// An exception whose <c>Message</c> is a <c>Localized&lt;string&gt;
+/// Convenience base class for localized <c>Exception</c> subclasses
 /// </summary>
 public class
 LocalizedException
     : LocalizedExceptionShim
+    , ILocalizedException
 {
 
 
@@ -75,7 +76,7 @@ LocalizedException(
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Localized message
+/// Message
 /// </summary>
 new public Localized<string>
 Message
@@ -109,5 +110,45 @@ message;
 
 
 } // type
+
+
+
+
+/// <summary>
+/// INTERNAL:
+/// Shim to rename/redirect <c>Message</c> so we can effectively both
+/// override and shadow it in <c>LocalizedException</c>
+/// </summary>
+public abstract class
+LocalizedExceptionShim
+    : Exception
+{
+
+internal
+LocalizedExceptionShim(
+    string      message,
+    Exception   innerexception
+)
+    : base( message, innerexception )
+{
+}
+
+override public string
+Message
+{
+    get { return this.BaseMessage; }
+}
+
+abstract protected string
+BaseMessage
+{
+    get;
+}
+
+}
+
+
+
+
 } // namespace
 

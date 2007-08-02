@@ -14,7 +14,6 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 
 
@@ -26,29 +25,11 @@ Com.Halfdecent.Globalization
 
 
 /// <summary>
-/// INTERNAL: Shim to rename/redirect <c>Message</c> so we can effectively both
-/// override and shadow it in <c>LocalizedException</c>
+/// An <c>Exception</c> whose <c>Message</c> is a <c>Localized&lt;string&gt;
 /// </summary>
-public abstract class
-LocalizedExceptionShim
-    : Exception
+public interface
+ILocalizedException
 {
-
-
-
-
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-internal
-LocalizedExceptionShim(
-    string      message,
-    Exception   innerexception
-)
-    : base( message, innerexception )
-{
-}
 
 
 
@@ -57,14 +38,11 @@ LocalizedExceptionShim(
 // Properties
 // -----------------------------------------------------------------------------
 
-override public string
+/// <summary>
+/// Message
+/// </summary>
+Localized<string>
 Message
-{
-    get { return this.BaseMessage; }
-}
-
-abstract protected string
-BaseMessage
 {
     get;
 }
