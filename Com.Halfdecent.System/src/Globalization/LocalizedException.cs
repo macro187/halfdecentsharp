@@ -17,25 +17,23 @@
 
 using System;
 
-using Com.Halfdecent.System;
-using Com.Halfdecent.System.Resources;
-using Com.Halfdecent.System.Globalization;
-using Com.Halfdecent.Application;
-
 
 
 namespace
-Com.Halfdecent.CommandLine
+Com.Halfdecent.System.Globalization
 {
 
 
 
 /// <summary>
-/// A command-line option
+/// Convenience base class for localized <c>Exception</c> subclasses
 /// </summary>
 public class
-Option
+LocalizedException
+    : LocalizedExceptionShim
+    , ILocalizedException
 {
+
 
 
 
@@ -44,19 +42,30 @@ Option
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Create a new <c>Option</c> with a given name and value
+/// Create a new <c>LocalizedException</c> with a given message
 /// <summary>
 public
-Option(
-    string name,
-    string value
+LocalizedException(
+    Localized<string> message
 )
+    : this( message, null )
 {
-    if( name == null ) throw new ArgumentNullException( "name" );
-    if( name == "" ) throw new ArgumentBlankException( "name" );
-    if( value == null ) throw new ArgumentNullException( "value" );
-    this.name = name;
-    this.value = value;
+    this.message = message;
+}
+
+
+/// <summary>
+/// Create a new <c>LocalizedException</c> with a given message and inner
+/// exception
+/// <summary>
+public
+LocalizedException(
+    Localized<string> message,
+    Exception innerexception
+)
+    : base( message, innerexception )
+{
+    this.message = message;
 }
 
 
@@ -67,23 +76,24 @@ Option(
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// The switch's name as it appeared on the commandline
+/// Message
 /// </summary>
-public string
-Name
+new public Localized<string>
+Message
 {
-    get { return this.name; }
+    get { return this.message; }
 }
 
 
 
 /// <summary>
-/// Value provided for the switch
+/// INTERNAL: Return a <c>string</c> if being used as a plain <c>Exception</c>,
+/// see <c>LocalizedExceptionShim</c>
 /// </summary>
-public string
-Value
+protected override string
+BaseMessage
 {
-    get { return this.value; }
+    get { return this.Message; }
 }
 
 
@@ -93,16 +103,52 @@ Value
 // Private
 // -----------------------------------------------------------------------------
 
-private string
-name;
-
-
-private string
-value;
+private Localized<string>
+message;
 
 
 
 
 } // type
+
+
+
+
+/// <summary>
+/// INTERNAL:
+/// Shim to rename/redirect <c>Message</c> so we can effectively both
+/// override and shadow it in <c>LocalizedException</c>
+/// </summary>
+public abstract class
+LocalizedExceptionShim
+    : Exception
+{
+
+internal
+LocalizedExceptionShim(
+    string      message,
+    Exception   innerexception
+)
+    : base( message, innerexception )
+{
+}
+
+override public string
+Message
+{
+    get { return this.BaseMessage; }
+}
+
+abstract protected string
+BaseMessage
+{
+    get;
+}
+
+}
+
+
+
+
 } // namespace
 

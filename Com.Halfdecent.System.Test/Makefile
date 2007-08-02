@@ -15,9 +15,12 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet.lib.project
+MODULES_use += dotnet.exe.project
 MODULES_use += dotnet.csharp
-MODULES_use += testable
+MODULES_use += dotnet.resbian
+
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Testing)
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.System)
 
 
 include $(MAKERY)/makery.mk

@@ -18,9 +18,10 @@
 using System;
 using System.Collections.Generic;
 
+using Com.Halfdecent.System.Globalization;
+
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.CommandLine;
-using Com.Halfdecent.Globalization;
 
 
 

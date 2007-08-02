@@ -18,7 +18,7 @@ using System;
 
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Application;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.System.Globalization;
 
 
 

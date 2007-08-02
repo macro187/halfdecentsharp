@@ -16,50 +16,44 @@
 
 
 using System;
+using System.Globalization;
+using System.Threading;
+
+using Com.Halfdecent.Testing;
+using Com.Halfdecent.System;
 
 
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.System.Test
 {
 
 
 
 /// <summary>
-/// An exception indicating that a resource was not of the expected type
+/// Test program for <c>Com.Halfdecent.System</c>
 /// </summary>
 public class
-ResourceTypeMismatchException
-    : SystemException
+Tests
+    : TestBase
 {
 
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Methods
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Create a <c>ResourceTypeMismatchException</c>
+/// Test program entry point
 /// </summary>
-public
-ResourceTypeMismatchException(
-    string expectedtypename,
-    string actualtypename,
-    string typename,
-    string name,
-    string culturename
-)
-    : base( String.Format(
-        "Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'",
-        name,
-        typename,
-        culturename,
-        expectedtypename,
-        actualtypename ))
+public static int
+Main()
 {
+    return TestProgram.RunTests();
 }
+
 
 
 

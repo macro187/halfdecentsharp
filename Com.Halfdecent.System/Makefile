@@ -18,6 +18,8 @@
 MODULES_use += dotnet.lib.project
 MODULES_use += dotnet.csharp
 
+SRCS_FIND_dir = $(PROJ_dir)/src
+
 
 include $(MAKERY)/makery.mk
 

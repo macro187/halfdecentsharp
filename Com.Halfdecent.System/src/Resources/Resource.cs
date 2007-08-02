@@ -21,12 +21,12 @@ using System.Globalization;
 using System.Collections.Generic;
 
 using Com.Halfdecent.System;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.System.Globalization;
 
 
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.System.Resources
 {
 
 

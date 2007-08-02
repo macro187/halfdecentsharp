@@ -17,24 +17,21 @@
 
 using System;
 using System.Globalization;
-
-using Com.Halfdecent.System;
-using Com.Halfdecent.Globalization;
+using System.Collections.Generic;
 
 
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.System.Globalization
 {
 
 
 
 /// <summary>
-/// A read-only <c>Localized&lt;T&gt;</c> that represents a localized
-/// embedded resource
+/// A read/write in-memory localized item
 /// </summary>
 public class
-LocalizedResource<T>
+InMemoryLocalized<T>
     : Localized<T>
     where T : class
 {
@@ -47,17 +44,15 @@ LocalizedResource<T>
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Create a new <c>LocalizedResource&lt;T&gt;</c> backed by embedded
-/// resources from a given type of a given name
+/// Create a new <c>InMemoryLocalized&lt;T&gt;</c> with a given
+/// invariant/untranslated version
 /// </summary>
-internal
-LocalizedResource( Type type, string name )
+public
+InMemoryLocalized( T invariantversion )
 {
-    if( type == null ) throw new ArgumentNullException( "type" );
-    if( name == null ) throw new ArgumentNullException( "name" );
-    if( name == "" ) throw new ArgumentBlankException( "name" );
-    this.type = type;
-    this.name = name;
+    if( invariantversion == null )
+        throw new ArgumentNullException( "invariantversion" );
+    this[ CultureInfo.InvariantCulture ] = invariantversion;
 }
 
 
@@ -68,14 +63,8 @@ LocalizedResource( Type type, string name )
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Get the version of the resource most appropriate for the given culture
+/// (see <c>Localized&lt;T&gt;)
 /// </summary>
-/// <exception cref="ResourceMissingException">
-/// No versions of the resource exist
-/// </exception>
-/// <exception cref="ResourceTypeMismatchException">
-/// Resource is not of (or convertable) to <c>T</c>
-/// </exception>
 public override T
 this[ CultureInfo culture ]
 {
@@ -83,15 +72,21 @@ this[ CultureInfo culture ]
     {
         if( culture == null ) throw new ArgumentNullException( "culture" );
         T r;
-        r = Resource.Get<T>( this.type, this.name, culture );
-        if( r == null ) throw new ResourceMissingException(
-            this.type.FullName,
-            this.name );
+        for( CultureInfo c = culture; ; c = c.Parent ) {
+            if( this.data.ContainsKey( c ) ) {
+                r = this.data[ c ];
+                break;
+            }
+            if( c == CultureInfo.InvariantCulture )
+                throw new Exception( "BUG: No invariant version" );
+        }
         return r;
     }
     set
     {
-        throw new InvalidOperationException();
+        if( culture == null ) throw new ArgumentNullException( "culture" );
+        if( value == null ) throw new ArgumentNullException();
+        this.data[ culture ] = value;
     }
 }
 
@@ -99,14 +94,35 @@ this[ CultureInfo culture ]
 
 
 // -----------------------------------------------------------------------------
-// Protected
+// Methods
 // -----------------------------------------------------------------------------
 
-protected Type
-type;
+/// <summary>
+/// Indicates whether a version of the item exists for a specific culture
+/// </summary>
+public bool
+Exists( CultureInfo culture )
+{
+    if( culture == null ) throw new ArgumentNullException( "culture" );
+    return this.data.ContainsKey( culture );
+}
 
-protected string
-name;
+
+
+
+// -----------------------------------------------------------------------------
+// Operators
+// -----------------------------------------------------------------------------
+
+
+
+
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private Dictionary<CultureInfo,T>
+data = new Dictionary<CultureInfo,T>();
 
 
 

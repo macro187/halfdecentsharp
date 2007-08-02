@@ -18,43 +18,19 @@
 using System;
 
 
-
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.System.Test
 {
 
 
-
 /// <summary>
-/// An exception indicating that an embedded resource that was expected to
-/// exist couldn't be found
+/// Type with no embedded resources at all
 /// </summary>
 public class
-ResourceMissingException
-    : SystemException
+NoRes
 {
 
 
-
-
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-/// <summary>
-/// Create a <c>ResourceMissingException</c>
-/// </summary>
-public
-ResourceMissingException(
-    string typename,
-    string name
-)
-    : base( String.Format(
-        "Type '{0}' contains no embedded resources named '{1}'",
-        typename,
-        name ))
-{
-}
 
 
 

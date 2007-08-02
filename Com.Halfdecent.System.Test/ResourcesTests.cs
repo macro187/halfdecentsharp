@@ -20,40 +20,25 @@ using System.Globalization;
 using System.Threading;
 
 using Com.Halfdecent.Testing;
-using Com.Halfdecent.Globalization;
-using Com.Halfdecent.Resources;
+using Com.Halfdecent.System;
+using Com.Halfdecent.System.Globalization;
+using Com.Halfdecent.System.Resources;
 
 
 
 namespace
-Com.Halfdecent.Resources.Test
+Com.Halfdecent.System.Test
 {
 
 
 
 /// <summary>
-/// Tests for <c>Com.Halfdecent.Resources</c>
+/// Tests for <c>Com.Halfdecent.System.Resources</c>
 /// </summary>
 public class
-Tests
+ResourcesTests
     : TestBase
 {
-
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// <summary>
-/// Test program entry point
-/// </summary>
-public static int
-Main()
-{
-    return TestProgram.RunTests();
-}
 
 
 

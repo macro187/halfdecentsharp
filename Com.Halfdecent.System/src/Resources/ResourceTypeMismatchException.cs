@@ -18,19 +18,48 @@
 using System;
 
 
+
 namespace
-Com.Halfdecent.Resources.Test
+Com.Halfdecent.System.Resources
 {
+
 
 
 /// <summary>
-/// Type with no embedded resources at all
+/// An exception indicating that a resource was not of the expected type
 /// </summary>
 public class
-NoRes
+ResourceTypeMismatchException
+    : SystemException
 {
 
 
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+/// <summary>
+/// Create a <c>ResourceTypeMismatchException</c>
+/// </summary>
+public
+ResourceTypeMismatchException(
+    string expectedtypename,
+    string actualtypename,
+    string typename,
+    string name,
+    string culturename
+)
+    : base( String.Format(
+        "Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'",
+        name,
+        typename,
+        culturename,
+        expectedtypename,
+        actualtypename ))
+{
+}
 
 
 

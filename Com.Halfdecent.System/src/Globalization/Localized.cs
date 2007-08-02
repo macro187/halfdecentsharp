@@ -21,7 +21,7 @@ using System.Globalization;
 
 
 namespace
-Com.Halfdecent.Globalization
+Com.Halfdecent.System.Globalization
 {
 
 

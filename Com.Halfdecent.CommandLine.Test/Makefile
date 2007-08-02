@@ -18,10 +18,10 @@
 MODULES_use += dotnet.exe.project
 MODULES_use += dotnet.csharp
 
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.System)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Testing)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.CommandLine)
 
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Globalization)
 
 
 include $(MAKERY)/makery.mk

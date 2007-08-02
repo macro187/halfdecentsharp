@@ -17,8 +17,8 @@
 
 using System;
 
-using Com.Halfdecent.Resources;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.System.Globalization;
+using Com.Halfdecent.System.Resources;
 
 
 

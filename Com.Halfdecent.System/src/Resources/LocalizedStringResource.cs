@@ -20,12 +20,12 @@ using System.Threading;
 using System.Globalization;
 
 using Com.Halfdecent.System;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.System.Globalization;
 
 
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.System.Resources
 {
 
 

@@ -19,7 +19,7 @@ using System;
 
 
 namespace
-Com.Halfdecent.Resources.Test
+Com.Halfdecent.System.Test
 {
 
 

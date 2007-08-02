@@ -16,22 +16,27 @@
 
 
 using System;
+using System.Globalization;
+
+using Com.Halfdecent.System;
+using Com.Halfdecent.System.Globalization;
 
 
 
 namespace
-Com.Halfdecent.Globalization
+Com.Halfdecent.System.Resources
 {
 
 
 
 /// <summary>
-/// Convenience base class for localized <c>Exception</c> subclasses
+/// A read-only <c>Localized&lt;T&gt;</c> that represents a localized
+/// embedded resource
 /// </summary>
 public class
-LocalizedException
-    : LocalizedExceptionShim
-    , ILocalizedException
+LocalizedResource<T>
+    : Localized<T>
+    where T : class
 {
 
 
@@ -42,30 +47,17 @@ LocalizedException
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Create a new <c>LocalizedException</c> with a given message
-/// <summary>
-public
-LocalizedException(
-    Localized<string> message
-)
-    : this( message, null )
+/// Create a new <c>LocalizedResource&lt;T&gt;</c> backed by embedded
+/// resources from a given type of a given name
+/// </summary>
+internal
+LocalizedResource( Type type, string name )
 {
-    this.message = message;
-}
-
-
-/// <summary>
-/// Create a new <c>LocalizedException</c> with a given message and inner
-/// exception
-/// <summary>
-public
-LocalizedException(
-    Localized<string> message,
-    Exception innerexception
-)
-    : base( message, innerexception )
-{
-    this.message = message;
+    if( type == null ) throw new ArgumentNullException( "type" );
+    if( name == null ) throw new ArgumentNullException( "name" );
+    if( name == "" ) throw new ArgumentBlankException( "name" );
+    this.type = type;
+    this.name = name;
 }
 
 
@@ -76,79 +68,49 @@ LocalizedException(
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Message
+/// Get the version of the resource most appropriate for the given culture
 /// </summary>
-new public Localized<string>
-Message
+/// <exception cref="ResourceMissingException">
+/// No versions of the resource exist
+/// </exception>
+/// <exception cref="ResourceTypeMismatchException">
+/// Resource is not of (or convertable) to <c>T</c>
+/// </exception>
+public override T
+this[ CultureInfo culture ]
 {
-    get { return this.message; }
-}
-
-
-
-/// <summary>
-/// INTERNAL: Return a <c>string</c> if being used as a plain <c>Exception</c>,
-/// see <c>LocalizedExceptionShim</c>
-/// </summary>
-protected override string
-BaseMessage
-{
-    get { return this.Message; }
+    get
+    {
+        if( culture == null ) throw new ArgumentNullException( "culture" );
+        T r;
+        r = Resource.Get<T>( this.type, this.name, culture );
+        if( r == null ) throw new ResourceMissingException(
+            this.type.FullName,
+            this.name );
+        return r;
+    }
+    set
+    {
+        throw new InvalidOperationException();
+    }
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// Private
+// Protected
 // -----------------------------------------------------------------------------
 
-private Localized<string>
-message;
+protected Type
+type;
+
+protected string
+name;
 
 
 
 
 } // type
-
-
-
-
-/// <summary>
-/// INTERNAL:
-/// Shim to rename/redirect <c>Message</c> so we can effectively both
-/// override and shadow it in <c>LocalizedException</c>
-/// </summary>
-public abstract class
-LocalizedExceptionShim
-    : Exception
-{
-
-internal
-LocalizedExceptionShim(
-    string      message,
-    Exception   innerexception
-)
-    : base( message, innerexception )
-{
-}
-
-override public string
-Message
-{
-    get { return this.BaseMessage; }
-}
-
-abstract protected string
-BaseMessage
-{
-    get;
-}
-
-}
-
-
-
-
 } // namespace
 

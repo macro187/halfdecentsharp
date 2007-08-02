@@ -20,39 +20,24 @@ using System.Globalization;
 using System.Threading;
 
 using Com.Halfdecent.Testing;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.System;
+using Com.Halfdecent.System.Globalization;
 
 
 
 namespace
-Com.Halfdecent.Globalization.Test
+Com.Halfdecent.System.Test
 {
 
 
 
 /// <summary>
-/// Tests for <c>Com.Halfdecent.Globalization</c>
+/// Tests for <c>Com.Halfdecent.System.Globalization</c>
 /// </summary>
 public class
-Tests
+GlobalizationTests
     : TestBase
 {
-
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// <summary>
-/// Test program entry point
-/// </summary>
-public static int
-Main()
-{
-    return TestProgram.RunTests();
-}
 
 
 

@@ -17,25 +17,23 @@
 
 using System;
 
-using Com.Halfdecent.System;
-using Com.Halfdecent.System.Resources;
-using Com.Halfdecent.System.Globalization;
-using Com.Halfdecent.Application;
-
 
 
 namespace
-Com.Halfdecent.CommandLine
+Com.Halfdecent.System.Resources
 {
 
 
 
 /// <summary>
-/// A command-line option
+/// An exception indicating that an embedded resource that was expected to
+/// exist couldn't be found
 /// </summary>
 public class
-Option
+ResourceMissingException
+    : SystemException
 {
+
 
 
 
@@ -44,62 +42,19 @@ Option
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Create a new <c>Option</c> with a given name and value
-/// <summary>
+/// Create a <c>ResourceMissingException</c>
+/// </summary>
 public
-Option(
-    string name,
-    string value
+ResourceMissingException(
+    string typename,
+    string name
 )
+    : base( String.Format(
+        "Type '{0}' contains no embedded resources named '{1}'",
+        typename,
+        name ))
 {
-    if( name == null ) throw new ArgumentNullException( "name" );
-    if( name == "" ) throw new ArgumentBlankException( "name" );
-    if( value == null ) throw new ArgumentNullException( "value" );
-    this.name = name;
-    this.value = value;
 }
-
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// <summary>
-/// The switch's name as it appeared on the commandline
-/// </summary>
-public string
-Name
-{
-    get { return this.name; }
-}
-
-
-
-/// <summary>
-/// Value provided for the switch
-/// </summary>
-public string
-Value
-{
-    get { return this.value; }
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// Private
-// -----------------------------------------------------------------------------
-
-private string
-name;
-
-
-private string
-value;
-
 
 
 

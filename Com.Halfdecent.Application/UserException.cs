@@ -17,7 +17,7 @@
 
 using System;
 
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.System.Globalization;
 
 
 
