@@ -21,7 +21,7 @@ using System.Threading;
 
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.System;
-using Com.Halfdecent.System.Globalization;
+using Com.Halfdecent.Globalization;
 
 
 
@@ -32,7 +32,7 @@ Com.Halfdecent.System.Test
 
 
 /// <summary>
-/// Tests for <c>Com.Halfdecent.System.Globalization</c>
+/// Tests for <c>Com.Halfdecent.Globalization</c>
 /// </summary>
 public class
 GlobalizationTests

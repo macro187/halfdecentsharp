@@ -21,8 +21,8 @@ using System.Threading;
 
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.System;
-using Com.Halfdecent.System.Globalization;
-using Com.Halfdecent.System.Resources;
+using Com.Halfdecent.Globalization;
+using Com.Halfdecent.Resources;
 
 
 
@@ -33,7 +33,7 @@ Com.Halfdecent.System.Test
 
 
 /// <summary>
-/// Tests for <c>Com.Halfdecent.System.Resources</c>
+/// Tests for <c>Com.Halfdecent.Resources</c>
 /// </summary>
 public class
 ResourcesTests

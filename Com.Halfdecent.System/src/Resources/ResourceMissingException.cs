@@ -20,7 +20,7 @@ using System;
 
 
 namespace
-Com.Halfdecent.System.Resources
+Com.Halfdecent.Resources
 {
 
 

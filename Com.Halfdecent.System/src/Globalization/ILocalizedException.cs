@@ -19,7 +19,7 @@ using System;
 
 
 namespace
-Com.Halfdecent.System.Globalization
+Com.Halfdecent.Globalization
 {
 
 

@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 
 namespace
-Com.Halfdecent.System.Globalization
+Com.Halfdecent.Globalization
 {
 
 
