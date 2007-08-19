@@ -45,7 +45,7 @@ Com.Halfdecent.Application
 /// </remarks>
 public class
 UserException
-    : LocalizedException
+    : DeluxeException
 {
 
 

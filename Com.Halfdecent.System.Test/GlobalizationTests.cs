@@ -133,9 +133,9 @@ Test_AssignmentRetrieval()
 
 
 
-[Test( "LocalizedException" )]
+[Test( "DeluxeException" )]
 public static void
-Test_LocalizedException()
+Test_DeluxeException()
 {
     CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
     CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
@@ -145,23 +145,23 @@ Test_LocalizedException()
     msg[fr] = "la message";
 
     Exception e;
-    LocalizedException le;
+    DeluxeException de;
 
-    Print( "LocalizedException( string )" );
-    le = new LocalizedException( "message" );
+    Print( "DeluxeException( string )" );
+    de = new DeluxeException( "message" );
     Print( "Check Message" );
-    AssertEqual<string>( le.Message, "message" );
+    AssertEqual<string>( de.Message, "message" );
     Print( "Check Exception::Message" );
-    e = le;
+    e = de;
     AssertEqual( e.Message, "message" );
 
-    Print( "LocalizedException( Localized<string> )" );
-    le = new LocalizedException( msg );
+    Print( "DeluxeException( Localized<string> )" );
+    de = new DeluxeException( msg );
     Print( "Check localized messages" );
-    AssertEqual<string>( le.Message[en], "message" );
-    AssertEqual<string>( le.Message[fr], "la message" );
-    Print( "Check localized messages (via Exception)" );
-    e = le;
+    AssertEqual<string>( de.Message[en], "message" );
+    AssertEqual<string>( de.Message[fr], "la message" );
+    Print( "Check localized messages (via Exception::Message)" );
+    e = de;
     current = Thread.CurrentThread.CurrentCulture;
     try {
         Thread.CurrentThread.CurrentCulture = en;
@@ -172,11 +172,11 @@ Test_LocalizedException()
         Thread.CurrentThread.CurrentCulture = current;
     }
 
-    Print( "LocalizedException( Localized<string>, Exception )" );
+    Print( "DeluxeException( Localized<string>, Exception )" );
     Exception ie = new ArgumentException();
-    le = new LocalizedException( msg, ie );
+    de = new DeluxeException( msg, ie );
     Print( "Check InnerException" );
-    AssertEqual( le.InnerException, ie );
+    AssertEqual( de.InnerException, ie );
 
     if( e == null ) {}
 }

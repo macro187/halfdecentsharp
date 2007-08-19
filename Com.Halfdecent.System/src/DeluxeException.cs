@@ -17,21 +17,37 @@
 
 using System;
 
+using Com.Halfdecent.System.Globalization;
+
 
 
 namespace
-Com.Halfdecent.System.Globalization
+Com.Halfdecent.System
 {
 
 
 
 /// <summary>
-/// Convenience base class for localized <c>Exception</c> subclasses
+/// Deluxe <c>Exception</c>
 /// </summary>
+/// <remarks>
+/// <p>
+/// Features:
+/// - Localized <c>Message</c> (<c>ILocalizedException</c>)
+/// - Context stack (<c>IHasContext</c>) for tracking what was being worked
+///   on when the exception occurred
+/// </p>
+/// <p>
+/// Useful if your exception would normally derive from <c>Exception</c>.
+/// Subclasses of other kinds of exceptions will have to be coded long-hand, or
+/// wait until an automated traits mechanism is developed.
+/// </p>
+/// </remarks>
 public class
-LocalizedException
-    : LocalizedExceptionShim
+DeluxeException
+    : DeluxeExceptionShim
     , ILocalizedException
+//    , IHasContext
 {
 
 
@@ -42,10 +58,10 @@ LocalizedException
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Create a new <c>LocalizedException</c> with a given message
+/// Create a new <c>DeluxeException</c> with a given message
 /// <summary>
 public
-LocalizedException(
+DeluxeException(
     Localized<string> message
 )
     : this( message, null )
@@ -55,11 +71,11 @@ LocalizedException(
 
 
 /// <summary>
-/// Create a new <c>LocalizedException</c> with a given message and inner
+/// Create a new <c>DeluxeException</c> with a given message and inner
 /// exception
 /// <summary>
 public
-LocalizedException(
+DeluxeException(
     Localized<string> message,
     Exception innerexception
 )
@@ -84,27 +100,19 @@ Message
     get { return this.message; }
 }
 
+private Localized<string>
+message;
+
 
 
 /// <summary>
-/// INTERNAL: Return a <c>string</c> if being used as a plain <c>Exception</c>,
-/// see <c>LocalizedExceptionShim</c>
+/// INTERNAL: Hook up <c>Exception.Message</c> to our localized <c>Message</c>
 /// </summary>
 protected override string
 BaseMessage
 {
     get { return this.Message; }
 }
-
-
-
-
-// -----------------------------------------------------------------------------
-// Private
-// -----------------------------------------------------------------------------
-
-private Localized<string>
-message;
 
 
 
@@ -117,15 +125,15 @@ message;
 /// <summary>
 /// INTERNAL:
 /// Shim to rename/redirect <c>Message</c> so we can effectively both
-/// override and shadow it in <c>LocalizedException</c>
+/// override and shadow it in subclasses
 /// </summary>
 public abstract class
-LocalizedExceptionShim
+DeluxeExceptionShim
     : Exception
 {
 
 internal
-LocalizedExceptionShim(
+DeluxeExceptionShim(
     string      message,
     Exception   innerexception
 )
@@ -145,7 +153,7 @@ BaseMessage
     get;
 }
 
-}
+} // DeluxeExceptionShim
 
 
 
