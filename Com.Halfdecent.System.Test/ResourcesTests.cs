@@ -47,9 +47,9 @@ ResourcesTests
 // Tests
 // -----------------------------------------------------------------------------
 
-[Test( "Get<T>()" )]
+[Test( "Resource.Get<T>()" )]
 public static void
-Test_Get()
+Test_Resource_Get()
 {
     CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
     CultureInfo         en_CA = CultureInfo.GetCultureInfo( "en-CA" );
@@ -104,9 +104,9 @@ Test_Get()
 
 
 
-[Test( "_R<T>()" )]
+[Test( "Resource._R<T>()" )]
 public static void
-Test__R()
+Test_Resource__R()
 {
     Localized<string>  ls;
     CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
@@ -151,9 +151,9 @@ Test__R()
 
 
 
-[Test( "_S( type, string )" )]
+[Test( "Resource._S( type, string )" )]
 public static void
-Test__S_type_string()
+Test_Resource__S_type_string()
 {
     Localized<string>  ls;
     CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
@@ -188,9 +188,10 @@ Test__S_type_string()
 }
 
 
-[Test( "_S( type, string, params object[] )" )]
+
+[Test( "Resource._S( type, string, params object[] )" )]
 public static void
-Test__S_type_string_paramsobject()
+Test_Resource__S_type_string_paramsobject()
 {
     Localized<string>  ls;
     /*
@@ -219,6 +220,7 @@ Test__S_type_string_paramsobject()
     Print( "French:          " + ls[ fr_FR ] );
     Print( "Japanese:        " + ls[ ja_JP ] );
 }
+
 
 
 
