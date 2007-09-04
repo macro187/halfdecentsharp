@@ -48,24 +48,32 @@ StreamsTests
 public static void
 Test_IEnumeratorToIStreamAdapter()
 {
-    IStream<int> s = new IEnumeratorToIStreamAdapter<int>( CountToFive() );
-    int c = 1;
+    IStream<int> stream =
+        new IEnumeratorToIStreamAdapter<int>( CountToFive() );
 
-    Print( "Check that stream yields correct items..." );
+    Print( "Stream yields correct items" );
+    int c = 1;
     while( c <= 5 ) {
-        AssertEqual( s.Yield(), c );
+        AssertEqual( stream.Yield(), c );
         c++;
     }
 
-    Print( "Check that InvalidOperationException thrown if we keep going..." );
+    Print( "InvalidOperationException if we keep going" );
     bool thrown = false;
     try {
-        s.Yield();
-    } catch( InvalidOperationException e ) {
+        stream.Yield();
+    } catch( InvalidOperationException ioe ) {
         thrown = true;
-        if( e != null ) {}
+        if( ioe != null ) {}
     }
     Assert( thrown );
+
+    Print( "Multiple GetEnumerator() calls return the same instance" );
+    IEnumerator<int> e = ((IEnumerable<int>)stream).GetEnumerator();
+    AssertEqual( e, ((IEnumerable<int>)stream).GetEnumerator() );
+    AssertEqual( e, ((IEnumerable<int>)stream).GetEnumerator() );
+    AssertEqual( e, ((IEnumerable<int>)stream).GetEnumerator() );
+    // ...
 }
 
 
@@ -75,32 +83,112 @@ public static void
 Test_IStreamToIEnumeratorAdapter()
 {
     IStream<int> stream = new IEnumeratorToIStreamAdapter<int>( CountToFive() );
+    IEnumerator<int> e = ((IEnumerable<int>)stream).GetEnumerator();
+    bool thrown;
 
+    Print( "InvalidOperationException on Current before MoveNext()" );
+    thrown = false;
+    try {
+        if( e.Current == 0 ) {}
+    } catch( InvalidOperationException ioe ) {
+        thrown = true;
+        if( ioe == null ) {}
+    }
+    AssertEqual( thrown, true );
+
+    Print( "Check the items via multiple foreach loops" );
     int i = 1;
-
-    Print( "Check the first 3 items via foreach..." );
     foreach( int item in stream ) {
         AssertEqual( item, i );
         i++;
         if( i > 3 ) break;
     }
-
-    Print( "Check the next 2 items via a second foreach..." );
     foreach( int item in stream ) {
         AssertEqual( item, i );
         i++;
         if( i > 5 ) break;
     }
 
-    Print( "Check that InvalidOperationException thrown if we keep going..." );
-    bool thrown = false;
+    Print( "Check that InvalidOperationException thrown if we keep going" );
+    thrown = false;
     try {
         foreach( int item in stream ) {
             if( item == 0 ) {}
         }
-    } catch( InvalidOperationException e ) {
+    } catch( InvalidOperationException ioe ) {
         thrown = true;
-        if( e != null ) {}
+        if( ioe != null ) {}
+    }
+    Assert( thrown );
+}
+
+
+
+[Test( "IEnumeratorToIFiniteStreamAdapter" )]
+public static void
+Test_IEnumeratorToIFiniteStreamAdapter()
+{
+    IFiniteStream<int> stream =
+        new IEnumeratorToIFiniteStreamAdapter<int>( CountToFive() );
+
+    Print( "Check that stream yields correct items" );
+    int c = 1;
+    int i;
+    while( stream.Yield( out i ) ) {
+        AssertEqual( i, c );
+        c++;
+    }
+    AssertEqual( c, 6 );
+
+    Print( "Multiple GetEnumerator() calls return the same instance" );
+    IEnumerator<int> e = ((IEnumerable<int>)stream).GetEnumerator();
+    AssertEqual( e, ((IEnumerable<int>)stream).GetEnumerator() );
+    AssertEqual( e, ((IEnumerable<int>)stream).GetEnumerator() );
+    AssertEqual( e, ((IEnumerable<int>)stream).GetEnumerator() );
+    // ...
+}
+
+
+
+[Test( "IFiniteStreamToIEnumeratorAdapter" )]
+public static void
+Test_IFiniteStreamToIEnumeratorAdapter()
+{
+    IFiniteStream<int> stream =
+        new IEnumeratorToIFiniteStreamAdapter<int>( CountToFive() );
+    IEnumerator<int> e = ((IEnumerable<int>)stream).GetEnumerator();
+    bool thrown;
+
+    Print( "InvalidOperationException on Current before first MoveNext()" );
+    thrown = false;
+    try {
+        if( e.Current == 0 ) {}
+    } catch( InvalidOperationException ioe ) {
+        thrown = true;
+        if( ioe == null ) {}
+    }
+    AssertEqual( thrown, true );
+
+    Print( "Check the items via multiple foreach loops" );
+    int i = 1;
+    foreach( int item in stream ) {
+        AssertEqual( item, i );
+        i++;
+        if( i > 3 ) break;
+    }
+    foreach( int item in stream ) {
+        AssertEqual( item, i );
+        i++;
+        if( i > 5 ) break;
+    }
+
+    Print( "InvalidOperationException on Current after MoveNext()==false" );
+    thrown = false;
+    try {
+        if( e.Current == 0 ) {}
+    } catch( InvalidOperationException ioe ) {
+        thrown = true;
+        if( ioe != null ) {}
     }
     Assert( thrown );
 }

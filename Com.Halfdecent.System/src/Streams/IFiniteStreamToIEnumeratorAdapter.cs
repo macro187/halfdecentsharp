@@ -30,10 +30,10 @@ Com.Halfdecent.Streams
 
 
 /// <summary>
-/// Presents an <see cref="IStream"/> as an <see cref="IEnumerator"/>
+/// Presents an <see cref="IFiniteStream"/> as an <see cref="IEnumerator"/>
 /// </summary>
 public class
-IStreamToIEnumeratorAdapter<T>
+IFiniteStreamToIEnumeratorAdapter<T>
     : IEnumerator<T>
 {
 
@@ -44,17 +44,19 @@ IStreamToIEnumeratorAdapter<T>
 // -----------------------------------------------------------------------------
 
 /// <summary>
-/// Initialize a new <c>IStreamToIEnumeratorAdapter</c> adapting a given
+/// Initialize a new <c>IFiniteStreamToIEnumeratorAdapter</c> adapting a given
 /// <see cref="IStream"/>
 /// </summary>
 public
-IStreamToIEnumeratorAdapter(
-    IStream<T> stream
+IFiniteStreamToIEnumeratorAdapter(
+    IFiniteStream<T> stream
 )
 {
-    if( stream == null ) throw new ArgumentNullException( "stream" );
+    if( stream == null )
+        throw new ArgumentNullException( "stream" );
     this.stream = stream;
     this.started = false;
+    this.finished = false;
 }
 
 
@@ -64,11 +66,14 @@ IStreamToIEnumeratorAdapter(
 // Fields
 // -----------------------------------------------------------------------------
 
-private IStream<T>
+private IFiniteStream<T>
 stream;
 
 private bool
 started;
+
+private bool
+finished;
 
 private T
 current;
@@ -82,7 +87,7 @@ current;
 
 /// <summary>(see <see cref="IEnumerator.Current"/>)</summary>
 /// <exception cref="InvalidOperationException">
-/// If the enumerator is still positioned before the first item
+/// If the enumerator is positioned before the first or after the last item
 /// </exception>
 object
 IEnumerator.Current
@@ -96,18 +101,18 @@ IEnumerator.Current
 
 
 /// <summary>(see <see cref="IEnumerator.MoveNext"/>)</summary>
-/// <exception cref="InvalidOperationException">
-/// If the underlying stream definitely cannot produce any more items
-/// (exception will originate in the underlying <c>IStream.Yield()</c>)
-/// </exception>
-/// <seealso cref="IStream.Yield"/>
+/// <seealso cref="IFiniteStream.Yield"/>
 bool
 IEnumerator.MoveNext()
 {
-    this.current = this.stream.Yield(); // throws InvalidOperationException if
-                                        // the IStream is finished
+    bool result = false;
     if( !this.started ) this.started = true;
-    return true;
+    if( !this.finished ) {
+        if( !this.stream.Yield( out this.current ) ) {
+            this.finished = true;
+        }
+    }
+    return result;
 }
 
 
@@ -131,16 +136,19 @@ IEnumerator.Reset()
 
 /// <summary>(see <see cref="IEnumerator<T>.Current"/>)</summary>
 /// <exception cref="InvalidOperationException">
-/// If the enumerator is still positioned before the first item
+/// If the enumerator is positioned before the first or after the last item
 /// </exception>
 T
 IEnumerator<T>.Current
 {
     get
     {
-        if( !started ) throw new InvalidOperationException(
+        if( !this.started ) throw new InvalidOperationException(
             "The current item cannot be retreived because the enumerator is" +
             " still positioned before the first item" );
+        if( !this.finished ) throw new InvalidOperationException(
+            "The current item cannot be retreived because the enumerator is" +
+            " already positioned past the last item" );
         return this.current;
     }
 }
@@ -157,7 +165,7 @@ IEnumerator<T>.Current
 /// The <c>foreach</c> statement unconditionally <c>Dispose()</c>s enumerators
 /// after using them.  This conflicts with <c>IStream</c>'s semantics which
 /// allow it to be <c>foreach</c>ed more than once, so this <c>Dispose()</c>
-/// does nothing.  If the underlying <see cref="IStream"/> is
+/// does nothing.  If the underlying <see cref="IFiniteStream"/> is
 /// <see cref="IDisposable"/>, it should be explicitly <c>Dispose()</c>d
 /// directly when no longer needed.
 /// </remarks>

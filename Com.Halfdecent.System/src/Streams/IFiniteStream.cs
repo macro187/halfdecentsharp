@@ -47,8 +47,8 @@ IFiniteStream<T>
 /// Attempt to advance to and return the next item in the stream
 /// </summary>
 /// <param name="item">
-/// The next item in the stream, or <c>default(T)</c> if the end has been
-/// reached
+/// The next item in the stream if there was one, otherwise some undefined
+/// value which should not be used
 /// </param>
 /// <returns>
 /// Whether there was another item in the stream
@@ -70,7 +70,9 @@ IFiniteStream<T>
 /// </code>
 /// </example>
 bool
-Yield( out T item );
+Yield(
+    out T item
+);
 
 
 
