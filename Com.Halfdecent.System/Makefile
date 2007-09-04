@@ -17,6 +17,7 @@
 
 MODULES_use += dotnet.lib.project
 MODULES_use += dotnet.csharp
+MODULES_use += testable
 
 SRCS_FIND_dir = $(PROJ_dir)/src
 
