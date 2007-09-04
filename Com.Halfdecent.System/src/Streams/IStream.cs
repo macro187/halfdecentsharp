@@ -42,19 +42,18 @@ Com.Halfdecent.Streams
 /// sequence.
 /// </para>
 /// <para>
-/// As a convenience, <c>IStream</c>s implement <c>IEnumerator&lt;T&gt;</c> and
-/// <c>IEnumerable&lt;T&gt;</c> so they can be iterated using <c>foreach</c>
-/// statements.  As <c>IEnumerator</c>s, they are non-<c>Reset()</c>table.  As
-/// <c>IEnumerable</c>s, they always return themselves, so the same stream can
-/// be <c>foreach</c>ed more than once, each time continuing from the point it
-/// was last left.
+/// On it's own, <c>IStream</c> does not imply how many more items (if any)
+/// can be produced, nor how long (if ever) it will take to yield the next
+/// one.  Implementations should document their semantics in these regards
+/// and/or implement a stream sub-type with more specific semantics.
 /// </para>
 /// <para>
-/// Note that <c>IStream</c> implies no particular number of items, nor, if a
-/// subsequent item is available, the timeframe in which it will be yielded,
-/// if ever (ie. <see cref=">Yield"/> may block, and it may even do so
-/// indefinitely).  Implementations should document their semantics in these
-/// regards, implement a stream sub-type with more specific semantics, or both.
+/// As a convenience, <c>IStream</c>s implement <c>IEnumerable&lt;T&gt;</c>.
+/// <c>GetEnumerator()</c> returns the same <c>IEnumerator</c> no matter how
+/// many times it's called, reflecting the single underlying stream.  Not only
+/// does this enable iteration with <c>foreach</c>, it enables doing so more
+/// than once, with each subsequent <c>foreach</c> iteration picking up from
+/// the stream's current position.
 /// </para>
 /// </remarks>
 /// <typeparam name="T">
@@ -62,38 +61,24 @@ Com.Halfdecent.Streams
 /// </typeparam>
 public interface
 IStream<T>
-    : IEnumerator<T> // to enable foreach (no semantic implications)
-    , IEnumerable<T> // to enable foreach (no semantic implications)
+    : IEnumerable<T> // to enable foreach (no semantic implications)
 {
 
 
 
 /// <summary>
-/// Advance to and return the next item in the stream
+/// Produce the next item in the stream
 /// </summary>
+/// <remarks>
+/// If the stream is capable of producing another item, <c>IStream</c> does
+/// not imply how long it will take (if ever).
+/// </remarks>
 /// <exception cref="InvalidOperationException">
-/// If the stream definitely does not and will not have any more items
+/// If the stream definitely cannot produce any more items
 /// </exception>
 /// <returns>
 /// The next item in the stream
 /// </returns>
-/// <example>
-/// Process items via <see cref="Yield"/>
-/// <code>
-/// for(;;) {
-///     item = stream.Yield();
-///     ...
-/// }
-/// </code>
-/// </example>
-/// <example>
-/// Process items via <c>foreach</c>
-/// <code>
-/// foreach( Item item in stream ) {
-///     ...
-/// }
-/// </code>
-/// </example>
 T
 Yield();
 
