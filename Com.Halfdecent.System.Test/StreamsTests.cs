@@ -176,11 +176,12 @@ Test_IFiniteStreamToIEnumeratorAdapter()
         i++;
         if( i > 3 ) break;
     }
+    AssertEqual( i, 4 );
     foreach( int item in stream ) {
         AssertEqual( item, i );
         i++;
-        if( i > 5 ) break;
     }
+    AssertEqual( i, 6 );
 
     Print( "InvalidOperationException on Current after MoveNext()==false" );
     thrown = false;

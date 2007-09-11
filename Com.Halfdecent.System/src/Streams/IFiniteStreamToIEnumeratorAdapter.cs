@@ -108,7 +108,9 @@ IEnumerator.MoveNext()
     bool result = false;
     if( !this.started ) this.started = true;
     if( !this.finished ) {
-        if( !this.stream.Yield( out this.current ) ) {
+        if( this.stream.Yield( out this.current ) ) {
+            result = true;
+        } else {
             this.finished = true;
         }
     }
@@ -146,7 +148,7 @@ IEnumerator<T>.Current
         if( !this.started ) throw new InvalidOperationException(
             "The current item cannot be retreived because the enumerator is" +
             " still positioned before the first item" );
-        if( !this.finished ) throw new InvalidOperationException(
+        if( this.finished ) throw new InvalidOperationException(
             "The current item cannot be retreived because the enumerator is" +
             " already positioned past the last item" );
         return this.current;
