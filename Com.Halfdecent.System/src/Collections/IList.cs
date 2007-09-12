@@ -14,11 +14,9 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Streams;
-
 
 
 namespace
@@ -28,30 +26,21 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
 /// An ordered collection of non-unique items
-/// </summary>
-/// <remarks>
-/// <para>
-/// An <c>IList</c> holds a finite sequence of items.  Refer to
-/// <c>http://en.wikipedia.org/wiki/Sequence</c>.
-/// </para>
-/// <para>
-/// Because items in an <c>IList</c> are in order, each is in a particular
-/// position ranging from <c>0</c> (the first item) to <c>Count-1</c> (the
-/// last item).
-/// </para>
-/// </remarks>
-/// <typeparam name="T">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
-/// <typeparam name="TCount">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
+///
+/// Lists hold finite sequences of items.  Refer to
+/// <tt>http://en.wikipedia.org/wiki/Sequence</tt>.
+///
+/// @par Positions
+/// Because items in a list are in order, each is in a particular position
+/// ranging from <tt>0</tt> (the first item) to <tt>Count-1</tt>
+/// (the last item).
 public interface
-IList<T,TCount>
-    : IBag<T,TCount>
-    where TCount : struct
+IList<
+    T,      ///< (see IBag< T, TCount >)
+    TCount  ///< (see IBag< T, TCount >)
+>
+    : IBag< T, TCount >
 {
 
 

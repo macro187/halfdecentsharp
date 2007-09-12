@@ -16,18 +16,17 @@
 
 
 
+/// @mainpage Com.Halfdecent.Collections
+/// This assembly contains the Com.Halfdecent.Collections namespace.
 
-/// <summary>
+
+
 /// Types for managing collections of items
-/// </summary>
-/// <remarks>
-/// <para>
+///
 /// Unlike streams, collections do not necessarily involve time.  Items might
 /// possibly come and go over time, but at any given moment all constituent
 /// items are implied to exist and, to the extent permitted by a given
 /// type of collection, be more or less immediately accessible.
-/// </para>
-/// </remarks>
 namespace
 Com.Halfdecent.Collections
 {

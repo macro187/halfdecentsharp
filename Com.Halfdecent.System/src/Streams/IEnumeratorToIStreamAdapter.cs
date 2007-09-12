@@ -22,18 +22,18 @@ using System.Collections.Generic;
 using Com.Halfdecent.System;
 
 
-
 namespace
 Com.Halfdecent.Streams
 {
 
 
 
-/// <summary>
-/// Presents an <see cref="IEnumerator"/> as an <see cref="IStream"/>
-/// </summary>
+
+/// Presents an enumerator as a stream
 public class
-IEnumeratorToIStreamAdapter<T>
+IEnumeratorToIStreamAdapter<
+    T   ///< Type of items in the enumerator and resultant stream
+>
     : IStream<T>
     , IDisposable
 {
@@ -44,13 +44,14 @@ IEnumeratorToIStreamAdapter<T>
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Initialize a new <c>IEnumeratorToIStreamAdapter</c> adapting a given
-/// <see cref="IEnumerator"/>
-/// </summary>
+/// Initialize a new <tt>IEnumeratorToIStreamAdapter< T ></tt> adapting a given
+/// enumerator
+///
+/// @exception ArgumentNullException
+/// The specified <tt>enumerator</tt> is <tt>null</tt>
 public
 IEnumeratorToIStreamAdapter(
-    IEnumerator<T> enumerator
+    IEnumerator<T> enumerator   ///< The <tt>IEnumerator< T ></tt> to adapt
 )
 {
     if( enumerator == null ) throw new ArgumentNullException( "enumerator" );
@@ -78,9 +79,9 @@ enumeratoradapter;
 // Interface: IStream
 // -----------------------------------------------------------------------------
 
-/// <summary>(see <see cref="IStream.Yield"/>)</summary>
-T
-IStream<T>.Yield()
+/// (see <tt>IStream::Yield()</tt>)
+public T
+Yield()
 {
     if( !this.enumerator.MoveNext() )
         // TODO: Create (and throw) more specific type of exception (?)
@@ -95,7 +96,7 @@ IStream<T>.Yield()
 // Interface: IEnumerable
 // -----------------------------------------------------------------------------
 
-/// <summary>(see <see cref="IEnumerable.GetEnumerator"/>)</summary>
+/// (see <tt>IEnumerable::GetEnumerator()</tt>)
 IEnumerator
 IEnumerable.GetEnumerator()
 {
@@ -109,7 +110,7 @@ IEnumerable.GetEnumerator()
 // Interface: IEnumerable<T>
 // -----------------------------------------------------------------------------
 
-/// <summary>(see <see cref="IEnumerable<T>.GetEnumerator"/>)</summary>
+/// (see <tt>IEnumerable< T >::GetEnumerator()</tt>)
 IEnumerator<T>
 IEnumerable<T>.GetEnumerator()
 {
@@ -123,12 +124,12 @@ IEnumerable<T>.GetEnumerator()
 // Interface: IDisposable
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Disposes the underlying <see cref="IEnumerator"/>
-/// </summary>
-/// <seealso cref="IDisposable.Dispose"/>
-void
-IDisposable.Dispose()
+/// Disposes the underlying enumerator
+///
+/// @sa
+/// <tt>IDisposable::Dispose()</tt>
+public void
+Dispose()
 {
     this.enumerator.Dispose();
     // TODO: Do we have to track whether this has been called and throw

@@ -19,7 +19,6 @@ using System;
 using Com.Halfdecent.System;
 
 
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -27,33 +26,24 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
-/// An <see cref="IBag"/> to which arbitrary items can be added
-/// </summary>
-/// <typeparam name="T">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
-/// <typeparam name="TCount">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
+/// A bag to which arbitrary items can be added
 public interface
-IBagCanAdd<T,TCount>
-    : IBag<T,TCount>
-    where TCount : struct
+IBagCanAdd<
+    T,      ///< (see IBag< T, TCount >)
+    TCount  ///< (see IBag< T, TCount >)
+>
+    : IBag< T, TCount >
 {
 
 
 
-/// <summary>
 /// Adds the given item to the bag
-/// </summary>
-/// <remarks>
+///
 /// Because bags are unordered, this method does not imply that the item is
 /// added at any particular "position".
-/// </remarks>
 void
 Add(
-    T item
+    T item  ///< The item to add
 );
 
 

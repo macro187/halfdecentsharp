@@ -20,7 +20,6 @@ using Com.Halfdecent.System;
 using Com.Halfdecent.Streams;
 
 
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -28,29 +27,20 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
-/// An <see cref="IList"/> that can produce <see cref="IFiniteStream<T>"/>s
-/// of it's items in first-to-last order
-/// </summary>
-/// <typeparam name="T">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
-/// <typeparam name="TCount">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
+/// A list that can produce streams of it's items in order
 public interface
-IListCanStreamForward<T,TCount>
-    : IList<T,TCount>
-    where TCount : struct
+IListCanStreamForward<
+    T,      ///< (see IBag< T, TCount >)
+    TCount  ///< (see IBag< T, TCount >)
+>
+    : IList< T, TCount >
 {
 
 
 
-/// <summary>
-/// Produce a <see cref="IFiniteStream<T>"/> of all items in the list in
-/// first-to-last order
-/// </summary>
-IFiniteStream<T>
+/// Produce a stream of all items in the list in order
+IFiniteStream<T>    /// @returns A new <tt>IFiniteStream< T ></tt> of all items
+                    /// in the list in first-to-last order
 StreamForward();
 
 

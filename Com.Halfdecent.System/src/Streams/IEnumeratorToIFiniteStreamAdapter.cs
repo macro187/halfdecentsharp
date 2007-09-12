@@ -22,19 +22,19 @@ using System.Collections.Generic;
 using Com.Halfdecent.System;
 
 
-
 namespace
 Com.Halfdecent.Streams
 {
 
 
 
-/// <summary>
-/// Presents an <see cref="IEnumerator"/> as an <see cref="IFiniteStream"/>
-/// </summary>
+
+/// Presents an enumerator as a finite stream
 public class
-IEnumeratorToIFiniteStreamAdapter<T>
-    : IFiniteStream<T>
+IEnumeratorToIFiniteStreamAdapter<
+    T   ///< Type of items in the enumerator and resultant stream
+>
+    : IFiniteStream< T >
     , IDisposable
 {
 
@@ -44,13 +44,14 @@ IEnumeratorToIFiniteStreamAdapter<T>
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Initialize a new <c>IEnumeratorToIFiniteStreamAdapter</c> adapting a given
-/// <see cref="IEnumerator"/>
-/// </summary>
+/// Initialize a new <tt>IEnumeratorToIFiniteStreamAdapter< T ></tt> adapting
+/// a given enumerator
+///
+/// @exception ArgumentNullException
+/// The specified <tt>enumerator</tt> is <tt>null</tt>
 public
 IEnumeratorToIFiniteStreamAdapter(
-    IEnumerator<T> enumerator
+    IEnumerator<T> enumerator   ///< The <tt>IEnumerator< T ></tt> to adapt
 )
 {
     if( enumerator == null ) throw new ArgumentNullException( "enumerator" );
@@ -74,13 +75,9 @@ enumeratoradapter;
 
 
 
-// -----------------------------------------------------------------------------
-// Interface: IFiniteStream
-// -----------------------------------------------------------------------------
-
-/// <summary>(see <see cref="IFiniteStream.Yield"/>)</summary>
-bool
-IFiniteStream<T>.Yield(
+/// (see <tt>IFiniteStream< T >::Yield()</tt>)
+public bool
+Yield(
     out T item
 )
 {
@@ -102,7 +99,7 @@ IFiniteStream<T>.Yield(
 // Interface: IStream
 // -----------------------------------------------------------------------------
 
-/// <summary>(see <see cref="IStream.Yield"/>)</summary>
+/// (see <tt>IStream< T >::Yield()</tt>)
 T
 IStream<T>.Yield()
 {
@@ -120,7 +117,7 @@ IStream<T>.Yield()
 // Interface: IEnumerable
 // -----------------------------------------------------------------------------
 
-/// <summary>(see <see cref="IEnumerable.GetEnumerator"/>)</summary>
+/// (see <tt>IEnumerable::GetEnumerator()</tt>)
 IEnumerator
 IEnumerable.GetEnumerator()
 {
@@ -134,7 +131,7 @@ IEnumerable.GetEnumerator()
 // Interface: IEnumerable<T>
 // -----------------------------------------------------------------------------
 
-/// <summary>(see <see cref="IEnumerable<T>.GetEnumerator"/>)</summary>
+/// (see <tt>IEnumerable< T >::GetEnumerator()</tt>)
 IEnumerator<T>
 IEnumerable<T>.GetEnumerator()
 {
@@ -148,12 +145,12 @@ IEnumerable<T>.GetEnumerator()
 // Interface: IDisposable
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Disposes the underlying <see cref="IEnumerator"/>
-/// </summary>
-/// <seealso cref="IDisposable.Dispose"/>
-void
-IDisposable.Dispose()
+/// Disposes the underlying enumerator
+///
+/// @sa
+/// <tt>IDisposable::Dispose()</tt>
+public void
+Dispose()
 {
     this.enumerator.Dispose();
     // TODO: Do we have to track whether this has been called and throw
@@ -165,5 +162,4 @@ IDisposable.Dispose()
 
 } // type
 } // namespace
-
 

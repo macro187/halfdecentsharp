@@ -20,7 +20,6 @@ using Com.Halfdecent.System;
 using Com.Halfdecent.Streams;
 
 
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -28,20 +27,13 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
-/// An <see cref="IList"/> that can produce <see cref="IFiniteStream<T>"/>s
-/// of it's items in last-to-first order
-/// </summary>
-/// <typeparam name="T">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
-/// <typeparam name="TCount">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
+/// A list that can produce streams of it's items in reverse order
 public interface
-IListCanStreamBackward<T,TCount>
-    : IList<T,TCount>
-    where TCount : struct
+IListCanStreamBackward<
+    T,      ///< (see IBag< T, TCount >)
+    TCount  ///< (see IBag< T, TCount >)
+>
+    : IList< T, TCount >
 {
 
 
@@ -50,11 +42,9 @@ IListCanStreamBackward<T,TCount>
 // Properties
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Produce a <see cref="IFiniteStream<T>"/> of all items in the list in
-/// last-to-first order
-/// </summary>
-IFiniteStream<T>
+/// Produce a stream of all items in the list in reverse order
+IFiniteStream<T>    /// @returns A new <tt>IFiniteStream< T ></tt> of all items
+                    /// in the list in last-to-first order
 StreamBackward();
 
 

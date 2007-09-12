@@ -19,7 +19,6 @@ using System;
 using Com.Halfdecent.System;
 
 
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -27,26 +26,18 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
-/// An <see cref="IBag"/> from which all items can be removed at once
-/// </summary>
-/// <typeparam name="T">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
-/// <typeparam name="TCount">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
+/// A bag from which all items can be removed at once
 public interface
-IBagCanRemoveAll<T,TCount>
-    : IBag<T,TCount>
-    where TCount : struct
+IBagCanRemoveAll<
+    T,      ///< (see IBag< T, TCount >)
+    TCount  ///< (see IBag< T, TCount >)
+>
+    : IBag< T, TCount >
 {
 
 
 
-/// <summary>
 /// Remove all items
-/// </summary>
 void
 RemoveAll();
 

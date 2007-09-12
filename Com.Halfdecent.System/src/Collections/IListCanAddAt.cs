@@ -19,7 +19,6 @@ using System;
 using Com.Halfdecent.System;
 
 
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -27,34 +26,28 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
-/// An <see cref="IList"/> to which items can be added at any position
-/// </summary>
-/// <typeparam name="T">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
-/// <typeparam name="TCount">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
+/// A list to which items can be added at any position
 public interface
-IListCanAddAt<T,TCount>
-    : IList<T,TCount>
-    where TCount : struct
+IListCanAddAt<
+    T,      ///< (see IBag< T, TCount >)
+    TCount  ///< (see IBag< T, TCount >)
+>
+    : IList< T, TCount >
 {
 
 
 
-/// <summary>
 /// Add the given item at the given position
-/// </summary>
-/// <exception cref="ArgumentOutOfRangeException">
-/// The specified <paramref name="position"/> is negative or greater than the
-/// last item's position
+///
+/// @exception ArgumentOutOfRangeException
+/// The specified <tt>position</tt> is negative or greater than the last
+/// item's position
 /// </exception>
 void
 AddAt(
-    TCount  position,
-    T       item
+    TCount  position,   ///< Position at which to add the item
+                        ///< (see IList< T, TCount >)
+    T       item        ///< Item to add
 );
 
 

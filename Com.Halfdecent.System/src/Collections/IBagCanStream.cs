@@ -20,7 +20,6 @@ using Com.Halfdecent.System;
 using Com.Halfdecent.Streams;
 
 
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -28,29 +27,20 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
-/// An <see cref="IBag"/> that can produce <see cref="IFiniteStream<T>"/>s
-/// of all it's items in no particular order
-/// </summary>
-/// <typeparam name="T">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
-/// <typeparam name="TCount">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
+/// A bag that can produce streams of all it's items
 public interface
-IBagCanStream<T,TCount>
-    : IBag<T,TCount>
-    where TCount : struct
+IBagCanStream<
+    T,      ///< (see IBag< T, TCount >)
+    TCount  ///< (see IBag< T, TCount >)
+>
+    : IBag< T, TCount >
 {
 
 
 
-/// <summary>
-/// Produce a <see cref="IFiniteStream<T>"/> of all items in the bag in no
-/// particular order
-/// </summary>
-IFiniteStream<T>
+/// Get a stream of all items in the bag
+IFiniteStream< T >  /// @returns A new <tt>IFiniteStream< T ></tt> of all
+                    /// items in the bag in no particular order
 Stream();
 
 

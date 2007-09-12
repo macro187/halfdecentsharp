@@ -19,7 +19,6 @@ using System;
 using Com.Halfdecent.System;
 
 
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -27,33 +26,24 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
-/// An <see cref="IBag"/> from which all items matching certain criteria
-/// can be removed
-/// </summary>
-/// <typeparam name="T">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
-/// <typeparam name="TCount">
-/// (see <see cref="IBag<T,TCount>"/>)
-/// </typeparam>
+/// A bag from which all items matching certain criteria can be removed
 public interface
-IBagCanRemoveWhere<T,TCount>
-    : IBag<T,TCount>
-    where TCount : struct
+IBagCanRemoveWhere<
+    T,      ///< (see IBag< T, TCount >)
+    TCount  ///< (see IBag< T, TCount >)
+>
+    : IBag< T, TCount >
 {
 
 
 
-/// <summary>
 /// Remove all items matching given criteria
-/// </summary>
-/// <exception cref="ArgumentNullException">
-/// If <paramref name="criteria"/> is <c>null</c>
-/// </exception>
+///
+/// @exception ArgumentNullException
+/// If <tt>criteria</tt> is <tt>null</tt>
 void
 RemoveWhere(
-    Predicate<T> criteria
+    Predicate<T> criteria   ///< Criteria for items to remove
 );
 
 

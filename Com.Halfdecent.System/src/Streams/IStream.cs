@@ -22,64 +22,50 @@ using System.Collections.Generic;
 using Com.Halfdecent.System;
 
 
-
 namespace
 Com.Halfdecent.Streams
 {
 
 
 
-/// <summary>
+
 /// A programmatic source of a potentially infinite sequence of items, yielded
 /// one after another over time
-/// </summary>
-/// <remarks>
-/// <para>
-/// <c>http://en.wikipedia.org/wiki/Stream_(computer)</c>
-/// </para>
-/// <para>
-/// At any given time, <c>IStream</c>s are always at a single point in the
-/// sequence.
-/// </para>
-/// <para>
-/// On it's own, <c>IStream</c> does not imply how many more items (if any)
-/// can be produced, nor how long (if ever) it will take to yield the next
+///
+/// See <tt>http://en.wikipedia.org/wiki/Stream_(computer)</tt>
+///
+/// At any given time, a stream is at a single point in the sequence.
+///
+/// On it's own, <tt>IStream< T ></tt> does not imply how many more items (if
+/// any) can be produced, nor how long (if ever) it will take to yield the next
 /// one.  Implementations should document their semantics in these regards
 /// and/or implement a stream sub-type with more specific semantics.
-/// </para>
-/// <para>
-/// As a convenience, <c>IStream</c>s implement <c>IEnumerable&lt;T&gt;</c>.
-/// <c>GetEnumerator()</c> returns the same <c>IEnumerator</c> no matter how
+///
+/// @par <tt>IEnumerable< T ></tt>
+/// As a convenience, streams implement <tt>IEnumerable< T ></tt>.
+/// <tt>GetEnumerator()</tt> returns the same enumerator no matter how
 /// many times it's called, reflecting the single underlying stream.  Not only
-/// does this enable iteration with <c>foreach</c>, it enables doing so more
-/// than once, with each subsequent <c>foreach</c> iteration picking up from
+/// does this enable iteration with <tt>foreach</tt>, it enables doing so more
+/// than once, with each subsequent <tt>foreach</tt> iteration picking up from
 /// the stream's current position.
-/// </para>
-/// </remarks>
-/// <typeparam name="T">
-/// Type common to all items in the stream
-/// </typeparam>
 public interface
-IStream<T>
-    : IEnumerable<T> // to enable foreach (no semantic implications)
+IStream<
+    T   ///< Type common to all items in the stream
+>
+    : IEnumerable< T > // to enable foreach (no semantic implications)
 {
 
 
 
-/// <summary>
 /// Produce the next item in the stream
-/// </summary>
-/// <remarks>
-/// If the stream is capable of producing another item, <c>IStream</c> does
-/// not imply how long it will take (if ever).
-/// </remarks>
-/// <exception cref="InvalidOperationException">
+///
+/// If the stream is capable of producing another item, <tt>IStream< T ></tt>
+/// does not imply how long it will take (if ever).
+///
+/// @exception InvalidOperationException
 /// If the stream definitely cannot produce any more items
-/// </exception>
-/// <returns>
-/// The next item in the stream
-/// </returns>
-T
+///
+T   /// @returns The next item in the stream
 Yield();
 
 

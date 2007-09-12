@@ -22,20 +22,21 @@ using System.Collections.Generic;
 using Com.Halfdecent.System;
 
 
-
 namespace
 Com.Halfdecent.Streams
 {
 
 
 
-/// <summary>
-/// Presents an <see cref="IFiniteStream"/> as an <see cref="IEnumerator"/>
-/// </summary>
+
+/// Presents an <tt>IFiniteStream< T ></tt> as an <tt>IEnumerator< T ></tt>
 public class
-IFiniteStreamToIEnumeratorAdapter<T>
-    : IEnumerator<T>
+IFiniteStreamToIEnumeratorAdapter<
+    T   ///< Type of items on the stream and, thus, in the resultant enumerator
+>
+    : IEnumerator< T >
 {
+
 
 
 
@@ -43,13 +44,15 @@ IFiniteStreamToIEnumeratorAdapter<T>
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Initialize a new <c>IFiniteStreamToIEnumeratorAdapter</c> adapting a given
-/// <see cref="IStream"/>
-/// </summary>
+/// Initialize a new <tt>IFiniteStreamToIEnumeratorAdapter< T ></tt> adapting
+/// the given <tt>IFiniteStream< T ></tt>
+///
+/// @exception ArgumentNullException
+/// The provided <tt>stream</tt> is <tt>null</tt>
 public
 IFiniteStreamToIEnumeratorAdapter(
-    IFiniteStream<T> stream
+    IFiniteStream<T> stream     ///< The <tt>IFiniteStream< T ></tt> to present
+                                /// as an enumerator
 )
 {
     if( stream == null )
@@ -82,66 +85,15 @@ current;
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerator
-// -----------------------------------------------------------------------------
-
-/// <summary>(see <see cref="IEnumerator.Current"/>)</summary>
-/// <exception cref="InvalidOperationException">
-/// If the enumerator is positioned before the first or after the last item
-/// </exception>
-object
-IEnumerator.Current
-{
-    get
-    {
-        return ((IEnumerator<T>)this).Current;
-    }
-}
-
-
-
-/// <summary>(see <see cref="IEnumerator.MoveNext"/>)</summary>
-/// <seealso cref="IFiniteStream.Yield"/>
-bool
-IEnumerator.MoveNext()
-{
-    bool result = false;
-    if( !this.started ) this.started = true;
-    if( !this.finished ) {
-        if( this.stream.Yield( out this.current ) ) {
-            result = true;
-        } else {
-            this.finished = true;
-        }
-    }
-    return result;
-}
-
-
-
-/// <summary>(see <see cref="IEnumerator.Reset"/>)</summary>
-/// <exception cref="InvalidOperationException"/>
-void
-IEnumerator.Reset()
-{
-    throw new InvalidOperationException(
-        "This enumerator cannot be reset because it is enumerating an" +
-        " IStream, and IStreams cannot be reset" );
-}
-
-
-
-
-// -----------------------------------------------------------------------------
 // Interface: IEnumerator<T>
 // -----------------------------------------------------------------------------
 
-/// <summary>(see <see cref="IEnumerator<T>.Current"/>)</summary>
-/// <exception cref="InvalidOperationException">
+/// (see <tt>IEnumerator< T >::Current</tt>)
+///
+/// @exception InvalidOperationException
 /// If the enumerator is positioned before the first or after the last item
-/// </exception>
-T
-IEnumerator<T>.Current
+public T
+Current
 {
     get
     {
@@ -159,20 +111,74 @@ IEnumerator<T>.Current
 
 
 // -----------------------------------------------------------------------------
+// Interface: IEnumerator
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEnumerator::Current</tt>)
+///
+/// @exception InvalidOperationException
+/// If the enumerator is positioned before the first or after the last item
+object
+IEnumerator.Current
+{
+    get
+    {
+        return ((IEnumerator<T>)this).Current;
+    }
+}
+
+
+
+/// (see <tt>IEnumerator::MoveNext()</tt>)
+///
+/// @sa
+/// <tt>IFiniteStream::Yield()</tt>
+public bool
+MoveNext()
+{
+    bool result = false;
+    if( !this.started ) this.started = true;
+    if( !this.finished ) {
+        if( this.stream.Yield( out this.current ) ) {
+            result = true;
+        } else {
+            this.finished = true;
+        }
+    }
+    return result;
+}
+
+
+
+/// (see <tt>IEnumerator::Reset()</tt>)
+///
+/// @exception InvalidOperationException
+/// Every time, because streams are not resettable
+public void
+Reset()
+{
+    throw new InvalidOperationException(
+        "This enumerator cannot be reset because it is enumerating an" +
+        " IStream, and IStreams cannot be reset" );
+}
+
+
+
+
+// -----------------------------------------------------------------------------
 // Interface: IDisposable
 // -----------------------------------------------------------------------------
 
-/// <summary>(see <see cref="IDisposable.Dispose"/>)</summary>
-/// <remarks>
-/// The <c>foreach</c> statement unconditionally <c>Dispose()</c>s enumerators
-/// after using them.  This conflicts with <c>IStream</c>'s semantics which
-/// allow it to be <c>foreach</c>ed more than once, so this <c>Dispose()</c>
-/// does nothing.  If the underlying <see cref="IFiniteStream"/> is
-/// <see cref="IDisposable"/>, it should be explicitly <c>Dispose()</c>d
-/// directly when no longer needed.
-/// </remarks>
-void
-IDisposable.Dispose()
+/// (see <tt>IDisposable::Dispose()</tt>)
+///
+/// The <tt>foreach</tt> statement unconditionally <tt>Dispose()</tt>s
+/// enumerators after using them.  This conflicts with <tt>IStream< T ></tt>'s
+/// semantics which allow it to be <tt>foreach</tt>ed more than once, so this
+/// method does nothing.  If the underlying <tt>IFiniteStream< T ></tt> is
+/// <tt>IDisposable</tt> it should be explicitly <tt>Dispose()</tt>d directly
+/// when no longer needed.
+public void
+Dispose()
 {
 }
 

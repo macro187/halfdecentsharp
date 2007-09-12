@@ -19,7 +19,6 @@ using System;
 using Com.Halfdecent.System;
 
 
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -27,25 +26,16 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
 /// An unordered collection of non-unique items
-/// </summary>
-/// <remarks>
-/// <para>
-/// An <c>IBag</c> holds a finite multiset of items.  Refer to
-/// <c>http://en.wikipedia.org/wiki/Multiset</c>.
-/// </para>
-/// </remarks>
-/// <typeparam name="T">
-/// Type common to all items in the bag
-/// </typeparam>
-/// <typeparam name="TCount">
-/// A numeric type whose maximum value is greater than or equal to the maximum
-/// number of items the bag can contain
-/// </typeparam>
+///
+/// Bags hold finite multisets of items.  Refer to
+/// <tt>http://en.wikipedia.org/wiki/Multiset</tt>.
 public interface
-IBag<T,TCount>
-    where TCount : struct
+IBag<
+    T,      ///< Type common to all items in the bag
+    TCount  ///< A numeric type whose maximum value is greater than or equal
+            ///< to the maximum number of items the bag can contain
+>
 {
 
 
@@ -54,9 +44,7 @@ IBag<T,TCount>
 // Properties
 // -----------------------------------------------------------------------------
 
-/// <summary>
 /// The number of items in the bag
-/// </summary>
 TCount
 Count
 {
