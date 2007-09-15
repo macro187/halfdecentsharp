@@ -22,16 +22,14 @@ using Com.Halfdecent.Testing;
 using Com.Halfdecent.Streams;
 
 
-
 namespace
 Com.Halfdecent.System.Test
 {
 
 
 
-/// <summary>
-/// Tests for <c>Com.Halfdecent.Streams</c>
-/// </summary>
+
+/// Tests for <tt>Com.Halfdecent.Streams</tt>
 public class
 StreamsTests
     : TestBase
@@ -40,16 +38,12 @@ StreamsTests
 
 
 
-// -----------------------------------------------------------------------------
-// Tests
-// -----------------------------------------------------------------------------
-
-[Test( "IEnumeratorToIStreamAdapter" )]
+[Test( "IStreamFromIEnumeratorAdapter" )]
 public static void
-Test_IEnumeratorToIStreamAdapter()
+Test_IStreamFromIEnumeratorAdapter()
 {
     IStream<int> stream =
-        new IEnumeratorToIStreamAdapter<int>( CountToFive() );
+        new IStreamFromIEnumeratorAdapter<int>( CountToFive() );
 
     Print( "Stream yields correct items" );
     int c = 1;
@@ -82,7 +76,8 @@ Test_IEnumeratorToIStreamAdapter()
 public static void
 Test_IStreamToIEnumeratorAdapter()
 {
-    IStream<int> stream = new IEnumeratorToIStreamAdapter<int>( CountToFive() );
+    IStream<int> stream =
+        new IStreamFromIEnumeratorAdapter<int>( CountToFive() );
     IEnumerator<int> e = ((IEnumerable<int>)stream).GetEnumerator();
     bool thrown;
 
@@ -124,12 +119,12 @@ Test_IStreamToIEnumeratorAdapter()
 
 
 
-[Test( "IEnumeratorToIFiniteStreamAdapter" )]
+[Test( "IFiniteStreamFromIEnumeratorAdapter" )]
 public static void
-Test_IEnumeratorToIFiniteStreamAdapter()
+Test_IFiniteStreamFromIEnumeratorAdapter()
 {
     IFiniteStream<int> stream =
-        new IEnumeratorToIFiniteStreamAdapter<int>( CountToFive() );
+        new IFiniteStreamFromIEnumeratorAdapter<int>( CountToFive() );
 
     Print( "Check that stream yields correct items" );
     int c = 1;
@@ -155,7 +150,7 @@ public static void
 Test_IFiniteStreamToIEnumeratorAdapter()
 {
     IFiniteStream<int> stream =
-        new IEnumeratorToIFiniteStreamAdapter<int>( CountToFive() );
+        new IFiniteStreamFromIEnumeratorAdapter<int>( CountToFive() );
     IEnumerator<int> e = ((IEnumerable<int>)stream).GetEnumerator();
     bool thrown;
 

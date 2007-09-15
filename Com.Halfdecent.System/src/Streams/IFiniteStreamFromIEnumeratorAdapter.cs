@@ -29,12 +29,12 @@ Com.Halfdecent.Streams
 
 
 
-/// Presents an enumerator as a stream
+/// Makes a finite stream out of an enumerator
 public class
-IEnumeratorToIStreamAdapter<
+IFiniteStreamFromIEnumeratorAdapter<
     T   ///< Type of items in the enumerator and resultant stream
 >
-    : IStream<T>
+    : IFiniteStream< T >
     , IDisposable
 {
 
@@ -44,19 +44,19 @@ IEnumeratorToIStreamAdapter<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialize a new <tt>IEnumeratorToIStreamAdapter< T ></tt> adapting a given
-/// enumerator
+/// Initialize a new <tt>IFiniteStreamFromIEnumeratorAdapter< T ></tt> adapting
+/// a given enumerator
 ///
 /// @exception ArgumentNullException
 /// The specified <tt>enumerator</tt> is <tt>null</tt>
 public
-IEnumeratorToIStreamAdapter(
+IFiniteStreamFromIEnumeratorAdapter(
     IEnumerator<T> enumerator   ///< The <tt>IEnumerator< T ></tt> to adapt
 )
 {
     if( enumerator == null ) throw new ArgumentNullException( "enumerator" );
     this.enumerator = enumerator;
-    this.enumeratoradapter = new IStreamToIEnumeratorAdapter<T>( this );
+    this.enumeratoradapter = new IFiniteStreamToIEnumeratorAdapter<T>( this );
 }
 
 
@@ -75,32 +75,39 @@ enumeratoradapter;
 
 
 
-// -----------------------------------------------------------------------------
-// Interface: IStream
-// -----------------------------------------------------------------------------
-
-/// (see <tt>IStream::Yield()</tt>)
-public T
-Yield()
+/// (see <tt>IFiniteStream< T >::Yield()</tt>)
+public bool
+Yield(
+    out T item
+)
 {
-    if( !this.enumerator.MoveNext() )
-        // TODO: Create (and throw) more specific type of exception (?)
-        throw new InvalidOperationException( "No more items in stream" );
-    return this.enumerator.Current;
+    bool result;
+    if( this.enumerator.MoveNext() ) {
+        result = true;
+        item = this.enumerator.Current;
+    } else {
+        result = false;
+        item = default( T );
+    }
+    return result;
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerable
+// Interface: IStream
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEnumerable::GetEnumerator()</tt>)
-IEnumerator
-IEnumerable.GetEnumerator()
+/// (see <tt>IStream< T >::Yield()</tt>)
+T
+IStream<T>.Yield()
 {
-    return ((IEnumerable<T>)this).GetEnumerator();
+    T result;
+    if( !((IFiniteStream<T>)this).Yield( out result ) )
+        // TODO: Create (and throw) more specific type of exception (?)
+        throw new InvalidOperationException( "No more items in stream" );
+    return result;
 }
 
 
@@ -115,6 +122,20 @@ IEnumerator<T>
 IEnumerable<T>.GetEnumerator()
 {
     return this.enumeratoradapter;
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// Interface: IEnumerable
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEnumerable::GetEnumerator()</tt>)
+IEnumerator
+IEnumerable.GetEnumerator()
+{
+    return ((IEnumerable<T>)this).GetEnumerator();
 }
 
 

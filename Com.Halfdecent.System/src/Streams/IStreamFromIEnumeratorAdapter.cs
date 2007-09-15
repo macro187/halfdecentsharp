@@ -29,12 +29,12 @@ Com.Halfdecent.Streams
 
 
 
-/// Presents an enumerator as a finite stream
+/// Presents an enumerator as a stream
 public class
-IEnumeratorToIFiniteStreamAdapter<
+IStreamFromIEnumeratorAdapter<
     T   ///< Type of items in the enumerator and resultant stream
 >
-    : IFiniteStream< T >
+    : IStream<T>
     , IDisposable
 {
 
@@ -44,19 +44,19 @@ IEnumeratorToIFiniteStreamAdapter<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialize a new <tt>IEnumeratorToIFiniteStreamAdapter< T ></tt> adapting
-/// a given enumerator
+/// Initialize a new <tt>IEnumeratorToIStreamAdapter< T ></tt> adapting a given
+/// enumerator
 ///
 /// @exception ArgumentNullException
 /// The specified <tt>enumerator</tt> is <tt>null</tt>
 public
-IEnumeratorToIFiniteStreamAdapter(
+IStreamFromIEnumeratorAdapter(
     IEnumerator<T> enumerator   ///< The <tt>IEnumerator< T ></tt> to adapt
 )
 {
     if( enumerator == null ) throw new ArgumentNullException( "enumerator" );
     this.enumerator = enumerator;
-    this.enumeratoradapter = new IFiniteStreamToIEnumeratorAdapter<T>( this );
+    this.enumeratoradapter = new IStreamToIEnumeratorAdapter<T>( this );
 }
 
 
@@ -75,53 +75,18 @@ enumeratoradapter;
 
 
 
-/// (see <tt>IFiniteStream< T >::Yield()</tt>)
-public bool
-Yield(
-    out T item
-)
-{
-    bool result;
-    if( this.enumerator.MoveNext() ) {
-        result = true;
-        item = this.enumerator.Current;
-    } else {
-        result = false;
-        item = default( T );
-    }
-    return result;
-}
-
-
-
-
 // -----------------------------------------------------------------------------
 // Interface: IStream
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IStream< T >::Yield()</tt>)
-T
-IStream<T>.Yield()
+/// (see <tt>IStream::Yield()</tt>)
+public T
+Yield()
 {
-    T result;
-    if( !((IFiniteStream<T>)this).Yield( out result ) )
+    if( !this.enumerator.MoveNext() )
         // TODO: Create (and throw) more specific type of exception (?)
         throw new InvalidOperationException( "No more items in stream" );
-    return result;
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// Interface: IEnumerable
-// -----------------------------------------------------------------------------
-
-/// (see <tt>IEnumerable::GetEnumerator()</tt>)
-IEnumerator
-IEnumerable.GetEnumerator()
-{
-    return ((IEnumerable<T>)this).GetEnumerator();
+    return this.enumerator.Current;
 }
 
 
@@ -136,6 +101,20 @@ IEnumerator<T>
 IEnumerable<T>.GetEnumerator()
 {
     return this.enumeratoradapter;
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// Interface: IEnumerable
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEnumerable::GetEnumerator()</tt>)
+IEnumerator
+IEnumerable.GetEnumerator()
+{
+    return ((IEnumerable<T>)this).GetEnumerator();
 }
 
 
