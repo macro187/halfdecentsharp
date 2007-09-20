@@ -19,6 +19,7 @@ using System;
 using System.Resources;
 using System.Globalization;
 using System.Collections.Generic;
+using System.IO;
 
 using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
@@ -242,7 +243,7 @@ GetResourceManager( Type type )
     ResourceManager result;
     lock( managers ) {
         if( !managers.TryGetValue( type, out result ) ) {
-            result = new ResourceManager( type );
+            result = new MyResourceManager( type );
             managers.Add( type, result );
         }
     }
@@ -254,6 +255,65 @@ GetResourceManager( Type type )
 private static Dictionary<Type,ResourceManager>
 managers = new Dictionary<Type,ResourceManager>();
 
+
+
+// Evidently, the ResourceManager implementation in (at least) MS.NET 2.0 does
+// not search for resources for any cultures other than the invariant in the
+// main assembly ie. it expects all other cultures' resources to be in
+// satellite assemblies.  But we want the option of embedding other cultures'
+// resources in the main assembly too (like we can with Mono), so this
+// hack makes sure the main assembly is always checked first.
+private class
+MyResourceManager
+    : ResourceManager
+
+{
+    private Type
+    sourcetype;
+
+    public
+    MyResourceManager(
+        Type type
+    )
+        : base( type )
+    {
+        this.sourcetype = type;
+    }
+
+    protected override ResourceSet
+    InternalGetResourceSet(
+        CultureInfo culture,
+        bool        Createifnotexists,
+        bool        tryParents
+    )
+    {
+        if( culture == null ) throw new ArgumentNullException( "culture" );
+        ResourceSet result = null;
+
+        if( this.MainAssembly != null ) {
+            if( !culture.Equals( CultureInfo.InvariantCulture ) ) {
+                string filename = this.GetResourceFileName( culture );
+                Stream stream = null;
+                try {
+                    stream = this.MainAssembly.GetManifestResourceStream(
+                        sourcetype,
+                        filename );
+                } catch( FileNotFoundException fnfe ) {
+                    if( fnfe == null ) {} // do nothing
+                }
+                if( stream != null ) {
+                    result = new ResourceSet( stream );
+                }
+            }
+        }
+        if( result == null ) {
+            result = base.InternalGetResourceSet( culture, Createifnotexists,
+                tryParents );
+        }
+
+        return result;
+    }
+}
 
 
 
