@@ -60,6 +60,8 @@ RunTests()
     Assembly a = Assembly.GetCallingAssembly();
     foreach( Type t in a.GetTypes() ) {
 
+        bool typeprinted = false;
+
         // Methods
         foreach( MethodInfo m in t.GetMethods() ) {
 
@@ -68,8 +70,13 @@ RunTests()
             if( attrs.Length <= 0 ) continue;
             testattr = (TestAttribute) attrs[0];
 
+            if( !typeprinted ) {
+                Console.WriteLine( t.Name );
+                typeprinted = true;
+            }
+
             // Run the test
-            Console.WriteLine( "Testing {0}...", testattr.Description );
+            Console.WriteLine( "  Testing {0}...", testattr.Description );
             bool passed = true;
             try {
                 m.Invoke( null, null );
@@ -77,7 +84,7 @@ RunTests()
                 TestMessage( e.InnerException.ToString() );
                 passed = false;
             }
-            TestMessage( passed ? "Test passed" : "Test FAILED" );
+            TestMessage( passed ? "Passed" : "FAILED" );
 
             if( !passed ) tests_failed ++;
             tests_total++;
@@ -106,7 +113,7 @@ public static void
 TestMessage( string message )
 {
     if( message == null ) throw new ArgumentNullException( "message" );
-    Console.WriteLine( "  - {0}", message.Replace( "\n", "\n    " ) );
+    Console.WriteLine( "    - {0}", message.Replace( "\n", "\n    " ) );
 }
 
 
