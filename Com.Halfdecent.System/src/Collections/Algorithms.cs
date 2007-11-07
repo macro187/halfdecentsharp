@@ -26,15 +26,15 @@ Com.Halfdecent.Collections
 
 
 
-/// %Bag algorithms
+/// %Collections algorithms
 public class
-Bag
+Algorithms
 {
 
 
 
 // not creatable
-private Bag() {}
+private Algorithms() {}
 
 
 

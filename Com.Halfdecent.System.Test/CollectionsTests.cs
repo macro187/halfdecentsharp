@@ -53,15 +53,14 @@ CollectionsTests
 
 
 
-[Test( "Bag" )]
+[Test( "Algorithms" )]
 public static void
-Test_Bag()
+Test_Algorithms()
 {
-    Print( "Bag.CountViaStream()" );
+    Print( "Algorithms.CountViaStream()" );
     TestBag tb = new TestBag();
-    Print( "{0}", Bag.CountViaStream<TestBag,int,int>( tb ) );
     AssertEqual(
-        Bag.CountViaStream<TestBag,int,int>( tb ),
+        Algorithms.CountViaStream<TestBag,int,int>( tb ),
         5 );
 }
 
