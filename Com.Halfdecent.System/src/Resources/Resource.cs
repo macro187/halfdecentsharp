@@ -263,6 +263,9 @@ managers = new Dictionary<Type,ResourceManager>();
 // satellite assemblies.  But we want the option of embedding other cultures'
 // resources in the main assembly too (like we can with Mono), so this
 // hack makes sure the main assembly is always checked first.
+//
+// TODO Look into using ResourceManager.FallbackLocation instead of
+//      overriding InternalGetResourceSet()
 private class
 MyResourceManager
     : ResourceManager
