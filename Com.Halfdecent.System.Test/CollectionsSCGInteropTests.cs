@@ -39,20 +39,30 @@ CollectionsSCGInteropTests
 
 
 
-[Test( "Operations" )]
-public static void
-Test_Operations()
+public static SCG.IList< int >
+MakeTestList()
 {
-    SCG.IList< int > TESTLIST = new SCG.List< int >();
-    TESTLIST.Add( 1 );
-    TESTLIST.Add( 2 );
-    TESTLIST.Add( 3 );
-    TESTLIST.Add( 4 );
-    TESTLIST.Add( 5 );
+    SCG.IList< int > list = new SCG.List< int >();
+    list.Add( 1 );
+    list.Add( 2 );
+    list.Add( 3 );
+    list.Add( 4 );
+    list.Add( 5 );
+    return list;
+}
+
+
+
+[Test( "Algorithms" )]
+public static void
+Test_Algorithms()
+{
+    SCG.IList< int > list;
 
     Print( "IBagStreamViaIEnumerable()" );
+    list = MakeTestList();
     int i = 1;
-    foreach( int item in TESTLIST ) {
+    foreach( int item in list ) {
         AssertEqual( item, i );
         Assert( i <= 5 );
         i++;
@@ -60,13 +70,15 @@ Test_Operations()
     AssertEqual( i, 6 );
 
     Print( "IBagCountViaICollection()" );
+    list = MakeTestList();
     AssertEqual(
-        SCGInterop.Operations.IBagCountViaICollection( TESTLIST ),
+        SCGInterop.Algorithms.IBagCountViaICollection( list ),
         5 );
 
     Print( "IBagRemoveAllViaICollection()" );
-    SCGInterop.Operations.IBagRemoveAllViaICollection( TESTLIST );
-    AssertEqual( TESTLIST.Count, 0 );
+    list = MakeTestList();
+    SCGInterop.Algorithms.IBagRemoveAllViaICollection( list );
+    AssertEqual( list.Count, 0 );
 }
 
 

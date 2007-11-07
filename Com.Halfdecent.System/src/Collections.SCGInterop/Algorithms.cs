@@ -32,13 +32,13 @@ Com.Halfdecent.Collections.SCGInterop
 /// Collection operation implementations in terms of
 /// <tt>System.Collections.Generic</tt> types
 public class
-Operations
+Algorithms
 {
 
 
 
 // not creatable
-private Operations() {}
+private Algorithms() {}
 
 
 
