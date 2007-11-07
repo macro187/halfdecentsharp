@@ -16,12 +16,31 @@
 
 
 
-/// %Collections of items
+/// Multiplicities of items that all exist "now"
 ///
-/// Unlike streams, collections do not necessarily involve time.  Items might
-/// possibly come and go over time, but at any given moment all constituent
-/// items are implied to exist and, to the extent permitted by a given
-/// type of collection, be more or less immediately accessible.
+/// Contrast with Com.Halfdecent.Streams, which are multiplicites over time.
+///
+/// @par Types
+/// - IBag< T, TCount >
+/// - IList< T, TCount >
+///
+/// @par Flavours
+/// - ...
+///
+/// @par Traits
+/// - IBagCanStream< T, TCount >
+/// - IBagCanAdd< T, TCount >
+/// - IBagCanRemoveAll< T, TCount >
+/// - IBagCanRemoveWhere< T, TCount >
+/// - IListCanGetAt< T, TCount >
+/// - IListCanStreamForward< T, TCount >
+/// - IListCanStreamBackward< T, TCount >
+/// - IListCanAddAt< T, TCount >
+/// - IListCanRemoveAt< T, TCount >
+///
+/// @par Implementations
+/// - List< T >, an array-based list
+///
 namespace
 Com.Halfdecent.Collections
 {
