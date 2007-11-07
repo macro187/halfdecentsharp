@@ -104,9 +104,23 @@ Test_Resource_Get()
 
 
 
-[Test( "Resource._R<T>()" )]
+[Test( "Resource._R<T>( string )" )]
 public static void
-Test_Resource__R()
+Test_Resource__R_string()
+{
+    Localized<string>  ls;
+    CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
+
+    ls = Resource._R<string>( "teststring" );
+    Assert( ls != null );
+    AssertEqual( ls[ en_AU ], "Hello (ResourceTests, en-AU)" );
+}
+
+
+
+[Test( "Resource._R<T>( Type, string )" )]
+public static void
+Test_Resource__R_type_string()
 {
     Localized<string>  ls;
     CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
@@ -147,6 +161,21 @@ Test_Resource__R()
         threw = true;
     }
     Assert( threw );
+
+}
+
+
+
+[Test( "Resource._S( string )" )]
+public static void
+Test_Resource__S_string()
+{
+    Localized<string>  ls;
+    CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
+
+    ls = Resource._S( "Hello (code)" );
+    Assert( ls != null );
+    AssertEqual<string>( ls[ en_AU ], "Hello (ResourceTests, en-AU)" );
 }
 
 

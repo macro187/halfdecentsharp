@@ -16,6 +16,7 @@
 
 
 using System;
+using System.Diagnostics;
 using System.Resources;
 using System.Globalization;
 using System.Collections.Generic;
@@ -61,6 +62,38 @@ STRING_PREFIX = "__";
 // -----------------------------------------------------------------------------
 // Methods
 // -----------------------------------------------------------------------------
+
+/// <summary>
+/// Get a <c>Localized&lt;T&gt;</c> representing embedded resource(s) of a
+/// given name, belonging to the type where the calling method is defined
+/// </summary>
+/// <typeparam name="T">
+/// The type the resource is expected to be of
+/// </typeparam>
+/// <param name="name">
+/// The name of the resource
+/// </param>
+/// <returns>
+/// A <c>Localized&lt;T&gt;</c> representing the requested resource
+/// </returns>
+/// <remarks>
+/// This is the method that should generally be used to get non-string
+/// resources.  It implies that the requested resource is expected to exist.
+/// </remarks>
+/// <exception cref="ResourceMissingException">
+/// A version of the resource does not exist for at least the invariant culture
+/// </exception>
+public static Localized<T>
+_R<T>(
+    string name
+)
+    where T : class
+{
+    Type type = new StackFrame( 1, false ).GetMethod().DeclaringType;
+    return _R< T >( type, name );
+}
+
+
 
 /// <summary>
 /// Get a <c>Localized&lt;T&gt;</c> representing embedded resource(s) of a
@@ -112,6 +145,22 @@ _R<T>(
 
 /// <summary>
 /// Get a <c>Localized&lt;string&gt;</c> representing a given string which
+/// may have translated versions available as embedded resources belonging
+/// to the type where the calling method is defined
+/// </summary>
+public static Localized<string>
+_S(
+    string  untranslated
+)
+{
+    Type type = new StackFrame( 1, false ).GetMethod().DeclaringType;
+    return _S( type, untranslated );
+}
+
+
+
+/// <summary>
+/// Get a <c>Localized&lt;string&gt;</c> representing a given string which
 /// may have translated versions available as embedded resources
 /// </summary>
 public static Localized<string>
@@ -126,6 +175,25 @@ _S(
 
     return new LocalizedStringResource( type, untranslated );
 }
+
+
+/// <summary>
+/// Get a <c>Localized&lt;string&gt;</c> representing a given string which
+/// may have translated versions available as embedded resources belonging to
+/// the type where the calling method is defined and which, when used, should
+/// be <c>String.Format</c>ted with the given arguments in a culture-specific
+/// fashion
+/// </summary>
+public static Localized<string>
+_S(
+    string  untranslated,
+    params object[] formatargs
+)
+{
+    Type type = new StackFrame( 1, false ).GetMethod().DeclaringType;
+    return _S( type, untranslated, formatargs );
+}
+
 
 
 /// <summary>
