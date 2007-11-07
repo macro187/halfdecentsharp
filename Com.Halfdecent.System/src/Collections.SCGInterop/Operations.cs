@@ -105,7 +105,7 @@ IBagCountViaICollection<
 
 
 /// <tt>IBag.RemoveAll()</tt> via
-/// a writeable <tt>System.Collections.Generic.ICollection< T ></tt>
+/// a resizable <tt>System.Collections.Generic.ICollection< T ></tt>
 ///
 /// @par Description
 /// Uses the collection's <tt>Clear()</tt> method
@@ -117,8 +117,8 @@ IBagCountViaICollection<
 /// The collection is <tt>null</tt>
 ///
 /// @exception (unknown)
-/// The underlying collection's <tt>Clear()</tt> method will (hopefully)
-/// throw some kind of exception if it is not resizable
+/// If the underlying collection is not resizable, it's <tt>Clear()</tt>
+/// implementation will (hopefully) throw some kind of exception
 ///
 public static
 void
