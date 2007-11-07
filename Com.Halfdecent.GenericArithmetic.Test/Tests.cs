@@ -70,6 +70,10 @@ TestArithmeticGet()
 public static void
 TestArithmeticInt32()
 {
+    Print( "MinValue() and MaxValue()" );
+    AssertEqual( Arithmetic.MinValue<int>(), int.MinValue );
+    AssertEqual( Arithmetic.MaxValue<int>(), int.MaxValue );
+
     Print( "From()" );
     AssertEqual( Arithmetic.From<int>( (int)10 ), 10 );
     AssertEqual( Arithmetic.From<int>( (uint)10 ), 10 );
@@ -99,6 +103,10 @@ TestArithmeticUInt32()
 public static void
 TestArithmeticInt64()
 {
+    Print( "MinValue() and MaxValue()" );
+    AssertEqual( Arithmetic.MinValue<long>(), long.MinValue );
+    AssertEqual( Arithmetic.MaxValue<long>(), long.MaxValue );
+
     Print( "From()" );
     AssertEqual( Arithmetic.From<long>( (int)10 ), 10L );
     AssertEqual( Arithmetic.From<long>( (uint)10 ), 10L );

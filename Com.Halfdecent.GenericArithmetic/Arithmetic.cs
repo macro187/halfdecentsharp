@@ -71,6 +71,33 @@ Get<
 
 
 
+
+// -----------------------------------------------------------------------------
+// Limits
+// -----------------------------------------------------------------------------
+
+/// Maximum value
+public static T
+MaxValue<T>()
+{
+    return Get< T >().MaxValue();
+}
+
+
+/// Minimum value
+public static T
+MinValue<T>()
+{
+    return Get< T >().MinValue();
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// Conversions
+// -----------------------------------------------------------------------------
+
 /// Convert from <tt>Int32/int</tt> to <tt>T</tt>
 public static T
 From<T>( int from) { return Get< T >().From( from ); }
@@ -100,6 +127,11 @@ public static T
 From<T>( decimal from) { return Get< T >().From( from ); }
 
 
+
+
+// -----------------------------------------------------------------------------
+// Operations
+// -----------------------------------------------------------------------------
 
 /// Addition
 public static T

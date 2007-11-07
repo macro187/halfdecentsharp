@@ -33,6 +33,12 @@ Int64Arithmetic
 
 
 /// (see IArithmetic< T >)
+public long MaxValue() { return long.MaxValue; }
+
+/// (see IArithmetic< T >)
+public long MinValue() { return long.MinValue; }
+
+/// (see IArithmetic< T >)
 public long From( int from ) { return from; }
 
 /// (see IArithmetic< T >)

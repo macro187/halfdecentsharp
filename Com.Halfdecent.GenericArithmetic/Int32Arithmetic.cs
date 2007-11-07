@@ -33,6 +33,12 @@ Int32Arithmetic
 
 
 /// (see IArithmetic< T >)
+public int MaxValue() { return int.MaxValue; }
+
+/// (see IArithmetic< T >)
+public int MinValue() { return int.MinValue; }
+
+/// (see IArithmetic< T >)
 public int From( int from ) { return from; }
 
 /// (see IArithmetic< T >)
