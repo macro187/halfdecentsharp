@@ -43,7 +43,7 @@ public
 ValueException(
     Exception           innerException
 )
-    : base( null, innerException )
+    : base( "", innerException )
 {
 }
 

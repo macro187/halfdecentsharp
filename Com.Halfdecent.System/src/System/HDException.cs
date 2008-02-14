@@ -50,7 +50,6 @@ HDException(
 )
     : this( message, null )
 {
-    this.message = message;
 }
 
 
