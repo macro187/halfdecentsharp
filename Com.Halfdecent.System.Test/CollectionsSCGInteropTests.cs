@@ -271,11 +271,30 @@ Test_IListFromReadOnlyIListAdapter()
     IFiniteStream< int >                    stream;
     int                                     i;
     int                                     j;
+    bool                                    threw;
 
     Print( "GetAt()" );
     AssertEqual( list.GetAt( Integer.From( 0 ) ), 0 );
     AssertEqual( list.GetAt( Integer.From( 1 ) ), 1 );
     AssertEqual( list.GetAt( Integer.From( 2 ) ), 2 );
+
+    Print( "GetAt( -1 ) throws ValueException" );
+    threw = false;
+    try {
+        list.GetAt( Integer.From( -1 ) );
+    } catch( ValueException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+
+    Print( "GetAt( Count ) throws ValueException" );
+    threw = false;
+    try {
+        list.GetAt( list.Count );
+    } catch( ValueException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
 
     Print( "StreamForward()" );
     stream = list.StreamForward();
