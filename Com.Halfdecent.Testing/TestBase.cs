@@ -64,18 +64,6 @@ Print(
 }
 
 
-/// <summary>
-/// Emit a message from within a test
-/// </summary>
-public static void
-Print(
-    object obj
-)
-{
-    Print( obj.ToString() );
-}
-
-
 
 public static void
 Assert(
