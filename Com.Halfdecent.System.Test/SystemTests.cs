@@ -20,11 +20,8 @@ using System.Globalization;
 using System.Threading;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.System;
-using Com.Halfdecent.Globalization;
-/*
-using Com.Halfdecent.Collections;
 using Com.Halfdecent.Predicates;
-*/
+using Com.Halfdecent.Globalization;
 
 
 namespace
@@ -88,6 +85,67 @@ Test_HDException()
     AssertEqual( de.InnerException, ie );
 
     if( e == null ) {}
+}
+
+
+
+static private
+void
+PrintPredicateStrings( IPredicate p )
+{
+    Print( "SayConforms(X): '{0}'",
+        p.SayConforms( "X" ) );
+    Print( "SayDoesNotConform(X): '{0}'",
+        p.SayDoesNotConform( "X" ) );
+    Print( "SayDemand(X): '{0}'",
+        p.SayDemand( "X" ) );
+}
+
+
+
+[Test( "IsNotNull" )]
+public static void
+Test_IsNotNull()
+{
+    IsNotNull isnotnull = new IsNotNull();
+    object obj;
+
+    PrintPredicateStrings( isnotnull );
+
+    Print( "true if not null" );
+    obj = new object();
+    AssertEqual(
+        isnotnull.Evaluate( obj ),
+        true );
+
+    Print( "false if null" );
+    obj = null;
+    AssertEqual(
+        isnotnull.Evaluate( obj ),
+        false );
+}
+
+
+
+[Test( "IsA" )]
+public static void
+Test_IsA()
+{
+    IsA< int > isaint = new IsA< int >();
+    object o = new object();
+    int i = 5;
+
+    PrintPredicateStrings( isaint );
+
+    Print( "true if of the specified type" );
+    AssertEqual(
+        isaint.Evaluate( i ),
+        true );
+
+    Print( "false if not" );
+    AssertEqual(
+        isaint.Evaluate( o ),
+        false );
 }
 
 

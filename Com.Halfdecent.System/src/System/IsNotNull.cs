@@ -16,12 +16,13 @@
 
 
 using System;
+using Com.Halfdecent.Predicates;
 using Com.Halfdecent.Globalization;
 using Com.Halfdecent.Resources;
 
 
 namespace
-Com.Halfdecent.Predicates
+Com.Halfdecent.System
 {
 
 
