@@ -25,6 +25,7 @@ Com.Halfdecent.System
 
 
 /// <summary>
+/// DEPRECATED:
 /// An exception indicating that a blank string was passed to a parameter
 /// expecting a non-blank one
 /// </summary>
