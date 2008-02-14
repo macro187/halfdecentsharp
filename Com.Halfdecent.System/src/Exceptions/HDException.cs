@@ -16,7 +16,9 @@
 
 
 using System;
+using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
+using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -63,7 +65,7 @@ HDException(
 )
     : base( message, innerException )
 {
-    this.message = message;
+    this.message = message ?? R._S("An exception was thrown");
 }
 
 
