@@ -28,10 +28,12 @@ Com.Halfdecent.System
 
 
 
-/// Predicate: "(object) is not <tt>null</tt>"
+/// Predicate: "(object) is present"
+///
+/// In other words, <tt>(object) != null</tt>
 ///
 public class
-IsNotNull
+IsPresent
     : PredicateBase< object >
 {
 
@@ -56,8 +58,8 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
-    this.BugDemand( termIdentifier );
-    return Resource._S( "{0} is not null", termIdentifier );
+    this.Demand( termIdentifier );
+    return Resource._S( "{0} is present", termIdentifier );
 }
 
 
@@ -69,8 +71,8 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    this.BugDemand( termIdentifier );
-    return Resource._S( "{0} is null", termIdentifier );
+    this.Demand( termIdentifier );
+    return Resource._S( "{0} is not present", termIdentifier );
 }
 
 
@@ -82,8 +84,8 @@ SayDemand(
     Localized< string > termIdentifier
 )
 {
-    this.BugDemand( termIdentifier );
-    return Resource._S( "{0} must not be null", termIdentifier );
+    this.Demand( termIdentifier );
+    return Resource._S( "{0} is required", termIdentifier );
 }
 
 
