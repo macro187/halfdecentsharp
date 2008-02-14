@@ -44,7 +44,7 @@ Demand(
     string term
 )
 {
-    new IsNotNull().BugDemand( term );
+    new IsPresent().BugDemand( term );
     if( term == "" ) throw new PredicateValueException( this );
 }
 
@@ -57,7 +57,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
-    new IsNotNull().BugDemand( termIdentifier );
+    new IsPresent().BugDemand( termIdentifier );
     return Resource._S( "{0} is not blank", termIdentifier );
 }
 
@@ -70,7 +70,7 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    new IsNotNull().BugDemand( termIdentifier );
+    new IsPresent().BugDemand( termIdentifier );
     return Resource._S( "{0} is blank", termIdentifier );
 }
 
@@ -83,7 +83,7 @@ SayDemand(
     Localized< string > termIdentifier
 )
 {
-    new IsNotNull().BugDemand( termIdentifier );
+    new IsPresent().BugDemand( termIdentifier );
     return Resource._S( "{0} must not be blank", termIdentifier );
 }
 

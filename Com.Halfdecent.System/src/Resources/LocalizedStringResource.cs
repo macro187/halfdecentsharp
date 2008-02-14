@@ -18,10 +18,8 @@
 using System;
 using System.Threading;
 using System.Globalization;
-
 using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
-
 
 
 namespace
@@ -30,13 +28,13 @@ Com.Halfdecent.Resources
 
 
 
-/// <summary>
-/// A read-only <c>Localized&lt;string&gt;</c> that represents a (possibly)
+
+/// A read-only <tt>Localized< string ></tt> that represents a (possibly)
 /// localized string
-/// </summary>
+///
 public class
 LocalizedStringResource
-    : LocalizedResource<string>
+    : LocalizedResource< string >
 {
 
 
@@ -46,14 +44,13 @@ LocalizedStringResource
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Create a new <c>LocalizedStringResource</c> which may have translated
+/// Create a new <tt>LocalizedStringResource</tt> which may have translated
 /// versions available as embedded resources in a given type
-/// </summary>
+///
 internal
 LocalizedStringResource(
-    Type type,
-    string untranslated
+    Type    type,
+    string  untranslated
 )
     : this( type, untranslated, new object[]{} )
 {
@@ -61,23 +58,22 @@ LocalizedStringResource(
 
 
 
-/// <summary>
-/// Create a new <c>LocalizedStringResource</c> which may have translated
+/// Create a new <tt>LocalizedStringResource</tt> which may have translated
 /// versions available as embedded resources in a given type and which, when
-/// used, will be <c>String.Format</c>ted with the given arguments in a
+/// used, will be <tt>String.Format</tt>ted with the given arguments in a
 /// culture-specific fashion
-/// </summary>
+///
 internal
 LocalizedStringResource(
-    Type type,
-    string untranslated,
+    Type            type,
+    string          untranslated,
     params object[] formatargs
 )
     : base( type, Resource.STRING_PREFIX + untranslated )
 {
-    if( untranslated == null ) throw new ArgumentNullException( "untranslated" );
-    if( untranslated == "" ) throw new ArgumentBlankException( "untranslated" );
-    if( formatargs == null ) throw new ArgumentNullException( "formatargs" );
+    new IsPresent().BugDemand( untranslated );
+    new IsNotBlank().Demand( untranslated );
+    new IsPresent().BugDemand( formatargs );
     this.untranslated = untranslated;
     this.formatargs = formatargs;
 }
@@ -89,18 +85,20 @@ LocalizedStringResource(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Retrieve the version of the string most suitable for the given culture
-/// </summary>
-/// <exception cref="ResourceTypeMismatchException">
-/// Resource is not of (or convertable) to <c>string</c>
-/// </exception>
-public override string
-this[ CultureInfo culture ]
+/// The version of the string most suitable for a given culture
+
+/// @exception ResourceTypeMismatchException
+/// Resource is not of (or convertable) to <tt>string</tt>
+
+public override
+string
+this[
+    CultureInfo culture
+]
 {
     get
     {
-        if( culture == null ) throw new ArgumentNullException( "culture" );
+        new IsPresent().BugDemand( culture );
         string r;
         r = Resource.Get<string>( this.type, this.name, culture );
         if( r == null )
@@ -129,11 +127,14 @@ this[ CultureInfo culture ]
 // Protected
 // -----------------------------------------------------------------------------
 
-protected string
+protected
+string
 untranslated;
 
 
-protected object[]
+
+protected
+object[]
 formatargs;
 
 

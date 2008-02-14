@@ -45,6 +45,7 @@ Demand(
     object term
 )
 {
+    new IsPresent().BugDemand( term );
     if( !(term is T) ) throw new PredicateValueException( this );
 }
 
@@ -57,7 +58,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
-    new IsNotNull().BugDemand( termIdentifier );
+    new IsPresent().BugDemand( termIdentifier );
     return Resource._S( "{0} is a {1}", termIdentifier, typeof(T).FullName );
 }
 
@@ -70,7 +71,7 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    new IsNotNull().BugDemand( termIdentifier );
+    new IsPresent().BugDemand( termIdentifier );
     return Resource._S( "{0} is not a {1}", termIdentifier, typeof(T).FullName );
 }
 
@@ -83,7 +84,7 @@ SayDemand(
     Localized< string > termIdentifier
 )
 {
-    new IsNotNull().BugDemand( termIdentifier );
+    new IsPresent().BugDemand( termIdentifier );
     return Resource._S( "{0} must be a {1}", termIdentifier, typeof(T).FullName );
 }
 

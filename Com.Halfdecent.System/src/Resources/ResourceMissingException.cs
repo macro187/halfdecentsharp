@@ -16,7 +16,8 @@
 
 
 using System;
-
+using Com.Halfdecent.System;
+using Com.Halfdecent.Globalization;
 
 
 namespace
@@ -25,13 +26,13 @@ Com.Halfdecent.Resources
 
 
 
-/// <summary>
+
 /// An exception indicating that an embedded resource that was expected to
 /// exist couldn't be found
-/// </summary>
+///
 public class
 ResourceMissingException
-    : SystemException
+    : HDException
 {
 
 
@@ -41,20 +42,20 @@ ResourceMissingException
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Create a <c>ResourceMissingException</c>
-/// </summary>
+/// Initialise a <tt>ResourceMissingException</tt>
+///
 public
 ResourceMissingException(
     string typename,
     string name
 )
-    : base( String.Format(
-        "Type '{0}' contains no embedded resources named '{1}'",
+    : base( LocalizedString.Format(
+        Resource._S("Type '{0}' contains no embedded resources named '{1}'"),
         typename,
         name ))
 {
 }
+
 
 
 

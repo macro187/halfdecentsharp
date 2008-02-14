@@ -58,7 +58,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
-    this.Demand( termIdentifier );
+    this.BugDemand( termIdentifier );
     return Resource._S( "{0} is present", termIdentifier );
 }
 
@@ -71,7 +71,7 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    this.Demand( termIdentifier );
+    this.BugDemand( termIdentifier );
     return Resource._S( "{0} is not present", termIdentifier );
 }
 
@@ -84,7 +84,7 @@ SayDemand(
     Localized< string > termIdentifier
 )
 {
-    this.Demand( termIdentifier );
+    this.BugDemand( termIdentifier );
     return Resource._S( "{0} is required", termIdentifier );
 }
 

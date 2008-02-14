@@ -17,10 +17,8 @@
 
 using System;
 using System.Globalization;
-
 using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
-
 
 
 namespace
@@ -29,13 +27,15 @@ Com.Halfdecent.Resources
 
 
 
-/// <summary>
-/// A read-only <c>Localized&lt;T&gt;</c> that represents a localized
-/// embedded resource
-/// </summary>
+
+/// A read-only <tt>Localized< T ></tt> representing localized embedded
+/// resources of a particular name
+///
 public class
-LocalizedResource<T>
-    : Localized<T>
+LocalizedResource<
+    T
+>
+    : Localized< T >
     where T : class
 {
 
@@ -46,16 +46,18 @@ LocalizedResource<T>
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Create a new <c>LocalizedResource&lt;T&gt;</c> backed by embedded
+/// Create a new <tt>LocalizedResource< T ></tt> backed by embedded
 /// resources from a given type of a given name
-/// </summary>
+///
 internal
-LocalizedResource( Type type, string name )
+LocalizedResource(
+    Type    type,
+    string  name
+)
 {
-    if( type == null ) throw new ArgumentNullException( "type" );
-    if( name == null ) throw new ArgumentNullException( "name" );
-    if( name == "" ) throw new ArgumentBlankException( "name" );
+    new IsPresent().BugDemand( type );
+    new IsPresent().BugDemand( name );
+    new IsNotBlank().Demand( name );
     this.type = type;
     this.name = name;
 }
@@ -67,21 +69,23 @@ LocalizedResource( Type type, string name )
 // Properties
 // -----------------------------------------------------------------------------
 
-/// <summary>
 /// Get the version of the resource most appropriate for the given culture
-/// </summary>
-/// <exception cref="ResourceMissingException">
+///
+/// @exception ResourceMissingException
 /// No versions of the resource exist
-/// </exception>
-/// <exception cref="ResourceTypeMismatchException">
-/// Resource is not of (or convertable) to <c>T</c>
-/// </exception>
-public override T
-this[ CultureInfo culture ]
+///
+/// @exception ResourceTypeMismatchException
+/// Resource is not of (or convertable) to <tt>T</tt>
+///
+public override
+T
+this[
+    CultureInfo culture
+]
 {
     get
     {
-        if( culture == null ) throw new ArgumentNullException( "culture" );
+        new IsPresent().BugDemand( culture );
         T r;
         r = Resource.Get<T>( this.type, this.name, culture );
         if( r == null ) throw new ResourceMissingException(
@@ -102,10 +106,12 @@ this[ CultureInfo culture ]
 // Protected
 // -----------------------------------------------------------------------------
 
-protected Type
+protected
+Type
 type;
 
-protected string
+protected
+string
 name;
 
 

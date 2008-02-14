@@ -16,7 +16,8 @@
 
 
 using System;
-
+using Com.Halfdecent.System;
+using Com.Halfdecent.Globalization;
 
 
 namespace
@@ -25,12 +26,12 @@ Com.Halfdecent.Resources
 
 
 
-/// <summary>
+
 /// An exception indicating that a resource was not of the expected type
-/// </summary>
+///
 public class
 ResourceTypeMismatchException
-    : SystemException
+    : HDException
 {
 
 
@@ -40,9 +41,8 @@ ResourceTypeMismatchException
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Create a <c>ResourceTypeMismatchException</c>
-/// </summary>
+/// Initialise a new <tt>ResourceTypeMismatchException</tt>
+///
 public
 ResourceTypeMismatchException(
     string expectedtypename,
@@ -51,8 +51,8 @@ ResourceTypeMismatchException(
     string name,
     string culturename
 )
-    : base( String.Format(
-        "Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'",
+    : base( LocalizedString.Format(
+        Resource._S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
         name,
         typename,
         culturename,
@@ -60,6 +60,7 @@ ResourceTypeMismatchException(
         actualtypename ))
 {
 }
+
 
 
 

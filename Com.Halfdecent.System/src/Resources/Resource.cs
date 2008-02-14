@@ -32,14 +32,13 @@ Com.Halfdecent.Resources
 {
 
 
-/// <summary>
 /// Utilities for working with resources
-/// </summary>
+///
 public class
 Resource
 {
 
-// (class not creatable)
+/// (not creatable)
 private Resource() {}
 
 
@@ -49,11 +48,11 @@ private Resource() {}
 // Constants
 // -----------------------------------------------------------------------------
 
-/// <summary>
 /// Embedded string resource names are expected to be the untranslated string
 /// itself prefixed by this
-/// </summary>
-public static readonly string
+///
+public static readonly
+string
 STRING_PREFIX = "__";
 
 
@@ -63,29 +62,22 @@ STRING_PREFIX = "__";
 // Methods
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Get a <c>Localized&lt;T&gt;</c> representing embedded resource(s) of a
+/// Get a <tt>Localized< T ></tt> representing embedded resource(s) of a
 /// given name, belonging to the type where the calling method is defined
-/// </summary>
-/// <typeparam name="T">
-/// The type the resource is expected to be of
-/// </typeparam>
-/// <param name="name">
-/// The name of the resource
-/// </param>
-/// <returns>
-/// A <c>Localized&lt;T&gt;</c> representing the requested resource
-/// </returns>
-/// <remarks>
+///
 /// This is the method that should generally be used to get non-string
 /// resources.  It implies that the requested resource is expected to exist.
-/// </remarks>
-/// <exception cref="ResourceMissingException">
+///
+/// @exception ResourceMissingException
 /// A version of the resource does not exist for at least the invariant culture
-/// </exception>
-public static Localized<T>
-_R<T>(
-    string name
+///
+public static
+Localized< T >  /// @returns A <tt>Localized< T ></tt> representing the
+                /// requested resource
+_R<
+    T           ///< The type the resource is expected to be of
+>(
+    string name ///< The name of the resource
 )
     where T : class
 {
@@ -95,42 +87,32 @@ _R<T>(
 
 
 
-/// <summary>
-/// Get a <c>Localized&lt;T&gt;</c> representing embedded resource(s) of a
+/// Get a <tt>Localized< T ></tt> representing embedded resource(s) of a
 /// given name
-/// </summary>
-/// <typeparam name="T">
-/// The type the resource is expected to be of
-/// </typeparam>
-/// <param name="name">
-/// The name of the resource
-/// </param>
-/// <param name="type">
-/// The type the resource belongs to
-/// </param>
-/// <returns>
-/// A <c>Localized&lt;T&gt;</c> representing the requested resource
-/// </returns>
-/// <remarks>
+///
 /// This is the method that should generally be used to get non-string
 /// resources.  It implies that the requested resource is expected to exist.
-/// </remarks>
-/// <exception cref="ResourceMissingException">
+///
+/// @exception ResourceMissingException
 /// A version of the resource does not exist for at least the invariant culture
-/// </exception>
-public static Localized<T>
-_R<T>(
-    Type type,
-    string name
+///
+public static
+Localized< T >  /// @returns A <tt>Localized< T ></tt> representing the
+                /// requested resource
+_R<
+    T           ///< The type the resource is expected to be of
+>(
+    Type type,  ///< The type the resource belongs to
+    string name ///< The name of the resource
 )
     where T : class
 {
-    if( type == null ) throw new ArgumentNullException( "type" );
-    if( name == null ) throw new ArgumentNullException( "name" );
-    if( name == "" ) throw new ArgumentBlankException( "name" );
+    new IsPresent().BugDemand( type );
+    new IsPresent().BugDemand( name );
+    new IsNotBlank().Demand( name );
 
     // Fail early if a version for the invariant culture doesn't exist
-    if( Get<T>( type, name, CultureInfo.GetCultureInfo( "" ) ) == null )
+    if( Get< T >( type, name, CultureInfo.GetCultureInfo( "" ) ) == null )
         throw new ResourceMissingException( type.FullName, name );
 
     // TODO
@@ -138,17 +120,17 @@ _R<T>(
     //Check all existing versions for correct type
     //#endif
 
-    return new LocalizedResource<T>( type, name );
+    return new LocalizedResource< T >( type, name );
 }
 
 
 
-/// <summary>
-/// Get a <c>Localized&lt;string&gt;</c> representing a given string which
+/// Get a <tt>Localized< string ></tt> representing a given string which
 /// may have translated versions available as embedded resources belonging
 /// to the type where the calling method is defined
-/// </summary>
-public static Localized<string>
+///
+public static
+Localized< string >
 _S(
     string  untranslated
 )
@@ -159,34 +141,34 @@ _S(
 
 
 
-/// <summary>
-/// Get a <c>Localized&lt;string&gt;</c> representing a given string which
+/// Get a <tt>Localized< string ></tt> representing a given string which
 /// may have translated versions available as embedded resources
-/// </summary>
-public static Localized<string>
+///
+public static
+Localized< string >
 _S(
     Type    type,
     string  untranslated
 )
 {
-    if( type == null ) throw new ArgumentNullException( "type" );
-    if( untranslated == null ) throw new ArgumentNullException( "untranslated" );
-    if( untranslated == "" ) throw new ArgumentBlankException( "untranslated" );
+    new IsPresent().BugDemand( type );
+    new IsPresent().BugDemand( untranslated );
+    new IsNotBlank().Demand( untranslated );
 
     return new LocalizedStringResource( type, untranslated );
 }
 
 
-/// <summary>
-/// Get a <c>Localized&lt;string&gt;</c> representing a given string which
+/// Get a <tt>Localized< string ></tt> representing a given string which
 /// may have translated versions available as embedded resources belonging to
 /// the type where the calling method is defined and which, when used, should
-/// be <c>String.Format</c>ted with the given arguments in a culture-specific
+/// be <tt>String.Format</tt>ted with the given arguments in a culture-specific
 /// fashion
-/// </summary>
-public static Localized<string>
+///
+public static
+Localized< string >
 _S(
-    string  untranslated,
+    string          untranslated,
     params object[] formatargs
 )
 {
@@ -196,57 +178,57 @@ _S(
 
 
 
-/// <summary>
-/// Get a <c>Localized&lt;string&gt;</c> representing a given string which
+/// Get a <tt>Localized< string ></tt> representing a given string which
 /// may have translated versions available as embedded resources and which,
-/// when used, should be <c>String.Format</c>ted with the given arguments in
+/// when used, should be <tt>String.Format</tt>ted with the given arguments in
 /// a culture-specific fashion
-/// </summary>
-public static Localized<string>
+///
+public static
+Localized< string >
 _S(
-    Type    type,
-    string  untranslated,
+    Type            type,
+    string          untranslated,
     params object[] formatargs
 )
 {
-    if( type == null ) throw new ArgumentNullException( "type" );
-    if( untranslated == null ) throw new ArgumentNullException( "untranslated" );
-    if( untranslated == "" ) throw new ArgumentBlankException( "untranslated" );
+    new IsPresent().BugDemand( type );
+    new IsPresent().BugDemand( untranslated );
+    new IsNotBlank().Demand( untranslated );
 
     return new LocalizedStringResource( type, untranslated, formatargs );
 }
 
 
 
-/// <summary>
 /// Retrieve an embedded resource
-/// </summary>
-/// <remarks>
+///
 /// If the specifed resource does not exist, this method always returns
-/// <c>null</c>.  This differs from <c>ResourceManager.GetObject()</c>'s,
+/// <tt>null</tt>.  This differs from <tt>ResourceManager.GetObject()</tt>'s,
 /// confusing behaviour, which under the same circumstances sometimes
-/// returns <c>null</c> (if there are other embedded resources) and sometimes
+/// returns <tt>null</tt> (if there are other embedded resources) and sometimes
 /// throws an exception (if there are no other embedded resources).
-/// </remarks>
-/// <returns>
-/// The version of the resource of the given name most appropriate for the
-/// given culture, or <c>null</c> if no versions of the resource exist at all
-/// </returns>
-/// <exception cref="ResourceTypeMismatchException">
-/// Resource is not of (or convertable) to <c>T</c>
-/// </exception>
-public static T
-Get<T>(
-    Type type,
-    string name,
+///
+/// @exception ResourceTypeMismatchException
+/// Resource is not of (or convertable) to <tt>T</tt>
+///
+public static
+T                           /// @returns The version of the resource of the
+                            /// given name most appropriate for the given
+                            /// culture, or <tt>null</tt> if no versions of the
+                            /// resource exist at all
+Get<
+    T
+>(
+    Type        type,
+    string      name,
     CultureInfo culture
 )
     where T : class
 {
-    if( type == null ) throw new ArgumentNullException( "type" );
-    if( name == null ) throw new ArgumentNullException( "name" );
-    if( name == "" ) throw new ArgumentBlankException( "name" );
-    if( culture == null ) throw new ArgumentNullException( "culture" );
+    new IsPresent().BugDemand( type );
+    new IsPresent().BugDemand( name );
+    new IsNotBlank().Demand( name );
+    new IsPresent().BugDemand( culture );
 
     T result = null;
     object o;
@@ -278,19 +260,16 @@ Get<T>(
 // Private
 // -----------------------------------------------------------------------------
 
-/// <summary>
 /// Get a ResourceManager for a given type
-/// </summary>
-/// <remarks>
-/// <p>
+///
+/// @par
 /// This implementation lazy-creates and caches ResourceManagers.  I blindly
 /// assume this to be a win because
 /// a) we don't create new ResourceManager objects each time
 /// b) we reuse ResourceManagers, allowing their own internal caching (eg. of
 ///    ResourceSets) to kick in
-/// </p>
-/// <p>
-/// Potential issues:
+///
+/// @par Potential issues
 /// - (definitely on Mono, don't know about MS)
 ///   We lazy-create and cache individual ResourceManagers, each of which
 ///   lazy-creates and caches individual ResourceSets, each of which _reads
@@ -302,12 +281,14 @@ Get<T>(
 /// - We maintain references to each type that we come across as part of the
 ///   cache, which might be an issue if you're doing some kind of dynamic type
 ///   unloading
-/// </p>
-/// </remarks>
-private static ResourceManager
-GetResourceManager( Type type )
+///
+private static
+ResourceManager
+GetResourceManager(
+    Type type
+)
 {
-    if( type == null ) throw new ArgumentNullException( "type" );
+    new IsPresent().BugDemand( type );
     ResourceManager result;
     lock( managers ) {
         if( !managers.TryGetValue( type, out result ) ) {
@@ -320,8 +301,9 @@ GetResourceManager( Type type )
 
 
 // ResourceManager cache
-private static Dictionary<Type,ResourceManager>
-managers = new Dictionary<Type,ResourceManager>();
+private static
+Dictionary< Type, ResourceManager >
+managers = new Dictionary< Type, ResourceManager >();
 
 
 
@@ -358,7 +340,7 @@ MyResourceManager
         bool        tryParents
     )
     {
-        if( culture == null ) throw new ArgumentNullException( "culture" );
+        new IsPresent().BugDemand( culture );
         ResourceSet result = null;
 
         if( this.MainAssembly != null ) {

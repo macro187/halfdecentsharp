@@ -103,25 +103,25 @@ PrintPredicateStrings( IPredicate p )
 
 
 
-[Test( "IsNotNull" )]
+[Test( "IsPresent" )]
 public static void
-Test_IsNotNull()
+Test_IsPresent()
 {
-    IsNotNull isnotnull = new IsNotNull();
+    IsPresent ispresent = new IsPresent();
     object obj;
 
-    PrintPredicateStrings( isnotnull );
+    PrintPredicateStrings( ispresent );
 
     Print( "true if not null" );
     obj = new object();
     AssertEqual(
-        isnotnull.Evaluate( obj ),
+        ispresent.Evaluate( obj ),
         true );
 
     Print( "false if null" );
     obj = null;
     AssertEqual(
-        isnotnull.Evaluate( obj ),
+        ispresent.Evaluate( obj ),
         false );
 }
 
@@ -146,6 +146,15 @@ Test_IsA()
     AssertEqual(
         isaint.Evaluate( o ),
         false );
+
+    Print( "BugException if evaluate null" );
+    bool threw = false;
+    try {
+        isaint.Evaluate( null );
+    } catch( BugException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
 }
 
 

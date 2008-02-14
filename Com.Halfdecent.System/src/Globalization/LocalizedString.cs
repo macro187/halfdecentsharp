@@ -74,8 +74,8 @@ Format(
     params object[]     args
 )
 {
-    new IsNotNull().BugDemand( format );
-    new IsNotNull().BugDemand( args );
+    new IsPresent().BugDemand( format );
+    new IsPresent().BugDemand( args );
     return new FormattedLocalizedString( format, args );
 }
 
