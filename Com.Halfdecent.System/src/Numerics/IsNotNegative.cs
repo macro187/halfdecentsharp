@@ -73,8 +73,6 @@ Test(
 // IPredicate
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IPredicate.SayConforms()</tt>)
-///
 override public
 Localized< string >
 SayConforms(
@@ -87,8 +85,6 @@ SayConforms(
 
 
 
-/// (see <tt>IPredicate.SayDoesNotConform()</tt>)
-///
 override public
 Localized< string >
 SayDoesNotConform(
@@ -101,8 +97,6 @@ SayDoesNotConform(
 
 
 
-/// (see <tt>IPredicate.SayRequirement()</tt>)
-///
 override public
 Localized< string >
 SayRequirement(

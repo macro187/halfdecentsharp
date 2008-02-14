@@ -30,11 +30,15 @@ Com.Halfdecent.Numerics
 
 
 
-/// Predicate: "(Real) is not a fractional value"
+/// Predicate: "... is not a fractional value"
 ///
 public class
-IsNotFractional
-    : PredicateBase< Real >
+IsNotFractional<
+    T
+>
+    : PredicateBase< T >
+    where T
+        : IReal
 {
 
 
@@ -45,10 +49,10 @@ IsNotFractional
 // -----------------------------------------------------------------------------
 
 override internal
-IEnumerable< IPredicate< Real > >
+IEnumerable< IPredicate< T > >
 GetTermRequirements()
 {
-    yield return new IsPresent< Real >(); // not strictly necessary... yet
+    yield return new IsPresent< T >();
 }
 
 
@@ -56,7 +60,7 @@ GetTermRequirements()
 override internal
 bool
 Test(
-    Real term
+    T term
 )
 {
     return ( term.Truncate().Equals( term ) );
@@ -69,7 +73,6 @@ Test(
 // IPredicate
 // -----------------------------------------------------------------------------
 
-/// (see Predicate.SayConforms())
 override public
 Localized< string >
 SayConforms(
@@ -82,7 +85,6 @@ SayConforms(
 
 
 
-/// (see Predicate.SayDoesNotConform())
 override public
 Localized< string >
 SayDoesNotConform(
@@ -95,7 +97,6 @@ SayDoesNotConform(
 
 
 
-/// (see Predicate.SayRequirement)
 override public
 Localized< string >
 SayRequirement(

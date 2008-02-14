@@ -37,7 +37,8 @@ IsLTE<
     T
 >
     : PredicateBase< T >
-    where T : IComparable< T >
+    where T
+        : IComparable< T >
 {
 
 
@@ -55,7 +56,7 @@ IsLTE(
     T comparisonValue   ///< The value to compare against
                         ///
                         ///  Requirements:
-                        ///  - Really IsPresent
+                        ///  - Really <tt>IsPresent< T ></tt>
 )
 {
     new IsPresent< T >().ReallyRequire( comparisonValue );
@@ -114,8 +115,6 @@ Test(
 // IPredicate
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IPredicate.SayConforms()</tt>)
-///
 override public
 Localized< string >
 SayConforms(
@@ -130,8 +129,6 @@ SayConforms(
 
 
 
-/// (see <tt>IPredicate.SayDoesNotConform()</tt>)
-///
 override public
 Localized< string >
 SayDoesNotConform(
@@ -146,8 +143,6 @@ SayDoesNotConform(
 
 
 
-/// (see <tt>IPredicate.SayRequirement()</tt>)
-///
 override public
 Localized< string >
 SayRequirement(

@@ -123,10 +123,12 @@ ToDecimal()
 private
 Integer(
     Real value  ///< The value of the new Integer
-                ///  - Must not be a fractional value
+                ///
+                ///  Requirements:
+                ///  - <tt>IsNotFractional< T ></tt>
 )
 {
-    new IsNotFractional().Require( value );
+    new IsNotFractional< Real >().Require( value );
     this.value = value;
 }
 
