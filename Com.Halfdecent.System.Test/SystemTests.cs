@@ -39,56 +39,6 @@ SystemTests
 
 
 
-[Test( "HDException" )]
-public static void
-Test_HDException()
-{
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
-    CultureInfo current;
-
-    Localized<string> msg = new InMemoryLocalized<string>( "message" );
-    msg[fr] = "la message";
-
-    Exception e;
-    HDException de;
-
-    Print( "HDException( string )" );
-    de = new HDException( "message" );
-    Print( "Check Message" );
-    AssertEqual<string>( de.Message, "message" );
-    Print( "Check Exception::Message" );
-    e = de;
-    AssertEqual( e.Message, "message" );
-
-    Print( "HDException( Localized<string> )" );
-    de = new HDException( msg );
-    Print( "Check localized messages" );
-    AssertEqual<string>( de.Message[en], "message" );
-    AssertEqual<string>( de.Message[fr], "la message" );
-    Print( "Check localized messages (via Exception::Message)" );
-    e = de;
-    current = Thread.CurrentThread.CurrentCulture;
-    try {
-        Thread.CurrentThread.CurrentCulture = en;
-        AssertEqual( e.Message, "message" );
-        Thread.CurrentThread.CurrentCulture = fr;
-        AssertEqual( e.Message, "la message" );
-    } finally {
-        Thread.CurrentThread.CurrentCulture = current;
-    }
-
-    Print( "HDException( Localized<string>, Exception )" );
-    Exception ie = new ArgumentException();
-    de = new HDException( msg, ie );
-    Print( "Check InnerException" );
-    AssertEqual( de.InnerException, ie );
-
-    if( e == null ) {}
-}
-
-
-
 static private
 void
 PrintPredicateStrings( IPredicate p )

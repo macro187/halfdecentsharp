@@ -16,85 +16,53 @@
 
 
 using System;
-
 using Com.Halfdecent.Globalization;
 
+using System_Exception = System.Exception;
 
 
 namespace
-Com.Halfdecent.System
-{
-
-
-
-/// Half Decent version of <tt>System.Exception</tt>
-///
-public class
-HDException
-    : HDExceptionShim
-    , IHDException
+Com.Halfdecent.Exceptions
 {
 
 
 
 
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-/// Create a new <tt>HDException</tt> with a given message
+/// Shim to effectively rename <tt>Message</tt> to <tt>BaseMessage</tt> so we
+/// can effectively provide both a new and overridden <tt>Message</tt> later
 ///
-public
-HDException(
-    Localized< string > message
-)
-    : this( message, null )
+public abstract class
+ExceptionShim
+    : System_Exception
 {
-}
 
 
 
-/// Create a new <tt>HDException</tt> with a given message and inner
-/// exception
-///
-public
-HDException(
-    Localized< string > message,
-    Exception           innerException
+internal
+ExceptionShim(
+    string              message,
+    System_Exception    innerException
 )
     : base( message, innerException )
 {
-    this.message = message;
 }
 
 
 
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// A message explaining the reason for the exception
-///
-new virtual public
-Localized< string >
+override public
+string
 Message
 {
-    get { return this.message; }
+    get { return this.BaseMessage; }
 }
 
-private
-Localized< string >
-message;
 
 
-
-/// Override of <tt>Exception.Message</tt> via <tt>HDExceptionShim</tt>
-protected override
+abstract protected
 string
 BaseMessage
 {
-    get { return this.Message; }
+    get;
 }
 
 

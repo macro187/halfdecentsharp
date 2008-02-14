@@ -14,20 +14,59 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
 
+using System;
+using Com.Halfdecent.Globalization;
+
+using System_Exception = System.Exception;
 
 
 namespace
-Com.Halfdecent.Globalization
+Com.Halfdecent.Exceptions
 {
 
 
 
-/// Additional features of a "half decent" exception
-public interface
-IHDException
+
+/// Exception class to be used instead of <tt>System.Exception</tt>
+///
+public class
+Exception
+    : ExceptionShim
+    , IException
 {
+
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+/// Create a new <tt>Exception</tt> with a given message
+///
+public
+Exception(
+    Localized< string > message
+)
+    : this( message, null )
+{
+}
+
+
+
+/// Create a new <tt>Exception</tt> with a given message and inner
+/// exception
+///
+public
+Exception(
+    Localized< string > message,
+    System_Exception    innerException
+)
+    : base( message, innerException )
+{
+    this.message = message;
+}
 
 
 
@@ -36,11 +75,27 @@ IHDException
 // Properties
 // -----------------------------------------------------------------------------
 
-/// Localized message
+/// A message explaining the reason for the exception
+///
+new virtual public
 Localized< string >
 Message
 {
-    get;
+    get { return this.message; }
+}
+
+private
+Localized< string >
+message;
+
+
+
+/// Override of <tt>Exception.Message</tt> via <tt>ExceptionShim</tt>
+protected override
+string
+BaseMessage
+{
+    get { return this.Message; }
 }
 
 

@@ -16,52 +16,35 @@
 
 
 using System;
-using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
-using Com.Halfdecent.Exceptions;
-
-using HDException = Com.Halfdecent.Exceptions.Exception;
 
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.Exceptions
 {
 
 
 
 
-/// An exception indicating that a resource was not of the expected type
+/// Additional Half Decent exception features
 ///
-public class
-ResourceTypeMismatchException
-    : HDException
+public interface
+IException
 {
 
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Properties
 // -----------------------------------------------------------------------------
 
-/// Initialise a new <tt>ResourceTypeMismatchException</tt>
+/// Localized message
 ///
-public
-ResourceTypeMismatchException(
-    string expectedtypename,
-    string actualtypename,
-    string typename,
-    string name,
-    string culturename
-)
-    : base( LocalizedString.Format(
-        Resource._S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
-        name,
-        typename,
-        culturename,
-        expectedtypename,
-        actualtypename ))
+Localized< string >
+Message
 {
+    get;
 }
 
 

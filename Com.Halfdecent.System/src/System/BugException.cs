@@ -18,6 +18,10 @@
 using System;
 using Com.Halfdecent.Globalization;
 using R = Com.Halfdecent.Resources.Resource;
+using Com.Halfdecent.Exceptions;
+
+using System_Exception = System.Exception;
+using HD_Exception = Com.Halfdecent.Exceptions.Exception;
 
 
 namespace
@@ -32,7 +36,7 @@ Com.Halfdecent.System
 ///
 public class
 BugException
-    : HDException
+    : HD_Exception
 {
 
 
@@ -55,7 +59,7 @@ BugException(
 ///
 public
 BugException(
-    Exception innerException
+    System_Exception innerException
 )
     : this( null, innerException )
 {
@@ -69,14 +73,14 @@ BugException(
 public
 BugException(
     Localized< string > message,
-    Exception           innerException
+    System_Exception    innerException
 )
     : base(
         (message != null
             ? message
             : (innerException != null
-                ? (innerException is IHDException
-                    ? ((IHDException)innerException).Message
+                ? (innerException is IException
+                    ? ((IException)innerException).Message
                     : (Localized< string >)innerException.Message
                 )
                 : R._S("A condition indicating a programming error was encountered")

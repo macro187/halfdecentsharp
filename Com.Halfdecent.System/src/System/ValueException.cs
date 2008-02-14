@@ -18,6 +18,10 @@
 using System;
 using Com.Halfdecent.Globalization;
 using R = Com.Halfdecent.Resources.Resource;
+using Com.Halfdecent.Exceptions;
+
+using System_Exception = System.Exception;
+using HD_Exception = Com.Halfdecent.Exceptions.Exception;
 
 
 namespace
@@ -31,7 +35,7 @@ Com.Halfdecent.System
 ///
 public abstract class
 ValueException
-    : HDException
+    : HD_Exception
 {
 
 
@@ -41,7 +45,7 @@ ValueException
 ///
 public
 ValueException(
-    Exception           innerException
+    System_Exception innerException
 )
     : base( "", innerException )
 {
@@ -60,7 +64,7 @@ SayProblem(
 
 
 
-/// (see <tt>HDException.Message</tt>)
+/// (see <tt>IException.Message</tt>)
 ///
 override public
 Localized< string >
