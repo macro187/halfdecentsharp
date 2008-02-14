@@ -34,7 +34,6 @@ Com.Halfdecent.Collections.SCGInterop
 public class
 IBagFromReadOnlyICollectionAdapter<
     T   ///< (See <tt>IBag< T ></tt>)
-        ///  (See <tt>IBagCanStream< T ></tt>)
 >
     : IBag< T >
     , IBagCanStream< T >
@@ -93,8 +92,7 @@ Count
 {
     get
     {
-        return SCGInteropAlgorithms.IBagCountViaICollection< T >(
-            this.Collection );
+        return SCGInteropAlgorithms.IBagCountViaICollection( this.Collection );
     }
 }
 
