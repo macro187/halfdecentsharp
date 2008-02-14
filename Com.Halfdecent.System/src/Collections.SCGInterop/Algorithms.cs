@@ -17,7 +17,7 @@
 
 using System;
 using SCG = System.Collections.Generic;
-//using Com.Halfdecent.GenericArithmetic;
+using Com.Halfdecent.System;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Collections;
 
@@ -56,9 +56,6 @@ private Algorithms() {}
 /// @par Complexity
 /// Depends on the enumerator implementation.
 ///
-/// @exception ArgumentNullException
-/// The specified enumerable is <tt>null</tt>
-///
 public static
 IFiniteStream< T >                      /// @returns
                                         /// (see <tt>IBag.Stream()</tt>)
@@ -70,7 +67,7 @@ IBagStreamViaIEnumerable<
     SCG.IEnumerable< T >    enumerable  ///< An enumerable
 )
 {
-    if( enumerable == null ) throw new ArgumentNullException( "enumerable" );
+    new IsPresent().Require( enumerable );
     return new IFiniteStreamFromIEnumeratorAdapter< T >(
         enumerable.GetEnumerator() );
 }
@@ -86,9 +83,6 @@ IBagStreamViaIEnumerable<
 /// @par Complexity
 /// Depends on the collection's <tt>Count</tt> implementation
 ///
-/// @exception ArgumentNullException
-/// The specified collection is <tt>null</tt>
-///
 public static
 int                                     /// @returns
                                         /// (see <tt>IBag.Count</tt>)
@@ -98,7 +92,7 @@ IBagCountViaICollection<
     SCG.ICollection< T >    collection  ///< A collection
 )
 {
-    if( collection == null ) throw new ArgumentNullException( "collection" );
+    new IsPresent().Require( collection );
     return collection.Count;
 }
 
@@ -113,9 +107,6 @@ IBagCountViaICollection<
 /// @par Complexity
 /// Depends on the collection's <tt>Clear()</tt> implementation
 ///
-/// @exception ArgumentNullException
-/// The collection is <tt>null</tt>
-///
 /// @exception (unknown)
 /// If the underlying collection is not resizable, it's <tt>Clear()</tt>
 /// implementation will (hopefully) throw some kind of exception
@@ -128,7 +119,7 @@ IBagRemoveAllViaICollection<
     SCG.ICollection< T >    collection  ///< A resizable collection
 )
 {
-    if( collection == null ) throw new ArgumentNullException( "collection" );
+    new IsPresent().Require( collection );
     collection.Clear();
 }
 

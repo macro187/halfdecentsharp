@@ -17,6 +17,7 @@
 
 using System;
 using Com.Halfdecent.System;
+using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -27,13 +28,14 @@ Com.Halfdecent.Collections
 
 
 /// A list from which items can be retrieved from any position
+///
 public interface
 IListCanGetAt<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T ></tt>)
 >
-    : IList< T, TCount >
+    : IList< T >
 {
+
 
 
 
@@ -41,8 +43,8 @@ IListCanGetAt<
 ///
 T                       /// @returns The item at the specified position
 GetAt(
-    TCount position     ///< Position from which to retrieve the item
-                        ///  (see IList< T, TCount >)
+    Integer position    ///< Position from which to retrieve the item
+                        ///  (see <tt>IList< T ></tt>)
                         ///  - <tt>IsBetween( 0, Count )</tt>
 );
 

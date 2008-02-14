@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -17,6 +17,7 @@
 
 using System;
 using Com.Halfdecent.System;
+using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -27,23 +28,24 @@ Com.Halfdecent.Collections
 
 
 /// A list from which items can be removed from any position
+///
 public interface
 IListCanRemoveAt<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T ></tt>)
 >
-    : IList< T, TCount >
+    : IList< T >
 {
+
 
 
 
 /// Remove the item at a particular position
 ///
-T                   /// @returns The removed item
+T                       /// @returns The removed item
 RemoveAt(
-    TCount position ///< Position from which to remove the item
-                    ///< (see IList< T, TCount >)
-                    ///  - <tt>IsBetween( 0, Count-1 )</tt>
+    Integer position    ///< Position from which to remove the item
+                        ///< (see <tt>IList< T ></tt>)
+                        ///  - <tt>IsBetween( 0, Count-1 )</tt>
 );
 
 

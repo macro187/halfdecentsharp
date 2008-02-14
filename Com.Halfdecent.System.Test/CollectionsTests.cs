@@ -18,9 +18,10 @@
 using System;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Testing;
+using Com.Halfdecent.Collections;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Collections;
+using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -30,15 +31,16 @@ Com.Halfdecent.System.Test
 
 public class
 TestBag
-    : IBag<int,int>
-    , IBagCanStream<int,int>
+    : IBag< int >
+    , IBagCanStream< int >
 {
     private int[] items = { 1, 2, 3, 4, 5 };
-    public int Count { get { return this.items.Length; } }
-    public IFiniteStream<int> Stream() {
-        return new IFiniteStreamFromIEnumeratorAdapter<int>( this.Iterate() );
+
+    public Integer Count { get { return Integer.From( this.items.Length ); } }
+    public IFiniteStream< int > Stream() {
+        return new IFiniteStreamFromIEnumeratorAdapter< int >( this.Iterate() );
     }
-    private SCG.IEnumerator<int> Iterate() {
+    private SCG.IEnumerator< int > Iterate() {
         foreach( int i in this.items ) yield return i;
     }
 }
@@ -46,6 +48,7 @@ TestBag
 
 
 /// Tests for <tt>Com.Halfdecent.Collections</tt>
+///
 public class
 CollectionsTests
     : TestBase
@@ -60,8 +63,8 @@ Test_Algorithms()
     Print( "Algorithms.CountViaStream()" );
     TestBag tb = new TestBag();
     AssertEqual(
-        Algorithms.CountViaStream<TestBag,int,int>( tb ),
-        5 );
+        Algorithms.CountViaStream< TestBag, int >( tb ),
+        Integer.From( 5 ) );
 }
 
 

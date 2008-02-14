@@ -28,17 +28,19 @@ Com.Halfdecent.Collections
 
 
 /// A bag that can produce streams of all it's items
+///
 public interface
 IBagCanStream<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T ></tt>)
 >
-    : IBag< T, TCount >
+    : IBag< T >
 {
 
 
 
+
 /// Get a stream of all items in the bag
+///
 IFiniteStream< T >  /// @returns A new <tt>IFiniteStream< T ></tt> of all
                     /// items in the bag in no particular order
 Stream();

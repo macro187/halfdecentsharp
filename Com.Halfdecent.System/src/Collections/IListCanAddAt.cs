@@ -17,6 +17,7 @@
 
 using System;
 using Com.Halfdecent.System;
+using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -27,23 +28,25 @@ Com.Halfdecent.Collections
 
 
 /// A list to which items can be added at any position
+///
 public interface
 IListCanAddAt<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T ></tt>)
 >
-    : IList< T, TCount >
+    : IList< T >
 {
+
 
 
 
 /// Add the given item at the given position
 ///
 /// TODO: InvalidOperationException if the list is full?
+///
 void
 AddAt(
-    TCount  position,   ///< Position at which to add the item
-                        ///< (see IList< T, TCount >)
+    Integer position,   ///< Position at which to add the item
+                        ///< (see <tt>IList< T ></tt>)
                         ///  - <tt>IsBetween( 0, Count )</tt>
     T       item        ///< Item to add
 );

@@ -27,13 +27,14 @@ Com.Halfdecent.Collections
 
 
 /// A bag to which arbitrary items can be added
+///
 public interface
 IBagCanAdd<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T ></tt>)
 >
-    : IBag< T, TCount >
+    : IBag< T >
 {
+
 
 
 
@@ -41,6 +42,7 @@ IBagCanAdd<
 ///
 /// Because bags are unordered, this method does not imply that the item is
 /// added at any particular "position".
+///
 void
 Add(
     T item  ///< The item to add

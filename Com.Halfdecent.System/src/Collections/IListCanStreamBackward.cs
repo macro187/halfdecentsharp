@@ -28,22 +28,20 @@ Com.Halfdecent.Collections
 
 
 /// A list that can produce streams of it's items in reverse order
+///
 public interface
 IListCanStreamBackward<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T></tt>)
 >
-    : IList< T, TCount >
+    : IList< T >
 {
 
 
 
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
 
 /// Produce a stream of all items in the list in reverse order
-IFiniteStream<T>    /// @returns A new <tt>IFiniteStream< T ></tt> of all items
+///
+IFiniteStream< T >  /// @returns A new <tt>IFiniteStream< T ></tt> of all items
                     /// in the list in last-to-first order
 StreamBackward();
 

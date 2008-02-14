@@ -27,13 +27,14 @@ Com.Halfdecent.Collections
 
 
 /// A bag from which all items can be removed at once
+///
 public interface
 IBagCanRemoveAll<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T ></tt>)
 >
-    : IBag< T, TCount >
+    : IBag< T >
 {
+
 
 
 

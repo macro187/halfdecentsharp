@@ -21,9 +21,6 @@ MODULES_use += testable
 
 SRCS_FIND_dir = $(PROJ_dir)/src
 
-DOTNET_projlibs += \
-$(call MAKE_EncodeWord,$(call PROJ_Locate,Com.Halfdecent.GenericArithmetic))
-
 
 include $(MAKERY)/makery.mk
 

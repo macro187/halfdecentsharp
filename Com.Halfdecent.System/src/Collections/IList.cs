@@ -35,12 +35,12 @@ Com.Halfdecent.Collections
 /// Because items in a list are in order, each is in a particular position
 /// ranging from <tt>0</tt> (the first item) to <tt>Count-1</tt>
 /// (the last item).
+///
 public interface
 IList<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T ></tt>)
 >
-    : IBag< T, TCount >
+    : IBag< T >
 {
 
 

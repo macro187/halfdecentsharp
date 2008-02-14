@@ -27,13 +27,14 @@ Com.Halfdecent.Collections
 
 
 /// A bag from which all items matching certain criteria can be removed
+///
 public interface
 IBagCanRemoveWhere<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T ></tt>)
 >
-    : IBag< T, TCount >
+    : IBag< T >
 {
+
 
 
 
@@ -41,8 +42,8 @@ IBagCanRemoveWhere<
 ///
 void
 RemoveWhere(
-    Predicate<T> criteria   ///< Criteria for items to remove
-                            ///  - <tt>IsPresent</tt> else bug
+    Predicate< T > criteria ///< Criteria for items to remove
+                            ///  - Really <tt>IsPresent</tt>
 );
 
 

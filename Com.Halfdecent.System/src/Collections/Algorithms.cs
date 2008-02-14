@@ -17,7 +17,7 @@
 
 using System;
 using Com.Halfdecent.System;
-using Com.Halfdecent.GenericArithmetic;
+using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -43,7 +43,7 @@ private Algorithms() {}
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Compute <tt>IBag::Count</tt> via <tt>IBagCanStream::Stream()</tt>
+/// Compute <tt>IBag.Count</tt> via <tt>IBagCanStream.Stream()</tt>
 ///
 /// @par Description
 /// Computes <tt>Count</tt> by going through all items in the bag using
@@ -53,24 +53,21 @@ private Algorithms() {}
 /// Linear
 ///
 public static
-TCount              /// @returns The number of items in the bag
+Integer              /// @returns The number of items in the bag
 CountViaStream<
     TBag,           ///< Bag type
-    T,              ///< (see <tt>IBag< T, TCount ></tt>)
-    TCount          ///< (see <tt>IBag< T, TCount ></tt>)
+    T               ///< (see <tt>IBag< T ></tt>)
 >(
     TBag bag        ///< The bag
-                    ///  - <tt>IsPresent</tt> else bug
+                    ///  - Really <tt>IsPresent</tt>
 )
-    where TBag : IBagCanStream< T, TCount >
+    where TBag : IBagCanStream< T >
 {
     new IsPresent().ReallyRequire( bag );
 
-    IArithmetic<TCount> a = Arithmetic.Get< TCount >();
-
-    TCount result = a.From( 0 );
+    Integer result = Integer.From( 0 );
     foreach( T item in bag.Stream() ) {
-        result = a.Add( result, a.From( 1 ) );
+        result = result.Plus( Integer.From( 1 ) );
         if( item.Equals( null ) ) {}    // avoid compiler warning
     }
     return result;

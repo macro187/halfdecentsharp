@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -28,18 +28,20 @@ Com.Halfdecent.Collections
 
 
 /// A list that can produce streams of it's items in order
+///
 public interface
 IListCanStreamForward<
-    T,      ///< (see IBag< T, TCount >)
-    TCount  ///< (see IBag< T, TCount >)
+    T   ///< (see <tt>IBag< T ></tt>)
 >
-    : IList< T, TCount >
+    : IList< T >
 {
 
 
 
+
 /// Produce a stream of all items in the list in order
-IFiniteStream<T>    /// @returns A new <tt>IFiniteStream< T ></tt> of all items
+///
+IFiniteStream< T >  /// @returns A new <tt>IFiniteStream< T ></tt> of all items
                     /// in the list in first-to-last order
 StreamForward();
 

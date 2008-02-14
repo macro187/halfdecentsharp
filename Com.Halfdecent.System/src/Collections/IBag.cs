@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -17,6 +17,7 @@
 
 using System;
 using Com.Halfdecent.System;
+using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -30,13 +31,13 @@ Com.Halfdecent.Collections
 ///
 /// Bags hold finite multisets of items.  Refer to
 /// <tt>http://en.wikipedia.org/wiki/Multiset</tt>.
+///
 public interface
 IBag<
-    T,      ///< Type common to all items in the bag
-    TCount  ///< A numeric type whose maximum value is greater than or equal
-            ///< to the maximum number of items the bag can contain
+    T   ///< Type common to all items in the bag
 >
 {
+
 
 
 
@@ -45,7 +46,7 @@ IBag<
 // -----------------------------------------------------------------------------
 
 /// The number of items in the bag
-TCount
+Integer
 Count
 {
     get;
