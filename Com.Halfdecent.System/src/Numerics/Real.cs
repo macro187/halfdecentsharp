@@ -275,6 +275,7 @@ DividedBy(
     Real x  ///< The other real
 )
 {
+    new IsNotZero().Demand( x );
     return Real.From( this.value / x.value );
 }
 
@@ -288,6 +289,7 @@ RemainderWhenDividedBy(
     Real x  ///< The other real
 )
 {
+    new IsNotZero().Demand( x );
     return Real.From( Decimal.Remainder( this.value, x.value ) );
 }
 
