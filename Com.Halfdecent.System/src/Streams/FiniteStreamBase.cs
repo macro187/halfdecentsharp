@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -18,8 +18,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Com.Halfdecent.System;
 using R = Com.Halfdecent.Resources.Resource;
+using Com.Halfdecent.System;
 
 
 namespace
@@ -29,14 +29,13 @@ Com.Halfdecent.Streams
 
 
 
-/// Makes a finite stream out of an enumerator
+/// Base class for implementing <tt>IFiniteStream< T ></tt>s
 ///
-public class
-IFiniteStreamFromIEnumeratorAdapter<
-    T   ///< Type of items in the enumerator and resultant stream
+public abstract class
+FiniteStreamBase<
+    T   ///< (See <tt>IFiniteStream< T ></tt>)
 >
-    : FiniteStreamBase< T >
-    , IDisposable
+    : IFiniteStream< T >
 {
 
 
@@ -46,19 +45,13 @@ IFiniteStreamFromIEnumeratorAdapter<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialize a new <tt>IFiniteStreamFromIEnumeratorAdapter< T ></tt> adapting
-/// a given enumerator
+/// Initialize a new <tt>FiniteStreamBase< T ></tt>
 ///
 public
-IFiniteStreamFromIEnumeratorAdapter(
-    IEnumerator< T > enumerator ///< The <tt>IEnumerator< T ></tt> to adapt
-                                ///  Requirements:
-                                ///  - Really <tt>IsPresent</tt>
-)
-    : base()
+FiniteStreamBase()
 {
-    new IsPresent().ReallyRequire( enumerator );
-    this.enumerator = enumerator;
+    this.enumeratoradapter =
+        new IFiniteStreamToIEnumeratorAdapter< T >( this );
 }
 
 
@@ -70,7 +63,7 @@ IFiniteStreamFromIEnumeratorAdapter(
 
 private
 IEnumerator< T >
-enumerator;
+enumeratoradapter;
 
 
 
@@ -81,38 +74,60 @@ enumerator;
 
 /// (see <tt>IFiniteStream< T >.Yield()</tt>)
 ///
-public override
+public abstract
 bool
 Yield(
     out T item
-)
+);
+
+
+
+
+// -----------------------------------------------------------------------------
+// IStream< T >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IStream< T >.Yield()</tt>)
+///
+T
+IStream< T >.Yield()
 {
-    bool result;
-    if( this.enumerator.MoveNext() ) {
-        result = true;
-        item = this.enumerator.Current;
-    } else {
-        result = false;
-        item = default( T );
-    }
+    T result;
+    if( !((IFiniteStream< T >)this).Yield( out result ) )
+        // TODO: Create (and throw) more specific type of exception (?)
+        throw new HDInvalidOperationException(
+            R._S("No more items in stream") );
     return result;
 }
 
 
 
 
-/// Disposes the underlying enumerator
+// -----------------------------------------------------------------------------
+// IEnumerable< T >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEnumerable< T >.GetEnumerator()</tt>)
 ///
-/// @sa
-/// <tt>IDisposable.Dispose()</tt>
-///
-public
-void
-Dispose()
+IEnumerator< T >
+IEnumerable< T >.GetEnumerator()
 {
-    this.enumerator.Dispose();
-    // TODO: Do we have to track whether this has been called and throw
-    // exceptions in other operations it has?
+    return this.enumeratoradapter;
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// IEnumerable
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEnumerable.GetEnumerator()</tt>)
+///
+IEnumerator
+IEnumerable.GetEnumerator()
+{
+    return ((IEnumerable< T >)this).GetEnumerator();
 }
 
 
