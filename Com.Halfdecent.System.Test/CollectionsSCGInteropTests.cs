@@ -339,6 +339,28 @@ Test_IListFromShrinkableIListAdapter()
 
 
 
+[Test( "IListFromGrowableIListAdapter" )]
+public static
+void
+Test_IListFromGrowableIListAdapter()
+{
+    SCG.IList< int > scglist = new SCG.List< int >();
+    scglist.Add( 1 );
+    scglist.Add( 2 );
+    scglist.Add( 3 );
+
+    IListFromGrowableIListAdapter< int > list =
+        new IListFromGrowableIListAdapter< int >( scglist );
+
+    Print( "AddAt( 0 )" );
+    list.AddAt( Integer.From( 0 ), 0 );
+    AssertEqual( list.GetAt( Integer.From( 0 ) ), 0 );
+    list.AddAt( list.Count, 4 );
+    AssertEqual( list.GetAt( Integer.From( 4 ) ), 4 );
+}
+
+
+
 
 } // type
 } // namespace

@@ -209,6 +209,30 @@ IListRemoveAtViaIList<
 
 
 
+/// <tt>IListCanAddAt< T >.AddAt()</tt> via
+/// <tt>System.Collections.Generic.IList< T ></tt>
+///
+public static
+void
+IListAddAtViaIList<
+    T
+>(
+    SCG.IList< T >  list,       ///< Requirements:
+                                ///  - Really IsPresent
+    Integer         position,   ///< Requirements:
+                                ///  - IsNotNegative
+                                ///  - IsLTE( list.Count )
+    T               item
+)
+{
+    new IsPresent< SCG.IList< T > >().ReallyRequire( list );
+    new IsNotNegative< Integer >().Require( position );
+    new IsLTE< Integer >( Integer.From( list.Count ) ).Require( position );
+    list.Insert( (int)( position.ToDecimal() ), item );
+}
+
+
+
 
 } // type
 } // namespace
