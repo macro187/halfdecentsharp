@@ -43,6 +43,9 @@ IBagCanAdd<
 /// Because bags are unordered, this method does not imply that the item is
 /// added at any particular "position".
 ///
+/// @exception CollectionFullException
+/// The bag is already at capacity
+///
 void
 Add(
     T item  ///< The item to add

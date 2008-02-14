@@ -70,6 +70,9 @@ IListFromGrowableIListAdapter(
 // IListCanAddAt< T >
 // -----------------------------------------------------------------------------
 
+/// @exception CollectionFullException
+/// The list already contains <tt>System.Int32.MaxValue</tt> items
+///
 public
 void
 AddAt(
@@ -90,6 +93,9 @@ AddAt(
 // IBagCanAdd< T >
 // -----------------------------------------------------------------------------
 
+/// @exception CollectionFullException
+/// The list already contains <tt>System.Int32.MaxValue</tt> items
+///
 public
 void
 Add(

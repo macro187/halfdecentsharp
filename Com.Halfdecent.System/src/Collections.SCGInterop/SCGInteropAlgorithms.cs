@@ -135,6 +135,9 @@ IBagRemoveAllViaICollection<
 /// <tt>IBag< T >.Add()</tt> via a growable
 /// <tt>System.Collections.Generic.ICollection< T ></tt>
 ///
+/// @exception CollectionFullException
+/// The collection already contains <tt>System.Int32.MaxValue</tt> items
+///
 public static
 void
 IBagAddViaICollection<
@@ -146,6 +149,7 @@ IBagAddViaICollection<
 )
 {
     new IsPresent< SCG.ICollection< T > >().ReallyRequire( collection );
+    if( collection.Count == int.MaxValue ) throw new CollectionFullException();
     try {
         collection.Add( item );
     } catch( NotSupportedException e ) {
@@ -208,6 +212,9 @@ IListRemoveAtViaIList<
 /// <tt>IListCanAddAt< T >.AddAt()</tt> via
 /// <tt>System.Collections.Generic.IList< T ></tt>
 ///
+/// @exception CollectionFullException
+/// The list already contains <tt>System.Int32.MaxValue</tt> items
+///
 public static
 void
 IListAddAtViaIList<
@@ -224,6 +231,7 @@ IListAddAtViaIList<
     new IsPresent< SCG.IList< T > >().ReallyRequire( list );
     new IsNotNegative< Integer >().Require( position );
     new IsLTE< Integer >( Integer.From( list.Count ) ).Require( position );
+    if( list.Count == int.MaxValue ) throw new CollectionFullException();
     list.Insert( (int)( position.ToDecimal() ), item );
 }
 

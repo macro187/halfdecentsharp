@@ -72,6 +72,9 @@ IBagFromResizableICollectionAdapter(
 // IBagCanAdd< T >
 // -----------------------------------------------------------------------------
 
+/// @exception CollectionFullException
+/// The bag already contains <tt>System.Int32.MaxValue</tt> items
+///
 public
 void
 Add(

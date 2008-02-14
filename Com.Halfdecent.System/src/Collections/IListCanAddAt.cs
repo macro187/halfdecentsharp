@@ -41,7 +41,8 @@ IListCanAddAt<
 
 /// Add the given item at the given position
 ///
-/// TODO: InvalidOperationException if the list is full?
+/// @exception CollectionFullException
+/// The list is already at it capacity
 ///
 void
 AddAt(
