@@ -203,7 +203,7 @@ DividedBy(
             ///  - Must not be zero
 )
 {
-    new IsNotZero().Require( x );
+    new IsNotZero< Real >().Require( x );
     return Real.From( this.value / x.value );
 }
 
@@ -218,7 +218,7 @@ RemainderWhenDividedBy(
             ///  - Must not be zero
 )
 {
-    new IsNotZero().Require( x );
+    new IsNotZero< Real >().Require( x );
     return Real.From( Decimal.Remainder( this.value, x.value ) );
 }
 

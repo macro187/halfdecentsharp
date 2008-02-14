@@ -30,11 +30,15 @@ Com.Halfdecent.Numerics
 
 
 
-/// Predicate: "(Real) is not negative"
+/// Predicate: "... is not negative"
 ///
 public class
-IsNotNegative
-    : PredicateBase< Real >
+IsNotNegative<
+    T
+>
+    : PredicateBase< T >
+    where T
+        : IReal
 {
 
 
@@ -45,10 +49,10 @@ IsNotNegative
 // -----------------------------------------------------------------------------
 
 override internal
-IEnumerable< IPredicate< Real > >
+IEnumerable< IPredicate< T > >
 GetTermRequirements()
 {
-    yield return new IsPresent< Real >();
+    yield return new IsPresent< T >();
 }
 
 
@@ -56,7 +60,7 @@ GetTermRequirements()
 override internal
 bool
 Test(
-    Real term
+    T term
 )
 {
     return ( term.GTE( Real.From( 0 ) ) );

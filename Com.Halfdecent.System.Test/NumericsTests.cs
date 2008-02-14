@@ -432,7 +432,7 @@ Test_Integer()
 public static void
 Test_IsNotNegative()
 {
-    IsNotNegative p = new IsNotNegative();
+    IsNotNegative< Real > p = new IsNotNegative< Real >();
 
     Print( "Positive passes" );
     AssertEqual( p.Evaluate( Real.From( 1 ) ), true );

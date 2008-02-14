@@ -177,7 +177,7 @@ IListGetAtViaIList<
 )
 {
     new IsPresent< SCG.IList< T > >().ReallyRequire( list );
-    new IsNotNegative().Require( position );
+    new IsNotNegative< Integer >().Require( position );
     new IsLT< Integer >( Integer.From( list.Count ) ).Require( position );
     return list[ (int)( position.ToDecimal() ) ];
 }
