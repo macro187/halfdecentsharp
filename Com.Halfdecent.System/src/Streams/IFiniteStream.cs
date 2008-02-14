@@ -48,7 +48,7 @@ Com.Halfdecent.Streams
 /// than once, each time picking up where the last left off:
 /// @code
 /// // The stream
-/// IFiniteStream<type> stream = ...;
+/// IFiniteStream< type > stream = ...;
 ///
 /// // Process some of the items
 /// foreach( Item item in stream ) {
@@ -64,6 +64,7 @@ Com.Halfdecent.Streams
 ///     // ...
 /// }
 /// @endcode
+///
 public interface
 IFiniteStream<
     T   ///< Type common to all items in the stream
@@ -74,6 +75,7 @@ IFiniteStream<
 
 
 /// Attempt to advance to and return the next item in the stream
+///
 bool            /// @returns Whether there was another item in the stream.
                 /// Once this is <tt>false</tt>, the end of the stream has
                 /// been reached and it will never yield any more items.

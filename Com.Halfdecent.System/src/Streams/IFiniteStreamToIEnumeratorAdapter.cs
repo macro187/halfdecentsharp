@@ -18,8 +18,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using Com.Halfdecent.System;
+using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -30,6 +30,7 @@ Com.Halfdecent.Streams
 
 
 /// Presents an <tt>IFiniteStream< T ></tt> as an <tt>IEnumerator< T ></tt>
+///
 public class
 IFiniteStreamToIEnumeratorAdapter<
     T   ///< Type of items on the stream and, thus, in the resultant enumerator
@@ -49,9 +50,9 @@ IFiniteStreamToIEnumeratorAdapter<
 ///
 public
 IFiniteStreamToIEnumeratorAdapter(
-    IFiniteStream<T> stream     ///< The <tt>IFiniteStream< T ></tt> to present
+    IFiniteStream< T > stream   ///< The <tt>IFiniteStream< T ></tt> to present
                                 /// as an enumerator
-                                /// - <tt>IsPresent</tt> else bug
+                                /// - Really <tt>IsPresent</tt>
 )
 {
     new IsPresent().ReallyRequire( stream );
@@ -67,40 +68,50 @@ IFiniteStreamToIEnumeratorAdapter(
 // Fields
 // -----------------------------------------------------------------------------
 
-private IFiniteStream<T>
+private
+IFiniteStream< T >
 stream;
 
-private bool
+
+
+private
+bool
 started;
 
-private bool
+
+
+private
+bool
 finished;
 
-private T
+
+
+private
+T
 current;
 
 
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerator<T>
+// IEnumerator< T >
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEnumerator< T >::Current</tt>)
+/// (see <tt>IEnumerator< T >.Current</tt>)
 ///
-/// @exception InvalidOperationException
+/// @exception HDInvalidOperationException
 /// If the enumerator is positioned before the first or after the last item
-public T
+///
+public
+T
 Current
 {
     get
     {
-        if( !this.started ) throw new InvalidOperationException(
-            "The current item cannot be retreived because the enumerator is" +
-            " still positioned before the first item" );
-        if( this.finished ) throw new InvalidOperationException(
-            "The current item cannot be retreived because the enumerator is" +
-            " already positioned past the last item" );
+        if( !this.started ) throw new HDInvalidOperationException(
+            R._S("The current item cannot be retreived because the enumerator is still positioned before the first item") );
+        if( this.finished ) throw new HDInvalidOperationException(
+            R._S("The current item cannot be retreived because the enumerator is already positioned past the last item") );
         return this.current;
     }
 }
@@ -109,29 +120,32 @@ Current
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerator
+// IEnumerator
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEnumerator::Current</tt>)
+/// (see <tt>IEnumerator.Current</tt>)
 ///
-/// @exception InvalidOperationException
+/// @exception HDInvalidOperationException
 /// If the enumerator is positioned before the first or after the last item
+///
 object
 IEnumerator.Current
 {
     get
     {
-        return ((IEnumerator<T>)this).Current;
+        return ((IEnumerator< T >)this).Current;
     }
 }
 
 
 
-/// (see <tt>IEnumerator::MoveNext()</tt>)
+/// (see <tt>IEnumerator.MoveNext()</tt>)
 ///
 /// @sa
 /// <tt>IFiniteStream::Yield()</tt>
-public bool
+///
+public
+bool
 MoveNext()
 {
     bool result = false;
@@ -148,26 +162,27 @@ MoveNext()
 
 
 
-/// (see <tt>IEnumerator::Reset()</tt>)
+/// (see <tt>IEnumerator.Reset()</tt>)
 ///
-/// @exception InvalidOperationException
+/// @exception HDInvalidOperationException
 /// Every time, because streams are not resettable
-public void
+///
+public
+void
 Reset()
 {
-    throw new InvalidOperationException(
-        "This enumerator cannot be reset because it is enumerating an" +
-        " IStream, and IStreams cannot be reset" );
+    throw new HDInvalidOperationException(
+        R._S("This enumerator cannot be reset because it is enumerating an IStream, and IStreams cannot be reset") );
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// Interface: IDisposable
+// IDisposable
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IDisposable::Dispose()</tt>)
+/// (see <tt>IDisposable.Dispose()</tt>)
 ///
 /// The <tt>foreach</tt> statement unconditionally <tt>Dispose()</tt>s
 /// enumerators after using them.  This conflicts with <tt>IStream< T ></tt>'s
@@ -175,7 +190,8 @@ Reset()
 /// method does nothing.  If the underlying <tt>IFiniteStream< T ></tt> is
 /// <tt>IDisposable</tt> it should be explicitly <tt>Dispose()</tt>d directly
 /// when no longer needed.
-public void
+public
+void
 Dispose()
 {
 }

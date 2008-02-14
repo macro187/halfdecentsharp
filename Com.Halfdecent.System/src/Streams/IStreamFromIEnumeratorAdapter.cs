@@ -18,8 +18,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using Com.Halfdecent.System;
+using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -34,7 +34,7 @@ public class
 IStreamFromIEnumeratorAdapter<
     T   ///< Type of items in the enumerator and resultant stream
 >
-    : IStream<T>
+    : IStream< T >
     , IDisposable
 {
 
@@ -49,13 +49,13 @@ IStreamFromIEnumeratorAdapter<
 ///
 public
 IStreamFromIEnumeratorAdapter(
-    IEnumerator<T> enumerator   ///< The <tt>IEnumerator< T ></tt> to adapt
-                                ///  - <tt>IsPresent</tt> else bug
+    IEnumerator< T > enumerator ///< The <tt>IEnumerator< T ></tt> to adapt
+                                ///  - Really <tt>IsPresent</tt>
 )
 {
     new IsPresent().ReallyRequire( enumerator );
     this.enumerator = enumerator;
-    this.enumeratoradapter = new IStreamToIEnumeratorAdapter<T>( this );
+    this.enumeratoradapter = new IStreamToIEnumeratorAdapter< T >( this );
 }
 
 
@@ -65,10 +65,10 @@ IStreamFromIEnumeratorAdapter(
 // Fields
 // -----------------------------------------------------------------------------
 
-private IEnumerator<T>
+private IEnumerator< T >
 enumerator;
 
-private IEnumerator<T>
+private IEnumerator< T >
 enumeratoradapter;
 
 
@@ -78,13 +78,15 @@ enumeratoradapter;
 // Interface: IStream
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IStream::Yield()</tt>)
-public T
+/// (see <tt>IStream.Yield()</tt>)
+public
+T
 Yield()
 {
     if( !this.enumerator.MoveNext() )
         // TODO: Create (and throw) more specific type of exception (?)
-        throw new InvalidOperationException( "No more items in stream" );
+        throw new HDInvalidOperationException(
+            R._S("No more items in stream") );
     return this.enumerator.Current;
 }
 
@@ -92,12 +94,12 @@ Yield()
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerable<T>
+// IEnumerable< T >
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEnumerable< T >::GetEnumerator()</tt>)
-IEnumerator<T>
-IEnumerable<T>.GetEnumerator()
+/// (see <tt>IEnumerable< T >.GetEnumerator()</tt>)
+IEnumerator< T >
+IEnumerable< T >.GetEnumerator()
 {
     return this.enumeratoradapter;
 }
@@ -106,28 +108,29 @@ IEnumerable<T>.GetEnumerator()
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerable
+// IEnumerable
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEnumerable::GetEnumerator()</tt>)
+/// (see <tt>IEnumerable.GetEnumerator()</tt>)
 IEnumerator
 IEnumerable.GetEnumerator()
 {
-    return ((IEnumerable<T>)this).GetEnumerator();
+    return ((IEnumerable< T >)this).GetEnumerator();
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// Interface: IDisposable
+// IDisposable
 // -----------------------------------------------------------------------------
 
 /// Disposes the underlying enumerator
 ///
 /// @sa
-/// <tt>IDisposable::Dispose()</tt>
-public void
+/// <tt>IDisposable.Dispose()</tt>
+public
+void
 Dispose()
 {
     this.enumerator.Dispose();

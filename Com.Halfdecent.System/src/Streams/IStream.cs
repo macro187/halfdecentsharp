@@ -34,12 +34,13 @@ Com.Halfdecent.Streams
 ///
 /// See <tt>http://en.wikipedia.org/wiki/Stream_(computer)</tt>
 ///
-/// At any given time, a stream is at a single point in the sequence.
+/// Intuitively, at any given time a stream is "positioned" just before the
+/// next item in the sequence.
 ///
 /// On it's own, <tt>IStream< T ></tt> does not imply how many more items (if
 /// any) can be produced, nor how long (if ever) it will take to yield the next
 /// one.  Implementations should document their semantics in these regards
-/// and/or implement a stream sub-type with more specific semantics.
+/// and/or implement a stream subtype with more specific semantics.
 ///
 /// @par <tt>IEnumerable< T ></tt>
 /// As a convenience, streams implement <tt>IEnumerable< T ></tt>.
@@ -48,6 +49,7 @@ Com.Halfdecent.Streams
 /// does this enable iteration with <tt>foreach</tt>, it enables doing so more
 /// than once, with each subsequent <tt>foreach</tt> iteration picking up from
 /// the stream's current position.
+///
 public interface
 IStream<
     T   ///< Type common to all items in the stream
@@ -62,7 +64,7 @@ IStream<
 /// If the stream is capable of producing another item, <tt>IStream< T ></tt>
 /// does not imply how long it will take (if ever).
 ///
-/// @exception InvalidOperationException
+/// @exception HDInvalidOperationException
 /// If the stream definitely cannot produce any more items
 ///
 T   /// @returns The next item in the stream

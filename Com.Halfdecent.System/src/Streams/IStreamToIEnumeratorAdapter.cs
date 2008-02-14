@@ -18,8 +18,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using Com.Halfdecent.System;
+using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -49,8 +49,8 @@ IStreamToIEnumeratorAdapter<
 ///
 public
 IStreamToIEnumeratorAdapter(
-    IStream<T> stream   ///< The <tt>IStream< T ></tt> to adapt
-                        ///  - <tt>IsPresent</tt> else bug
+    IStream< T > stream ///< The <tt>IStream< T ></tt> to adapt
+                        ///  - Really <tt>IsPresent</tt>
 )
 {
     new IsPresent().ReallyRequire( stream );
@@ -65,34 +65,41 @@ IStreamToIEnumeratorAdapter(
 // Fields
 // -----------------------------------------------------------------------------
 
-private IStream<T>
+private
+IStream< T >
 stream;
 
-private bool
+
+
+private
+bool
 started;
 
-private T
+
+
+private
+T
 current;
 
 
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerator<T>
+// IEnumerator< T >
 // -----------------------------------------------------------------------------
 
 /// (see <tt>IEnumerator< T >.Current</tt>)
 ///
-/// @exception InvalidOperationException
+/// @exception HDInvalidOperationException
 /// If the enumerator is still positioned before the first item
-public T
+public
+T
 Current
 {
     get
     {
-        if( !started ) throw new InvalidOperationException(
-            "The current item cannot be retreived because the enumerator is" +
-            " still positioned before the first item" );
+        if( !started ) throw new HDInvalidOperationException(
+            R._S("The current item cannot be retreived because the enumerator is still positioned before the first item") );
         return this.current;
     }
 }
@@ -101,36 +108,37 @@ Current
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerator
+// IEnumerator
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEnumerator::Current</tt>)
+/// (see <tt>IEnumerator.Current</tt>)
 ///
-/// @exception InvalidOperationException
+/// @exception HDInvalidOperationException
 /// If the enumerator is still positioned before the first item
 object
 IEnumerator.Current
 {
     get
     {
-        return ((IEnumerator<T>)this).Current;
+        return ((IEnumerator< T >)this).Current;
     }
 }
 
 
 
-/// (see <tt>IEnumerator::MoveNext()</tt>)
+/// (see <tt>IEnumerator.MoveNext()</tt>)
 ///
-/// @exception InvalidOperationException
+/// @exception HDInvalidOperationException
 /// If the underlying stream definitely cannot produce any more items
-/// (exception will originate in the underlying <tt>IStream< T >::Yield()</tt>)
+/// (exception will originate in the underlying <tt>IStream< T >.Yield()</tt>)
 ///
 /// @sa
-/// <tt>IStream::Yield()</tt>
-public bool
+/// <tt>IStream.Yield()</tt>
+public
+bool
 MoveNext()
 {
-    this.current = this.stream.Yield(); // throws InvalidOperationException if
+    this.current = this.stream.Yield(); // throws HDInvalidOperationException if
                                         // the IStream is finished
     if( !this.started ) this.started = true;
     return true;
@@ -138,26 +146,26 @@ MoveNext()
 
 
 
-/// (see <tt>IEnumerator::Reset()</tt>)
+/// (see <tt>IEnumerator.Reset()</tt>)
 ///
-/// @exception InvalidOperationException
+/// @exception HDInvalidOperationException
 /// Every time, because streams are not resettable
-public void
+public
+void
 Reset()
 {
     throw new InvalidOperationException(
-        "This enumerator cannot be reset because it is enumerating an" +
-        " IStream, and IStreams cannot be reset" );
+        R._S("This enumerator cannot be reset because it is enumerating an IStream, and IStreams cannot be reset") );
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// Interface: IDisposable
+// IDisposable
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IDisposable::Dispose()</tt>)
+/// (see <tt>IDisposable.Dispose()</tt>)
 ///
 /// The <tt>foreach</tt> statement unconditionally <tt>Dispose()</tt>s
 /// enumerators after using them.  This conflicts with <tt>IStream< T ></tt>'s
@@ -165,7 +173,8 @@ Reset()
 /// method does nothing.  If the underlying <tt>IFiniteStream< T ></tt> is
 /// <tt>IDisposable</tt> it should be explicitly <tt>Dispose()</tt>d directly
 /// when no longer needed.
-public void
+public
+void
 Dispose()
 {
 }

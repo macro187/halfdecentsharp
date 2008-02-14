@@ -19,6 +19,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Com.Halfdecent.System;
+using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -40,6 +41,7 @@ IFiniteStreamFromIEnumeratorAdapter<
 
 
 
+
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
@@ -49,13 +51,14 @@ IFiniteStreamFromIEnumeratorAdapter<
 ///
 public
 IFiniteStreamFromIEnumeratorAdapter(
-    IEnumerator<T> enumerator   ///< The <tt>IEnumerator< T ></tt> to adapt
-                                ///  - <tt>IsPresent</tt> else bug
+    IEnumerator< T > enumerator ///< The <tt>IEnumerator< T ></tt> to adapt
+                                ///  - Really <tt>IsPresent</tt>
 )
 {
     new IsPresent().ReallyRequire( enumerator );
     this.enumerator = enumerator;
-    this.enumeratoradapter = new IFiniteStreamToIEnumeratorAdapter<T>( this );
+    this.enumeratoradapter =
+        new IFiniteStreamToIEnumeratorAdapter< T >( this );
 }
 
 
@@ -65,17 +68,27 @@ IFiniteStreamFromIEnumeratorAdapter(
 // Fields
 // -----------------------------------------------------------------------------
 
-private IEnumerator< T >
+private
+IEnumerator< T >
 enumerator;
 
-private IEnumerator< T >
+
+
+private
+IEnumerator< T >
 enumeratoradapter;
 
 
 
 
-/// (see <tt>IFiniteStream< T >::Yield()</tt>)
-public bool
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IFiniteStream< T >.Yield()</tt>)
+///
+public
+bool
 Yield(
     out T item
 )
@@ -95,17 +108,19 @@ Yield(
 
 
 // -----------------------------------------------------------------------------
-// Interface: IStream
+// IStream
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IStream< T >::Yield()</tt>)
+/// (see <tt>IStream< T >.Yield()</tt>)
+///
 T
-IStream<T>.Yield()
+IStream< T >.Yield()
 {
     T result;
-    if( !((IFiniteStream<T>)this).Yield( out result ) )
+    if( !((IFiniteStream< T >)this).Yield( out result ) )
         // TODO: Create (and throw) more specific type of exception (?)
-        throw new InvalidOperationException( "No more items in stream" );
+        throw new HDInvalidOperationException(
+            R._S("No more items in stream") );
     return result;
 }
 
@@ -113,12 +128,13 @@ IStream<T>.Yield()
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerable<T>
+// IEnumerable< T >
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEnumerable< T >::GetEnumerator()</tt>)
-IEnumerator<T>
-IEnumerable<T>.GetEnumerator()
+/// (see <tt>IEnumerable< T >.GetEnumerator()</tt>)
+///
+IEnumerator< T >
+IEnumerable< T >.GetEnumerator()
 {
     return this.enumeratoradapter;
 }
@@ -127,28 +143,31 @@ IEnumerable<T>.GetEnumerator()
 
 
 // -----------------------------------------------------------------------------
-// Interface: IEnumerable
+// IEnumerable
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEnumerable::GetEnumerator()</tt>)
+/// (see <tt>IEnumerable.GetEnumerator()</tt>)
+///
 IEnumerator
 IEnumerable.GetEnumerator()
 {
-    return ((IEnumerable<T>)this).GetEnumerator();
+    return ((IEnumerable< T >)this).GetEnumerator();
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// Interface: IDisposable
+// IDisposable
 // -----------------------------------------------------------------------------
 
 /// Disposes the underlying enumerator
 ///
 /// @sa
-/// <tt>IDisposable::Dispose()</tt>
-public void
+/// <tt>IDisposable.Dispose()</tt>
+///
+public
+void
 Dispose()
 {
     this.enumerator.Dispose();
