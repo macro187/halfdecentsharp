@@ -446,11 +446,11 @@ Test_IsNotNegative()
 
 
 
-[Test( "IsLessThan" )]
+[Test( "IsLT" )]
 public static void
-Test_IsLessThan()
+Test_IsLT()
 {
-    IsLessThan< Real > p = new IsLessThan< Real >( Real.From( 10 ) );
+    IsLT< Real > p = new IsLT< Real >( Real.From( 10 ) );
 
     // TODO "Evaluate( null ) throws BugException
 

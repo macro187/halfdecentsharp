@@ -33,7 +33,7 @@ Com.Halfdecent.Numerics
 /// Predicate: "... is less than ..."
 ///
 public class
-IsLessThan<
+IsLT<
     T
 >
     : PredicateBase< T >
@@ -47,19 +47,19 @@ IsLessThan<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new <tt>IsLessThan</tt> that compares against the given
+/// Initialise a new <tt>IsLT</tt> that compares against the given
 /// value
 ///
 public
-IsLessThan(
-    T lessThanValue ///< The value to compare against
-                    ///
-                    ///  Requirements:
-                    ///  - Really IsPresent
+IsLT(
+    T comparisonValue   ///< The value to compare against
+                        ///
+                        ///  Requirements:
+                        ///  - Really IsPresent
 )
 {
-    new IsPresent< T >().ReallyRequire( lessThanValue );
-    this.lessthanvalue = lessThanValue;
+    new IsPresent< T >().ReallyRequire( comparisonValue );
+    this.comparisonvalue = comparisonValue;
 }
 
 
@@ -73,14 +73,14 @@ IsLessThan(
 ///
 public
 T
-LessThanValue
+ComparisonValue
 {
-    get { return this.lessthanvalue; }
+    get { return this.comparisonvalue; }
 }
 
 private
 T
-lessthanvalue;
+comparisonvalue;
 
 
 
@@ -104,7 +104,7 @@ Test(
     T term
 )
 {
-    return ( term.CompareTo( this.LessThanValue ) < 0 );
+    return ( term.CompareTo( this.ComparisonValue ) < 0 );
 }
 
 
@@ -125,7 +125,7 @@ SayConforms(
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is less than {1}",
         termIdentifier,
-        this.LessThanValue );
+        this.ComparisonValue );
 }
 
 
@@ -141,7 +141,7 @@ SayDoesNotConform(
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is not less than {1}",
         termIdentifier,
-        this.LessThanValue );
+        this.ComparisonValue );
 }
 
 
@@ -157,7 +157,7 @@ SayRequirement(
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} must be less than {1}",
         termIdentifier,
-        this.LessThanValue );
+        this.ComparisonValue );
 }
 
 

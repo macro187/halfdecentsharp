@@ -98,12 +98,12 @@ GetAt(
                         ///  Requirements:
                         ///  - IsPresent
                         ///  - IsNotNegative
-                        ///  - IsLessThan( this.Count )
+                        ///  - IsLT( this.Count )
 )
 {
     new IsPresent< Integer >().Require( position );
     new IsNotNegative().Require( position );
-    new IsLessThan< Integer >( this.Count ).Require( position );
+    new IsLT< Integer >( this.Count ).Require( position );
     return SCGInteropAlgorithms.IListGetAtViaIList< T >( this.list, position );
 }
 

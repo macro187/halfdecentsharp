@@ -173,12 +173,12 @@ IListGetAtViaIList<
                                 ///  - Really IsPresent
     Integer         position    ///< Requirements:
                                 ///  - IsNotNegative
-                                ///  - IsLessThan( list.Count )
+                                ///  - IsLT( list.Count )
 )
 {
     new IsPresent< SCG.IList< T > >().ReallyRequire( list );
     new IsNotNegative().Require( position );
-    new IsLessThan< Integer >( Integer.From( list.Count ) ).Require( position );
+    new IsLT< Integer >( Integer.From( list.Count ) ).Require( position );
     return list[ (int)( position.ToDecimal() ) ];
 }
 
