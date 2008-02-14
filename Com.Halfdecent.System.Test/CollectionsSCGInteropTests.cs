@@ -317,6 +317,28 @@ Test_IListFromReadOnlyIListAdapter()
 
 
 
+[Test( "IListFromShrinkableIListAdapter" )]
+public static
+void
+Test_IListFromShrinkableIListAdapter()
+{
+    SCG.IList< int > scglist = new SCG.List< int >();
+    scglist.Add( 1 );
+    scglist.Add( 2 );
+    scglist.Add( 3 );
+
+    IListFromShrinkableIListAdapter< int > list =
+        new IListFromShrinkableIListAdapter< int >( scglist );
+
+    Print( "RemoveAt()" );
+    AssertEqual( list.RemoveAt( Integer.From( 1 ) ), 2 );
+    AssertEqual( list.Count, Integer.From( 2 ) );
+    AssertEqual( list.GetAt( Integer.From( 0 ) ), 1 );
+    AssertEqual( list.GetAt( Integer.From( 1 ) ), 3 );
+}
+
+
+
 
 } // type
 } // namespace

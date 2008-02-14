@@ -184,6 +184,31 @@ IListGetAtViaIList<
 
 
 
+/// <tt>IListCanRemoveAt< T >.RemoveAt()</tt> via
+/// <tt>System.Collections.Generic.IList< T ></tt>
+///
+public static
+T
+IListRemoveAtViaIList<
+    T
+>(
+    SCG.IList< T >  list,       ///< Requirements:
+                                ///  - Really IsPresent
+    Integer         position    ///< Requirements:
+                                ///  - IsNotNegative
+                                ///  - IsLT( list.Count )
+)
+{
+    new IsPresent< SCG.IList< T > >().ReallyRequire( list );
+    new IsNotNegative< Integer >().Require( position );
+    new IsLT< Integer >( Integer.From( list.Count ) ).Require( position );
+    T result = IListGetAtViaIList( list, position );
+    list.RemoveAt( (int)( position.ToDecimal() ) );
+    return result;
+}
+
+
+
 
 } // type
 } // namespace
