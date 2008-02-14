@@ -31,6 +31,9 @@ Com.Halfdecent.Predicates
 /// In logic, a <em>term</em> is some particular item.  A <em>predicate</em>
 /// is some condition of a term that may be true or false.
 ///
+// XXX Right now, there is no distinction between ValueExceptions that result
+//     from the Predicate itself, and those that result from other predicates
+//     restricting it's input values.  Is that distinction needed?
 public interface
 IPredicate
 {
