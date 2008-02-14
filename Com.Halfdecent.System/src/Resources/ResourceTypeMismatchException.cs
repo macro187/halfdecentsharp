@@ -20,8 +20,6 @@ using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
 using Com.Halfdecent.Exceptions;
 
-using HDException = Com.Halfdecent.Exceptions.Exception;
-
 
 namespace
 Com.Halfdecent.Resources

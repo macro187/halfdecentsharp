@@ -22,9 +22,6 @@ using Com.Halfdecent.Testing;
 using Com.Halfdecent.Globalization;
 using Com.Halfdecent.Exceptions;
 
-using System_Exception = System.Exception;
-using HD_Exception = Com.Halfdecent.Exceptions.Exception;
-
 
 namespace
 Com.Halfdecent.System.Test
@@ -54,11 +51,11 @@ Test_Exception()
     Localized< string > msg = new InMemoryLocalized< string >( "message" );
     msg[fr] = "la message";
 
-    System_Exception e;
-    HD_Exception de;
+    Exception e;
+    HDException de;
 
     Print( "Exception( string )" );
-    de = new HD_Exception( "message" );
+    de = new HDException( "message" );
     Print( "Check Message" );
     AssertEqual< string >( de.Message, "message" );
     Print( "Check Exception::Message" );
@@ -66,7 +63,7 @@ Test_Exception()
     AssertEqual( e.Message, "message" );
 
     Print( "Exception( Localized< string > )" );
-    de = new HD_Exception( msg );
+    de = new HDException( msg );
     Print( "Check localized messages" );
     AssertEqual< string >( de.Message[en], "message" );
     AssertEqual< string >( de.Message[fr], "la message" );
@@ -83,8 +80,8 @@ Test_Exception()
     }
 
     Print( "Exception( Localized< string >, Exception )" );
-    System_Exception ie = new ArgumentException();
-    de = new HD_Exception( msg, ie );
+    Exception ie = new ArgumentException();
+    de = new HDException( msg, ie );
     Print( "Check InnerException" );
     AssertEqual( de.InnerException, ie );
 

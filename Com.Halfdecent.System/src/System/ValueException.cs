@@ -20,9 +20,6 @@ using Com.Halfdecent.Globalization;
 using R = Com.Halfdecent.Resources.Resource;
 using Com.Halfdecent.Exceptions;
 
-using System_Exception = System.Exception;
-using HD_Exception = Com.Halfdecent.Exceptions.Exception;
-
 
 namespace
 Com.Halfdecent.System
@@ -35,7 +32,7 @@ Com.Halfdecent.System
 ///
 public abstract class
 ValueException
-    : HD_Exception
+    : HDException
 {
 
 
@@ -45,7 +42,7 @@ ValueException
 ///
 public
 ValueException(
-    System_Exception innerException
+    Exception innerException
 )
     : base( "", innerException )
 {

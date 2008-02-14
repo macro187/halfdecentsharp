@@ -26,11 +26,45 @@ Com.Halfdecent.Exceptions
 
 
 
-/// Additional Half Decent exception features
+/// Exception class to be used instead of <tt>System.Exception</tt>
 ///
-public interface
-IException
+public class
+HDException
+    : ExceptionShim
+    , IHDException
 {
+
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+/// Create a new <tt>HDException</tt> with a given message
+///
+public
+HDException(
+    Localized< string > message
+)
+    : this( message, null )
+{
+}
+
+
+
+/// Create a new <tt>HDException</tt> with a given message and inner
+/// exception
+///
+public
+HDException(
+    Localized< string > message,
+    Exception           innerException
+)
+    : base( message, innerException )
+{
+    this.message = message;
+}
 
 
 
@@ -39,12 +73,27 @@ IException
 // Properties
 // -----------------------------------------------------------------------------
 
-/// Localized message
+/// A message explaining the reason for the exception
 ///
+new virtual public
 Localized< string >
 Message
 {
-    get;
+    get { return this.message; }
+}
+
+private
+Localized< string >
+message;
+
+
+
+/// Override of <tt>Exception.Message</tt> via <tt>ExceptionShim</tt>
+protected override
+string
+BaseMessage
+{
+    get { return this.Message; }
 }
 
 
