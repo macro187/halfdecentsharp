@@ -47,14 +47,13 @@ IStreamFromIEnumeratorAdapter<
 /// Initialize a new <tt>IEnumeratorToIStreamAdapter< T ></tt> adapting a given
 /// enumerator
 ///
-/// @exception ArgumentNullException
-/// The specified <tt>enumerator</tt> is <tt>null</tt>
 public
 IStreamFromIEnumeratorAdapter(
     IEnumerator<T> enumerator   ///< The <tt>IEnumerator< T ></tt> to adapt
+                                ///  - <tt>IsPresent</tt> else bug
 )
 {
-    if( enumerator == null ) throw new ArgumentNullException( "enumerator" );
+    new IsPresent().BugDemand( enumerator );
     this.enumerator = enumerator;
     this.enumeratoradapter = new IStreamToIEnumeratorAdapter<T>( this );
 }

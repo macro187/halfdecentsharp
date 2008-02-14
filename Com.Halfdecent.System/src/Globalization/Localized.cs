@@ -46,18 +46,15 @@ Localized<
 
 /// Retrieve the version of the item most appropriate for a particular culture
 ///
-/// @par
 /// In the event that a version for the exact culture specified is not
 /// available, some reasonable fallback may be returned instead (eg. a
 /// parent or even the invariant culture).
 /// 
-/// @par
 /// C# can't enforce post-conditions, but if it could, this would
 /// mandate that implementations never return null.  That doesn't mean
 /// exceptions indicating larger problems eg. missing resources etc. won't
 /// happen.
 ///
-/// @par
 /// C# can't handle get/set separately for inheritance purposes ie. we can't
 /// specify 'get' here and only add the 'set' in writable subclasses, without
 /// triggering compiler warnings.

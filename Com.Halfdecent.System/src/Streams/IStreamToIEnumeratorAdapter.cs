@@ -47,14 +47,13 @@ IStreamToIEnumeratorAdapter<
 /// Initialize a new <tt>IStreamToIEnumeratorAdapter</tt> adapting a given
 /// stream
 ///
-/// @exception ArgumentNullException
-/// The provided <tt>stream</tt> is <tt>null</tt>
 public
 IStreamToIEnumeratorAdapter(
     IStream<T> stream   ///< The <tt>IStream< T ></tt> to adapt
+                        ///  - <tt>IsPresent</tt> else bug
 )
 {
-    if( stream == null ) throw new ArgumentNullException( "stream" );
+    new IsPresent().BugDemand( stream );
     this.stream = stream;
     this.started = false;
 }

@@ -39,13 +39,11 @@ IListCanRemoveAt<
 
 /// Remove the item at a particular position
 ///
-/// @exception ArgumentOutOfRangeException
-/// The specified <tt>position</tt> is negative or greater than the last
-/// item's position
 T                   /// @returns The removed item
 RemoveAt(
     TCount position ///< Position from which to remove the item
                     ///< (see IList< T, TCount >)
+                    ///  - <tt>IsBetween( 0, Count-1 )</tt>
 );
 
 

@@ -47,16 +47,14 @@ IFiniteStreamToIEnumeratorAdapter<
 /// Initialize a new <tt>IFiniteStreamToIEnumeratorAdapter< T ></tt> adapting
 /// the given <tt>IFiniteStream< T ></tt>
 ///
-/// @exception ArgumentNullException
-/// The provided <tt>stream</tt> is <tt>null</tt>
 public
 IFiniteStreamToIEnumeratorAdapter(
     IFiniteStream<T> stream     ///< The <tt>IFiniteStream< T ></tt> to present
                                 /// as an enumerator
+                                /// - <tt>IsPresent</tt> else bug
 )
 {
-    if( stream == null )
-        throw new ArgumentNullException( "stream" );
+    new IsPresent().BugDemand( stream );
     this.stream = stream;
     this.started = false;
     this.finished = false;

@@ -39,14 +39,12 @@ IListCanAddAt<
 
 /// Add the given item at the given position
 ///
-/// @exception ArgumentOutOfRangeException
-/// The specified <tt>position</tt> is negative or greater than the last
-/// item's position
-/// </exception>
+/// TODO: InvalidOperationException if the list is full?
 void
 AddAt(
     TCount  position,   ///< Position at which to add the item
                         ///< (see IList< T, TCount >)
+                        ///  - <tt>IsBetween( 0, Count )</tt>
     T       item        ///< Item to add
 );
 

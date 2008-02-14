@@ -39,13 +39,11 @@ IListCanGetAt<
 
 /// Retrieve the item at a particular position
 ///
-/// @exception ArgumentOutOfRangeException
-/// The specified <tt>position</tt> is negative or greater than the last
-/// item's position
 T                       /// @returns The item at the specified position
 GetAt(
     TCount position     ///< Position from which to retrieve the item
-                        ///< (see IList< T, TCount >)
+                        ///  (see IList< T, TCount >)
+                        ///  - <tt>IsBetween( 0, Count )</tt>
 );
 
 

@@ -18,7 +18,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using Com.Halfdecent.System;
 
 
@@ -30,6 +29,7 @@ Com.Halfdecent.Streams
 
 
 /// Makes a finite stream out of an enumerator
+///
 public class
 IFiniteStreamFromIEnumeratorAdapter<
     T   ///< Type of items in the enumerator and resultant stream
@@ -47,14 +47,13 @@ IFiniteStreamFromIEnumeratorAdapter<
 /// Initialize a new <tt>IFiniteStreamFromIEnumeratorAdapter< T ></tt> adapting
 /// a given enumerator
 ///
-/// @exception ArgumentNullException
-/// The specified <tt>enumerator</tt> is <tt>null</tt>
 public
 IFiniteStreamFromIEnumeratorAdapter(
     IEnumerator<T> enumerator   ///< The <tt>IEnumerator< T ></tt> to adapt
+                                ///  - <tt>IsPresent</tt> else bug
 )
 {
-    if( enumerator == null ) throw new ArgumentNullException( "enumerator" );
+    new IsPresent().BugDemand( enumerator );
     this.enumerator = enumerator;
     this.enumeratoradapter = new IFiniteStreamToIEnumeratorAdapter<T>( this );
 }
@@ -66,10 +65,10 @@ IFiniteStreamFromIEnumeratorAdapter(
 // Fields
 // -----------------------------------------------------------------------------
 
-private IEnumerator<T>
+private IEnumerator< T >
 enumerator;
 
-private IEnumerator<T>
+private IEnumerator< T >
 enumeratoradapter;
 
 

@@ -16,6 +16,7 @@
 
 
 using System;
+using Com.Halfdecent.System;
 using Com.Halfdecent.GenericArithmetic;
 
 
@@ -51,9 +52,6 @@ private Algorithms() {}
 /// @par Complexity
 /// Linear
 ///
-/// @exception ArgumentNullException
-/// The specified <tt>bag</tt> is <tt>null</tt>
-///
 public static
 TCount              /// @returns The number of items in the bag
 CountViaStream<
@@ -62,10 +60,11 @@ CountViaStream<
     TCount          ///< (see <tt>IBag< T, TCount ></tt>)
 >(
     TBag bag        ///< The bag
+                    ///  - <tt>IsPresent</tt> else bug
 )
     where TBag : IBagCanStream< T, TCount >
 {
-    if( bag == null ) throw new ArgumentNullException( "bag" );
+    new IsPresent().BugDemand( bag );
 
     IArithmetic<TCount> a = Arithmetic.Get< TCount >();
 

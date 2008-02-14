@@ -50,9 +50,6 @@ private LocalizedString() {}
 /// underlying <tt>System.String.Format()</tt> operation in an on-demand
 /// fashion.
 ///
-/// actual formatting of the <tt>format</tt> string and <tt>args</tt> in an
-/// on-demand fashion.
-///
 /// This means that the returned <tt>Localized< string ></tt>'s final value
 /// may appear differently at different times depending on the thread's
 /// <tt>CurrentCulture</tt> (or the requested culture if the <tt>[]</tt>

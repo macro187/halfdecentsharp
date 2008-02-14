@@ -39,11 +39,10 @@ IBagCanRemoveWhere<
 
 /// Remove all items matching given criteria
 ///
-/// @exception ArgumentNullException
-/// If <tt>criteria</tt> is <tt>null</tt>
 void
 RemoveWhere(
     Predicate<T> criteria   ///< Criteria for items to remove
+                            ///  - <tt>IsPresent</tt> else bug
 );
 
 
