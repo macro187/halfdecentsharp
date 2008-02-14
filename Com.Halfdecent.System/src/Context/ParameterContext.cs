@@ -47,8 +47,8 @@ ParameterContext(
     string  name        ///< (See INameContext.Name)
 )
 {
-    if( name == null ) throw new ArgumentNullException( "name" );
-    if( name == "" ) throw new ArgumentBlankException( "name" );
+    new IsPresent().Demand( name );
+    new IsNotBlank().Demand( name );
     if( position < 0 ) throw new ArgumentOutOfRangeException(
         "position", position, "Must be greater than 0" );
     this.position = position;

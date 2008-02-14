@@ -109,7 +109,7 @@ FormattedLocalizedString
     {
         get
         {
-            if( culture == null ) throw new ArgumentNullException( "culture" );
+            new IsPresent().Demand( culture );
             string result;
             CultureInfo cc = CultureInfo.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = culture;

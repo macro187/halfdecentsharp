@@ -46,8 +46,8 @@ CallContext(
     string  name    ///< (See ICallContext.Name)
 )
 {
-    if( name == null ) throw new ArgumentNullException( "name" );
-    if( name == "" ) throw new ArgumentBlankException( "name" );
+    new IsPresent().Demand( name );
+    new IsNotBlank().Demand( name );
     this.depth = depth;
     this.name = name;
 }
