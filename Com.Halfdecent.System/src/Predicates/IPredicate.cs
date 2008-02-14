@@ -41,35 +41,28 @@ IPredicate
 
 
 /*
-/// Evaluate the predicate against a term
-///
-bool    /// @returns Whether the predicate is true of the given term
-Evaluate
-(
-    object term ///< The term
-);
-
-
-/// Demand that a term conform to the predicate
+/// Require that a term conform to the predicate
 ///
 /// @exception PredicateValueException
 /// If the term does not conform to the predicate
 ///
 void
-Demand
+Require
 (
     object term ///< The term
 );
 
 
-/// Assert a term conform to the predicate, and furthermore, that if it does
-/// not, it is as a result of a programming error
+/// Require that a term conform to the predicate, and furthermore if it does
+/// not it is as a result of a programming error
 ///
 /// @exception BugException
-/// If the term does not conform to the predicate
+/// If the term does not conform to the predicate.  <tt>InnerException</tt>
+/// will be the <tt>ValueException</tt> that would have resulted had the
+/// predicate only been <tt>Require()</tt>d.
 ///
 void
-BugDemand
+ReallyRequire
 (
     object term ///< The term
 );
@@ -113,7 +106,7 @@ SayDoesNotConform(
 /// eg. "... must contains at least 3 items"
 ///
 Localized< string >
-SayDemand(
+SayRequirement(
     Localized< string > termIdentifier  ///< Phrase identifying the term
 );
 

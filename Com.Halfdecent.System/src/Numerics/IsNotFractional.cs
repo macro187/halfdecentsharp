@@ -38,14 +38,14 @@ IsNotFractional
 
 
 
-/// (see IPredicate< T >.Demand())
+/// (see IPredicate< T >.Require())
 override public
 void
-Demand(
+Require(
     Real term   ///< - Must be present
 )
 {
-    new IsPresent().BugDemand( term );
+    new IsPresent().ReallyRequire( term );
     if( term.Truncate() != term ) throw new PredicateValueException( this );
 }
 
@@ -58,7 +58,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().BugDemand( termIdentifier );
+    new IsPresent().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is not a fractional value", termIdentifier );
 }
 
@@ -71,20 +71,20 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().BugDemand( termIdentifier );
+    new IsPresent().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is a fractional value", termIdentifier );
 }
 
 
 
-/// (see Predicate.Demand)
+/// (see Predicate.SayRequirement)
 override public
 Localized< string >
-SayDemand(
+SayRequirement(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().BugDemand( termIdentifier );
+    new IsPresent().ReallyRequire( termIdentifier );
     return Resource._S( "{0} must not be a fractional value", termIdentifier );
 }
 

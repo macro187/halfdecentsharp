@@ -53,7 +53,7 @@ IStreamToIEnumeratorAdapter(
                         ///  - <tt>IsPresent</tt> else bug
 )
 {
-    new IsPresent().BugDemand( stream );
+    new IsPresent().ReallyRequire( stream );
     this.stream = stream;
     this.started = false;
 }

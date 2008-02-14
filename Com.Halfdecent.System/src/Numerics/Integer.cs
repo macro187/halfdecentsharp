@@ -112,7 +112,7 @@ Integer(
                 ///  - Must not be a fractional value
 )
 {
-    new IsNotFractional().Demand( value );
+    new IsNotFractional().Require( value );
     this.value = value;
 }
 

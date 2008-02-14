@@ -52,7 +52,7 @@ InMemoryLocalized(
     T invariantVersion
 )
 {
-    new IsPresent().BugDemand( invariantVersion );
+    new IsPresent().ReallyRequire( invariantVersion );
     this[ CultureInfo.InvariantCulture ] = invariantVersion;
 }
 
@@ -73,7 +73,7 @@ this[
 {
     get
     {
-        new IsPresent().BugDemand( culture );
+        new IsPresent().ReallyRequire( culture );
         T r;
         for( CultureInfo c = culture; ; c = c.Parent ) {
             if( this.data.ContainsKey( c ) ) {
@@ -87,8 +87,8 @@ this[
     }
     set
     {
-        new IsPresent().BugDemand( culture );
-        new IsPresent().BugDemand( value );
+        new IsPresent().ReallyRequire( culture );
+        new IsPresent().ReallyRequire( value );
         this.data[ culture ] = value;
     }
 }
@@ -108,7 +108,7 @@ Exists(
     CultureInfo culture
 )
 {
-    new IsPresent().BugDemand( culture );
+    new IsPresent().ReallyRequire( culture );
     return this.data.ContainsKey( culture );
 }
 

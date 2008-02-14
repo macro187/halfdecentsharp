@@ -55,9 +55,9 @@ LocalizedResource(
     string  name
 )
 {
-    new IsPresent().BugDemand( type );
-    new IsPresent().BugDemand( name );
-    new IsNotBlank().Demand( name );
+    new IsPresent().ReallyRequire( type );
+    new IsPresent().ReallyRequire( name );
+    new IsNotBlank().Require( name );
     this.type = type;
     this.name = name;
 }
@@ -85,7 +85,7 @@ this[
 {
     get
     {
-        new IsPresent().BugDemand( culture );
+        new IsPresent().ReallyRequire( culture );
         T r;
         r = Resource.Get<T>( this.type, this.name, culture );
         if( r == null ) throw new ResourceMissingException(

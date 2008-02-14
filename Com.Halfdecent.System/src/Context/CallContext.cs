@@ -46,8 +46,8 @@ CallContext(
     string  name    ///< (See ICallContext.Name)
 )
 {
-    new IsPresent().Demand( name );
-    new IsNotBlank().Demand( name );
+    new IsPresent().Require( name );
+    new IsNotBlank().Require( name );
     this.depth = depth;
     this.name = name;
 }

@@ -53,7 +53,7 @@ IFiniteStreamFromIEnumeratorAdapter(
                                 ///  - <tt>IsPresent</tt> else bug
 )
 {
-    new IsPresent().BugDemand( enumerator );
+    new IsPresent().ReallyRequire( enumerator );
     this.enumerator = enumerator;
     this.enumeratoradapter = new IFiniteStreamToIEnumeratorAdapter<T>( this );
 }

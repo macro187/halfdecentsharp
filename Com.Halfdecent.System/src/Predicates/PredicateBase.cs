@@ -39,44 +39,26 @@ PredicateBase<
 
 
 
-/// (see IPredicate< T >.Evaluate())
-public
-bool
-Evaluate(
-    T term
-)
-{
-    bool r = true;
-    try {
-        this.Demand( term );
-    } catch( PredicateValueException ) {
-        r = false;
-    }
-    return r;
-}
-
-
-
-/// (see IPredicate< T >.BugDemand())
+/// (see IPredicate< T >.ReallyRequire())
 public
 void
-BugDemand(
+ReallyRequire(
     T term
 )
 {
     try {
-        this.Demand( term );
+        this.Require( term );
     } catch( PredicateValueException e ) {
-        throw new BugException( e );
+        throw new BugException( e.Message, e );
     }
 }
 
 
 
-/// (see IPredicate< T >.Demand())
+/// (see IPredicate< T >.Require())
 abstract public
 void
-Demand(
+Require(
     T term
 );
 
@@ -100,10 +82,10 @@ SayDoesNotConform(
 
 
 
-/// (see IPredicate.SayDemand)
+/// (see IPredicate.SayRequirement)
 abstract public
 Localized< string >
-SayDemand(
+SayRequirement(
     Localized< string > termIdentifier
 );
 

@@ -63,7 +63,7 @@ PredicateValueException(
 )
     : base( innerException )
 {
-    new IsPresent().BugDemand( predicate );
+    new IsPresent().ReallyRequire( predicate );
     this.predicate = predicate;
 }
 
@@ -92,7 +92,7 @@ SayProblem(
     Localized< string > valueIdentifier
 )
 {
-    new IsPresent().BugDemand( valueIdentifier );
+    new IsPresent().ReallyRequire( valueIdentifier );
     return this.Predicate.SayDoesNotConform( valueIdentifier );
 }
 

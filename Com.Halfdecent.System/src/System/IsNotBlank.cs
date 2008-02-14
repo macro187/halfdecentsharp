@@ -37,14 +37,14 @@ IsNotBlank
 
 
 
-/// (see IPredicate< T >.Demand())
+/// (see IPredicate< T >.Require())
 override public
 void
-Demand(
+Require(
     string term
 )
 {
-    new IsPresent().BugDemand( term );
+    new IsPresent().ReallyRequire( term );
     if( term == "" ) throw new PredicateValueException( this );
 }
 
@@ -57,7 +57,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().BugDemand( termIdentifier );
+    new IsPresent().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is not blank", termIdentifier );
 }
 
@@ -70,20 +70,20 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().BugDemand( termIdentifier );
+    new IsPresent().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is blank", termIdentifier );
 }
 
 
 
-/// (see Predicate.Demand)
+/// (see Predicate.Require)
 override public
 Localized< string >
-SayDemand(
+SayRequirement(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().BugDemand( termIdentifier );
+    new IsPresent().ReallyRequire( termIdentifier );
     return Resource._S( "{0} must not be blank", termIdentifier );
 }
 

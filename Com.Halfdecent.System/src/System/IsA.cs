@@ -38,14 +38,14 @@ IsA<
 
 
 
-/// (see <tt>IPredicate< T >.Demand()</tt>)
+/// (see <tt>IPredicate< T >.Require()</tt>)
 override public
 void
-Demand(
+Require(
     object term
 )
 {
-    new IsPresent().BugDemand( term );
+    new IsPresent().ReallyRequire( term );
     if( !(term is T) ) throw new PredicateValueException( this );
 }
 
@@ -58,7 +58,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().BugDemand( termIdentifier );
+    new IsPresent().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is a {1}", termIdentifier, typeof(T).FullName );
 }
 
@@ -71,20 +71,20 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().BugDemand( termIdentifier );
+    new IsPresent().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is not a {1}", termIdentifier, typeof(T).FullName );
 }
 
 
 
-/// (see <tt>IPredicate.SayDemand()</tt>)
+/// (see <tt>IPredicate.SayRequirement()</tt>)
 override public
 Localized< string >
-SayDemand(
+SayRequirement(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().BugDemand( termIdentifier );
+    new IsPresent().ReallyRequire( termIdentifier );
     return Resource._S( "{0} must be a {1}", termIdentifier, typeof(T).FullName );
 }
 

@@ -39,10 +39,10 @@ IsPresent
 
 
 
-/// (see IPredicate< T >.Demand())
+/// (see IPredicate< T >.Require())
 override public
 void
-Demand(
+Require(
     object term
 )
 {
@@ -58,7 +58,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
-    this.BugDemand( termIdentifier );
+    this.ReallyRequire( termIdentifier );
     return Resource._S( "{0} is present", termIdentifier );
 }
 
@@ -71,20 +71,20 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    this.BugDemand( termIdentifier );
+    this.ReallyRequire( termIdentifier );
     return Resource._S( "{0} is not present", termIdentifier );
 }
 
 
 
-/// (see Predicate.Demand)
+/// (see Predicate.Require)
 override public
 Localized< string >
-SayDemand(
+SayRequirement(
     Localized< string > termIdentifier
 )
 {
-    this.BugDemand( termIdentifier );
+    this.ReallyRequire( termIdentifier );
     return Resource._S( "{0} is required", termIdentifier );
 }
 

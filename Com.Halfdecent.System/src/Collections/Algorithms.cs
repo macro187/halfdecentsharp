@@ -64,7 +64,7 @@ CountViaStream<
 )
     where TBag : IBagCanStream< T, TCount >
 {
-    new IsPresent().BugDemand( bag );
+    new IsPresent().ReallyRequire( bag );
 
     IArithmetic<TCount> a = Arithmetic.Get< TCount >();
 

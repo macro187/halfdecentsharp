@@ -46,8 +46,8 @@ PropertyContext(
     string  name        ///< (See IPropertyContext.Name)
 )
 {
-    new IsPresent().Demand( name );
-    new IsNotBlank().Demand( name );
+    new IsPresent().Require( name );
+    new IsNotBlank().Require( name );
     this.name = name;
 }
 

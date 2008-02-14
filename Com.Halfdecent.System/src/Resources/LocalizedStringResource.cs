@@ -71,9 +71,9 @@ LocalizedStringResource(
 )
     : base( type, Resource.STRING_PREFIX + untranslated )
 {
-    new IsPresent().BugDemand( untranslated );
-    new IsNotBlank().Demand( untranslated );
-    new IsPresent().BugDemand( formatargs );
+    new IsPresent().ReallyRequire( untranslated );
+    new IsNotBlank().ReallyRequire( untranslated );
+    new IsPresent().ReallyRequire( formatargs );
     this.untranslated = untranslated;
     this.formatargs = formatargs;
 }
@@ -98,7 +98,7 @@ this[
 {
     get
     {
-        new IsPresent().BugDemand( culture );
+        new IsPresent().ReallyRequire( culture );
         string r;
         r = Resource.Get<string>( this.type, this.name, culture );
         if( r == null )

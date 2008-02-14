@@ -47,8 +47,23 @@ PrintPredicateStrings( IPredicate p )
         p.SayConforms( "X" ) );
     Print( "SayDoesNotConform(X): '{0}'",
         p.SayDoesNotConform( "X" ) );
-    Print( "SayDemand(X): '{0}'",
-        p.SayDemand( "X" ) );
+    Print( "SayRequirement(X): '{0}'",
+        p.SayRequirement( "X" ) );
+}
+
+
+
+static public
+bool
+Passes< T >( IPredicate< T > predicate, T value  )
+{
+    bool result = true;
+    try {
+        predicate.Require( value );
+    } catch( ValueException ) {
+        result = false;
+    }
+    return result;
 }
 
 
@@ -62,17 +77,13 @@ Test_IsPresent()
 
     PrintPredicateStrings( ispresent );
 
-    Print( "true if not null" );
+    Print( "passes if not null" );
     obj = new object();
-    AssertEqual(
-        ispresent.Evaluate( obj ),
-        true );
+    AssertEqual( Passes( ispresent, obj ) , true );
 
-    Print( "false if null" );
+    Print( "fails if null" );
     obj = null;
-    AssertEqual(
-        ispresent.Evaluate( obj ),
-        false );
+    AssertEqual( Passes( ispresent, obj ) , false );
 }
 
 
@@ -87,20 +98,16 @@ Test_IsA()
 
     PrintPredicateStrings( isaint );
 
-    Print( "true if of the specified type" );
-    AssertEqual(
-        isaint.Evaluate( i ),
-        true );
+    Print( "passes if of the specified type" );
+    AssertEqual( Passes< object >( isaint, i ) , true );
 
-    Print( "false if not" );
-    AssertEqual(
-        isaint.Evaluate( o ),
-        false );
+    Print( "fails if not" );
+    AssertEqual( Passes( isaint, o ) , false );
 
-    Print( "BugException if evaluate null" );
+    Print( "BugException if term is null" );
     bool threw = false;
     try {
-        isaint.Evaluate( null );
+        isaint.Require( null );
     } catch( BugException ) {
         threw = true;
     }
@@ -117,20 +124,16 @@ Test_IsNotBlank()
 
     PrintPredicateStrings( isnotblank );
 
-    Print( "true if not blank" );
-    AssertEqual(
-        isnotblank.Evaluate( "i'm not blank" ),
-        true );
+    Print( "passes if not blank" );
+    AssertEqual( Passes( isnotblank, "i'm not blank" ) , true );
 
-    Print( "false if blank" );
-    AssertEqual(
-        isnotblank.Evaluate( "" ),
-        false );
+    Print( "fails if blank" );
+    AssertEqual( Passes( isnotblank, "" ) , false );
 
-    Print( "BugException if evaluate null" );
+    Print( "BugException if term is null" );
     bool threw = false;
     try {
-        isnotblank.Evaluate( null );
+        isnotblank.Require( null );
     } catch( BugException ) {
         threw = true;
     }
