@@ -203,6 +203,41 @@ CountToFive()
 
 
 
+private static IEnumerator< object >
+YieldDifferentObjects()
+{
+    yield return 1;
+    yield return 2;
+    yield return new object();
+    yield return 3;
+    yield return new object();
+}
+
+
+
+[Test( "TypeFiniteStreamFilter" )]
+public static void
+Test_TypeFiniteStreamFilter()
+{
+    IFiniteStream< object >             stream;
+    IFiniteStreamFilter< object, int >  filter;
+    int                                 count;
+
+    stream = new IFiniteStreamFromIEnumeratorAdapter< object >(
+        YieldDifferentObjects() );
+    filter = new TypeFiniteStreamFilter< object, int >( stream );
+
+    Print( "Correct number of filtered items" );
+    count = 0;
+    foreach( int item in filter ) {
+        count++;
+        if( item == 0 ) {} // avoid compiler warning
+    }
+    AssertEqual( count, 3 );
+}
+
+
+
 
 } // type
 } // namespace
