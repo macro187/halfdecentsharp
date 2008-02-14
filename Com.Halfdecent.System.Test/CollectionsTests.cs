@@ -22,6 +22,7 @@ using Com.Halfdecent.Collections;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Predicates;
 
 
 namespace
@@ -30,9 +31,10 @@ Com.Halfdecent.System.Test
 
 
 public class
-TestBag
+TestList
     : IBag< int >
     , IBagCanStream< int >
+    , IList< int >
 {
     private int[] items = { 1, 2, 3, 4, 5 };
 
@@ -61,10 +63,32 @@ public static void
 Test_CollectionsAlgorithms()
 {
     Print( "CollectionsAlgorithms.CountViaStream()" );
-    TestBag tb = new TestBag();
+    TestList tl = new TestList();
     AssertEqual(
-        CollectionsAlgorithms.CountViaStream< TestBag, int >( tb ),
+        CollectionsAlgorithms.CountViaStream< TestList, int >( tl ),
         Integer.From( 5 ) );
+}
+
+
+
+[Test( "IsExistingPositionIn" )]
+public static void
+Test_IsExistingPositionIn()
+{
+    IList< int > list = new TestList();
+    IPredicate< Integer > p = new IsExistingPositionIn< int >( list );
+
+    Print( "-1 fails" );
+    AssertEqual( p.Evaluate( Integer.From( -1 ) ), false );
+
+    Print( "0 passes" );
+    AssertEqual( p.Evaluate( Integer.From( 0 ) ), true );
+
+    Print( "4 passes" );
+    AssertEqual( p.Evaluate( Integer.From( 1 ) ), true );
+
+    Print( "5 fails" );
+    AssertEqual( p.Evaluate( Integer.From( 5 ) ), false );
 }
 
 
