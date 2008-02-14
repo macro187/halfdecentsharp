@@ -428,6 +428,44 @@ Test_Integer()
 
 
 
+[Test( "IsNotNegative" )]
+public static void
+Test_IsNotNegative()
+{
+    IsNotNegative p = new IsNotNegative();
+
+    Print( "Positive passes" );
+    AssertEqual( p.Evaluate( Real.From( 1 ) ), true );
+
+    Print( "Zero passes" );
+    AssertEqual( p.Evaluate( Real.From( 0 ) ), true );
+
+    Print( "Negative fails" );
+    AssertEqual( p.Evaluate( Real.From( -1 ) ), false );
+}
+
+
+
+[Test( "IsLessThan" )]
+public static void
+Test_IsLessThan()
+{
+    IsLessThan< Real > p = new IsLessThan< Real >( Real.From( 10 ) );
+
+    // TODO "Evaluate( null ) throws BugException
+
+    Print( "Less than passes" );
+    AssertEqual( p.Evaluate( Real.From( 9 ) ), true );
+
+    Print( "Equal fails" );
+    AssertEqual( p.Evaluate( Real.From( 10 ) ), false );
+
+    Print( "Greater than fails" );
+    AssertEqual( p.Evaluate( Real.From( 11 ) ), false );
+}
+
+
+
 
 } // type
 } // namespace
