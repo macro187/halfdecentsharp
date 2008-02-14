@@ -93,6 +93,31 @@ Test_IsExistingPositionIn()
 
 
 
+[Test( "IsExistingOrNextPositionIn" )]
+public static void
+Test_IsExistingOrNextPositionIn()
+{
+    IList< int > list = new TestList();
+    IPredicate< Integer > p = new IsExistingOrNextPositionIn< int >( list );
+
+    Print( "-1 fails" );
+    AssertEqual( p.Evaluate( Integer.From( -1 ) ), false );
+
+    Print( "0 passes" );
+    AssertEqual( p.Evaluate( Integer.From( 0 ) ), true );
+
+    Print( "4 passes" );
+    AssertEqual( p.Evaluate( Integer.From( 1 ) ), true );
+
+    Print( "5 passes" );
+    AssertEqual( p.Evaluate( Integer.From( 5 ) ), true );
+
+    Print( "6 fails" );
+    AssertEqual( p.Evaluate( Integer.From( 6 ) ), false );
+}
+
+
+
 
 } // type
 } // namespace
