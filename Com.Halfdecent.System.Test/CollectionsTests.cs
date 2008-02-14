@@ -56,14 +56,14 @@ CollectionsTests
 
 
 
-[Test( "Algorithms" )]
+[Test( "CollectionsAlgorithms" )]
 public static void
-Test_Algorithms()
+Test_CollectionsAlgorithms()
 {
-    Print( "Algorithms.CountViaStream()" );
+    Print( "CollectionsAlgorithms.CountViaStream()" );
     TestBag tb = new TestBag();
     AssertEqual(
-        Algorithms.CountViaStream< TestBag, int >( tb ),
+        CollectionsAlgorithms.CountViaStream< TestBag, int >( tb ),
         Integer.From( 5 ) );
 }
 
