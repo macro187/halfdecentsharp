@@ -77,8 +77,6 @@ this[
                             ///
                             ///  Requirements (<tt>set</tt>):
                             ///  - Really <tt>IsPresent< T ></tt>
-                            // TODO why is this necessary?
-                            ///  - Must not be a neutral culture
 ]
 {
     get;
