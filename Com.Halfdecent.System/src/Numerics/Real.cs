@@ -120,6 +120,17 @@ Equals(
 
 
 
+/// (see <tt>System.Object.ToString()</tt>)
+///
+public override
+string  /// @returns A hash code for this real
+ToString()
+{
+    return this.value.ToString();
+}
+
+
+
 /// (see <tt>System.Object.GetHashCode()</tt>)
 ///
 public override

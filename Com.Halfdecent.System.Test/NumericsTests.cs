@@ -79,6 +79,12 @@ Test_Real()
         r.Equals( new object() ),
         false );
 
+    Print( "ToString() (doesn't actually assert anything)" );
+    r1 = Real.From( 10 );
+    r2 = Real.From( 1.141m );
+    Print( r1.ToString() );
+    Print( r2.ToString() );
+
     Print( "Equals( Real )" );
     r = Real.From( 10 );
     r1 = Real.From( 10 );
