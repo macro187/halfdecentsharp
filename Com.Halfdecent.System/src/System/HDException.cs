@@ -54,6 +54,7 @@ HDException(
 }
 
 
+
 /// Create a new <tt>HDException</tt> with a given message and inner
 /// exception
 ///
@@ -74,9 +75,9 @@ HDException(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// Message
+/// A message explaining the reason for the exception
 ///
-new public
+new virtual public
 Localized< string >
 Message
 {
@@ -89,7 +90,7 @@ message;
 
 
 
-/// Override <tt>Exception.Message</tt> via <tt>HDExceptionShim</tt>
+/// Override of <tt>Exception.Message</tt> via <tt>HDExceptionShim</tt>
 protected override
 string
 BaseMessage
