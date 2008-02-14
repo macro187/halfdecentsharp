@@ -466,6 +466,66 @@ Test_IsLT()
 
 
 
+[Test( "IsLTE" )]
+public static void
+Test_IsLTE()
+{
+    IsLTE< Real > p = new IsLTE< Real >( Real.From( 10 ) );
+
+    // TODO "Evaluate( null ) throws BugException
+
+    Print( "Less than passes" );
+    AssertEqual( p.Evaluate( Real.From( 9 ) ), true );
+
+    Print( "Equal passes" );
+    AssertEqual( p.Evaluate( Real.From( 10 ) ), true );
+
+    Print( "Greater than fails" );
+    AssertEqual( p.Evaluate( Real.From( 11 ) ), false );
+}
+
+
+
+[Test( "IsGT" )]
+public static void
+Test_IsGT()
+{
+    IsGT< Real > p = new IsGT< Real >( Real.From( 10 ) );
+
+    // TODO "Evaluate( null ) throws BugException
+
+    Print( "Less than fails" );
+    AssertEqual( p.Evaluate( Real.From( 9 ) ), false );
+
+    Print( "Equal fails" );
+    AssertEqual( p.Evaluate( Real.From( 10 ) ), false );
+
+    Print( "Greater than passes" );
+    AssertEqual( p.Evaluate( Real.From( 11 ) ), true );
+}
+
+
+
+[Test( "IsGTE" )]
+public static void
+Test_IsGTE()
+{
+    IsGTE< Real > p = new IsGTE< Real >( Real.From( 10 ) );
+
+    // TODO "Evaluate( null ) throws BugException
+
+    Print( "Less than fails" );
+    AssertEqual( p.Evaluate( Real.From( 9 ) ), false );
+
+    Print( "Equal passes" );
+    AssertEqual( p.Evaluate( Real.From( 10 ) ), true );
+
+    Print( "Greater than passes" );
+    AssertEqual( p.Evaluate( Real.From( 11 ) ), true );
+}
+
+
+
 
 } // type
 } // namespace
