@@ -43,35 +43,10 @@ Real
 
 
 // -----------------------------------------------------------------------------
-#region Constants
+#region Constructors and Converters
 // -----------------------------------------------------------------------------
 
-/*
-public readonly
-Real
-ZERO = Real.From( 0 );
-
-
-public readonly
-Real
-ONE = Real.From( 1 );
-
-
-public readonly
-Real
-MINUSONE = Real.From( -1 );
-*/
-
-#endregion
-
-
-
-
-// -----------------------------------------------------------------------------
-#region Constructors
-// -----------------------------------------------------------------------------
-
-/// Create a new <tt>Real</tt> from a <tt>System.Decimal</tt> value
+/// "Widening" conversion from <tt>System.Decimal</tt>
 ///
 static public
 Real
@@ -84,9 +59,23 @@ From(
 
 
 
-/// Initialize a new <tt>Real</tt> with a <tt>System.Decimal</tt> value
+/// "Narrowing" conversion to <tt>System.Decimal</tt>
+///
+/// (Would throw a ValueException if the Real were out of Decimal's range, but
+/// since Decimal is currently used to implement Real, that can't happen)
 ///
 public
+decimal /// @returns A <tt>System.Decimal</tt> with the same value as this real
+ToDecimal()
+{
+    return this.value;
+}
+
+
+
+/// Initialize a new <tt>Real</tt> with a <tt>System.Decimal</tt> value
+///
+private
 Real(
     decimal value
 )
@@ -123,7 +112,7 @@ Equals(
 /// (see <tt>System.Object.ToString()</tt>)
 ///
 public override
-string  /// @returns A hash code for this real
+string
 ToString()
 {
     return this.value.ToString();
@@ -187,7 +176,7 @@ CompareTo(
 #region Methods
 // -----------------------------------------------------------------------------
 
-/// Computer whether this real is greater than another
+/// Compute whether this real is greater than another
 ///
 public
 bool        /// @returns Whether this real is greater than the other
@@ -200,7 +189,7 @@ GT(
 
 
 
-/// Computer whether this real is greater than or equal to another
+/// Compute whether this real is greater than or equal to another
 ///
 public
 bool        /// @returns Whether this real is greater than or equal to the other
@@ -213,7 +202,7 @@ GTE(
 
 
 
-/// Computer whether this real is less than another
+/// Compute whether this real is less than another
 ///
 public
 bool        /// @returns Whether this real is less than or equal to the other
@@ -226,7 +215,7 @@ LT(
 
 
 
-/// Computer whether this real is less than or equal to another
+/// Compute whether this real is less than or equal to another
 ///
 public
 bool        /// @returns Whether this real is less than or equal to the other
@@ -291,7 +280,6 @@ DividedBy(
 
 
 
-/*
 /// Compute the remainder when this real is divided by another
 ///
 public
@@ -300,22 +288,19 @@ RemainderWhenDividedBy(
     Real x  ///< The other real
 )
 {
-    return Real.From( this.value / x.value );
+    return Real.From( Decimal.Remainder( this.value, x.value ) );
 }
-*/
 
 
 
-/// Generate a <tt>System.Decimal</tt> with the same value as this real
-///
-/// TODO What exception would (theoretically) be thrown if this Real's value
-/// was out of range of System.Decimal?
+/// Generate the value of this real with the fractional part of it's value
+/// discarded
 ///
 public
-decimal /// @returns A <tt>System.Decimal</tt> with the same value as this real
-ToDecimal()
+Real
+Truncate()
 {
-    return this.value;
+    return Real.From( Decimal.Truncate( this.value ) );
 }
 
 #endregion
@@ -538,37 +523,6 @@ operator -(
 )
 {
     return Real.From( 0 ).Minus( r );
-}
-
-#endregion
-
-
-
-
-// -----------------------------------------------------------------------------
-#region Conversion Operators
-// -----------------------------------------------------------------------------
-
-/// Implicit from System.Decimal
-///
-public static
-implicit operator Real(
-    decimal d
-)
-{
-    return Real.From( d );
-}
-
-
-
-/// Explicit to System.Decimal
-///
-public static
-explicit operator decimal(
-    Real r
-)
-{
-    return r.ToDecimal();
 }
 
 #endregion

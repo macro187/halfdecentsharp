@@ -52,7 +52,6 @@ Test_Real()
     Real r2;
     Real r3;
     Real r4;
-    decimal d;
 
     Print( "From( System.Decimal ) and ToDecimal()" );
     r = Real.From( 10 );
@@ -138,6 +137,14 @@ Test_Real()
     Print( "DividedBy()" );
     r = r1.DividedBy( r2 );
     Assert( r.Equals( Real.From( 2 ) ) );
+    Print( "RemainderWhenDividedBy()" );
+    r = Real.From( 11 ).RemainderWhenDividedBy( Real.From( 5 ) );
+    Assert( r.Equals( Real.From( 1 ) ) );
+    Print( "Truncate()" );
+    r = Real.From( 1.141m );
+    Assert( r.Truncate().Equals( Real.From( 1 ) ) );
+    r = Real.From( -1.141m );
+    Assert( r.Truncate().Equals( Real.From( -1 ) ) );
     Print( "Real > Real" );
     AssertEqual( r1 > r2, true );
     AssertEqual( r1 > r3, false );
@@ -180,16 +187,6 @@ Test_Real()
     Print( "-Real" );
     r = -r1;
     Assert( r.Equals( Real.From( -10 ) ) );
-
-    Print( "explicit operator Real->Decimal" );
-    r = Real.From( 10 );
-    d = (decimal)r;
-    AssertEqual( d, 10m );
-
-    Print( "implicit operator Decimal->Real" );
-    d = 10;
-    r = d;
-    Assert( r.Equals( Real.From( 10 ) ) );
 }
 
 
