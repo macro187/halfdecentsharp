@@ -191,6 +191,243 @@ Test_Real()
 
 
 
+[Test( "Integer" )]
+public static void
+Test_Integer()
+{
+    Integer i;
+    bool threw;
+
+    Print( "From( Real ) and ToReal()" );
+    i = Integer.From( Real.From( 10 ) );
+    AssertEqual(
+        i.ToReal().Equals( Real.From( 10 ) ),
+        true );
+
+    Print( "From( fractional Real ) throws ValueException" );
+    threw = false;
+    try {
+        i = Integer.From( Real.From( 1.14m ) );
+    } catch( ValueException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+
+    Print( "From( System.Decimal ) and ToDecimal()" );
+    i = Integer.From( 10m );
+    AssertEqual< decimal >(
+        i.ToDecimal(),
+        10m );
+
+    Print( "From( fractional Decimal ) throws ValueException" );
+    threw = false;
+    try {
+        i = Integer.From( 1.14m );
+    } catch( ValueException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+
+    Print( "Equals( System.Object )" );
+    i = Integer.From( 10 );
+    AssertEqual(
+        i.Equals( Integer.From( 10 ) ),
+        true );
+    AssertEqual(
+        i.Equals( Integer.From( 20 ) ),
+        false );
+    AssertEqual(
+        i.Equals( new object() ),
+        false );
+
+    Print( "ToString() (doesn't actually assert anything)" );
+    Print( Integer.From( 10 ).ToString() );
+    Print( Integer.From( -100 ).ToString() );
+
+    Print( "Equals( Integer )" );
+    AssertEqual(
+        Integer.From( 10 ).Equals( Integer.From( 10 ) ),
+        true );
+    AssertEqual(
+        Integer.From( 10 ).Equals( Integer.From( -100 ) ),
+        false );
+
+    Print( "CompareTo()" );
+    Assert( Integer.From( 10 ).CompareTo( Integer.From( 5 ) ) > 0 );
+    Assert( Integer.From( 10 ).CompareTo( Integer.From( 10 ) ) == 0 );
+    Assert( Integer.From( 10 ).CompareTo( Integer.From( 20 ) ) < 0 );
+
+
+    Print( "GT()" );
+    AssertEqual( Integer.From( 10 ).GT( Integer.From( 5 ) ), true );
+    AssertEqual( Integer.From( 10 ).GT( Integer.From( 10 ) ), false );
+    AssertEqual( Integer.From( 10 ).GT( Integer.From( 20 ) ), false );
+
+    Print( "GTE()" );
+    AssertEqual( Integer.From( 10 ).GTE( Integer.From( 5 ) ), true );
+    AssertEqual( Integer.From( 10 ).GTE( Integer.From( 10 ) ), true );
+    AssertEqual( Integer.From( 10 ).GTE( Integer.From( 20 ) ), false );
+
+    Print( "LT()" );
+    AssertEqual( Integer.From( 10 ).LT( Integer.From( 5 ) ), false );
+    AssertEqual( Integer.From( 10 ).LT( Integer.From( 10 ) ), false );
+    AssertEqual( Integer.From( 10 ).LT( Integer.From( 20 ) ), true );
+
+    Print( "LTE()" );
+    AssertEqual( Integer.From( 10 ).LTE( Integer.From( 5 ) ), false );
+    AssertEqual( Integer.From( 10 ).LTE( Integer.From( 10 ) ), true );
+    AssertEqual( Integer.From( 10 ).LTE( Integer.From( 20 ) ), true );
+
+    Print( "Plus()" );
+    Assert( Integer.From( 10 ).Plus(
+        Integer.From( 5 ) ).Equals(
+        Integer.From( 15 ) ) );
+
+    Print( "Minus()" );
+    Assert( Integer.From( 10 ).Minus(
+        Integer.From( 5 ) ).Equals(
+        Integer.From( 5 ) ) );
+
+    Print( "Times()" );
+    Assert( Integer.From( 10 ).Times(
+        Integer.From( 5 ) ).Equals(
+        Integer.From( 50 ) ) );
+
+    Print( "DividedBy()" );
+    Assert( Integer.From( 25 ).DividedBy(
+        Integer.From( 10 ) ).Equals(
+        Real.From( 2.5m ) ) );
+
+    Print( "RemainderWhenDividedBy()" );
+    Assert( Integer.From( 25 ).RemainderWhenDividedBy(
+        Integer.From( 10 ) ).Equals(
+        Integer.From( 5 ) ) );
+
+    Print( "Truncate()" );
+    Assert( Integer.From( 5 ).Truncate().Equals( Integer.From( 5 ) ) );
+
+    Print( "Integer == Integer" );
+    AssertEqual(
+        Integer.From( 5 ) == Integer.From( 5 ),
+        true );
+    AssertEqual(
+        Integer.From( 5 ) == Integer.From( 10 ),
+        false );
+
+    Print( "Integer != Integer" );
+    AssertEqual(
+        Integer.From( 5 ) != Integer.From( 5 ),
+        false );
+    AssertEqual(
+        Integer.From( 5 ) != Integer.From( 10 ),
+        true );
+
+    Print( "Integer > Integer" );
+    AssertEqual(
+        Integer.From( 10 ) > Integer.From( 5 ),
+        true );
+    AssertEqual(
+        Integer.From( 10 ) > Integer.From( 10 ),
+        false );
+    AssertEqual(
+        Integer.From( 10 ) > Integer.From( 20 ),
+        false );
+
+    Print( "Integer >= Integer" );
+    AssertEqual(
+        Integer.From( 10 ) >= Integer.From( 5 ),
+        true );
+    AssertEqual(
+        Integer.From( 10 ) >= Integer.From( 10 ),
+        true );
+    AssertEqual(
+        Integer.From( 10 ) >= Integer.From( 20 ),
+        false );
+
+    Print( "Integer < Integer" );
+    AssertEqual(
+        Integer.From( 10 ) < Integer.From( 5 ),
+        false );
+    AssertEqual(
+        Integer.From( 10 ) < Integer.From( 10 ),
+        false );
+    AssertEqual(
+        Integer.From( 10 ) < Integer.From( 20 ),
+        true );
+
+    Print( "Integer <= Integer" );
+    AssertEqual(
+        Integer.From( 10 ) <= Integer.From( 5 ),
+        false );
+    AssertEqual(
+        Integer.From( 10 ) <= Integer.From( 10 ),
+        true );
+    AssertEqual(
+        Integer.From( 10 ) <= Integer.From( 20 ),
+        true );
+
+    Print( "Integer + Integer" );
+    Assert(
+        ( Integer.From( 10 ) + Integer.From( 5 ) ).Equals(
+        Integer.From( 15 ) ) );
+
+    Print( "Integer - Integer" );
+    Assert(
+        ( Integer.From( 10 ) - Integer.From( 5 ) ).Equals(
+        Integer.From( 5 ) ) );
+
+    Print( "Integer * Integer" );
+    Assert(
+        ( Integer.From( 10 ) * Integer.From( 5 ) ).Equals(
+        Integer.From( 50 ) ) );
+
+    Print( "Integer / Integer" );
+    Assert(
+        ( Integer.From( 25 ) / Integer.From( 10 ) ).Equals(
+        Real.From( 2.5m ) ) );
+
+    Print( "Integer % Integer" );
+    Assert(
+        ( Integer.From( 25 ) % Integer.From( 10 ) ).Equals(
+        Integer.From( 5 ) ) );
+
+    Print( "Integer++" );
+    i = Integer.From( 5 );
+    i++;
+    Assert( i.Equals( Integer.From( 6 ) ) );
+
+    Print( "Integer--" );
+    i = Integer.From( 5 );
+    i--;
+    Assert( i.Equals( Integer.From( 4 ) ) );
+
+    Print( "+Integer" );
+    i = Integer.From( 5 );
+    Assert( (+i).Equals( Integer.From( 5 ) ) );
+
+    Print( "-Integer" );
+    i = Integer.From( 5 );
+    Assert( (-i).Equals( Integer.From( -5 ) ) );
+
+    Print( "Explicit Real -> Integer" );
+    Assert( ( (Integer)(Real.From( 10 )) ).Equals( Integer.From( 10 ) ) );
+
+    Print( "Explicit fractional Real -> Integer throws ValueException" );
+    threw = false;
+    try {
+        i = (Integer)(Real.From( 1.14m ));
+    } catch( ValueException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+
+    Print( "Implicit Integer -> Real" );
+    Real r = Integer.From( 10 );
+    Assert( r.Equals( Real.From( 10 ) ) );
+}
+
+
+
 
 } // type
 } // namespace
