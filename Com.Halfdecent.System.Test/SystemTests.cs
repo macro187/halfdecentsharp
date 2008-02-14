@@ -150,6 +150,36 @@ Test_IsA()
 
 
 
+[Test( "IsNotBlank" )]
+public static void
+Test_IsNotBlank()
+{
+    IsNotBlank isnotblank = new IsNotBlank();
+
+    PrintPredicateStrings( isnotblank );
+
+    Print( "true if not blank" );
+    AssertEqual(
+        isnotblank.Evaluate( "i'm not blank" ),
+        true );
+
+    Print( "false if blank" );
+    AssertEqual(
+        isnotblank.Evaluate( "" ),
+        false );
+
+    Print( "BugException if evaluate null" );
+    bool threw = false;
+    try {
+        isnotblank.Evaluate( null );
+    } catch( BugException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+}
+
+
+
 
 } // type
 } // namespace
