@@ -42,7 +42,7 @@ IsNotZero
 override public
 void
 Demand(
-    Real term
+    Real term   ///< - Must be present
 )
 {
     new IsPresent().BugDemand( term );
