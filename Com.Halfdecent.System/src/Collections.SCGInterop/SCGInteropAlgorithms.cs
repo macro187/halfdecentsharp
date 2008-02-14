@@ -185,39 +185,6 @@ IListGetAtViaIList<
 
 
 
-/*
-/// <tt>IListCanStreamForward< T >.StreamForward()</tt> via
-/// <tt>System.Collections.Generic.IList< T ></tt>
-///
-IFiniteStream< T >
-IListStreamForwardViaIList<
-    T
->(
-    SCG.IList< T > list
-)
-{
-    return new IFiniteStreamFromIEnumeratorAdapter(
-        StreamForward_Iterate( list ) );
-}
-
-
-private static
-IEnumerator< T >
-StreamForward_Iterate<
-    T
->(
-    SCG.IList< T > list
-)
-{
-    for( int i = 0; i < list.Count; i++ ) {
-        yield return list[ i ];
-    }
-}
-*/
-
-
-
-
 } // type
 } // namespace
 
