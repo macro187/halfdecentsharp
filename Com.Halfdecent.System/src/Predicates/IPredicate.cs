@@ -32,71 +32,74 @@ Com.Halfdecent.Predicates
 /// is some condition of a term that may be true or false.
 ///
 public interface
-Predicate
+IPredicate
 {
 
 
 
 /*
-/// Evaluate the predicate against a given term
+/// Evaluate the predicate against a term
 ///
-bool                /// @returns Whether the predicate is true of the given term
-Evaluate<
-    TTerm           ///< The type of term the predicate applies to
->(
-    TTerm term      ///< The term
+bool    /// @returns Whether the predicate is true of the given term
+Evaluate
+(
+    object term ///< The term
+);
+
+
+/// Demand that a term conform to the predicate
+///
+/// @exception PredicateValueException
+/// If the term does not conform to the predicate
+///
+void
+Demand
+(
+    object term ///< The term
 );
 */
 
 
 
-// XXX: Do the following natural language phrases require the name of the term
-//      to be passed as an argument?  They work in english without the term,
-//      but does that hold for all languages?
-
-
-
-/// A natural language phrase describing what can be said of a term if it
+/// Generate a natural language statement that can be said of a term if it
 /// conforms to this predicate
 ///
-/// eg. "is even"
-/// eg. "is a valid url"
-/// eg. "contains at least 3 items"
+/// eg. "... is even"
+/// eg. "... is a valid url"
+/// eg. "... contains at least 3 items"
 ///
 Localized< string >
-TrueDescription
-{
-    get;
-}
+SayConforms(
+    Localized< string > termIdentifier  ///< Phrase identifying the term
+);
 
 
 
-/// A natural language phrase describing what can be said of a term if it
+/// Generate a natural language statement that can be said of a term if it
 /// <em>does not</em> conform to this predicate
 ///
-/// eg. "is not even"
-/// eg. "is not a valid url"
-/// eg. "contains less than 3 items"
+/// eg. "... is not even"
+/// eg. "... is not a valid url"
+/// eg. "... contains less than 3 items"
 ///
 Localized< string >
-FalseDescription
-{
-    get;
-}
+SayDoesNotConform(
+    Localized< string > termIdentifier  ///< Phrase identifying the term
+);
 
 
 
-/// A natural language phrase that demands a value conform to this predicate
+/// Generate a natural language statement demanding a term conform to this
+/// predicate
 ///
-/// eg. "must be even"
-/// eg. "must be a valid url"
-/// eg. "must contains at least 3 items"
+/// eg. "... must be even"
+/// eg. "... must be a valid url"
+/// eg. "... must contains at least 3 items"
 ///
 Localized< string >
-Demand
-{
-    get;
-}
+SayDemand(
+    Localized< string > termIdentifier  ///< Phrase identifying the term
+);
 
 
 

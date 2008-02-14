@@ -14,6 +14,7 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Globalization;
 using Com.Halfdecent.Resources;
@@ -26,58 +27,68 @@ Com.Halfdecent.Predicates
 
 
 
-/// Predicate: "is of the runtime type T"
+/// Predicate base class
 ///
-public class
-IsAPredicate<
-    T ///< The runtime type the predicate checks for
+public abstract class
+PredicateBase<
+    T
 >
-    : Predicate
+    : IPredicate< T >
 {
 
 
 
-/// (see Predicate.Evaluate())
+/// (see IPredicate< T >.Evaluate())
 public
 bool
-Evaluate<
-    TTerm
->(
-    TTerm term
+Evaluate(
+    T term
 )
 {
-    return (term is T);
+    bool r = true;
+    try {
+        this.Demand( term );
+    } catch( PredicateValueException ) {
+        r = false;
+    }
+    return r;
 }
 
 
 
-/// (see Predicate.TrueDescription)
-public
+/// (see IPredicate< T >.Demand())
+abstract public
+void
+Demand(
+    T term
+);
+
+
+
+/// (see IPredicate.SayConforms())
+abstract public
 Localized< string >
-TrueDescription
-{
-    get { return Resource._S( "is a {0}", typeof(T).FullName ); }
-}
+SayConforms(
+    Localized< string > termIdentifier
+);
 
 
 
-/// (see Predicate.FalseDescription)
-public
+/// (see IPredicate.SayDoesNotConform())
+abstract public
 Localized< string >
-FalseDescription
-{
-    get { return Resource._S( "is not a {0}", typeof(T).FullName ); }
-}
+SayDoesNotConform(
+    Localized< string > termIdentifier
+);
 
 
 
-/// (see Predicate.Demand)
-public
+/// (see IPredicate.SayDemand)
+abstract public
 Localized< string >
-Demand
-{
-    get { return Resource._S( "must be a {0}", typeof(T).FullName ); }
-}
+SayDemand(
+    Localized< string > termIdentifier
+);
 
 
 

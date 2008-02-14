@@ -23,7 +23,7 @@ using Com.Halfdecent.System;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Collections;
 */
-using P = Com.Halfdecent.Predicates;
+using Com.Halfdecent.Predicates;
 
 
 namespace
@@ -43,57 +43,60 @@ PredicatesTests
 
 static private
 void
-PrintStrings( P.Predicate p )
+PrintStrings( IPredicate p )
 {
-    Print( "TrueDescription: '{0}'", p.TrueDescription );
-    Print( "FalseDescription: '{0}'", p.FalseDescription );
-    Print( "Demand: '{0}'", p.Demand );
+    Print( "SayConforms(X): '{0}'",
+        p.SayConforms( "X" ) );
+    Print( "SayDoesNotConform(X): '{0}'",
+        p.SayDoesNotConform( "X" ) );
+    Print( "SayDemand(X): '{0}'",
+        p.SayDemand( "X" ) );
 }
 
 
 
-[Test( "NotNullPredicate" )]
+[Test( "IsNotNull" )]
 public static void
-Test_NotNullPredicate()
+Test_IsNotNull()
 {
-    P.NotNullPredicate p = new P.NotNullPredicate();
+    IsNotNull isnotnull = new IsNotNull();
     object obj;
 
-    PrintStrings( p );
+    PrintStrings( isnotnull );
 
     Print( "true if not null" );
     obj = new object();
     AssertEqual(
-        p.Evaluate( obj ),
+        isnotnull.Evaluate( obj ),
         true );
 
     Print( "false if null" );
     obj = null;
     AssertEqual(
-        p.Evaluate( obj ),
+        isnotnull.Evaluate( obj ),
         false );
 }
 
 
 
-[Test( "IsAPredicate" )]
+[Test( "IsA" )]
 public static void
-Test_IsAPredicate()
+Test_IsA()
 {
-    P.IsAPredicate< int > p = new P.IsAPredicate< int >();
+    IsA< int > isaint = new IsA< int >();
     object o = new object();
     int i = 5;
 
-    PrintStrings( p );
+    PrintStrings( isaint );
 
     Print( "true if of the specified type" );
     AssertEqual(
-        p.Evaluate( i ),
+        isaint.Evaluate( i ),
         true );
 
     Print( "false if not" );
     AssertEqual(
-        p.Evaluate( o ),
+        isaint.Evaluate( o ),
         false );
 }
 

@@ -17,7 +17,6 @@
 
 using System;
 using Com.Halfdecent.Globalization;
-using Com.Halfdecent.Resources;
 
 
 namespace
@@ -27,57 +26,37 @@ Com.Halfdecent.Predicates
 
 
 
-/// Predicate: "is not <tt>null</tt>"
+/// A predicate applying to terms of a particular type
 ///
-public class
-NotNullPredicate
-    : Predicate
+public interface
+IPredicate<
+    T   ///< The type of term the predicate applies to
+>
+    : IPredicate
 {
 
 
 
-/// (see Predicate.Evaluate())
-public
-bool
-Evaluate<
-    T
->(
-    T term
-)
-    where T : class
-{
-    return (term != null);
-}
+/// Evaluate the predicate against a term
+///
+bool        /// @returns Whether the predicate is true of the given term
+Evaluate
+(
+    T term  ///< The term
+);
 
 
 
-/// (see Predicate.TrueDescription)
-public
-Localized< string >
-TrueDescription
-{
-    get { return Resource._S( "is not null" ); }
-}
-
-
-
-/// (see Predicate.FalseDescription)
-public
-Localized< string >
-FalseDescription
-{
-    get { return Resource._S( "is null" ); }
-}
-
-
-
-/// (see Predicate.Demand)
-public
-Localized< string >
+/// Demand that a term conform to the predicate
+///
+/// @exception PredicateValueException
+/// If the term does not conform to the predicate
+///
+void
 Demand
-{
-    get { return Resource._S( "must not be null" ); }
-}
+(
+    T term  ///< The term
+);
 
 
 
