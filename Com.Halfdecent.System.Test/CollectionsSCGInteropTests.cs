@@ -133,6 +133,45 @@ Test_IBagFromReadOnlyICollectionAdapter()
 
 
 
+[Test( "IBagFromGrowableICollectionAdapter" )]
+public static
+void
+Test_IBagFromGrowableICollectionAdapter()
+{
+    SCG.IList< int >                            list;
+    IBagFromGrowableICollectionAdapter< int >   adapter;
+    bool                                        threw;
+    int                                         i;
+
+    Print( "Add()" );
+    list = MakeTestList();
+    adapter = new IBagFromGrowableICollectionAdapter< int >( list );
+    adapter.Add( 6 );
+    AssertEqual( adapter.Count, Integer.From( 6 ) );
+    i = 1;
+    foreach( int item in adapter.Stream() ) {
+        AssertEqual( item, i );
+        Assert( i <= 6 );
+        i++;
+    }
+    AssertEqual( i, 7 );
+
+    Print( "Add() to non-growable collection throws BugException" );
+    adapter = new IBagFromGrowableICollectionAdapter< int >(
+        new int[] { 1, 2, 3, 4, 5 } );
+    threw = false;
+    try {
+        adapter.Add( 6 );
+    } catch( BugException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+
+    if( adapter == null ) {} // avoid warning
+}
+
+
+
 
 
 } // type

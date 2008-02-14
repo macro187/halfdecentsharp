@@ -17,6 +17,7 @@
 
 using System;
 using SCG = System.Collections.Generic;
+using R = Com.Halfdecent.Resources.Resource;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
@@ -101,7 +102,7 @@ IBagCountViaICollection<
 
 
 /// <tt>IBag.RemoveAll()</tt> via
-/// a resizable <tt>System.Collections.Generic.ICollection< T ></tt>
+/// a shrinkable <tt>System.Collections.Generic.ICollection< T ></tt>
 ///
 /// @par Description
 /// Uses the collection's <tt>Clear()</tt> method
@@ -109,9 +110,10 @@ IBagCountViaICollection<
 /// @par Complexity
 /// Depends on the collection's <tt>Clear()</tt> implementation
 ///
-/// @exception (unknown)
-/// If the underlying collection is not shrinkable, it's <tt>Clear()</tt>
-/// implementation will likely throw some kind of exception
+/// @exception BugException
+/// The underlying collection is not shrinkable.  <tt>InnerException</tt> will
+/// be the <tt>NotSupportedException</tt> thrown by the underlying collection's
+/// <tt>Clear()</tt> method.
 ///
 public static
 void
@@ -123,7 +125,38 @@ IBagRemoveAllViaICollection<
 )
 {
     new IsPresent().ReallyRequire( collection );
-    collection.Clear();
+    try {
+        collection.Clear();
+    } catch( NotSupportedException e ) {
+        throw new BugException(
+            R._S("This collection is not shrinkable"),
+            e );
+    }
+}
+
+
+
+/// <tt>IBag< T >.Add()</tt> via a growable
+/// <tt>System.Collections.Generic.ICollection< T ></tt>
+///
+public static
+void
+IBagAddViaICollection<
+    T
+>(
+    SCG.ICollection< T >    collection, ///< A resizable collection
+                                        ///  - Really <tt>IsPresent</tt>
+    T                       item        ///< The item to add
+)
+{
+    new IsPresent().ReallyRequire( collection );
+    try {
+        collection.Add( item );
+    } catch( NotSupportedException e ) {
+        throw new BugException(
+            R._S("This collection is not growable"),
+            e );
+    }
 }
 
 
