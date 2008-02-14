@@ -62,7 +62,7 @@ TypeFiniteStreamFilter(
 // Methods
 // -----------------------------------------------------------------------------
 
-/// (See <tt>FiniteStreamFilterBasee< TIn, TOut >.Filter()</tt>)
+/// (See <tt>FiniteStreamFilterBase< TIn, TOut >.Filter()</tt>)
 ///
 protected override
 bool
