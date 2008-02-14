@@ -34,13 +34,9 @@ Com.Halfdecent.Resources
 
 /// Utilities for working with resources
 ///
-public class
+public static class
 Resource
 {
-
-// TODO use static class instead
-/// (not creatable)
-private Resource() {}
 
 
 

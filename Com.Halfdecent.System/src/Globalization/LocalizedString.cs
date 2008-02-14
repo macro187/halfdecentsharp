@@ -30,12 +30,9 @@ Com.Halfdecent.Globalization
 
 /// Utilities for working with <tt>Localized< string ></tt>s
 ///
-public class
+public static class
 LocalizedString
 {
-
-/// (not creatable)
-private LocalizedString() {}
 
 
 

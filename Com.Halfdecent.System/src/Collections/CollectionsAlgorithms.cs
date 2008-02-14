@@ -30,14 +30,10 @@ Com.Halfdecent.Collections
 
 
 /// %Collections algorithms
-public class
+public static class
 CollectionsAlgorithms
 {
 
-
-
-// not creatable
-private CollectionsAlgorithms() {}
 
 
 

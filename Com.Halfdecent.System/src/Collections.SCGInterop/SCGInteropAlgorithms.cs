@@ -33,14 +33,10 @@ Com.Halfdecent.Collections.SCGInterop
 
 /// Collection operation implementations in terms of
 /// <tt>System.Collections.Generic</tt> types
-public class
+public static class
 SCGInteropAlgorithms
 {
 
-
-
-// not creatable
-private SCGInteropAlgorithms() {}
 
 
 
