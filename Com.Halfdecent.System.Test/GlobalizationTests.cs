@@ -133,56 +133,6 @@ Test_AssignmentRetrieval()
 
 
 
-[Test( "DeluxeException" )]
-public static void
-Test_DeluxeException()
-{
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
-    CultureInfo current;
-
-    Localized<string> msg = new InMemoryLocalized<string>( "message" );
-    msg[fr] = "la message";
-
-    Exception e;
-    DeluxeException de;
-
-    Print( "DeluxeException( string )" );
-    de = new DeluxeException( "message" );
-    Print( "Check Message" );
-    AssertEqual<string>( de.Message, "message" );
-    Print( "Check Exception::Message" );
-    e = de;
-    AssertEqual( e.Message, "message" );
-
-    Print( "DeluxeException( Localized<string> )" );
-    de = new DeluxeException( msg );
-    Print( "Check localized messages" );
-    AssertEqual<string>( de.Message[en], "message" );
-    AssertEqual<string>( de.Message[fr], "la message" );
-    Print( "Check localized messages (via Exception::Message)" );
-    e = de;
-    current = Thread.CurrentThread.CurrentCulture;
-    try {
-        Thread.CurrentThread.CurrentCulture = en;
-        AssertEqual( e.Message, "message" );
-        Thread.CurrentThread.CurrentCulture = fr;
-        AssertEqual( e.Message, "la message" );
-    } finally {
-        Thread.CurrentThread.CurrentCulture = current;
-    }
-
-    Print( "DeluxeException( Localized<string>, Exception )" );
-    Exception ie = new ArgumentException();
-    de = new DeluxeException( msg, ie );
-    Print( "Check InnerException" );
-    AssertEqual( de.InnerException, ie );
-
-    if( e == null ) {}
-}
-
-
-
 [Test( "LocalizedString.Format()" )]
 public static void
 Test_LocalizedString_Format()
