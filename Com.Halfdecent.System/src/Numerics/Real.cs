@@ -176,6 +176,58 @@ CompareTo(
 #region Methods
 // -----------------------------------------------------------------------------
 
+/// Computer whether this real is greater than another
+///
+public
+bool        /// @returns Whether this real is greater than the other
+GT(
+    Real x  ///< The other real
+)
+{
+    return (this.CompareTo( x ) > 0);
+}
+
+
+
+/// Computer whether this real is greater than or equal to another
+///
+public
+bool        /// @returns Whether this real is greater than or equal to the other
+GTE(
+    Real x  ///< The other real
+)
+{
+    return (this.CompareTo( x ) >= 0);
+}
+
+
+
+/// Computer whether this real is less than another
+///
+public
+bool        /// @returns Whether this real is less than or equal to the other
+LT(
+    Real x  ///< The other real
+)
+{
+    return (this.CompareTo( x ) < 0);
+}
+
+
+
+/// Computer whether this real is less than or equal to another
+///
+public
+bool        /// @returns Whether this real is less than or equal to the other
+LTE(
+    Real x  ///< The other real
+)
+{
+    return (this.CompareTo( x ) <= 0);
+}
+
+
+
 /// Compute this real plus another
 ///
 public
@@ -253,6 +305,97 @@ decimal /// @returns A <tt>System.Decimal</tt> with the same value as this real
 ToDecimal()
 {
     return this.value;
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region Equality and Comparison Operators
+// -----------------------------------------------------------------------------
+
+/// <tt>Real == Real</tt>
+///
+public static
+bool
+operator ==(
+    Real r1,
+    Real r2
+)
+{
+    return r1.Equals( r2 );
+}
+
+
+
+/// <tt>Real != Real</tt>
+///
+public static
+bool
+operator !=(
+    Real r1,
+    Real r2
+)
+{
+    return !(r1 == r2);
+}
+
+
+
+/// <tt>Real > Real</tt>
+///
+public static
+bool
+operator >(
+    Real r1,
+    Real r2
+)
+{
+    return r1.GT( r2 );
+}
+
+
+
+/// <tt>Real >= Real</tt>
+///
+public static
+bool
+operator >=(
+    Real r1,
+    Real r2
+)
+{
+    return r1.GTE( r2 );
+}
+
+
+
+/// <tt>Real < Real</tt>
+///
+public static
+bool
+operator <(
+    Real r1,
+    Real r2
+)
+{
+    return r1.LT( r2 );
+}
+
+
+
+/// <tt>Real <= Real</tt>
+///
+public static
+bool
+operator <=(
+    Real r1,
+    Real r2
+)
+{
+    return r1.LTE( r2 );
 }
 
 #endregion

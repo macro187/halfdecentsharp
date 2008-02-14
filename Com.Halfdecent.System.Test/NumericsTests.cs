@@ -51,6 +51,7 @@ Test_Real()
     Real r1;
     Real r2;
     Real r3;
+    Real r4;
     decimal d;
 
     Print( "From( System.Decimal ) and ToDecimal()" );
@@ -100,7 +101,25 @@ Test_Real()
 
     r1 = Real.From( 10 );
     r2 = Real.From( 5 );
+    r3 = Real.From( 10 );
+    r4 = Real.From( 20 );
 
+    Print( "GT()" );
+    AssertEqual( r1.GT( r2 ), true );
+    AssertEqual( r1.GT( r3 ), false );
+    AssertEqual( r1.GT( r4 ), false );
+    Print( "GTE()" );
+    AssertEqual( r1.GTE( r2 ), true );
+    AssertEqual( r1.GTE( r3 ), true );
+    AssertEqual( r1.GTE( r4 ), false );
+    Print( "LT()" );
+    AssertEqual( r1.LT( r2 ), false );
+    AssertEqual( r1.LT( r3 ), false );
+    AssertEqual( r1.LT( r4 ), true );
+    Print( "LTE()" );
+    AssertEqual( r1.LTE( r2 ), false );
+    AssertEqual( r1.LTE( r3 ), true );
+    AssertEqual( r1.LTE( r4 ), true );
     Print( "Plus()" );
     r = r1.Plus( r2 );
     Assert( r.Equals( Real.From( 15 ) ) );
@@ -113,6 +132,22 @@ Test_Real()
     Print( "DividedBy()" );
     r = r1.DividedBy( r2 );
     Assert( r.Equals( Real.From( 2 ) ) );
+    Print( "Real > Real" );
+    AssertEqual( r1 > r2, true );
+    AssertEqual( r1 > r3, false );
+    AssertEqual( r1 > r4, false );
+    Print( "Real >= Real" );
+    AssertEqual( r1 >= r2, true );
+    AssertEqual( r1 >= r3, true );
+    AssertEqual( r1 >= r4, false );
+    Print( "Real < Real" );
+    AssertEqual( r1 < r2, false );
+    AssertEqual( r1 < r3, false );
+    AssertEqual( r1 < r4, true );
+    Print( "Real <= Real" );
+    AssertEqual( r1 <= r2, false );
+    AssertEqual( r1 <= r3, true );
+    AssertEqual( r1 <= r4, true );
     Print( "Real + Real" );
     r = r1 + r2;
     Assert( r.Equals( Real.From( 15 ) ) );
