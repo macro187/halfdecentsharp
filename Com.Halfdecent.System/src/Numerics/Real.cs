@@ -273,6 +273,7 @@ public
 Real        /// @returns This real divided by the other
 DividedBy(
     Real x  ///< The other real
+            ///  - Must not be zero
 )
 {
     new IsNotZero().Demand( x );
@@ -287,6 +288,7 @@ public
 Real        /// @returns The remainder when this real is divided by the other
 RemainderWhenDividedBy(
     Real x  ///< The other real
+            ///  - Must not be zero
 )
 {
     new IsNotZero().Demand( x );
