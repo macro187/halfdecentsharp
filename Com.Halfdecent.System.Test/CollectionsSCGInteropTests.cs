@@ -203,6 +203,63 @@ Test_IBagFromShrinkableICollectionAdapter()
 
 
 
+[Test( "IBagFromResizableICollectionAdapter" )]
+public static
+void
+Test_IBagFromResizableICollectionAdapter()
+{
+    SCG.IList< int >                            list;
+    IBagFromResizableICollectionAdapter< int >  adapter;
+    bool                                        threw;
+    int                                         i;
+
+    Print( "Add()" );
+    list = MakeTestList();
+    adapter = new IBagFromResizableICollectionAdapter< int >( list );
+    adapter.Add( 6 );
+    AssertEqual( adapter.Count, Integer.From( 6 ) );
+    i = 1;
+    foreach( int item in adapter.Stream() ) {
+        AssertEqual( item, i );
+        Assert( i <= 6 );
+        i++;
+    }
+    AssertEqual( i, 7 );
+
+    Print( "Add() to non-growable collection throws BugException" );
+    adapter = new IBagFromResizableICollectionAdapter< int >(
+        new int[] { 1, 2, 3, 4, 5 } );
+    threw = false;
+    try {
+        adapter.Add( 6 );
+    } catch( BugException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+
+
+    Print( "RemoveAll()" );
+    list = MakeTestList();
+    adapter = new IBagFromResizableICollectionAdapter< int >( list );
+    adapter.RemoveAll();
+    AssertEqual( adapter.Count, Integer.From( 0 ) );
+
+    Print( "RemoveAll() on non-shrinkable collection throws BugException" );
+    adapter = new IBagFromResizableICollectionAdapter< int >(
+        new int[] { 1, 2, 3, 4, 5 } );
+    threw = false;
+    try {
+        adapter.RemoveAll();
+    } catch( BugException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+
+    if( adapter == null ) {} // avoid warning
+}
+
+
+
 
 } // type
 } // namespace
