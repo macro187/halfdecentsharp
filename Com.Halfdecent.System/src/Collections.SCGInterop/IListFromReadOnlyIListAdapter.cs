@@ -96,15 +96,13 @@ GetAt(
     Integer position    ///< The position of the item to get
                         ///
                         ///  Requirements:
-                        ///  - IsPresent
-                        ///  - IsNotNegative
-                        ///  - IsLT( this.Count )
+                        ///  - <tt>IsPresent< T ></tt>
+                        ///  - <tt>IsExistingPositionIn< T >( this )</tt>
 )
 {
     new IsPresent< Integer >().Require( position );
-    new IsNotNegative().Require( position );
-    new IsLT< Integer >( this.Count ).Require( position );
-    return SCGInteropAlgorithms.IListGetAtViaIList< T >( this.list, position );
+    new IsExistingPositionIn< T >( this ).Require( position );
+    return SCGInteropAlgorithms.IListGetAtViaIList< T >( this.List, position );
 }
 
 
