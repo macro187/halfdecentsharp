@@ -18,7 +18,7 @@
 using System;
 using System.Threading;
 using System.Globalization;
-
+using Com.Halfdecent.System;
 
 
 namespace
@@ -27,14 +27,14 @@ Com.Halfdecent.Globalization
 
 
 
-/// <summary>
-/// Utilities for working with <c>Localized&lt;string&gt;</c>s
-/// </summary>
+
+/// Utilities for working with <tt>Localized< string ></tt>s
+///
 public class
 LocalizedString
 {
 
-// (not creatable)
+/// (not creatable)
 private LocalizedString() {}
 
 
@@ -44,36 +44,38 @@ private LocalizedString() {}
 // Methods
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Localized equivalent of <c>String.Format()</c>
-/// </summary>
-/// <remarks>
-/// <c>Format()</c> returns a <c>Localized&lt;string&gt;</c> that performs the
-/// actual formatting of the <c>format</c> string and <c>args</c> in an
+/// Localization-aware equivalent of <tt>String.Format()</tt>
+///
+/// <tt>Format()</tt> returns a <tt>Localized< string ></tt> that performs the
+/// underlying <tt>System.String.Format()</tt> operation in an on-demand
+/// fashion.
+///
+/// actual formatting of the <tt>format</tt> string and <tt>args</tt> in an
 /// on-demand fashion.
 ///
-/// This means that the returned <c>Localized&lt;string&gt;</c>'s final value
+/// This means that the returned <tt>Localized< string ></tt>'s final value
 /// may appear differently at different times depending on the thread's
-/// <c>CurrentCulture</c> (or the requested culture if the <c>[]</c> operator
-/// is used)
+/// <tt>CurrentCulture</tt> (or the requested culture if the <tt>[]</tt>
+/// operator is used)
 ///
-/// As <c>String.Format()</c> is used internally, final values will be
+/// As <tt>String.Format()</tt> is used internally, final values will be
 /// formatted appropriately according to the current/requested culture.
 ///
-/// Note that if any format <c>args</c> are themselves
-/// <c>Localized&lt;T&gt;</c>s, they too may change according to culture, thus
-/// influencing final values.  Indeed, multiple nested
-/// <c>Localized&lt;T&gt;</c>'s can be used, and they will all be evaluated
-/// appropriately on-demand.
-/// </remarks>
-public static Localized<string>
+/// Note that if any format <tt>args</tt> are themselves
+/// <tt>Localized< T ></tt>s, they too may change according to culture, thus
+/// influencing final values.  Indeed, strings consisting of multiple nested
+/// <tt>Localized< T ></tt>'s can result, with all constituent items being
+/// evaluated appropriately on-demand.
+///
+public static
+Localized< string >
 Format(
-    Localized<string>   format,
+    Localized< string > format,
     params object[]     args
 )
 {
-    if( format == null ) throw new ArgumentNullException( "format" );
-    if( args == null ) throw new ArgumentNullException( "args" );
+    new IsNotNull().BugDemand( format );
+    new IsNotNull().BugDemand( args );
     return new FormattedLocalizedString( format, args );
 }
 
@@ -105,7 +107,6 @@ FormattedLocalizedString
     private object[]
     args;
 
-    /// <summary>(see base)</summary>
     public override string
     this[ CultureInfo culture ]
     {

@@ -18,7 +18,8 @@
 using System;
 using System.Globalization;
 using System.Collections.Generic;
-
+using Com.Halfdecent.System;
+using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -27,12 +28,12 @@ Com.Halfdecent.Globalization
 
 
 
-/// <summary>
+
 /// A read/write in-memory localized item
-/// </summary>
+///
 public class
-InMemoryLocalized<T>
-    : Localized<T>
+InMemoryLocalized< T >
+    : Localized< T >
     where T : class
 {
 
@@ -43,16 +44,16 @@ InMemoryLocalized<T>
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Create a new <c>InMemoryLocalized&lt;T&gt;</c> with a given
+/// Create a new <tt>InMemoryLocalized< T ></tt> with a given
 /// invariant/untranslated version
-/// </summary>
+///
 public
-InMemoryLocalized( T invariantversion )
+InMemoryLocalized(
+    T invariantVersion
+)
 {
-    if( invariantversion == null )
-        throw new ArgumentNullException( "invariantversion" );
-    this[ CultureInfo.InvariantCulture ] = invariantversion;
+    new IsNotNull().BugDemand( invariantVersion );
+    this[ CultureInfo.InvariantCulture ] = invariantVersion;
 }
 
 
@@ -62,15 +63,17 @@ InMemoryLocalized( T invariantversion )
 // Properties
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// (see <c>Localized&lt;T&gt;)
-/// </summary>
-public override T
-this[ CultureInfo culture ]
+/// (see <tt>Localized< T ></tt>)
+///
+public override
+T
+this[
+    CultureInfo culture
+]
 {
     get
     {
-        if( culture == null ) throw new ArgumentNullException( "culture" );
+        new IsNotNull().BugDemand( culture );
         T r;
         for( CultureInfo c = culture; ; c = c.Parent ) {
             if( this.data.ContainsKey( c ) ) {
@@ -78,14 +81,14 @@ this[ CultureInfo culture ]
                 break;
             }
             if( c == CultureInfo.InvariantCulture )
-                throw new Exception( "BUG: No invariant version" );
+                throw new BugException( R._S("BUG: No invariant version") );
         }
         return r;
     }
     set
     {
-        if( culture == null ) throw new ArgumentNullException( "culture" );
-        if( value == null ) throw new ArgumentNullException();
+        new IsNotNull().BugDemand( culture );
+        new IsNotNull().BugDemand( value );
         this.data[ culture ] = value;
     }
 }
@@ -97,22 +100,17 @@ this[ CultureInfo culture ]
 // Methods
 // -----------------------------------------------------------------------------
 
-/// <summary>
-/// Indicates whether a version of the item exists for a specific culture
-/// </summary>
-public bool
-Exists( CultureInfo culture )
+/// Indicate whether a version of the item exists for a specific culture
+///
+public
+bool
+Exists(
+    CultureInfo culture
+)
 {
-    if( culture == null ) throw new ArgumentNullException( "culture" );
+    new IsNotNull().BugDemand( culture );
     return this.data.ContainsKey( culture );
 }
-
-
-
-
-// -----------------------------------------------------------------------------
-// Operators
-// -----------------------------------------------------------------------------
 
 
 
@@ -121,8 +119,9 @@ Exists( CultureInfo culture )
 // Private
 // -----------------------------------------------------------------------------
 
-private Dictionary<CultureInfo,T>
-data = new Dictionary<CultureInfo,T>();
+private
+Dictionary< CultureInfo, T >
+data = new Dictionary< CultureInfo, T >();
 
 
 
