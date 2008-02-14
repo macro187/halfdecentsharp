@@ -70,7 +70,7 @@ IBagStreamViaIEnumerable<
                                         ///  - Really <tt>IsPresent</tt>
 )
 {
-    new IsPresent().ReallyRequire( enumerable );
+    new IsPresent< SCG.IEnumerable< T > >().ReallyRequire( enumerable );
     return new IFiniteStreamFromIEnumeratorAdapter< T >(
         enumerable.GetEnumerator() );
 }
@@ -95,7 +95,7 @@ IBagCountViaICollection<
     SCG.ICollection< T >    collection  ///< A collection
 )
 {
-    new IsPresent().Require( collection );
+    new IsPresent< SCG.ICollection< T > >().Require( collection );
     return Integer.From( collection.Count );
 }
 
@@ -124,7 +124,7 @@ IBagRemoveAllViaICollection<
                                         ///  - Really <tt>IsPresent</tt>
 )
 {
-    new IsPresent().ReallyRequire( collection );
+    new IsPresent< SCG.ICollection< T > >().ReallyRequire( collection );
     try {
         collection.Clear();
     } catch( NotSupportedException e ) {
@@ -149,7 +149,7 @@ IBagAddViaICollection<
     T                       item        ///< The item to add
 )
 {
-    new IsPresent().ReallyRequire( collection );
+    new IsPresent< SCG.ICollection< T > >().ReallyRequire( collection );
     try {
         collection.Add( item );
     } catch( NotSupportedException e ) {

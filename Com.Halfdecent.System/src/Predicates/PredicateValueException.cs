@@ -63,7 +63,7 @@ PredicateValueException(
 )
     : base( innerException )
 {
-    new IsPresent().ReallyRequire( predicate );
+    new IsPresent< IPredicate >().ReallyRequire( predicate );
     this.predicate = predicate;
 }
 
@@ -92,7 +92,7 @@ SayProblem(
     Localized< string > valueIdentifier
 )
 {
-    new IsPresent().ReallyRequire( valueIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( valueIdentifier );
     return this.Predicate.SayDoesNotConform( valueIdentifier );
 }
 

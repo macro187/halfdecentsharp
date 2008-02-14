@@ -16,6 +16,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Predicates;
 using Com.Halfdecent.Globalization;
@@ -38,18 +39,35 @@ IsNotFractional
 
 
 
-/// (see IPredicate< T >.Require())
-override public
-void
-Require(
-    Real term   ///< - Must be present
-)
+
+// -----------------------------------------------------------------------------
+// PredicateBase< T >
+// -----------------------------------------------------------------------------
+
+override internal
+IEnumerable< IPredicate< Real > >
+GetTermRequirements()
 {
-    new IsPresent().ReallyRequire( term );
-    if( term.Truncate() != term ) throw new PredicateValueException( this );
+    yield return new IsPresent< Real >(); // not strictly necessary... yet
 }
 
 
+
+override internal
+bool
+Test(
+    Real term
+)
+{
+    return ( term.Truncate().Equals( term ) );
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// IPredicate
+// -----------------------------------------------------------------------------
 
 /// (see Predicate.SayConforms())
 override public
@@ -58,7 +76,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is not a fractional value", termIdentifier );
 }
 
@@ -71,7 +89,7 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is a fractional value", termIdentifier );
 }
 
@@ -84,7 +102,7 @@ SayRequirement(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} must not be a fractional value", termIdentifier );
 }
 

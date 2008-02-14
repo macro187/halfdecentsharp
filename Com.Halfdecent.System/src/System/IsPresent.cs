@@ -33,58 +33,82 @@ Com.Halfdecent.System
 /// In other words, <tt>(object) != null</tt>
 ///
 public class
-IsPresent
-    : PredicateBase< object >
+IsPresent<
+    T   ///< (See <tt>IPredicate< T ></tt>)
+>
+    : PredicateBase< T >
 {
 
 
 
-/// (see IPredicate< T >.Require())
-override public
-void
-Require(
-    object term
+
+// -----------------------------------------------------------------------------
+// PredicateBase< T >
+// -----------------------------------------------------------------------------
+
+/*
+override internal
+IEnumerable< IPredicate< T > >
+GetTermRequirements()
+{
+}
+*/
+
+
+
+override internal
+bool
+Test(
+    T term
 )
 {
-    if( term == null ) throw new PredicateValueException( this );
+    return (term != null);
 }
 
 
 
-/// (see Predicate.SayConforms())
+
+// -----------------------------------------------------------------------------
+// Predicate< T >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IPredicate.SayConforms()</tt>)
+///
 override public
 Localized< string >
 SayConforms(
     Localized< string > termIdentifier
 )
 {
-    this.ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is present", termIdentifier );
 }
 
 
 
-/// (see Predicate.SayDoesNotConform())
+/// (see <tt>IPredicate.SayDoesNotConform()</tt>)
+///
 override public
 Localized< string >
 SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    this.ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is not present", termIdentifier );
 }
 
 
 
-/// (see Predicate.Require)
+/// (see <tt>IPredicate.SayRequirement()</tt>)
+///
 override public
 Localized< string >
 SayRequirement(
     Localized< string > termIdentifier
 )
 {
-    this.ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is required", termIdentifier );
 }
 

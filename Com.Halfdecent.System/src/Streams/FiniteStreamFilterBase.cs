@@ -52,7 +52,7 @@ FiniteStreamFilterBase(
 )
     : base()
 {
-    new IsPresent().ReallyRequire( input );
+    new IsPresent< IFiniteStream< TIn > >().ReallyRequire( input );
     this.input = input;
 }
 

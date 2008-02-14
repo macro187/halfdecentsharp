@@ -16,9 +16,9 @@
 
 
 using System;
+using System.Collections.Generic;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
-using Com.Halfdecent.Resources;
 
 
 namespace
@@ -39,6 +39,125 @@ PredicateBase<
 
 
 
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Term requirements
+///
+/// (See <tt>Predicates</tt>)
+///
+internal virtual
+IEnumerable< IPredicate< T > >
+GetTermRequirements()
+{
+    yield break;
+}
+
+
+
+/// Components
+///
+/// (See <tt>Predicates</tt>)
+///
+internal virtual
+IEnumerable< IPredicate< T > >
+GetComponents()
+{
+    yield break;
+}
+
+
+
+/// The predicate's underlying logical test
+///
+/// Only terms that have already been subjected to term requirements and
+/// component predicates will get this far, so implementers can assume they've
+/// all been met.
+///
+/// If a predicate's logic is fully implemented by component predicates,
+/// implementers need not override this.
+///
+internal virtual
+bool
+Test(
+    T term
+)
+{
+    return true;
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// IPredicate< T >
+// -----------------------------------------------------------------------------
+
+/// (see IPredicate< T >.Evaluate())
+public
+bool
+Evaluate(
+    T term
+)
+{
+    bool result = false;
+    bool done = false;
+
+    // Enforce term requirements
+    foreach( IPredicate< T > tr in this.GetTermRequirements() ) {
+        tr.ReallyRequire( term );
+    }
+
+    // Run components
+    foreach( IPredicate< T > c in this.GetComponents() ) {
+        if( !c.Evaluate( term ) ) {
+            result = false;
+            done = true;
+            break;
+        }
+    }
+
+    // Run Test()
+    if( !done ) {
+        result = this.Test( term );
+    }
+
+    return result;
+}
+
+
+
+/// (see IPredicate< T >.Require())
+public
+void
+Require(
+    T term
+)
+{
+    // Enforce term requirements
+    foreach( IPredicate< T > tr in this.GetTermRequirements() ) {
+        tr.ReallyRequire( term );
+    }
+
+    // Require components, wrapping ValueExceptions if encountered
+    try {
+        foreach( IPredicate< T > c in this.GetComponents() ) {
+            c.Require( term );
+        }
+    } catch( ValueException e ) {
+        throw new PredicateValueException( this, e );
+    }
+
+    // Check Test(), throwing ValueException if failed
+    if( !this.Test( term ) ) {
+        throw new PredicateValueException( this );
+    }
+}
+
+
+
 /// (see IPredicate< T >.ReallyRequire())
 public
 void
@@ -48,21 +167,17 @@ ReallyRequire(
 {
     try {
         this.Require( term );
-    } catch( PredicateValueException e ) {
+    } catch( ValueException e ) {
         throw new BugException( e.Message, e );
     }
 }
 
 
 
-/// (see IPredicate< T >.Require())
-abstract public
-void
-Require(
-    T term
-);
 
-
+// -----------------------------------------------------------------------------
+// IPredicate
+// -----------------------------------------------------------------------------
 
 /// (see IPredicate.SayConforms())
 abstract public

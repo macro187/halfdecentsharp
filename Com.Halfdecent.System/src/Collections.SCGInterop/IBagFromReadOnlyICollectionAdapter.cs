@@ -56,7 +56,7 @@ IBagFromReadOnlyICollectionAdapter(
                                         ///  - Really <tt>IsPresent</tt>
 )
 {
-    new IsPresent().ReallyRequire( collection );
+    new IsPresent< SCG.ICollection< T > >().ReallyRequire( collection );
     this.collection = collection;
 }
 

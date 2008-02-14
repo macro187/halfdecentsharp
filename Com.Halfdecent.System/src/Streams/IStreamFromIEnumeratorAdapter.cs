@@ -53,7 +53,7 @@ IStreamFromIEnumeratorAdapter(
                                 ///  - Really <tt>IsPresent</tt>
 )
 {
-    new IsPresent().ReallyRequire( enumerator );
+    new IsPresent< IEnumerator< T > >().ReallyRequire( enumerator );
     this.enumerator = enumerator;
     this.enumeratoradapter = new IStreamToIEnumeratorAdapter< T >( this );
 }

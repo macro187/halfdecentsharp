@@ -107,8 +107,8 @@ _R<
 )
     where T : class
 {
-    new IsPresent().ReallyRequire( type );
-    new IsPresent().ReallyRequire( name );
+    new IsPresent< Type >().ReallyRequire( type );
+    new IsPresent< string >().ReallyRequire( name );
     new IsNotBlank().Require( name );
 
     // Fail early if a version for the invariant culture doesn't exist
@@ -151,8 +151,8 @@ _S(
     string  untranslated
 )
 {
-    new IsPresent().ReallyRequire( type );
-    new IsPresent().ReallyRequire( untranslated );
+    new IsPresent< Type >().ReallyRequire( type );
+    new IsPresent< string >().ReallyRequire( untranslated );
     new IsNotBlank().Require( untranslated );
 
     return new LocalizedStringResource( type, untranslated );
@@ -191,8 +191,8 @@ _S(
     params object[] formatargs
 )
 {
-    new IsPresent().ReallyRequire( type );
-    new IsPresent().ReallyRequire( untranslated );
+    new IsPresent< Type >().ReallyRequire( type );
+    new IsPresent< string >().ReallyRequire( untranslated );
     new IsNotBlank().Require( untranslated );
 
     return new LocalizedStringResource( type, untranslated, formatargs );
@@ -225,10 +225,10 @@ Get<
 )
     where T : class
 {
-    new IsPresent().ReallyRequire( type );
-    new IsPresent().ReallyRequire( name );
+    new IsPresent< Type >().ReallyRequire( type );
+    new IsPresent< string >().ReallyRequire( name );
     new IsNotBlank().Require( name );
-    new IsPresent().ReallyRequire( culture );
+    new IsPresent< CultureInfo >().ReallyRequire( culture );
 
     T result = null;
     object o;
@@ -288,7 +288,7 @@ GetResourceManager(
     Type type
 )
 {
-    new IsPresent().ReallyRequire( type );
+    new IsPresent< Type >().ReallyRequire( type );
     ResourceManager result;
     lock( managers ) {
         if( !managers.TryGetValue( type, out result ) ) {
@@ -340,7 +340,7 @@ MyResourceManager
         bool        tryParents
     )
     {
-        new IsPresent().ReallyRequire( culture );
+        new IsPresent< CultureInfo >().ReallyRequire( culture );
         ResourceSet result = null;
 
         if( this.MainAssembly != null ) {

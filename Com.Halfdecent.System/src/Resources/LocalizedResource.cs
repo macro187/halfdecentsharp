@@ -55,8 +55,8 @@ LocalizedResource(
     string  name
 )
 {
-    new IsPresent().ReallyRequire( type );
-    new IsPresent().ReallyRequire( name );
+    new IsPresent< Type >().ReallyRequire( type );
+    new IsPresent< string >().ReallyRequire( name );
     new IsNotBlank().Require( name );
     this.type = type;
     this.name = name;
@@ -85,7 +85,7 @@ this[
 {
     get
     {
-        new IsPresent().ReallyRequire( culture );
+        new IsPresent< CultureInfo >().ReallyRequire( culture );
         T r;
         r = Resource.Get<T>( this.type, this.name, culture );
         if( r == null ) throw new ResourceMissingException(

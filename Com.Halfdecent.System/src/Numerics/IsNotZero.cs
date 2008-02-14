@@ -16,6 +16,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Predicates;
 using Com.Halfdecent.Globalization;
@@ -38,53 +39,73 @@ IsNotZero
 
 
 
-/// (see IPredicate< T >.Require())
-override public
-void
-Require(
-    Real term   ///< - Must be present
-)
+
+// -----------------------------------------------------------------------------
+// PredicateBase< T >
+// -----------------------------------------------------------------------------
+
+override internal
+IEnumerable< IPredicate< Real > >
+GetTermRequirements()
 {
-    new IsPresent().ReallyRequire( term );
-    if( term == Real.From( 0 ) ) throw new PredicateValueException( this );
+    yield return new IsPresent< Real >();   // Not strictly necessary... yet
 }
 
 
 
-/// (see Predicate.SayConforms())
+override internal
+bool
+Test(
+    Real term
+)
+{
+    return !( term.Equals( Real.From( 0 ) ) );
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// IPredicate
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IPredicate.SayConforms()</tt>)
+///
 override public
 Localized< string >
 SayConforms(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is not zero", termIdentifier );
 }
 
 
 
-/// (see Predicate.SayDoesNotConform())
+/// (see <tt>IPredicate.SayDoesNotConform()</tt>)
+///
 override public
 Localized< string >
 SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is zero", termIdentifier );
 }
 
 
 
-/// (see Predicate.SayRequirement)
+/// (see <tt>IPredicate.SayRequirement()</tt>)
+///
 override public
 Localized< string >
 SayRequirement(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} must not be zero", termIdentifier );
 }
 

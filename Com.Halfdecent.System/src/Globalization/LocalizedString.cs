@@ -71,8 +71,8 @@ Format(
     params object[]     args
 )
 {
-    new IsPresent().ReallyRequire( format );
-    new IsPresent().ReallyRequire( args );
+    new IsPresent< Localized< string > >().ReallyRequire( format );
+    new IsPresent< object[] >().ReallyRequire( args );
     return new FormattedLocalizedString( format, args );
 }
 
@@ -109,7 +109,7 @@ FormattedLocalizedString
     {
         get
         {
-            new IsPresent().Require( culture );
+            new IsPresent< CultureInfo >().Require( culture );
             string result;
             CultureInfo cc = CultureInfo.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = culture;

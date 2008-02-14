@@ -63,7 +63,7 @@ CountViaStream<
 )
     where TBag : IBagCanStream< T >
 {
-    new IsPresent().ReallyRequire( bag );
+    new IsPresent< TBag >().ReallyRequire( bag );
 
     Integer result = Integer.From( 0 );
     foreach( T item in bag.Stream() ) {

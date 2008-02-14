@@ -57,7 +57,7 @@ IFiniteStreamFromIEnumeratorAdapter(
 )
     : base()
 {
-    new IsPresent().ReallyRequire( enumerator );
+    new IsPresent< IEnumerator< T > >().ReallyRequire( enumerator );
     this.enumerator = enumerator;
 }
 

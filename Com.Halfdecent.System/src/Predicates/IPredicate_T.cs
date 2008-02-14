@@ -38,10 +38,32 @@ IPredicate<
 
 
 
-/// Require that a term conform to the predicate
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Evaluate this predicate against a term
+///
+/// @exception BugException
+/// If the term violates this predicate's term requirements
+///
+bool
+Evaluate
+(
+    T term  ///< The term
+);
+
+
+
+/// Require that a term conform to this predicate
+///
+/// @exception BugException
+/// If the term violates this predicate's term requirements
 ///
 /// @exception PredicateValueException
-/// If the term does not conform to the predicate
+/// If the term does not conform to this predicate
+///
 void
 Require
 (
@@ -50,13 +72,16 @@ Require
 
 
 
-/// Require that a term conform to the predicate, and furthermore if it does
-/// not it is as a result of a programming error
+/// Require that a term conform to this predicate, and assert that if it does
+/// not it is as a result of a programming error and should result in a
+/// <tt>BugException</tt>
 ///
 /// @exception BugException
-/// If the term does not conform to the predicate.  <tt>InnerException</tt>
-/// will be the <tt>ValueException</tt> that would have resulted had the
-/// predicate only been <tt>Require()</tt>d.
+/// If the term violates this predicate's term requirements
+/// OR
+/// If the term does not conform to this predicate.
+/// <tt>InnerException</tt> will be the <tt>ValueException</tt> that would
+/// have resulted had the predicate only been <tt>Require()</tt>d.
 ///
 void
 ReallyRequire

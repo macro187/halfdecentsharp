@@ -26,49 +26,18 @@ Com.Halfdecent.Predicates
 
 
 
-/// A logical predicate
+/// A predicate
 ///
-/// In logic, a <em>term</em> is some particular item.  A <em>predicate</em>
-/// is some condition of a term that may be true or false.
-///
-// XXX Right now, there is no distinction between ValueExceptions that result
-//     from the Predicate itself, and those that result from other predicates
-//     restricting it's input values.  Is that distinction needed?
 public interface
 IPredicate
 {
 
 
 
-/*
-/// Require that a term conform to the predicate
-///
-/// @exception PredicateValueException
-/// If the term does not conform to the predicate
-///
-void
-Require
-(
-    object term ///< The term
-);
 
-
-/// Require that a term conform to the predicate, and furthermore if it does
-/// not it is as a result of a programming error
-///
-/// @exception BugException
-/// If the term does not conform to the predicate.  <tt>InnerException</tt>
-/// will be the <tt>ValueException</tt> that would have resulted had the
-/// predicate only been <tt>Require()</tt>d.
-///
-void
-ReallyRequire
-(
-    object term ///< The term
-);
-*/
-
-
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
 
 /// Generate a natural language statement that can be said of a term if it
 /// conforms to this predicate

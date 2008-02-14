@@ -16,6 +16,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Predicates;
 using Com.Halfdecent.Globalization;
 using Com.Halfdecent.Resources;
@@ -37,53 +38,72 @@ IsNotBlank
 
 
 
-/// (see IPredicate< T >.Require())
-override public
-void
-Require(
-    string term
-)
+
+// -----------------------------------------------------------------------------
+// PredicateBase< T >
+// -----------------------------------------------------------------------------
+
+/// (See <tt>PredicateBase< T ></tt>)
+///
+override internal
+IEnumerable< IPredicate< string > >
+GetTermRequirements()
 {
-    new IsPresent().ReallyRequire( term );
-    if( term == "" ) throw new PredicateValueException( this );
+    yield return new IsPresent< string >();
 }
 
 
 
-/// (see Predicate.SayConforms())
+/// (See <tt>PredicateBase< T ></tt>)
+///
+override internal
+bool
+Test(
+    string term
+)
+{
+    return (term != "");
+}
+
+
+
+/// (see <tt>IPredicate.SayConforms()</tt>)
+///
 override public
 Localized< string >
 SayConforms(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is not blank", termIdentifier );
 }
 
 
 
-/// (see Predicate.SayDoesNotConform())
+/// (see <tt>IPredicate.SayDoesNotConform()</tt>)
+///
 override public
 Localized< string >
 SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} is blank", termIdentifier );
 }
 
 
 
-/// (see Predicate.Require)
+/// (see <tt>IPredicate.SayRequirement()</tt>)
+///
 override public
 Localized< string >
 SayRequirement(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
     return Resource._S( "{0} must not be blank", termIdentifier );
 }
 

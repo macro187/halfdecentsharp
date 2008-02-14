@@ -15,6 +15,7 @@
 // -----------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Predicates;
 using Com.Halfdecent.Globalization;
 using Com.Halfdecent.Resources;
@@ -31,61 +32,82 @@ Com.Halfdecent.System
 ///
 public class
 IsA<
-    T   ///< The runtime type the predicate checks for
+    T,      ///< (See <tt>IPredicate< T ></tt>)
+    U       ///< The runtime type the predicate checks for
 >
-    : PredicateBase< object >
+    : PredicateBase< T >
 {
 
 
 
-/// (see <tt>IPredicate< T >.Require()</tt>)
-override public
-void
-Require(
-    object term
-)
+
+// -----------------------------------------------------------------------------
+// PredicateBase< T >
+// -----------------------------------------------------------------------------
+
+override internal
+IEnumerable< IPredicate< T > >
+GetTermRequirements()
 {
-    new IsPresent().ReallyRequire( term );
-    if( !(term is T) ) throw new PredicateValueException( this );
+    yield return new IsPresent< T >();
 }
 
 
 
+override internal
+bool
+Test(
+    T term
+)
+{
+    return (term is U);
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// IPredicate
+// -----------------------------------------------------------------------------
+
 /// (see <tt>IPredicate.SayConforms()</tt>)
+///
 override public
 Localized< string >
 SayConforms(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is a {1}", termIdentifier, typeof(T).FullName );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
+    return Resource._S( "{0} is a {1}", termIdentifier, typeof(U).FullName );
 }
 
 
 
 /// (see <tt>IPredicate.SayDoesNotConform()</tt>)
+///
 override public
 Localized< string >
 SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is not a {1}", termIdentifier, typeof(T).FullName );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
+    return Resource._S( "{0} is not a {1}", termIdentifier, typeof(U).FullName );
 }
 
 
 
 /// (see <tt>IPredicate.SayRequirement()</tt>)
+///
 override public
 Localized< string >
 SayRequirement(
     Localized< string > termIdentifier
 )
 {
-    new IsPresent().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} must be a {1}", termIdentifier, typeof(T).FullName );
+    new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
+    return Resource._S( "{0} must be a {1}", termIdentifier, typeof(U).FullName );
 }
 
 

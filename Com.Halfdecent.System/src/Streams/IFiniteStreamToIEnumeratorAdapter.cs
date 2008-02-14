@@ -55,7 +55,7 @@ IFiniteStreamToIEnumeratorAdapter(
                                 /// - Really <tt>IsPresent</tt>
 )
 {
-    new IsPresent().ReallyRequire( stream );
+    new IsPresent< IFiniteStream< T > >().ReallyRequire( stream );
     this.stream = stream;
     this.started = false;
     this.finished = false;

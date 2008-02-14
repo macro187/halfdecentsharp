@@ -122,7 +122,7 @@ Passes< T >( IPredicate< T > predicate, T value  )
 public static void
 Test_IsPresent()
 {
-    IsPresent ispresent = new IsPresent();
+    IsPresent< object > ispresent = new IsPresent< object >();
     object obj;
 
     PrintPredicateStrings( ispresent );
@@ -142,7 +142,7 @@ Test_IsPresent()
 public static void
 Test_IsA()
 {
-    IsA< int > isaint = new IsA< int >();
+    IsA< object, int > isaint = new IsA< object, int >();
     object o = new object();
     int i = 5;
 
