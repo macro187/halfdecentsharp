@@ -57,6 +57,19 @@ Demand
 (
     object term ///< The term
 );
+
+
+/// Assert a term conform to the predicate, and furthermore, that if it does
+/// not, it is as a result of a programming error
+///
+/// @exception BugException
+/// If the term does not conform to the predicate
+///
+void
+BugDemand
+(
+    object term ///< The term
+);
 */
 
 

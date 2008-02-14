@@ -16,6 +16,7 @@
 
 
 using System;
+using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
 using Com.Halfdecent.Resources;
 
@@ -52,6 +53,22 @@ Evaluate(
         r = false;
     }
     return r;
+}
+
+
+
+/// (see IPredicate< T >.BugDemand())
+public
+void
+BugDemand(
+    T term
+)
+{
+    try {
+        this.Demand( term );
+    } catch( PredicateValueException e ) {
+        throw new BugException( e );
+    }
 }
 
 

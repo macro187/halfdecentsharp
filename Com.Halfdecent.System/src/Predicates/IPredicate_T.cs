@@ -16,6 +16,7 @@
 
 
 using System;
+using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
 
 
@@ -54,6 +55,20 @@ Evaluate
 ///
 void
 Demand
+(
+    T term  ///< The term
+);
+
+
+
+/// Assert a term conform to the predicate, and furthermore, that if it does
+/// not, it is as a result of a programming error
+///
+/// @exception BugException
+/// If the term does not conform to the predicate
+///
+void
+BugDemand
 (
     T term  ///< The term
 );
