@@ -428,6 +428,10 @@ Test_Integer()
 
 
 
+// TODO: IsNotZero
+
+
+
 [Test( "IsNotNegative" )]
 public static void
 Test_IsNotNegative()
