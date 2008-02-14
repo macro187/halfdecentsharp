@@ -102,7 +102,7 @@ override internal
 SCG.IEnumerable< IPredicate< Integer > >
 GetComponents()
 {
-    yield return new IsGTE< Integer >( Integer.From( 0 ) );
+    yield return new IsNotNegative< Integer >();
     yield return new IsLT< Integer >( this.List.Count );
 }
 
