@@ -16,30 +16,10 @@
 
 
 
-/// Multiplicities of items that all exist "now"
+/// Multiplicities of items
 ///
-/// Contrast with Com.Halfdecent.Streams, which are multiplicites over time.
-///
-/// @par Types
-/// - IBag< T, TCount >
-/// - IList< T, TCount >
-///
-/// @par Flavours
-/// - ...
-///
-/// @par Traits
-/// - IBagCanStream< T, TCount >
-/// - IBagCanAdd< T, TCount >
-/// - IBagCanRemoveAll< T, TCount >
-/// - IBagCanRemoveWhere< T, TCount >
-/// - IListCanGetAt< T, TCount >
-/// - IListCanStreamForward< T, TCount >
-/// - IListCanStreamBackward< T, TCount >
-/// - IListCanAddAt< T, TCount >
-/// - IListCanRemoveAt< T, TCount >
-///
-/// @par Implementations
-/// - List< T >, an array-based list
+/// Collections are meant to represent multiplicities of items all at the same
+/// time.  For sequences of items <em>over</em> time, see <tt>Streams</tt>.
 ///
 namespace
 Com.Halfdecent.Collections

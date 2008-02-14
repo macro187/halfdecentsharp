@@ -25,9 +25,7 @@ Com.Halfdecent.Numerics
 
 
 
-/// An integer
-///
-/// TODO Wikipedia link to integer
+/// <tt>IInteger</tt> implementation using <tt>Real</tt>
 ///
 public struct
 Integer
@@ -289,7 +287,6 @@ Truncate()
 #region System.IEquatable< Integer >
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEquatable< T >.Equals()</tt>)
 public
 bool
 Equals(
@@ -308,7 +305,6 @@ Equals(
 #region System.IComparable< Integer >
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IComparable< T >.CompareTo()</tt>)
 public
 int
 CompareTo(
@@ -327,8 +323,6 @@ CompareTo(
 #region System.Object
 // -----------------------------------------------------------------------------
 
-/// (see <tt>System.Object.Equals()</tt>)
-///
 public override
 bool
 Equals(
@@ -346,8 +340,6 @@ Equals(
 
 
 
-/// (see <tt>System.Object.ToString()</tt>)
-///
 public override
 string
 ToString()
@@ -357,8 +349,6 @@ ToString()
 
 
 
-/// (see <tt>System.Object.GetHashCode()</tt>)
-///
 public override
 int
 GetHashCode()
@@ -668,17 +658,6 @@ value;
 
 
 // -----------------------------------------------------------------------------
-#region IInteger
-// -----------------------------------------------------------------------------
-
-
-
-#endregion
-
-
-
-
-// -----------------------------------------------------------------------------
 #region IReal
 // -----------------------------------------------------------------------------
 
@@ -701,7 +680,6 @@ IReal   IReal.Truncate() { return this.value.Truncate(); }
 #region System.IComparable< IReal >
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IComparable< T >.CompareTo()</tt>)
 public
 int
 CompareTo(
@@ -720,7 +698,6 @@ CompareTo(
 #region System.IEquatable< IReal >
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEquatable< T >.Equals()</tt>)
 public
 bool
 Equals(
@@ -760,7 +737,6 @@ public IInteger RemainderWhenDividedBy( IInteger x ) {
 #region System.IComparable< IInteger >
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IComparable< T >.CompareTo()</tt>)
 public
 int
 CompareTo(
@@ -779,7 +755,6 @@ CompareTo(
 #region System.IEquatable< IInteger >
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IEquatable< T >.Equals()</tt>)
 public
 bool
 Equals(
@@ -790,9 +765,6 @@ Equals(
 }
 
 #endregion
-
-
-
 
 
 

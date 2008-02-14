@@ -27,8 +27,8 @@ Com.Halfdecent.System
 
 
 
-/// Exception class to be used instead of
-/// <tt>System.InvalidOperationException</tt>
+/// <tt>System.InvalidOperationException</tt> replacement supporting
+/// <tt>IHDException</tt> features
 ///
 public class
 HDInvalidOperationException
@@ -55,8 +55,8 @@ HDInvalidOperationException(
 
 
 
-/// Create a new <tt>HDInvalidOperationException</tt> with a given message and inner
-/// exception
+/// Create a new <tt>HDInvalidOperationException</tt> with a given message and
+/// inner exception
 ///
 public
 HDInvalidOperationException(

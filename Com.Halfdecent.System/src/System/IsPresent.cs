@@ -28,13 +28,13 @@ Com.Halfdecent.System
 
 
 
-/// Predicate: "(object) is present"
+/// Predicate: "... is present"
 ///
-/// In other words, <tt>(object) != null</tt>
+/// In programming terms, "<tt>... != null</tt>"
 ///
 public class
 IsPresent<
-    T   ///< (See <tt>IPredicate< T ></tt>)
+    T
 >
     : PredicateBase< T >
 {
@@ -45,16 +45,6 @@ IsPresent<
 // -----------------------------------------------------------------------------
 // PredicateBase< T >
 // -----------------------------------------------------------------------------
-
-/*
-override internal
-IEnumerable< IPredicate< T > >
-GetTermRequirements()
-{
-}
-*/
-
-
 
 override internal
 bool
@@ -69,11 +59,9 @@ Test(
 
 
 // -----------------------------------------------------------------------------
-// Predicate< T >
+// Predicate
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IPredicate.SayConforms()</tt>)
-///
 override public
 Localized< string >
 SayConforms(
@@ -86,8 +74,6 @@ SayConforms(
 
 
 
-/// (see <tt>IPredicate.SayDoesNotConform()</tt>)
-///
 override public
 Localized< string >
 SayDoesNotConform(
@@ -100,8 +86,6 @@ SayDoesNotConform(
 
 
 
-/// (see <tt>IPredicate.SayRequirement()</tt>)
-///
 override public
 Localized< string >
 SayRequirement(

@@ -42,9 +42,10 @@ IPredicate
 /// Generate a natural language statement that can be said of a term if it
 /// conforms to this predicate
 ///
-/// eg. "... is even"
-/// eg. "... is a valid url"
-/// eg. "... contains at least 3 items"
+/// Examples:
+/// - "... is even"
+/// - "... is a valid url"
+/// - "... contains at least 3 items"
 ///
 Localized< string >
 SayConforms(
@@ -56,9 +57,10 @@ SayConforms(
 /// Generate a natural language statement that can be said of a term if it
 /// <em>does not</em> conform to this predicate
 ///
-/// eg. "... is not even"
-/// eg. "... is not a valid url"
-/// eg. "... contains less than 3 items"
+/// Examples:
+/// - "... is not even"
+/// - "... is not a valid url"
+/// - "... contains less than 3 items"
 ///
 Localized< string >
 SayDoesNotConform(
@@ -70,9 +72,10 @@ SayDoesNotConform(
 /// Generate a natural language statement demanding a term conform to this
 /// predicate
 ///
-/// eg. "... must be even"
-/// eg. "... must be a valid url"
-/// eg. "... must contains at least 3 items"
+/// Examples:
+/// - "... must be even"
+/// - "... must be a valid url"
+/// - "... must contains at least 3 items"
 ///
 Localized< string >
 SayRequirement(

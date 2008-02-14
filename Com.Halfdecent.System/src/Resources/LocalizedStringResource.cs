@@ -63,6 +63,11 @@ LocalizedStringResource(
 /// used, will be <tt>String.Format</tt>ted with the given arguments in a
 /// culture-specific fashion
 ///
+// TODO move formatted Localized< string > functionality out into a separate
+// type (eg. FormattedLocalizedString?) and remove all associated functionality
+// from here and from Resource.  Programmers will have to call
+// LocalizedString.Format if they want formatting.
+//
 internal
 LocalizedStringResource(
     Type            type,
@@ -86,10 +91,10 @@ LocalizedStringResource(
 // -----------------------------------------------------------------------------
 
 /// The version of the string most suitable for a given culture
-
+///
 /// @exception ResourceTypeMismatchException
 /// Resource is not of (or convertable) to <tt>string</tt>
-
+///
 public override
 string
 this[
@@ -127,12 +132,14 @@ this[
 // Protected
 // -----------------------------------------------------------------------------
 
+// TODO to property
 protected
 string
 untranslated;
 
 
 
+// TODO to property
 protected
 object[]
 formatargs;

@@ -25,13 +25,7 @@ Com.Halfdecent.Numerics
 
 
 
-/// A real number
-///
-/// TODO Wikipedia link to real
-///
-/// The current implementation uses <tt>System.Decimal</tt> for underlying
-/// values and operations, so it's limitations do apply.  But you're meant to
-/// carry on as though they don't.
+/// <tt>IReal</tt> implementation using <tt>System.Decimal</tt>
 ///
 public struct
 Real

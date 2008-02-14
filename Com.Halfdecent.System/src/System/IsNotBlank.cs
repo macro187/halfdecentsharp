@@ -29,7 +29,7 @@ Com.Halfdecent.System
 
 
 
-/// Predicate: "(string) is not blank"
+/// Predicate: "... is not blank"
 ///
 public class
 IsNotBlank
@@ -43,8 +43,6 @@ IsNotBlank
 // PredicateBase< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>PredicateBase< T ></tt>)
-///
 override internal
 IEnumerable< IPredicate< string > >
 GetTermRequirements()
@@ -54,8 +52,6 @@ GetTermRequirements()
 
 
 
-/// (See <tt>PredicateBase< T ></tt>)
-///
 override internal
 bool
 Test(
@@ -67,8 +63,11 @@ Test(
 
 
 
-/// (see <tt>IPredicate.SayConforms()</tt>)
-///
+
+// -----------------------------------------------------------------------------
+// Predicate
+// -----------------------------------------------------------------------------
+
 override public
 Localized< string >
 SayConforms(
@@ -81,8 +80,6 @@ SayConforms(
 
 
 
-/// (see <tt>IPredicate.SayDoesNotConform()</tt>)
-///
 override public
 Localized< string >
 SayDoesNotConform(
@@ -95,8 +92,6 @@ SayDoesNotConform(
 
 
 
-/// (see <tt>IPredicate.SayRequirement()</tt>)
-///
 override public
 Localized< string >
 SayRequirement(

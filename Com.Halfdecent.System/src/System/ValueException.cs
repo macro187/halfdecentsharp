@@ -37,6 +37,10 @@ ValueException
 
 
 
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
 /// Initialise a new <tt>ValueException</tt> with a given inner exception
 ///
 public
@@ -49,6 +53,11 @@ ValueException(
 
 
 
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
 /// Generate a natural language sentence describing what's wrong with the value
 ///
 abstract public
@@ -60,8 +69,11 @@ SayProblem(
 
 
 
-/// (see <tt>IException.Message</tt>)
-///
+
+// -----------------------------------------------------------------------------
+// IHDException
+// -----------------------------------------------------------------------------
+
 override public
 Localized< string >
 Message

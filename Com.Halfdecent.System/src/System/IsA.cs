@@ -28,12 +28,12 @@ Com.Halfdecent.System
 
 
 
-/// Predicate: "(object) is of the runtime type (T)"
+/// Predicate: "... is of (runtime) type ..."
 ///
 public class
 IsA<
-    T,      ///< (See <tt>IPredicate< T ></tt>)
-    U       ///< The runtime type the predicate checks for
+    T,
+    U   ///< The runtime type the predicate checks for
 >
     : PredicateBase< T >
 {
@@ -70,8 +70,6 @@ Test(
 // IPredicate
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IPredicate.SayConforms()</tt>)
-///
 override public
 Localized< string >
 SayConforms(
@@ -84,8 +82,6 @@ SayConforms(
 
 
 
-/// (see <tt>IPredicate.SayDoesNotConform()</tt>)
-///
 override public
 Localized< string >
 SayDoesNotConform(
@@ -98,8 +94,6 @@ SayDoesNotConform(
 
 
 
-/// (see <tt>IPredicate.SayRequirement()</tt>)
-///
 override public
 Localized< string >
 SayRequirement(

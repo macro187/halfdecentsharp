@@ -28,8 +28,8 @@ Com.Halfdecent.Predicates
 
 
 
-/// Exception indicating that some object's value is invalid due to having
-/// failed to conform to a predicate
+/// A <tt>ValueException</tt> resulting from a value failing to conform to a
+/// predicate
 ///
 public class
 PredicateValueException
@@ -39,12 +39,19 @@ PredicateValueException
 
 
 
-/// Initialise a new <tt>PredicateValueException</tt> resulting from some value
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+/// Initialise a new <tt>PredicateValueException</tt> resulting from a value
 /// failing to conform to a given <tt>IPredicate</tt>
 ///
 public
 PredicateValueException(
-    IPredicate  predicate
+    IPredicate  predicate   ///< Predicate that was failed
+                            ///
+                            ///  Requirements:
+                            ///  - Really <tt>IsPresent< T ></tt>
 )
     : this( predicate, null )
 {
@@ -58,8 +65,12 @@ PredicateValueException(
 ///
 public
 PredicateValueException(
-    IPredicate  predicate,
-    Exception   innerException
+    IPredicate  predicate,      ///< Predicate that was failed
+                                ///
+                                ///  Requirements:
+                                ///  - Really <tt>IsPresent< T ></tt>
+    Exception   innerException  ///< Exception indicating the underlying cause
+                                ///  of this one
 )
     : base( innerException )
 {
@@ -68,6 +79,11 @@ PredicateValueException(
 }
 
 
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
 
 /// The <tt>IPredicate</tt> that the value failed to conform to which lead to
 /// this exception
@@ -85,7 +101,11 @@ predicate;
 
 
 
-/// (see <tt>ValueException.SayProblem()</tt>)
+
+// -----------------------------------------------------------------------------
+// ValueException
+// -----------------------------------------------------------------------------
+
 override public
 Localized< string >
 SayProblem(

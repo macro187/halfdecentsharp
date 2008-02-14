@@ -25,16 +25,23 @@ Com.Halfdecent.Globalization
 
 
 
-/// An item that can have different versions for different cultures
+/// An item plus localized variations referred to as one
 ///
-/// This would probably be better as an interface, but C# doesn't allow
-/// conversion operators on interfaces.
+/// A <tt>Localized< T ></tt> can be used anywhere a <tt>T</tt> can.  When
+/// this is done, it will transparently "unbox" to the variation most
+/// appropriate for the current culture.
+///
+/// The opposite is also true.  That is, a <tt>T</tt> can be used anywhere a
+/// <tt>Localized< T ></tt> is called for.  In these situation, the <tt>T</tt>
+/// will "box" into a <tt>Localized< T ></tt> as the invariant or default
+/// variation of the item.
 ///
 public abstract class
 Localized<
-    T   ///< The underlying type of localized item
+    T   ///< The type of localized item
 >
-    where T : class
+    where T
+        : class
 {
 
 
@@ -44,29 +51,34 @@ Localized<
 // Properties
 // -----------------------------------------------------------------------------
 
-/// Retrieve the version of the item most appropriate for a particular culture
+/// Retrieve the variation of the item most appropriate for a particular culture
 ///
-/// In the event that a version for the exact culture specified is not
-/// available, some reasonable fallback may be returned instead (eg. a
-/// parent or even the invariant culture).
-/// 
-/// C# can't enforce post-conditions, but if it could, this would
-/// mandate that implementations never return null.  That doesn't mean
-/// exceptions indicating larger problems eg. missing resources etc. won't
-/// happen.
+/// In the event that a variation of the item for the exact culture specified is
+/// not available, a reasonable fallback may be returned instead (eg. the
+/// variant for the parent or even the invariant culture).
 ///
-/// C# can't handle get/set separately for inheritance purposes ie. we can't
-/// specify 'get' here and only add the 'set' in writable subclasses, without
-/// triggering compiler warnings.
-/// As a compromise, just throw InvalidOperationException in 'set' if your
-/// subclass is read-only.
+/// Implementations must never return <tt>null</tt> as they are expected to be
+/// able to provide at least an invariant/default variation.
+///
+/// @exception HDNotSupportedException
+/// If the <tt>Localized< t ></tt> is read-only and an attempt is made to
+/// <tt>set</tt> this property (This is a compromise due to C#'s inability to
+/// have only a <tt>get</tt> in this type and add <tt>set</tt>s only in
+/// writable subclasses)
 ///
 abstract public
 T
 this[
-    CultureInfo culture     ///< A <tt>CultureInfo</tt> (which must not be a
-                            ///  neutral culture) indicating the desired
-                            ///  version of the item
+    CultureInfo culture     ///< <tt>CultureInfo</tt> indicating the desired
+                            ///  variation of the item
+                            ///
+                            ///  Requirements (<tt>get</tt>):
+                            ///  - Really <tt>IsPresent< T ></tt>
+                            ///
+                            ///  Requirements (<tt>set</tt>):
+                            ///  - Really <tt>IsPresent< T ></tt>
+                            // TODO why is this necessary?
+                            ///  - Must not be a neutral culture
 ]
 {
     get;
@@ -80,14 +92,13 @@ this[
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Returns a string representation of the version of the item for the current
-/// culture
+/// Produce the variation of the item most appropriate for the current culture
 ///
-public override
-string
-ToString()
+protected
+T
+ForCurrentCulture()
 {
-    return this.ForCurrentCulture().ToString();
+     return this[ CultureInfo.CurrentCulture ];
 }
 
 
@@ -99,8 +110,8 @@ ToString()
 
 /// Implicit conversion to <tt>T</tt>
 ///
-/// Allows a <tt>Localized< T ></tt> to be used anywhere a <tt>T</tt> would.
-/// Converts to the version of the item for <tt>CurrentCulture</tt>.
+/// "Unboxes" the <tt>Localized< T ></tt> to the variation most appropriate
+/// for the current culture (via <tt>ForCurrentCulture()</tt>)
 ///
 public static
 implicit operator T(
@@ -114,9 +125,8 @@ implicit operator T(
 
 /// Implicit conversion from <tt>T</tt>
 ///
-/// Allows a non-null <tt>T</tt> to be used anywhere a <tt>Localized< T ></tt>
-/// would.  Wraps the <tt>T</tt> value in an <tt>InMemoryLocalized< T ></tt>
-/// as the invariant culture version of the item.
+/// "Boxes" the <tt>T</tt> into a <tt>Localized< T ></tt> (specifically, an
+/// <tt>InMemoryLocalized< T ></tt>) as the invariant culture's variation.
 ///
 public static
 implicit operator Localized< T >(
@@ -130,16 +140,23 @@ implicit operator Localized< T >(
 
 
 // -----------------------------------------------------------------------------
-// Protected
+// Object
 // -----------------------------------------------------------------------------
 
-/// The version of the item for the current culture
+/// Generate a string representation of this object
 ///
-protected
-T
-ForCurrentCulture()
+public override
+string
+ToString()
 {
-     return this[ CultureInfo.CurrentCulture ];
+    // TODO
+    // Localized< typeof(T).FullName >
+    //   (invariant) ...
+    //   en          ...
+    //   ja_JP       ...
+    //   fr_CA       ...
+    //   ...
+    return this.ForCurrentCulture().ToString();
 }
 
 

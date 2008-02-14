@@ -27,7 +27,8 @@ Com.Halfdecent.System
 
 
 
-/// Exception class to be used instead of <tt>System.Exception</tt>
+/// <tt>System.Exception</tt> replacement supporting <tt>IHDException</tt>
+/// features
 ///
 public class
 HDException

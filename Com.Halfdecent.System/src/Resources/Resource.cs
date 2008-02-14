@@ -21,15 +21,15 @@ using System.Resources;
 using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
-
 using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
-
 
 
 namespace
 Com.Halfdecent.Resources
 {
+
+
 
 
 /// Utilities for working with resources
@@ -38,6 +38,7 @@ public class
 Resource
 {
 
+// TODO use static class instead
 /// (not creatable)
 private Resource() {}
 
@@ -62,24 +63,33 @@ STRING_PREFIX = "__";
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Get a <tt>Localized< T ></tt> representing embedded resource(s) of a
-/// given name, belonging to the type where the calling method is defined
+/// Get a <tt>Localized< T ></tt> whose localized variations are embedded under
+/// a given name as resources belonging to the type where the calling method is
+/// defined
 ///
-/// This is the method that should generally be used to get non-string
-/// resources.  It implies that the requested resource is expected to exist.
+/// This is the method that should generally be used to get non-<tt>string</tt>
+/// resources.  It implies that the requested resource exists.
 ///
 /// @exception ResourceMissingException
-/// A version of the resource does not exist for at least the invariant culture
+// TODO clarify
+/// No resources associated with the type where the calling method is defined
+/// exist under the given name
 ///
 public static
-Localized< T >  /// @returns A <tt>Localized< T ></tt> representing the
-                /// requested resource
+Localized< T >  /// @returns A <tt>Localized< T ></tt> whose localized
+                /// variations are embedded resources
 _R<
-    T           ///< The type the resource is expected to be of
+    T           ///< Item type.  Underlying resources are implied to be the
+                ///  same type.
 >(
-    string name ///< The name of the resource
+    string name ///< Name the resource are embedded under
+                ///
+                ///  Requirements:
+                ///  - Really <tt>IsPresent< T ></tt>
+                ///  - <tt>IsNotBlank</tt>
 )
-    where T : class
+    where T
+        : class
 {
     Type type = new StackFrame( 1, false ).GetMethod().DeclaringType;
     return _R< T >( type, name );
@@ -87,25 +97,33 @@ _R<
 
 
 
-/// Get a <tt>Localized< T ></tt> representing embedded resource(s) of a
-/// given name
-///
-/// This is the method that should generally be used to get non-string
-/// resources.  It implies that the requested resource is expected to exist.
+/// Get a <tt>Localized< T ></tt> whose localized variations are embedded under
+/// a given name as resources belonging to a given type
 ///
 /// @exception ResourceMissingException
+// TODO clarify
 /// A version of the resource does not exist for at least the invariant culture
 ///
 public static
-Localized< T >  /// @returns A <tt>Localized< T ></tt> representing the
-                /// requested resource
+Localized< T >  /// @returns A <tt>Localized< T ></tt> whose localized
+                /// variations are embedded resources
 _R<
-    T           ///< The type the resource is expected to be of
+    T           ///< Item type.  Underlying resources are implied to be the
+                ///  same type.
 >(
-    Type type,  ///< The type the resource belongs to
-    string name ///< The name of the resource
+    Type type,  ///< Type the resources are associated with
+                ///
+                ///  Requirements:
+                ///  - Really <tt>IsPresent< T ></tt>
+                ///
+    string name ///< Name the resources are embedded under
+                ///
+                ///  Requirements:
+                ///  - Really <tt>IsPresent< T ></tt>
+                ///  - <tt>IsNotBlank</tt>
 )
-    where T : class
+    where T
+        : class
 {
     new IsPresent< Type >().ReallyRequire( type );
     new IsPresent< string >().ReallyRequire( name );
@@ -125,14 +143,25 @@ _R<
 
 
 
-/// Get a <tt>Localized< string ></tt> representing a given string which
-/// may have translated versions available as embedded resources belonging
-/// to the type where the calling method is defined
+/// Get a <tt>Localized< string ></tt> representing a given untranslated
+/// <tt>string</tt> which <em>may</em> have translated variations embedded as
+/// <tt>string</tt> resources associated with the type where the calling method
+/// is defined
+///
+/// The name the resources are embedded under is the untranslated string itself
+/// prefixed by <tt>STRING_PREFIX</tt> 
+///
+/// TODO document exceptions that the returned Localized< string > may throw
+/// eg. ResourceMissing or ResourceTypeMismatch
 ///
 public static
 Localized< string >
 _S(
-    string  untranslated
+    string  untranslated    ///< Untranslated string
+                            ///
+                            ///  Requirements:
+                            ///  - Really <tt>IsPresent< T ></tt>
+                            ///  - <tt>IsNotBlank</tt>
 )
 {
     Type type = new StackFrame( 1, false ).GetMethod().DeclaringType;
@@ -141,30 +170,39 @@ _S(
 
 
 
-/// Get a <tt>Localized< string ></tt> representing a given string which
-/// may have translated versions available as embedded resources
+/// Get a <tt>Localized< string ></tt> representing a given untranslated
+/// <tt>string</tt> which <em>may</em> have translated variations embedded as
+/// <tt>string</tt> resources associated with a given type
+///
+/// The name the resources are embedded under is the untranslated string itself
+/// prefixed by <tt>STRING_PREFIX</tt> 
+///
+/// TODO document exceptions that the returned Localized< string > may throw
+/// eg. ResourceMissing or ResourceTypeMismatch
 ///
 public static
 Localized< string >
 _S(
-    Type    type,
-    string  untranslated
+    Type    type,           ///< Type the resources are associated with
+                            ///
+                            ///  Requirements:
+                            ///  - Really <tt>IsPresent< T ></tt>
+                            ///
+    string  untranslated    ///< Untranslated string
+                            ///
+                            ///  Requirements:
+                            ///  - Really <tt>IsPresent< T ></tt>
+                            ///  - <tt>IsNotBlank</tt>
 )
 {
     new IsPresent< Type >().ReallyRequire( type );
     new IsPresent< string >().ReallyRequire( untranslated );
     new IsNotBlank().Require( untranslated );
-
     return new LocalizedStringResource( type, untranslated );
 }
 
 
-/// Get a <tt>Localized< string ></tt> representing a given string which
-/// may have translated versions available as embedded resources belonging to
-/// the type where the calling method is defined and which, when used, should
-/// be <tt>String.Format</tt>ted with the given arguments in a culture-specific
-/// fashion
-///
+// TODO depricate
 public static
 Localized< string >
 _S(
@@ -178,11 +216,7 @@ _S(
 
 
 
-/// Get a <tt>Localized< string ></tt> representing a given string which
-/// may have translated versions available as embedded resources and which,
-/// when used, should be <tt>String.Format</tt>ted with the given arguments in
-/// a culture-specific fashion
-///
+// TODO depricate
 public static
 Localized< string >
 _S(
@@ -200,30 +234,44 @@ _S(
 
 
 
-/// Retrieve an embedded resource
+/// Retrieve the most appropriate variation of a resource for a given culture,
+/// of a given type, embedded under a given name, associated with a given type
 ///
-/// If the specifed resource does not exist, this method always returns
-/// <tt>null</tt>.  This differs from <tt>ResourceManager.GetObject()</tt>'s,
-/// confusing behaviour, which under the same circumstances sometimes
-/// returns <tt>null</tt> (if there are other embedded resources) and sometimes
-/// throws an exception (if there are no other embedded resources).
+/// If an appropriate resource does not exist, this method always returns
+/// <tt>null</tt>.  This differs from <tt>System.Resources.ResourceManager</tt>
+/// which, under the same circumstances, sometimes throws an exception (if
+/// there are no embedded resources at all) and sometimes returns <tt>null</tt>
+/// (if there <em>are</em> other embedded resources but not the one you're
+/// looking for)
 ///
 /// @exception ResourceTypeMismatchException
-/// Resource is not of (or convertable) to <tt>T</tt>
+/// An appropriate resource exists, but it is not a <tt>T</tt>
 ///
 public static
-T                           /// @returns The version of the resource of the
-                            /// given name most appropriate for the given
-                            /// culture, or <tt>null</tt> if no versions of the
-                            /// resource exist at all
+T                       /// @returns The most appropriate variation of the
+                        /// resource for the given culture, or
+                        /// <tt>null</tt> if none can be found
 Get<
-    T
+    T                   ///< Type the resource is expected to be
 >(
-    Type        type,
-    string      name,
-    CultureInfo culture
+    Type        type,   ///< Type the resource is associated with
+                        ///
+                        ///  Requirements:
+                        ///  - Really <tt>IsPresent< T ></tt>
+                        ///
+    string      name,   ///< Name the resource is embedded under
+                        ///
+                        ///  Requirements:
+                        ///  - Really <tt>IsPresent< T ></tt>
+                        ///  - <tt>IsNotBlank</tt>
+                        ///
+    CultureInfo culture ///< Culture to seek an appropriate variation for
+                        ///
+                        ///  Requirements:
+                        ///  - Really <tt>IsPresent< T ></tt>
 )
-    where T : class
+    where T
+        : class
 {
     new IsPresent< Type >().ReallyRequire( type );
     new IsPresent< string >().ReallyRequire( name );
@@ -272,15 +320,15 @@ Get<
 /// @par Potential issues
 /// - (definitely on Mono, don't know about MS)
 ///   We lazy-create and cache individual ResourceManagers, each of which
-///   lazy-creates and caches individual ResourceSets, each of which _reads
-///   and caches ALL values_ the first time any are accessed.  That means
-///   _all values_ for every accessed culture of every accessed type end up
-///   cached in memory.  This is Mono's ResourceManager's implementation's
-///   fault, not ours, as our only other choice is to never reuse
-///   ResourceManagers.
-/// - We maintain references to each type that we come across as part of the
-///   cache, which might be an issue if you're doing some kind of dynamic type
-///   unloading
+///   lazy-creates and caches individual ResourceSets, each of which <em>reads
+///   and caches ALL values</em> the first time any are accessed.  That means
+///   <em>all</em> values_ for every accessed culture of every accessed type
+///   end up cached in memory.  This is Mono's ResourceManager's
+///   implementation's fault, not ours, as the only other (less desirable)
+///   choice is to never reuse ResourceManagers at all.
+/// - References to each <tt>System.Type</tt> encountered are kept as part of
+///   the cache, which could possibly be an issue if you (somehow) want to
+///   dynamically unload those <tt>System.Type</tt>s.
 ///
 private static
 ResourceManager
@@ -300,7 +348,9 @@ GetResourceManager(
 }
 
 
+
 // ResourceManager cache
+//
 private static
 Dictionary< Type, ResourceManager >
 managers = new Dictionary< Type, ResourceManager >();
@@ -316,6 +366,7 @@ managers = new Dictionary< Type, ResourceManager >();
 //
 // TODO Look into using ResourceManager.FallbackLocation instead of
 //      overriding InternalGetResourceSet()
+//
 private class
 MyResourceManager
     : ResourceManager
@@ -367,6 +418,7 @@ MyResourceManager
         return result;
     }
 }
+
 
 
 

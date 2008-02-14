@@ -26,9 +26,9 @@ Com.Halfdecent.System
 
 
 
-/// INTERNAL: Shim to effectively rename <tt>Message</tt> to
-/// <tt>BaseMessage</tt> so we can effectively provide both a new and
-/// overridden <tt>Message</tt> later
+/// INTERNAL: Shim that "renames" <tt>Message</tt> to <tt>BaseMessage</tt>,
+/// enabling <tt>Message</tt> to be, effectively, both overridden and shadowed
+/// in a subclass
 ///
 public abstract class
 InvalidOperationExceptionShim

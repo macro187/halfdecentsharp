@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -15,58 +15,10 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using Com.Halfdecent.Globalization;
-
-
-namespace
-Com.Halfdecent.System
-{
-
-
-
-
-/// INTERNAL: Shim that "renames" <tt>Message</tt> to <tt>BaseMessage</tt>,
-/// enabling <tt>Message</tt> to be, effectively, both overridden and shadowed
-/// in a subclass
+/// Assets linked into assemblies at compile time, accessible at run time
 ///
-public abstract class
-ExceptionShim
-    : Exception
-{
-
-
-
-internal
-ExceptionShim(
-    string              message,
-    Exception           innerException
-)
-    : base( message, innerException )
+namespace
+Com.Halfdecent.Resources
 {
 }
-
-
-
-override public
-string
-Message
-{
-    get { return this.BaseMessage; }
-}
-
-
-
-abstract protected
-string
-BaseMessage
-{
-    get;
-}
-
-
-
-
-} // type
-} // namespace
 

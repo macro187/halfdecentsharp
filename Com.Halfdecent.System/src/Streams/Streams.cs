@@ -16,7 +16,7 @@
 
 
 
-/// Programmatic sources of sequences of items over time
+/// Sequences of items over time
 namespace
 Com.Halfdecent.Streams
 {

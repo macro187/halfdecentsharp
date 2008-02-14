@@ -16,7 +16,7 @@
 
 
 
-/// Logical Predicates
+/// Logical predicates
 ///
 /// @par Theory
 /// In predicate logic, a <em>predicate</em> is some condition of an item

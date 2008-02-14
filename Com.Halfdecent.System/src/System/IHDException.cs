@@ -26,7 +26,7 @@ Com.Halfdecent.System
 
 
 
-/// Additional Half Decent exception features
+/// Additional "Half Decent" exception features
 ///
 public interface
 IHDException

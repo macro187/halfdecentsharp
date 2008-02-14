@@ -32,9 +32,12 @@ Com.Halfdecent.Globalization
 /// A read/write in-memory localized item
 ///
 public class
-InMemoryLocalized< T >
+InMemoryLocalized<
+    T
+>
     : Localized< T >
-    where T : class
+    where T
+        : class
 {
 
 
@@ -60,11 +63,39 @@ InMemoryLocalized(
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Methods
 // -----------------------------------------------------------------------------
 
-/// (see <tt>Localized< T ></tt>)
+/// Determine whether a version of the item exists for a given culture
 ///
+public
+bool
+Exists(
+    CultureInfo culture
+)
+{
+    new IsPresent< CultureInfo >().ReallyRequire( culture );
+    return this.data.ContainsKey( culture );
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private
+Dictionary< CultureInfo, T >
+data = new Dictionary< CultureInfo, T >();
+
+
+
+
+// -----------------------------------------------------------------------------
+// Localized< T >
+// -----------------------------------------------------------------------------
+
 public override
 T
 this[
@@ -92,36 +123,6 @@ this[
         this.data[ culture ] = value;
     }
 }
-
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Indicate whether a version of the item exists for a specific culture
-///
-public
-bool
-Exists(
-    CultureInfo culture
-)
-{
-    new IsPresent< CultureInfo >().ReallyRequire( culture );
-    return this.data.ContainsKey( culture );
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// Private
-// -----------------------------------------------------------------------------
-
-private
-Dictionary< CultureInfo, T >
-data = new Dictionary< CultureInfo, T >();
 
 
 

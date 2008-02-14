@@ -36,7 +36,9 @@ LocalizedResource<
     T
 >
     : Localized< T >
-    where T : class
+    where T
+        // TODO why? necessary?
+        : class
 {
 
 
@@ -46,13 +48,21 @@ LocalizedResource<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Create a new <tt>LocalizedResource< T ></tt> backed by embedded
-/// resources from a given type of a given name
+/// Initialise a new <tt>LocalizedResource< T ></tt> representing localized
+/// variations of an item embedded under a given name as resources associated
+/// with a given type
 ///
 internal
 LocalizedResource(
-    Type    type,
-    string  name
+    Type    type,   ///< Type the resource(s) are associated with
+                    ///
+                    ///  Requirements:
+                    ///  - Really <tt>IsPresent< T ></tt>
+    string  name    ///< Name the resource(s) are embedded under
+                    ///
+                    ///  Requirements:
+                    ///  - Really <tt>IsPresent< T ></tt>
+                    ///  - <tt>IsNotBlank</tt>
 )
 {
     new IsPresent< Type >().ReallyRequire( type );
@@ -66,16 +76,17 @@ LocalizedResource(
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Localized< T >
 // -----------------------------------------------------------------------------
 
-/// Get the version of the resource most appropriate for the given culture
+/// Get the variation of the resource most appropriate for the given culture
 ///
+/// TODO: BugException in this situation
 /// @exception ResourceMissingException
 /// No versions of the resource exist
 ///
 /// @exception ResourceTypeMismatchException
-/// Resource is not of (or convertable) to <tt>T</tt>
+/// The underlying resource is not a <tt>T</tt>
 ///
 public override
 T
@@ -106,11 +117,15 @@ this[
 // Protected
 // -----------------------------------------------------------------------------
 
+// TODO to property
 protected
 Type
 type;
 
+
+
 protected
+// TODO to property
 string
 name;
 

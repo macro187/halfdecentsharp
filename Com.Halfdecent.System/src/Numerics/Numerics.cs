@@ -16,9 +16,12 @@
 
 
 
-/// Abstract numeric types
+/// Numbers and arithmetic
 ///
-/// Progress toward something like Scheme's "numeric tower"
+/// Provides:
+/// - Partial "numeric tower" of abstract datatypes
+/// - Implementations
+/// - Numeric predicates
 ///
 /// TODO Link to "numeric tower" on wikipedia
 ///
