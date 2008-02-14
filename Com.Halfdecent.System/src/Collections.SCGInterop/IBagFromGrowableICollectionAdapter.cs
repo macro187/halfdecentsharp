@@ -29,8 +29,9 @@ Com.Halfdecent.Collections.SCGInterop
 
 
 
-/// An adapter that makes an <tt>IBag< T ></tt> supporting read operations
-/// out of a <tt>System.Collections.Generic.ICollection< T ></tt>
+/// An adapter that makes an <tt>IBag< T ></tt> supporting read and addition
+/// operations out of a growable
+/// <tt>System.Collections.Generic.ICollection< T ></tt>
 ///
 public class
 IBagFromGrowableICollectionAdapter<
