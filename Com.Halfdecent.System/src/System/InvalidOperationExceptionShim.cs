@@ -20,14 +20,15 @@ using Com.Halfdecent.Globalization;
 
 
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.System
 {
 
 
 
 
-/// Shim to effectively rename <tt>Message</tt> to <tt>BaseMessage</tt> so we
-/// can effectively provide both a new and overridden <tt>Message</tt> later
+/// INTERNAL: Shim to effectively rename <tt>Message</tt> to
+/// <tt>BaseMessage</tt> so we can effectively provide both a new and
+/// overridden <tt>Message</tt> later
 ///
 public abstract class
 InvalidOperationExceptionShim

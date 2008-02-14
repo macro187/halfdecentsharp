@@ -18,7 +18,6 @@
 using System;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
-using Com.Halfdecent.Exceptions;
 
 
 namespace

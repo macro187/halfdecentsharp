@@ -16,13 +16,12 @@
 
 
 using System;
-using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
 using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.System
 {
 
 

@@ -18,49 +18,31 @@
 using System;
 using Com.Halfdecent.Globalization;
 
-using System_Exception = System.Exception;
-
 
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.System
 {
 
 
 
 
-/// Shim to effectively rename <tt>Message</tt> to <tt>BaseMessage</tt> so we
-/// can effectively provide both a new and overridden <tt>Message</tt> later
+/// Additional Half Decent exception features
 ///
-public abstract class
-ExceptionShim
-    : System_Exception
+public interface
+IHDException
 {
 
 
 
-internal
-ExceptionShim(
-    string              message,
-    System_Exception    innerException
-)
-    : base( message, innerException )
-{
-}
 
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
 
-
-override public
-string
+/// Localized message
+///
+Localized< string >
 Message
-{
-    get { return this.BaseMessage; }
-}
-
-
-
-abstract protected
-string
-BaseMessage
 {
     get;
 }

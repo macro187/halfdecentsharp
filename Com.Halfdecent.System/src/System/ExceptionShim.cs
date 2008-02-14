@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -15,10 +15,58 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+using Com.Halfdecent.Globalization;
 
-/// TODO Introduction to Com.Halfdecent.Exceptions
+
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.System
+{
+
+
+
+
+/// INTERNAL: Shim to effectively rename <tt>Message</tt> to
+/// <tt>BaseMessage</tt> so we can effectively provide both a new and
+/// overridden <tt>Message</tt> later
+///
+public abstract class
+ExceptionShim
+    : Exception
+{
+
+
+
+internal
+ExceptionShim(
+    string              message,
+    Exception           innerException
+)
+    : base( message, innerException )
 {
 }
+
+
+
+override public
+string
+Message
+{
+    get { return this.BaseMessage; }
+}
+
+
+
+abstract protected
+string
+BaseMessage
+{
+    get;
+}
+
+
+
+
+} // type
+} // namespace
 
