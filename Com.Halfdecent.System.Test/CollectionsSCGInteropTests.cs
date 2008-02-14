@@ -172,6 +172,36 @@ Test_IBagFromGrowableICollectionAdapter()
 
 
 
+[Test( "IBagFromShrinkableICollectionAdapter" )]
+public static
+void
+Test_IBagFromShrinkableICollectionAdapter()
+{
+    SCG.IList< int >                            list;
+    IBagFromShrinkableICollectionAdapter< int > adapter;
+    bool                                        threw;
+
+    Print( "RemoveAll()" );
+    list = MakeTestList();
+    adapter = new IBagFromShrinkableICollectionAdapter< int >( list );
+    adapter.RemoveAll();
+    AssertEqual( adapter.Count, Integer.From( 0 ) );
+
+    Print( "RemoveAll() on non-shrinkable collection throws BugException" );
+    adapter = new IBagFromShrinkableICollectionAdapter< int >(
+        new int[] { 1, 2, 3, 4, 5 } );
+    threw = false;
+    try {
+        adapter.RemoveAll();
+    } catch( BugException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+
+    if( adapter == null ) {} // avoid warning
+}
+
+
 
 
 } // type
