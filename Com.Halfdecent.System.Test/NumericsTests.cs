@@ -428,7 +428,45 @@ Test_Integer()
 
 
 
-// TODO: IsNotZero
+[Test( "IsNotZero" )]
+public static void
+Test_IsNotZero()
+{
+    IsNotZero< Real > p = new IsNotZero< Real >();
+
+    Print( ".5 passes" );
+    AssertEqual( p.Evaluate( Real.From( 0.5m ) ), true );
+
+    Print( "0 fails" );
+    AssertEqual( p.Evaluate( Real.From( 0 ) ), false );
+
+    Print( "-.5 passes" );
+    AssertEqual( p.Evaluate( Real.From( -0.5m ) ), true );
+}
+
+
+
+[Test( "IsNotFractional" )]
+public static void
+Test_IsNotFractional()
+{
+    IsNotFractional< Real > p = new IsNotFractional< Real >();
+
+    Print( "0 passes" );
+    AssertEqual( p.Evaluate( Real.From( 0 ) ), true );
+
+    Print( "1 passes" );
+    AssertEqual( p.Evaluate( Real.From( 1 ) ), true );
+
+    Print( "-1 passes" );
+    AssertEqual( p.Evaluate( Real.From( -1 ) ), true );
+
+    Print( ".5 fails" );
+    AssertEqual( p.Evaluate( Real.From( 0.5m ) ), false );
+
+    Print( "-.5 fails" );
+    AssertEqual( p.Evaluate( Real.From( -0.5m ) ), false );
+}
 
 
 
