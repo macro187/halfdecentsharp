@@ -35,7 +35,8 @@ Com.Halfdecent.Numerics
 ///
 public struct
 Real
-    : IComparable< Real >
+    : IReal
+    , IComparable< Real >
     , IEquatable< Real >
 {
 
@@ -45,6 +46,19 @@ Real
 // -----------------------------------------------------------------------------
 #region Constructors and Converters
 // -----------------------------------------------------------------------------
+
+/// Copy from <tt>IReal</tt>
+///
+static public
+Real
+From(
+    IReal value
+)
+{
+    return new Real( value.ToDecimal() );
+}
+
+
 
 /// "Widening" conversion from <tt>System.Decimal</tt>
 ///
@@ -61,11 +75,8 @@ From(
 
 /// "Narrowing" conversion to <tt>System.Decimal</tt>
 ///
-/// (Would throw a ValueException if the Real were out of Decimal's range, but
-/// since Decimal is currently used to implement Real, that can't happen)
-///
 public
-decimal /// @returns A <tt>System.Decimal</tt> with the same value as this real
+decimal
 ToDecimal()
 {
     return this.value;
@@ -81,90 +92,6 @@ Real(
 )
 {
     this.value = value;
-}
-
-#endregion
-
-
-
-
-// -----------------------------------------------------------------------------
-#region System.Object
-// -----------------------------------------------------------------------------
-
-/// (see <tt>System.Object.Equals()</tt>)
-///
-public override
-bool
-Equals(
-    object obj
-)
-{
-    bool result = false;
-    if( obj is Real ) {
-        result = this.Equals( (Real)obj );
-    }
-    return result;
-}
-
-
-
-/// (see <tt>System.Object.ToString()</tt>)
-///
-public override
-string
-ToString()
-{
-    return this.value.ToString();
-}
-
-
-
-/// (see <tt>System.Object.GetHashCode()</tt>)
-///
-public override
-int /// @returns A hash code for this real
-GetHashCode()
-{
-    return this.value.GetHashCode();
-}
-
-#endregion
-
-
-
-
-// -----------------------------------------------------------------------------
-#region System.IEquatable< Real >
-// -----------------------------------------------------------------------------
-
-/// (see <tt>IEquatable< T >.Equals()</tt>)
-public
-bool
-Equals(
-    Real x
-)
-{
-    return this.value.Equals( x.value );
-}
-
-#endregion
-
-
-
-
-// -----------------------------------------------------------------------------
-#region System.IComparable< Real >
-// -----------------------------------------------------------------------------
-
-/// (see <tt>IComparable< T >.CompareTo()</tt>)
-public
-int
-CompareTo(
-    Real x
-)
-{
-    return this.value.CompareTo( x.value );
 }
 
 #endregion
@@ -305,6 +232,90 @@ Real
 Truncate()
 {
     return Real.From( Decimal.Truncate( this.value ) );
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IComparable< Real >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IComparable< T >.CompareTo()</tt>)
+public
+int
+CompareTo(
+    Real x
+)
+{
+    return this.value.CompareTo( x.value );
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IEquatable< Real >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEquatable< T >.Equals()</tt>)
+public
+bool
+Equals(
+    Real x
+)
+{
+    return this.value.Equals( x.value );
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.Object
+// -----------------------------------------------------------------------------
+
+/// (see <tt>System.Object.Equals()</tt>)
+///
+public override
+bool
+Equals(
+    object obj
+)
+{
+    bool result = false;
+    if( obj is Real ) {
+        result = this.Equals( (Real)obj );
+    }
+    return result;
+}
+
+
+
+/// (see <tt>System.Object.ToString()</tt>)
+///
+public override
+string
+ToString()
+{
+    return this.value.ToString();
+}
+
+
+
+/// (see <tt>System.Object.GetHashCode()</tt>)
+///
+public override
+int /// @returns A hash code for this real
+GetHashCode()
+{
+    return this.value.GetHashCode();
 }
 
 #endregion
@@ -541,6 +552,63 @@ operator -(
 private
 decimal
 value;
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region IReal
+// -----------------------------------------------------------------------------
+
+public bool    GT( IReal x ) { return this.GT( Real.From( x ) ); }
+public bool    GTE( IReal x ) { return this.GTE( Real.From( x ) ); }
+public bool    LT( IReal x ) { return this.LT( Real.From( x ) ); }
+public bool    LTE( IReal x ) { return this.LTE( Real.From( x ) ); }
+public IReal   Plus( IReal x  ) { return this.Plus( Real.From( x ) ); }
+public IReal   Minus( IReal x ) { return this.Minus( Real.From( x ) ); }
+public IReal   Times( IReal x ) { return this.Times( Real.From( x ) ); }
+public IReal   DividedBy( IReal x ) { return this.DividedBy( Real.From( x ) ); }
+IReal   IReal.Truncate() { return this.Truncate(); }
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IComparable< IReal >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IComparable< T >.CompareTo()</tt>)
+public
+int
+CompareTo(
+    IReal x
+)
+{
+    return this.CompareTo( Real.From( x ) );
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IEquatable< IReal >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEquatable< T >.Equals()</tt>)
+public
+bool
+Equals(
+    IReal x
+)
+{
+    return this.Equals( Real.From( x ) );
+}
 
 #endregion
 

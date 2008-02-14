@@ -31,7 +31,8 @@ Com.Halfdecent.Numerics
 ///
 public struct
 Integer
-    : IComparable< Integer >
+    : IInteger
+    , IComparable< Integer >
     , IEquatable< Integer >
 {
 
@@ -42,6 +43,19 @@ Integer
 #region Constructors and Converters
 // -----------------------------------------------------------------------------
 
+/// Copy from <tt>IInteger</tt>
+///
+static public
+Integer
+From(
+    IInteger value  ///< The <tt>IInteger</tt> to copy
+)
+{
+    return new Integer( Real.From( value ) );
+}
+
+
+
 /// "Narrowing" conversion from <tt>Real</tt>
 ///
 /// @exception ValueException
@@ -50,10 +64,10 @@ Integer
 static public
 Integer
 From(
-    Real value  ///< The <tt>Real</tt> to convert to an Integer
+    IReal value ///< The <tt>Real</tt> to convert to an Integer
 )
 {
-    return new Integer( value );
+    return new Integer( Real.From( value ) );
 }
 
 
@@ -114,92 +128,6 @@ Integer(
 {
     new IsNotFractional().Require( value );
     this.value = value;
-}
-
-#endregion
-
-
-
-
-// -----------------------------------------------------------------------------
-#region System.Object
-// -----------------------------------------------------------------------------
-
-/// (see <tt>System.Object.Equals()</tt>)
-///
-public override
-bool
-Equals(
-    object obj
-)
-{
-    bool result = false;
-    if( obj is Integer ) {
-        result = this.Equals( (Integer)obj );
-    } else if( obj is Real ) {
-        result = this.ToReal().Equals( (Real)obj );
-    }
-    return result;
-}
-
-
-
-/// (see <tt>System.Object.ToString()</tt>)
-///
-public override
-string
-ToString()
-{
-    return this.value.ToString();
-}
-
-
-
-/// (see <tt>System.Object.GetHashCode()</tt>)
-///
-public override
-int
-GetHashCode()
-{
-    return this.value.GetHashCode();
-}
-
-#endregion
-
-
-
-
-// -----------------------------------------------------------------------------
-#region System.IEquatable< Integer >
-// -----------------------------------------------------------------------------
-
-/// (see <tt>IEquatable< T >.Equals()</tt>)
-public
-bool
-Equals(
-    Integer x
-)
-{
-    return this.value.Equals( x );
-}
-
-#endregion
-
-
-
-
-// -----------------------------------------------------------------------------
-#region System.IComparable< Integer >
-// -----------------------------------------------------------------------------
-
-/// (see <tt>IComparable< T >.CompareTo()</tt>)
-public
-int
-CompareTo(
-    Integer x
-)
-{
-    return this.value.CompareTo( x );
 }
 
 #endregion
@@ -349,6 +277,92 @@ Truncate()
 
 
 // TODO Integer Div (?)
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IEquatable< Integer >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEquatable< T >.Equals()</tt>)
+public
+bool
+Equals(
+    Integer x
+)
+{
+    return this.value.Equals( x );
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IComparable< Integer >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IComparable< T >.CompareTo()</tt>)
+public
+int
+CompareTo(
+    Integer x
+)
+{
+    return this.value.CompareTo( x );
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.Object
+// -----------------------------------------------------------------------------
+
+/// (see <tt>System.Object.Equals()</tt>)
+///
+public override
+bool
+Equals(
+    object obj
+)
+{
+    bool result = false;
+    if( obj is Integer ) {
+        result = this.Equals( (Integer)obj );
+    } else if( obj is Real ) {
+        result = this.ToReal().Equals( (Real)obj );
+    }
+    return result;
+}
+
+
+
+/// (see <tt>System.Object.ToString()</tt>)
+///
+public override
+string
+ToString()
+{
+    return this.value.ToString();
+}
+
+
+
+/// (see <tt>System.Object.GetHashCode()</tt>)
+///
+public override
+int
+GetHashCode()
+{
+    return this.value.GetHashCode();
+}
 
 #endregion
 
@@ -647,6 +661,136 @@ Real
 value;
 
 #endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region IInteger
+// -----------------------------------------------------------------------------
+
+
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region IReal
+// -----------------------------------------------------------------------------
+
+bool    IReal.GT( IReal x ) { return this.value.GT( x ); }
+bool    IReal.GTE( IReal x ) { return this.value.GTE( x ); }
+bool    IReal.LT( IReal x ) { return this.value.LT( x ); }
+bool    IReal.LTE( IReal x ) { return this.value.LTE( x ); }
+IReal   IReal.Plus( IReal x  ) { return this.value.Plus( x ); }
+IReal   IReal.Minus( IReal x ) { return this.value.Minus( x ); }
+IReal   IReal.Times( IReal x ) { return this.value.Times( x ); }
+IReal   IReal.DividedBy( IReal x ) { return this.value.DividedBy( x ); }
+IReal   IReal.Truncate() { return this.value.Truncate(); }
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IComparable< IReal >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IComparable< T >.CompareTo()</tt>)
+public
+int
+CompareTo(
+    IReal x
+)
+{
+    return this.value.CompareTo( x );
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IEquatable< IReal >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEquatable< T >.Equals()</tt>)
+public
+bool
+Equals(
+    IReal x
+)
+{
+    return this.value.Equals( x );
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region IInteger
+// -----------------------------------------------------------------------------
+
+public bool     GT( IInteger x ) { return this.GT( Integer.From( x ) ); }
+public bool     GTE( IInteger x ) { return this.GTE( Integer.From( x ) ); }
+public bool     LT( IInteger x ) { return this.LT( Integer.From( x ) ); }
+public bool     LTE( IInteger x ) { return this.LTE( Integer.From( x ) ); }
+public IInteger Plus( IInteger x  ) { return this.Plus( Integer.From( x ) ); }
+public IInteger Minus( IInteger x ) { return this.Minus( Integer.From( x ) ); }
+public IInteger Times( IInteger x ) { return this.Times( Integer.From( x ) ); }
+public IReal    DividedBy( IInteger x ) {
+                    return this.DividedBy( Integer.From( x ) ); }
+public IInteger RemainderWhenDividedBy( IInteger x ) {
+                    return this.RemainderWhenDividedBy( Integer.From( x ) ); }
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IComparable< IInteger >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IComparable< T >.CompareTo()</tt>)
+public
+int
+CompareTo(
+    IInteger x
+)
+{
+    return this.CompareTo( Integer.From( x ) );
+}
+
+#endregion
+
+
+
+
+// -----------------------------------------------------------------------------
+#region System.IEquatable< IInteger >
+// -----------------------------------------------------------------------------
+
+/// (see <tt>IEquatable< T >.Equals()</tt>)
+public
+bool
+Equals(
+    IInteger x
+)
+{
+    return this.Equals( Integer.From( x ) );
+}
+
+#endregion
+
+
+
 
 
 
