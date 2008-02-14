@@ -105,7 +105,7 @@ Count
 
 /// (See <tt>IBagCanStream< T >.Stream()</tt>)
 ///
-public
+public virtual
 IFiniteStream< T >
 Stream()
 {

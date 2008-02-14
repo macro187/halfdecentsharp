@@ -161,6 +161,62 @@ IBagAddViaICollection<
 
 
 
+/// <tt>IListCanGetAt< T >.GetAt()</tt> via
+/// <tt>System.Collections.Generic.IList< T ></tt>
+///
+public static
+T
+IListGetAtViaIList<
+    T
+>(
+    SCG.IList< T >  list,       ///< Requirements:
+                                ///  - Really IsPresent
+    Integer         position    ///< Requirements:
+                                ///  - IsNotNegative
+                                ///  - IsLessThan( list.Count )
+)
+{
+    new IsPresent< SCG.IList< T > >().ReallyRequire( list );
+    new IsNotNegative().Require( position );
+    new IsLessThan< Integer >( Integer.From( list.Count ) ).Require( position );
+    return list[ (int)( position.ToDecimal() ) ];
+}
+
+
+
+
+/*
+/// <tt>IListCanStreamForward< T >.StreamForward()</tt> via
+/// <tt>System.Collections.Generic.IList< T ></tt>
+///
+IFiniteStream< T >
+IListStreamForwardViaIList<
+    T
+>(
+    SCG.IList< T > list
+)
+{
+    return new IFiniteStreamFromIEnumeratorAdapter(
+        StreamForward_Iterate( list ) );
+}
+
+
+private static
+IEnumerator< T >
+StreamForward_Iterate<
+    T
+>(
+    SCG.IList< T > list
+)
+{
+    for( int i = 0; i < list.Count; i++ ) {
+        yield return list[ i ];
+    }
+}
+*/
+
+
+
 
 } // type
 } // namespace

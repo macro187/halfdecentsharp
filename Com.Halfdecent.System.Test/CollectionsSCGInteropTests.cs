@@ -260,6 +260,44 @@ Test_IBagFromResizableICollectionAdapter()
 
 
 
+[Test( "IListFromReadOnlyIListAdapter" )]
+public static
+void
+Test_IListFromReadOnlyIListAdapter()
+{
+    IListFromReadOnlyIListAdapter< int >    list
+        = new IListFromReadOnlyIListAdapter< int >(
+            new int[] { 0, 1, 2 } );
+    IFiniteStream< int >                    stream;
+    int                                     i;
+    int                                     j;
+
+    Print( "GetAt()" );
+    AssertEqual( list.GetAt( Integer.From( 0 ) ), 0 );
+    AssertEqual( list.GetAt( Integer.From( 1 ) ), 1 );
+    AssertEqual( list.GetAt( Integer.From( 2 ) ), 2 );
+
+    Print( "StreamForward()" );
+    stream = list.StreamForward();
+    i = 0;
+    while( stream.Yield( out j ) ) {
+        AssertEqual( j, i );
+        i++;
+    }
+    AssertEqual( i, 3 );
+
+    Print( "StreamBackward()" );
+    stream = list.StreamBackward();
+    i = 2;
+    while( stream.Yield( out j ) ) {
+        AssertEqual( j, i );
+        i--;
+    }
+    AssertEqual( i, -1 );
+}
+
+
+
 
 } // type
 } // namespace

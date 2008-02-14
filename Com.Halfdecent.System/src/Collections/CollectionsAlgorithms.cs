@@ -16,8 +16,10 @@
 
 
 using System;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -71,6 +73,96 @@ CountViaStream<
         if( item.Equals( null ) ) {}    // avoid compiler warning
     }
     return result;
+}
+
+
+
+/// <tt>IListCanStreamForward< T >.StreamForward()</tt> via
+/// <tt>IListCanGetAt< T >.GetAt()</tt>
+///
+/// @par Description
+/// Generate an <tt>IFiniteStream< T ></tt> that loops from position
+/// <tt>0</tt> to <tt>Count-1</tt> retrieving each item using <tt>GetAt()</tt>.
+///
+/// @par Complexity
+/// Depends on <tt>GetAt()</tt>
+///
+public static
+IFiniteStream< T >
+IListStreamForwardViaIListGetAt<
+    T
+>(
+    IListCanGetAt< T > list ///< The list
+                            ///
+                            ///  Requirements:
+                            ///  - Really <tt>IsPresent</tt>
+)
+{
+    new IsPresent< IListCanGetAt< T > >().ReallyRequire( list );
+    return new IFiniteStreamFromIEnumeratorAdapter< T >(
+        IListStreamForwardViaIListGetAt_Iterate( list ) );
+}
+
+private static
+SCG.IEnumerator< T >
+IListStreamForwardViaIListGetAt_Iterate<
+    T
+>(
+    IListCanGetAt< T > list
+)
+{
+    for(
+        Integer i = Integer.From( 0 );
+        i.LT( list.Count );
+        i = i.Plus( Integer.From( 1 ) )
+    ) {
+        yield return list.GetAt( i );
+    }
+}
+
+
+
+/// <tt>IListCanStreamBackward< T >.StreamBackward()</tt> via
+/// <tt>IListCanGetAt< T >.GetAt()</tt>
+///
+/// @par Description
+/// Generate an <tt>IFiniteStream< T ></tt> that loops from position
+/// <tt>Count-1</tt> to <tt>0</tt> retrieving each item using <tt>GetAt()</tt>.
+///
+/// @par Complexity
+/// Depends on <tt>GetAt()</tt>
+///
+public static
+IFiniteStream< T >
+IListStreamBackwardViaIListGetAt<
+    T
+>(
+    IListCanGetAt< T > list ///< The list
+                            ///
+                            ///  Requirements:
+                            ///  - Really <tt>IsPresent</tt>
+)
+{
+    new IsPresent< IListCanGetAt< T > >().ReallyRequire( list );
+    return new IFiniteStreamFromIEnumeratorAdapter< T >(
+        IListStreamBackwardViaIListGetAt_Iterate( list ) );
+}
+
+private static
+SCG.IEnumerator< T >
+IListStreamBackwardViaIListGetAt_Iterate<
+    T
+>(
+    IListCanGetAt< T > list
+)
+{
+    for(
+        Integer i = Integer.From( list.Count.Minus( Integer.From( 1 ) ) );
+        i.GTE( Integer.From( 0 ) );
+        i = i.Minus( Integer.From( 1 ) )
+    ) {
+        yield return list.GetAt( i );
+    }
 }
 
 
