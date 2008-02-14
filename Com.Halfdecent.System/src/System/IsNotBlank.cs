@@ -57,6 +57,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
+    new IsNotNull().BugDemand( termIdentifier );
     return Resource._S( "{0} is not blank", termIdentifier );
 }
 
@@ -69,6 +70,7 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
+    new IsNotNull().BugDemand( termIdentifier );
     return Resource._S( "{0} is blank", termIdentifier );
 }
 
@@ -81,6 +83,7 @@ SayDemand(
     Localized< string > termIdentifier
 )
 {
+    new IsNotNull().BugDemand( termIdentifier );
     return Resource._S( "{0} must not be blank", termIdentifier );
 }
 

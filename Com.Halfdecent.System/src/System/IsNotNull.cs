@@ -56,6 +56,7 @@ SayConforms(
     Localized< string > termIdentifier
 )
 {
+    this.BugDemand( termIdentifier );
     return Resource._S( "{0} is not null", termIdentifier );
 }
 
@@ -68,6 +69,7 @@ SayDoesNotConform(
     Localized< string > termIdentifier
 )
 {
+    this.BugDemand( termIdentifier );
     return Resource._S( "{0} is null", termIdentifier );
 }
 
@@ -80,6 +82,7 @@ SayDemand(
     Localized< string > termIdentifier
 )
 {
+    this.BugDemand( termIdentifier );
     return Resource._S( "{0} must not be null", termIdentifier );
 }
 
