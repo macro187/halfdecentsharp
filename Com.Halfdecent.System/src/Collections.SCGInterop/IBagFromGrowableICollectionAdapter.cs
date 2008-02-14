@@ -35,7 +35,7 @@ Com.Halfdecent.Collections.SCGInterop
 ///
 public class
 IBagFromGrowableICollectionAdapter<
-    T   ///< (See <tt>IBag< T ></tt>)
+    T
 >
     : IBagFromReadOnlyICollectionAdapter< T >
     , IBagCanAdd< T >
@@ -55,7 +55,9 @@ public
 IBagFromGrowableICollectionAdapter(
     SCG.ICollection< T >    collection  ///< The collection to adapt
                                         ///
+                                        ///  Requirements:
                                         ///  - Really <tt>IsPresent</tt>
+                                        ///  - Supports addition of items
 )
     : base( collection )
 {
@@ -68,8 +70,6 @@ IBagFromGrowableICollectionAdapter(
 // IBagCanAdd< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IBagCanAdd< T >.Add()</tt>)
-///
 public
 void
 Add(

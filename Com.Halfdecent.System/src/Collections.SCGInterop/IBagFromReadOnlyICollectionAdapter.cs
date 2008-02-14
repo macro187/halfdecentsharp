@@ -31,6 +31,7 @@ Com.Halfdecent.Collections.SCGInterop
 
 /// An adapter that makes an <tt>IBag< T ></tt> supporting read operations
 /// out of a <tt>System.Collections.Generic.ICollection< T ></tt>
+///
 public class
 IBagFromReadOnlyICollectionAdapter<
     T   ///< (See <tt>IBag< T ></tt>)
@@ -68,6 +69,7 @@ IBagFromReadOnlyICollectionAdapter(
 // -----------------------------------------------------------------------------
 
 /// The <tt>System.Collections.Generic.ICollection< T ></tt> being adapted
+///
 protected SCG.ICollection< T >
 Collection
 {
@@ -84,8 +86,6 @@ collection;
 // IBag< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IBag< T >.Count</tt>)
-///
 public
 Integer
 Count
@@ -103,8 +103,6 @@ Count
 // IBagCanStream< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IBagCanStream< T >.Stream()</tt>)
-///
 public virtual
 IFiniteStream< T >
 Stream()

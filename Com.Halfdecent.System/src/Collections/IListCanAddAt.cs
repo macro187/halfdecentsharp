@@ -31,7 +31,7 @@ Com.Halfdecent.Collections
 ///
 public interface
 IListCanAddAt<
-    T   ///< (see <tt>IBag< T ></tt>)
+    T
 >
     : IList< T >
 {
@@ -46,8 +46,10 @@ IListCanAddAt<
 void
 AddAt(
     Integer position,   ///< Position at which to add the item
-                        ///< (see <tt>IList< T ></tt>)
-                        ///  - <tt>IsBetween( 0, Count )</tt>
+                        ///
+                        ///  Requirements:
+                        ///  - <tt>IsPresent< T ></tt>
+                        ///  - <tt>IsExistingOrNextPositionIn< T >( this )</tt>
     T       item        ///< Item to add
 );
 

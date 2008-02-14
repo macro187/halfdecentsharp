@@ -35,7 +35,7 @@ Com.Halfdecent.Collections.SCGInterop
 ///
 public class
 IBagFromResizableICollectionAdapter<
-    T   ///< (See <tt>IBag< T ></tt>)
+    T
 >
     : IBagFromReadOnlyICollectionAdapter< T >
     , IBagCanAdd< T >
@@ -56,7 +56,10 @@ public
 IBagFromResizableICollectionAdapter(
     SCG.ICollection< T >    collection  ///< The collection to adapt
                                         ///
+                                        ///  Requirements:
                                         ///  - Really <tt>IsPresent</tt>
+                                        ///  - Supports addition and removal
+                                        ///    of items
 )
     : base( collection )
 {
@@ -69,8 +72,6 @@ IBagFromResizableICollectionAdapter(
 // IBagCanAdd< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IBagCanAdd< T >.Add()</tt>)
-///
 public
 void
 Add(
@@ -87,8 +88,6 @@ Add(
 // IBagCanRemoveAll< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IBagCanRemoveAll< T >.RemoveAll()</tt>)
-///
 public
 void
 RemoveAll()

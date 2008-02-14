@@ -31,7 +31,7 @@ Com.Halfdecent.Collections
 ///
 public interface
 IBagCanStream<
-    T   ///< (see <tt>IBag< T ></tt>)
+    T
 >
     : IBag< T >
 {

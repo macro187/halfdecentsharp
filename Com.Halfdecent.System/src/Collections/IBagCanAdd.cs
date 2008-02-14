@@ -30,7 +30,7 @@ Com.Halfdecent.Collections
 ///
 public interface
 IBagCanAdd<
-    T   ///< (see <tt>IBag< T ></tt>)
+    T
 >
     : IBag< T >
 {

@@ -38,7 +38,7 @@ Com.Halfdecent.Collections
 ///
 public interface
 IList<
-    T   ///< (see <tt>IBag< T ></tt>)
+    T
 >
     : IBag< T >
 {

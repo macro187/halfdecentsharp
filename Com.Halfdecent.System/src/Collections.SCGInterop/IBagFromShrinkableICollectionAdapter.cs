@@ -35,7 +35,7 @@ Com.Halfdecent.Collections.SCGInterop
 ///
 public class
 IBagFromShrinkableICollectionAdapter<
-    T   ///< (See <tt>IBag< T ></tt>)
+    T
 >
     : IBagFromReadOnlyICollectionAdapter< T >
     , IBagCanRemoveAll< T >
@@ -55,7 +55,9 @@ public
 IBagFromShrinkableICollectionAdapter(
     SCG.ICollection< T >    collection  ///< The collection to adapt
                                         ///
+                                        ///  Requirements:
                                         ///  - Really <tt>IsPresent</tt>
+                                        ///  - Supports removal of items
 )
     : base( collection )
 {
@@ -68,8 +70,6 @@ IBagFromShrinkableICollectionAdapter(
 // IBagCanRemoveAll< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IBagCanRemoveAll< T >.RemoveAll()</tt>)
-///
 public
 void
 RemoveAll()

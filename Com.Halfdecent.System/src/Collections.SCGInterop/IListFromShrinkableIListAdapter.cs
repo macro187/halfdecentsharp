@@ -31,12 +31,14 @@ Com.Halfdecent.Collections.SCGInterop
 
 /// An adapter that makes an <tt>IList< T ></tt> supporting read and removal
 /// operations out of a <tt>System.Collections.Generic.IList< T ></tt>
+///
 public class
 IListFromShrinkableIListAdapter<
-    T   ///< (See <tt>IBag< T ></tt>)
+    T
 >
     : IListFromReadOnlyIListAdapter< T >
     , IListCanRemoveAt< T >
+    , IBagCanRemoveAll< T >
 {
 
 
@@ -53,7 +55,9 @@ public
 IListFromShrinkableIListAdapter(
     SCG.IList< T > list ///< The list to adapt
                         ///
+                        ///  Requirements:
                         ///  - Really <tt>IsPresent</tt>
+                        ///  - Supports removal of items
 )
     : base( list )
 {
@@ -66,21 +70,30 @@ IListFromShrinkableIListAdapter(
 // IListCanRemoveAt< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IListCanRemoveAt< T >.RemoveAt()</tt>)
-///
 public
 T
 RemoveAt(
-    Integer position    ///< Position from which to remove the item
-                        ///
-                        ///  Requirements:
-                        ///  - <tt>IsExistingPositionIn( this )</tt>
+    Integer position
 )
 {
     new IsPresent< Integer >().Require( position );
     new IsExistingPositionIn< T >( this ).Require( position );
     return SCGInteropAlgorithms.IListRemoveAtViaIList< T >(
         this.List, position );
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// IBagCanRemoveAll< T >
+// -----------------------------------------------------------------------------
+
+public
+void
+RemoveAll()
+{
+    SCGInteropAlgorithms.IBagRemoveAllViaICollection( this.List );
 }
 
 

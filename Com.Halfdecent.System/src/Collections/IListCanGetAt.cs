@@ -31,7 +31,7 @@ Com.Halfdecent.Collections
 ///
 public interface
 IListCanGetAt<
-    T   ///< (see <tt>IBag< T ></tt>)
+    T
 >
     : IList< T >
 {
@@ -44,8 +44,10 @@ IListCanGetAt<
 T                       /// @returns The item at the specified position
 GetAt(
     Integer position    ///< Position from which to retrieve the item
-                        ///  (see <tt>IList< T ></tt>)
-                        ///  - <tt>IsBetween( 0, Count )</tt>
+                        ///
+                        ///  Requirements:
+                        ///  - <tt>IsPresent< T ></tt>
+                        ///  - <tt>IsExistingPositionIn< T >( this )</tt>
 );
 
 

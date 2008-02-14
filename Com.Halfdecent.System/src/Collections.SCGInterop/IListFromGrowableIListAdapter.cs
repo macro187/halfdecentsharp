@@ -31,12 +31,14 @@ Com.Halfdecent.Collections.SCGInterop
 
 /// An adapter that makes an <tt>IList< T ></tt> supporting read and removal
 /// operations out of a <tt>System.Collections.Generic.IList< T ></tt>
+///
 public class
 IListFromGrowableIListAdapter<
-    T   ///< (See <tt>IBag< T ></tt>)
+    T
 >
     : IListFromReadOnlyIListAdapter< T >
     , IListCanAddAt< T >
+    , IBagCanAdd< T >
 {
 
 
@@ -53,7 +55,9 @@ public
 IListFromGrowableIListAdapter(
     SCG.IList< T > list ///< The list to adapt
                         ///
+                        ///  Requirements:
                         ///  - Really <tt>IsPresent</tt>
+                        ///  - Supports addition of items
 )
     : base( list )
 {
@@ -66,8 +70,6 @@ IListFromGrowableIListAdapter(
 // IListCanAddAt< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IListCanAddAt< T >.AddAt()</tt>)
-///
 public
 void
 AddAt(
@@ -79,6 +81,22 @@ AddAt(
     new IsExistingOrNextPositionIn< T >( this ).Require( position );
     SCGInteropAlgorithms.IListAddAtViaIList< T >(
         this.List, position, item );
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// IBagCanAdd< T >
+// -----------------------------------------------------------------------------
+
+public
+void
+Add(
+    T item
+)
+{
+    this.AddAt( this.Count, item );
 }
 
 

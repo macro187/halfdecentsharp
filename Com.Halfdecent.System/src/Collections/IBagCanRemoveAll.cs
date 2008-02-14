@@ -30,7 +30,7 @@ Com.Halfdecent.Collections
 ///
 public interface
 IBagCanRemoveAll<
-    T   ///< (see <tt>IBag< T ></tt>)
+    T
 >
     : IBag< T >
 {
@@ -39,6 +39,7 @@ IBagCanRemoveAll<
 
 
 /// Remove all items
+///
 void
 RemoveAll();
 

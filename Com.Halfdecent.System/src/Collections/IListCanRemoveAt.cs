@@ -31,7 +31,7 @@ Com.Halfdecent.Collections
 ///
 public interface
 IListCanRemoveAt<
-    T   ///< (see <tt>IBag< T ></tt>)
+    T
 >
     : IList< T >
 {
@@ -44,8 +44,10 @@ IListCanRemoveAt<
 T                       /// @returns The removed item
 RemoveAt(
     Integer position    ///< Position from which to remove the item
-                        ///< (see <tt>IList< T ></tt>)
-                        ///  - <tt>IsBetween( 0, Count-1 )</tt>
+                        ///
+                        ///  Requirements:
+                        ///  - <tt>IsPresent</tt>
+                        ///  - <tt>IsExistingPositionIn( this )</tt>
 );
 
 

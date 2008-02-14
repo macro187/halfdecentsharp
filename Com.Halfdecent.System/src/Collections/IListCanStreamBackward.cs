@@ -31,7 +31,7 @@ Com.Halfdecent.Collections
 ///
 public interface
 IListCanStreamBackward<
-    T   ///< (see <tt>IBag< T></tt>)
+    T
 >
     : IList< T >
 {

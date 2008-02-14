@@ -31,9 +31,10 @@ Com.Halfdecent.Collections.SCGInterop
 
 /// An adapter that makes an <tt>IList< T ></tt> supporting read operations
 /// out of a <tt>System.Collections.Generic.IList< T ></tt>
+///
 public class
 IListFromReadOnlyIListAdapter<
-    T   ///< (See <tt>IBag< T ></tt>)
+    T
 >
     : IBagFromReadOnlyICollectionAdapter< T >
     , IList< T >
@@ -56,6 +57,7 @@ public
 IListFromReadOnlyIListAdapter(
     SCG.IList< T > list ///< The list to adapt
                         ///
+                        ///  Requirements:
                         ///  - Really <tt>IsPresent</tt>
 )
     : base( list )
@@ -72,6 +74,7 @@ IListFromReadOnlyIListAdapter(
 // -----------------------------------------------------------------------------
 
 /// The <tt>System.Collections.Generic.IList< T ></tt> being adapted
+///
 protected SCG.IList< T >
 List
 {
@@ -88,16 +91,10 @@ list;
 // IListCanGetAt< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IListCanGetAt< T >.GetAt()</tt>)
-///
 public
 T
 GetAt(
-    Integer position    ///< The position of the item to get
-                        ///
-                        ///  Requirements:
-                        ///  - <tt>IsPresent< T ></tt>
-                        ///  - <tt>IsExistingPositionIn< T >( this )</tt>
+    Integer position
 )
 {
     new IsPresent< Integer >().Require( position );
@@ -112,8 +109,6 @@ GetAt(
 // IBagCanStream< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IBagCanStream< T >.Stream()</tt>)
-///
 public override
 IFiniteStream< T >
 Stream()
@@ -128,8 +123,6 @@ Stream()
 // IListCanStreamForward< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IListCanStreamForward< T >.StreamForward()</tt>)
-///
 public
 IFiniteStream< T >
 StreamForward()
@@ -144,8 +137,6 @@ StreamForward()
 // IListCanStreamBackward< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>IListCanStreamBackward< T >.StreamBackward()</tt>)
-///
 public
 IFiniteStream< T >
 StreamBackward()
