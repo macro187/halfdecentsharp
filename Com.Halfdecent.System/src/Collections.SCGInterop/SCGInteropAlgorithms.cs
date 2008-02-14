@@ -18,6 +18,7 @@
 using System;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.System;
+using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Collections;
 
@@ -32,13 +33,13 @@ Com.Halfdecent.Collections.SCGInterop
 /// Collection operation implementations in terms of
 /// <tt>System.Collections.Generic</tt> types
 public class
-Algorithms
+SCGInteropAlgorithms
 {
 
 
 
 // not creatable
-private Algorithms() {}
+private SCGInteropAlgorithms() {}
 
 
 
@@ -58,16 +59,17 @@ private Algorithms() {}
 ///
 public static
 IFiniteStream< T >                      /// @returns
-                                        /// (see <tt>IBag.Stream()</tt>)
+                                        /// (see <tt>IBag< T >.Stream()</tt>)
 IBagStreamViaIEnumerable<
     T                                   ///< Type of items in the source
                                         ///< enumerable and the resultant
                                         ///< stream
 >(
     SCG.IEnumerable< T >    enumerable  ///< An enumerable
+                                        ///  - Really <tt>IsPresent</tt>
 )
 {
-    new IsPresent().Require( enumerable );
+    new IsPresent().ReallyRequire( enumerable );
     return new IFiniteStreamFromIEnumeratorAdapter< T >(
         enumerable.GetEnumerator() );
 }
@@ -84,8 +86,8 @@ IBagStreamViaIEnumerable<
 /// Depends on the collection's <tt>Count</tt> implementation
 ///
 public static
-int                                     /// @returns
-                                        /// (see <tt>IBag.Count</tt>)
+Integer                                 /// @returns
+                                        /// (see <tt>IBag< T >.Count</tt>)
 IBagCountViaICollection<
     T                                   ///< Type of items in the collection
 >(
@@ -93,7 +95,7 @@ IBagCountViaICollection<
 )
 {
     new IsPresent().Require( collection );
-    return collection.Count;
+    return Integer.From( collection.Count );
 }
 
 
@@ -108,8 +110,8 @@ IBagCountViaICollection<
 /// Depends on the collection's <tt>Clear()</tt> implementation
 ///
 /// @exception (unknown)
-/// If the underlying collection is not resizable, it's <tt>Clear()</tt>
-/// implementation will (hopefully) throw some kind of exception
+/// If the underlying collection is not shrinkable, it's <tt>Clear()</tt>
+/// implementation will likely throw some kind of exception
 ///
 public static
 void
@@ -117,9 +119,10 @@ IBagRemoveAllViaICollection<
     T                                   ///< Type of items in the collection
 >(
     SCG.ICollection< T >    collection  ///< A resizable collection
+                                        ///  - Really <tt>IsPresent</tt>
 )
 {
-    new IsPresent().Require( collection );
+    new IsPresent().ReallyRequire( collection );
     collection.Clear();
 }
 

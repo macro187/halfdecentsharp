@@ -19,9 +19,10 @@ using System;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.System;
+using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Collections;
-using SCGInterop = Com.Halfdecent.Collections.SCGInterop;
+using Com.Halfdecent.Collections.SCGInterop;
 
 
 namespace
@@ -53,9 +54,10 @@ MakeTestList()
 
 
 
-[Test( "Algorithms" )]
-public static void
-Test_Algorithms()
+[Test( "SCGInteropAlgorithms" )]
+public static
+void
+Test_SCGInteropAlgorithms()
 {
     SCG.IList< int > list;
 
@@ -72,14 +74,63 @@ Test_Algorithms()
     Print( "IBagCountViaICollection()" );
     list = MakeTestList();
     AssertEqual(
-        SCGInterop.Algorithms.IBagCountViaICollection( list ),
-        5 );
+        SCGInteropAlgorithms.IBagCountViaICollection( list ),
+        Integer.From( 5 ) );
 
     Print( "IBagRemoveAllViaICollection()" );
     list = MakeTestList();
-    SCGInterop.Algorithms.IBagRemoveAllViaICollection( list );
+    SCGInteropAlgorithms.IBagRemoveAllViaICollection( list );
     AssertEqual( list.Count, 0 );
 }
+
+
+
+[Test( "IBagFromReadOnlyICollectionAdapter" )]
+public static
+void
+Test_IBagFromReadOnlyICollectionAdapter()
+{
+    SCG.IList< int >                            list;
+    IBagFromReadOnlyICollectionAdapter< int >   adapter;
+    IFiniteStream< int >                        stream;
+    bool                                        threw;
+    int                                         i;
+
+    Print( "new( null ) throws BugException" );
+    threw = false;
+    adapter = null;
+    try {
+        adapter = new IBagFromReadOnlyICollectionAdapter< int >( null );
+    } catch( BugException ) {
+        threw = true;
+    }
+    AssertEqual( threw, true );
+
+    Print( "new()" );
+    list = MakeTestList();
+    adapter = new IBagFromReadOnlyICollectionAdapter< int >( list );
+
+    Print( "Count" );
+    list = MakeTestList();
+    adapter = new IBagFromReadOnlyICollectionAdapter< int >( list );
+    AssertEqual( adapter.Count, Integer.From( 5 ) );
+
+    Print( "Stream()" );
+    list = MakeTestList();
+    adapter = new IBagFromReadOnlyICollectionAdapter< int >( list );
+    stream = adapter.Stream();
+    Assert( stream != null );
+    i = 1;
+    foreach( int item in stream ) {
+        AssertEqual( item, i );
+        Assert( i <= 5 );
+        i++;
+    }
+    AssertEqual( i, 6 );
+
+    if( adapter == null ) {} // avoid warning
+}
+
 
 
 

@@ -17,25 +17,29 @@
 
 /// Interoperability with <tt>System.Collections.Generic</tt>
 ///
-/// @par <tt>System.Collections.Generic.ICollection< T ></tt>
-/// ICollection loosely represents four flavours of bag:  Fixed-size, growable,
-/// shrinkable, or resizable (both shrinkable and resizable).
-///
-/// Rather than having separate types for these semantics, the issue is punted
-/// to runtime in the form of the <tt>IsReadOnly</tt> property, which is both
-/// unclear and insufficient [1].
+/// The <tt>System.Collections.Generic.ICollection< T ></tt> type can
+/// represent four possible kinds of bag:
+/// - Fixed-size
+/// - Growable
+/// - Shrinkable
+/// - Resizable (both growable and shrinkable)
+/// Rather than having separate types for each kind, the issue is punted
+/// to runtime in the form of the <tt>ICollection< T >.IsReadOnly</tt>
+/// property, which is unclear and insufficient to indicate which of the
+/// above-mentioned semantics are in force [1].
 ///
 /// The <tt>SCGInterop</tt> namespace provides various ICollection adapters
-/// that accurately reflect the different semantics.  The developer must
-/// be careful to select an adapter that accurately reflects the ICollection
-/// they wish to adapt because, as discussed above, it's impossible to
-/// determine what an ICollection actually supports (without resorting to
-/// attempting the various operations and checking for exceptions).
+/// capable of accurately reflecting the semantics of the various kinds of
+/// bags discussed above. The developer must be careful to select an adapter
+/// that accurately reflects the semantics of the <tt>ICollection< T ></tt>
+/// they are adapting because, as discussed above, it's impossible for code
+/// to determine those semantics without resorting to eg. attempts at the
+/// various operations while checking for exceptions.
 ///
 /// [1] The Microsoft documentation even suggests that <tt>IsReadOnly</tt>
-/// indicates whether the collection elements can be modified, something that
-/// isn't even possible via <tt>ICollection< T ></tt>.  See "Remarks" at
-/// http://msdn2.microsoft.com/en-us/library/0cfatk9t(VS.80).aspx
+/// indicates whether the collection elements themselves can be modified,
+/// which isn't even possible to do through <tt>ICollection< T ></tt>.  See
+/// "Remarks" at http://msdn2.microsoft.com/en-us/library/0cfatk9t(VS.80).aspx
 ///
 namespace
 Com.Halfdecent.Collections.SCGInterop
