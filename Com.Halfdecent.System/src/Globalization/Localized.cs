@@ -111,7 +111,7 @@ ToString()
 /// </remarks>
 public static implicit operator T( Localized<T> l )
 {
-    return l.ForCurrentCulture();
+    return (l != null ? l.ForCurrentCulture() : null);
 }
 
 
@@ -126,7 +126,7 @@ public static implicit operator T( Localized<T> l )
 /// </remarks>
 public static implicit operator Localized<T>( T t )
 {
-    return new InMemoryLocalized<T>( t );
+    return (t != null ? new InMemoryLocalized<T>( t ) : null);
 }
 
 
