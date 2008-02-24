@@ -29,7 +29,7 @@ Com.Halfdecent.System
 
 /// Exception indicating that some object's value is invalid
 ///
-public abstract class
+public class
 ValueException
     : HDException
 {
@@ -38,8 +38,29 @@ ValueException
 
 
 // -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
+public readonly
+Localized< string >
+GENERIC_VALUE_IDENTIFIER = R._S("A value");
+
+
+
+
+// -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
+
+/// Initialise a new <tt>ValueException</tt>
+///
+public
+ValueException()
+    : this( null )
+{
+}
+
+
 
 /// Initialise a new <tt>ValueException</tt> with a given inner exception
 ///
@@ -60,12 +81,20 @@ ValueException(
 
 /// Generate a natural language sentence describing what's wrong with the value
 ///
-abstract public
+/// Subclasses should override this method, providing a more specific
+/// description of what is wrong with the value
+///
+public virtual
 Localized< string >
 SayProblem(
     Localized< string > valueIdentifier ///< What to refer to the problematic
                                         ///  value as
-);
+)
+{
+    return LocalizedString.Format(
+        R._S("{0} is invalid"),
+        valueIdentifier );
+}
 
 
 
@@ -78,7 +107,7 @@ override public
 Localized< string >
 Message
 {
-    get { return this.SayProblem( R._S("A value") ); }
+    get { return this.SayProblem( GENERIC_VALUE_IDENTIFIER ); }
 }
 
 
