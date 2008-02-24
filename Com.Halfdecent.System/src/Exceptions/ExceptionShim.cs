@@ -20,7 +20,7 @@ using Com.Halfdecent.Globalization;
 
 
 namespace
-Com.Halfdecent.System
+Com.Halfdecent.Exceptions
 {
 
 
@@ -31,16 +31,16 @@ Com.Halfdecent.System
 /// in a subclass
 ///
 public abstract class
-InvalidOperationExceptionShim
-    : InvalidOperationException
+ExceptionShim
+    : Exception
 {
 
 
 
 internal
-InvalidOperationExceptionShim(
-    string      message,
-    Exception   innerException
+ExceptionShim(
+    string              message,
+    Exception           innerException
 )
     : base( message, innerException )
 {

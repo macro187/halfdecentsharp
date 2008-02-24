@@ -18,6 +18,7 @@
 using System;
 using Com.Halfdecent.Globalization;
 using R = Com.Halfdecent.Resources.Resource;
+using Com.Halfdecent.Exceptions;
 
 
 namespace
