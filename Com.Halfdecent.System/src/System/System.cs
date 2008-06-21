@@ -17,6 +17,48 @@
 
 /// Fundamentals
 ///
+/// A suite of exception types, all of which implement <tt>IHDException</tt>,
+/// are available for direct use or for subclassing.  They are organised in a
+/// regular fashion along two lines:
+/// - Cause
+/// - Programmatic entity
+///
+/// Causes fall into four main categories:
+/// - <em>Illegal</em>, something that is never valid under any
+///   circumstances.  This kind of circumstance is ideally prevented at
+///   compile-time but, in situations where that isn't possible, this cause
+///   represents the same level of severity at runtime.
+/// - <em>Platform</em>, something that is not valid given the current
+///   hardware architecture, operating system, etc.
+/// - <em>Environment</em>, something that is not valid given the current
+///   external runtime environment, eg. software configuration, shared library
+///   availability, etc.
+/// - <em>State</em>, something that is not valid given the current internal
+///   execution state, program or user input, etc.
+///
+/// The exception classes are summarised in the following table:
+/// <pre>
+/// ------------+-----------------------------------------------------------------------
+/// CAUSE       |   VALUE                       OPERATION
+/// ------------+-----------------------------------------------------------------------
+/// State       |   ValueException              OperationException
+///             |     (ArgumentException, etc.)   (InvalidOperationException)
+/// Environment |   EnvironmentValueException   EnvironmentOperationException
+///             |     (?)                         (?)
+/// Platform    |   PlatformValueException      PlatformOperationException
+///             |     (?)                         (PlatformNotSupportedException)
+/// Illegal     |   IllegalValueException       IllegalOperationException
+///             |     (NotSupportedException)     (OperationNotSupportedException)
+/// ------------+-----------------------------------------------------------------------
+/// </pre>
+/// <table>
+/// <tr>
+///     <td><em>Cause</em></td>
+///     <td><em>Value</em></td>
+///     <td><em>Operation</em></td>
+/// </tr>
+/// </table>
+///
 namespace
 Com.Halfdecent.System
 {

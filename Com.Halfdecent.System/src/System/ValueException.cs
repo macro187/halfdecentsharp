@@ -17,7 +17,6 @@
 
 using System;
 using Com.Halfdecent.Globalization;
-using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -43,7 +42,7 @@ ValueException
 
 public readonly
 Localized< string >
-GENERIC_VALUE_IDENTIFIER = R._S("A value");
+GENERIC_VALUE_IDENTIFIER = _S("A value");
 
 
 
@@ -92,7 +91,7 @@ SayProblem(
 )
 {
     return LocalizedString.Format(
-        R._S("{0} is invalid"),
+        _S("{0} is invalid"),
         valueIdentifier );
 }
 
@@ -112,6 +111,8 @@ Message
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

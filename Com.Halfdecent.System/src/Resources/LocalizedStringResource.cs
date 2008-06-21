@@ -74,7 +74,7 @@ LocalizedStringResource(
     string          untranslated,
     params object[] formatargs
 )
-    : base( type, Resource.STRING_PREFIX + untranslated )
+    : base( type, Resource.STRING_RESOURCE_NAME_PREFIX + untranslated )
 {
     new IsPresent< string >().ReallyRequire( untranslated );
     new IsNotBlank().ReallyRequire( untranslated );

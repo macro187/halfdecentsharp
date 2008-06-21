@@ -17,7 +17,6 @@
 
 using System;
 using SCG = System.Collections.Generic;
-using R = Com.Halfdecent.Resources.Resource;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
@@ -125,7 +124,7 @@ IBagRemoveAllViaICollection<
         collection.Clear();
     } catch( NotSupportedException e ) {
         throw new BugException(
-            R._S("This collection is not shrinkable"),
+            _S("This collection is not shrinkable"),
             e );
     }
 }
@@ -154,7 +153,7 @@ IBagAddViaICollection<
         collection.Add( item );
     } catch( NotSupportedException e ) {
         throw new BugException(
-            R._S("This collection is not growable"),
+            _S("This collection is not growable"),
             e );
     }
 }
@@ -237,6 +236,8 @@ IListAddAtViaIList<
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

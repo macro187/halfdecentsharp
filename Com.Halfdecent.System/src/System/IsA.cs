@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Com.Halfdecent.Predicates;
 using Com.Halfdecent.Globalization;
-using Com.Halfdecent.Resources;
 
 
 namespace
@@ -77,7 +76,7 @@ SayConforms(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is a {1}", termIdentifier, typeof(U).FullName );
+    return _S( "{0} is a {1}", termIdentifier, typeof(U).FullName );
 }
 
 
@@ -89,7 +88,7 @@ SayDoesNotConform(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is not a {1}", termIdentifier, typeof(U).FullName );
+    return _S( "{0} is not a {1}", termIdentifier, typeof(U).FullName );
 }
 
 
@@ -101,11 +100,13 @@ SayRequirement(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} must be a {1}", termIdentifier, typeof(U).FullName );
+    return _S( "{0} must be a {1}", termIdentifier, typeof(U).FullName );
 }
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

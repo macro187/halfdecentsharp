@@ -75,7 +75,7 @@ SayConforms(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is not blank", termIdentifier );
+    return _S( "{0} is not blank", termIdentifier );
 }
 
 
@@ -87,7 +87,7 @@ SayDoesNotConform(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is blank", termIdentifier );
+    return _S( "{0} is blank", termIdentifier );
 }
 
 
@@ -99,11 +99,13 @@ SayRequirement(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} must not be blank", termIdentifier );
+    return _S( "{0} must not be blank", termIdentifier );
 }
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

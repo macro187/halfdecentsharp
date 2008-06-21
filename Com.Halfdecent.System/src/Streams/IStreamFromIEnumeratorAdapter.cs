@@ -19,7 +19,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Com.Halfdecent.System;
-using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -86,7 +85,7 @@ Yield()
     if( !this.enumerator.MoveNext() )
         // TODO: Create (and throw) more specific type of exception (?)
         throw new HDInvalidOperationException(
-            R._S("No more items in stream") );
+            _S("No more items in stream") );
     return this.enumerator.Current;
 }
 
@@ -140,6 +139,8 @@ Dispose()
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

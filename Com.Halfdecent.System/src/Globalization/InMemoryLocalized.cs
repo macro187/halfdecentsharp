@@ -19,7 +19,6 @@ using System;
 using System.Globalization;
 using System.Collections.Generic;
 using Com.Halfdecent.System;
-using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -137,7 +136,7 @@ GetBest(
             break;
         }
         if( c == CultureInfo.InvariantCulture ) throw new BugException(
-            R._S("INTERNAL BUG: No invariant variation") );
+            _S("INTERNAL BUG: No invariant variation") );
     }
     return result;
 }
@@ -163,7 +162,7 @@ Get(
     new IsPresent< CultureInfo >().Require( culture );
     // TODO if( !this.Contains( culture ) ) throw new SOMEKINDOFException();
     if( !this.Contains( culture ) ) throw new ValueException();
-        // R._S("This item has no variation for {0}")
+        // _S("This item has no variation for {0}")
     return this.Data[ culture ];
 }
 
@@ -206,10 +205,10 @@ Remove(
     new IsPresent< CultureInfo >().Require( culture );
     // TODO new IsNotInvariantCulture().Require( culture );
     if( culture == CultureInfo.InvariantCulture ) throw new ValueException();
-        // R._S("{0} must not be the invariant culture")
+        // _S("{0} must not be the invariant culture")
     // TODO if( !this.Contains( culture ) ) throw new SOMEKINDOFException();
     if( !this.Contains( culture ) ) throw new ValueException();
-        // R._S("A variation of the item must exist for {0}")
+        // _S("A variation of the item must exist for {0}")
     this.Data.Remove( culture );
 }
 
@@ -261,6 +260,8 @@ this[
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

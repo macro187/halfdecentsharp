@@ -19,7 +19,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Com.Halfdecent.System;
-using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -99,7 +98,7 @@ Current
     get
     {
         if( !started ) throw new HDInvalidOperationException(
-            R._S("The current item cannot be retreived because the enumerator is still positioned before the first item") );
+            _S("The current item cannot be retreived because the enumerator is still positioned before the first item") );
         return this.current;
     }
 }
@@ -155,7 +154,7 @@ void
 Reset()
 {
     throw new InvalidOperationException(
-        R._S("This enumerator cannot be reset because it is enumerating an IStream, and IStreams cannot be reset") );
+        _S("This enumerator cannot be reset because it is enumerating an IStream, and IStreams cannot be reset") );
 }
 
 
@@ -181,6 +180,8 @@ Dispose()
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

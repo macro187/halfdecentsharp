@@ -17,7 +17,6 @@
 
 using System;
 using Com.Halfdecent.Globalization;
-using R = Com.Halfdecent.Resources.Resource;
 using Com.Halfdecent.Exceptions;
 
 
@@ -66,7 +65,7 @@ HDException(
 )
     : base( message, innerException )
 {
-    this.message = message ?? R._S("An exception was thrown");
+    this.message = message ?? _S("An exception was thrown");
 }
 
 
@@ -101,6 +100,8 @@ BaseMessage
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

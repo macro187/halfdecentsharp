@@ -17,7 +17,6 @@
 
 using System;
 using Com.Halfdecent.Globalization;
-using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -79,7 +78,7 @@ BugException(
                     ? ((IHDException)innerException).Message
                     : (Localized< string >)innerException.Message
                 )
-                : R._S("A condition indicating a programming error was encountered")
+                : _S("A condition indicating a programming error was encountered")
             )
         ),
         innerException )
@@ -88,6 +87,8 @@ BugException(
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

@@ -122,7 +122,7 @@ SayConforms(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is greater than {1}",
+    return _S( "{0} is greater than {1}",
         termIdentifier,
         this.ComparisonValue );
 }
@@ -136,7 +136,7 @@ SayDoesNotConform(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is not greater than {1}",
+    return _S( "{0} is not greater than {1}",
         termIdentifier,
         this.ComparisonValue );
 }
@@ -150,13 +150,15 @@ SayRequirement(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} must be greater than {1}",
+    return _S( "{0} must be greater than {1}",
         termIdentifier,
         this.ComparisonValue );
 }
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

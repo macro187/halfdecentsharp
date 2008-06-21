@@ -52,7 +52,7 @@ ResourceTypeMismatchException(
     string culturename
 )
     : base( LocalizedString.Format(
-        Resource._S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
+        _S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
         name,
         typename,
         culturename,
@@ -63,6 +63,8 @@ ResourceTypeMismatchException(
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

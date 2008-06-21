@@ -80,7 +80,7 @@ SayConforms(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is not a fractional value", termIdentifier );
+    return _S( "{0} is not a fractional value", termIdentifier );
 }
 
 
@@ -92,7 +92,7 @@ SayDoesNotConform(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is a fractional value", termIdentifier );
+    return _S( "{0} is a fractional value", termIdentifier );
 }
 
 
@@ -104,11 +104,13 @@ SayRequirement(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} must not be a fractional value", termIdentifier );
+    return _S( "{0} must not be a fractional value", termIdentifier );
 }
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

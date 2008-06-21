@@ -50,7 +50,7 @@ Resource
 ///
 public static readonly
 string
-STRING_PREFIX = "__";
+STRING_RESOURCE_NAME_PREFIX = "__";
 
 
 
@@ -59,36 +59,65 @@ STRING_PREFIX = "__";
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Get a <tt>Localized< T ></tt> whose localized variations are embedded under
-/// a given name as resources belonging to the type where the calling method is
-/// defined
+/*
+/// Produce a <tt>Localized< string ></tt> from an untranslated <tt>string</tt>
+/// whose localized variants will, if present, come from embedded string
+/// resources
 ///
-/// This is the method that should generally be used to get non-<tt>string</tt>
-/// resources.  It implies that the requested resource exists.
+/// The name of the embedded string resources is the untranslated string itself
+/// prefixed by <tt>STRING_RESOURCE_NAME_PREFIX</tt> 
 ///
-/// @exception ResourceMissingException
-// TODO clarify
-/// No resources associated with the type where the calling method is defined
-/// exist under the given name
+/// The resultant <tt>Localized< string ></tt> searches for and retrieves
+/// resources in an on-demand fashion using <tt>Get< T >()</tt>, so any
+/// exceptions it throws may occur at those times.
 ///
 public static
-Localized< T >  /// @returns A <tt>Localized< T ></tt> whose localized
-                /// variations are embedded resources
-_R<
-    T           ///< Item type.  Underlying resources are implied to be the
-                ///  same type.
->(
-    string name ///< Name the resource are embedded under
-                ///
-                ///  Requirements:
-                ///  - Really <tt>IsPresent< T ></tt>
-                ///  - <tt>IsNotBlank</tt>
+Localized< string >
+_S(
+    Type    type,           ///< Type that embedded resources containing
+                            ///  localized variants of <tt>untranslated</tt>
+                            ///  are associated with
+                            ///
+                            ///  Requirements:
+                            ///  - Really <tt>IsPresent< T ></tt>
+                            ///
+    string  untranslated    ///< The untranslated string
+                            ///
+                            ///  Requirements:
+                            ///  - Really <tt>IsPresent< T ></tt>
+                            ///  - <tt>IsNotBlank</tt>
 )
-    where T
-        : class
 {
-    Type type = new StackFrame( 1, false ).GetMethod().DeclaringType;
-    return _R< T >( type, name );
+    new IsPresent< Type >().ReallyRequire( type );
+    new IsPresent< string >().ReallyRequire( untranslated );
+    new IsNotBlank().Require( untranslated );
+    return _S( type, untranslated );
+}
+*/
+
+
+/* _S() to put in each class:
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+*/
+
+public static
+Localized< string >
+_S(
+    Type            type,
+    string          untranslated,
+    params object[] formatargs
+)
+{
+    new IsPresent< Type >().ReallyRequire( type );
+    new IsPresent< string >().ReallyRequire( untranslated );
+    new IsNotBlank().Require( untranslated );
+
+    Localized<string> ls = new LocalizedStringResource(
+        type, untranslated, formatargs );
+    if( formatargs.Length > 0 ) {
+        ls = LocalizedString.Format( ls, formatargs );
+    }
+    return ls;
 }
 
 
@@ -139,97 +168,6 @@ _R<
 
 
 
-/// Get a <tt>Localized< string ></tt> representing a given untranslated
-/// <tt>string</tt> which <em>may</em> have translated variations embedded as
-/// <tt>string</tt> resources associated with the type where the calling method
-/// is defined
-///
-/// The name the resources are embedded under is the untranslated string itself
-/// prefixed by <tt>STRING_PREFIX</tt> 
-///
-/// TODO document exceptions that the returned Localized< string > may throw
-/// eg. ResourceMissing or ResourceTypeMismatch
-///
-public static
-Localized< string >
-_S(
-    string  untranslated    ///< Untranslated string
-                            ///
-                            ///  Requirements:
-                            ///  - Really <tt>IsPresent< T ></tt>
-                            ///  - <tt>IsNotBlank</tt>
-)
-{
-    Type type = new StackFrame( 1, false ).GetMethod().DeclaringType;
-    return _S( type, untranslated );
-}
-
-
-
-/// Get a <tt>Localized< string ></tt> representing a given untranslated
-/// <tt>string</tt> which <em>may</em> have translated variations embedded as
-/// <tt>string</tt> resources associated with a given type
-///
-/// The name the resources are embedded under is the untranslated string itself
-/// prefixed by <tt>STRING_PREFIX</tt> 
-///
-/// TODO document exceptions that the returned Localized< string > may throw
-/// eg. ResourceMissing or ResourceTypeMismatch
-///
-public static
-Localized< string >
-_S(
-    Type    type,           ///< Type the resources are associated with
-                            ///
-                            ///  Requirements:
-                            ///  - Really <tt>IsPresent< T ></tt>
-                            ///
-    string  untranslated    ///< Untranslated string
-                            ///
-                            ///  Requirements:
-                            ///  - Really <tt>IsPresent< T ></tt>
-                            ///  - <tt>IsNotBlank</tt>
-)
-{
-    new IsPresent< Type >().ReallyRequire( type );
-    new IsPresent< string >().ReallyRequire( untranslated );
-    new IsNotBlank().Require( untranslated );
-    return new LocalizedStringResource( type, untranslated );
-}
-
-
-// TODO depricate
-public static
-Localized< string >
-_S(
-    string          untranslated,
-    params object[] formatargs
-)
-{
-    Type type = new StackFrame( 1, false ).GetMethod().DeclaringType;
-    return _S( type, untranslated, formatargs );
-}
-
-
-
-// TODO depricate
-public static
-Localized< string >
-_S(
-    Type            type,
-    string          untranslated,
-    params object[] formatargs
-)
-{
-    new IsPresent< Type >().ReallyRequire( type );
-    new IsPresent< string >().ReallyRequire( untranslated );
-    new IsNotBlank().Require( untranslated );
-
-    return new LocalizedStringResource( type, untranslated, formatargs );
-}
-
-
-
 /// Retrieve the most appropriate variation of a resource for a given culture,
 /// of a given type, embedded under a given name, associated with a given type
 ///
@@ -237,8 +175,7 @@ _S(
 /// <tt>null</tt>.  This differs from <tt>System.Resources.ResourceManager</tt>
 /// which, under the same circumstances, sometimes throws an exception (if
 /// there are no embedded resources at all) and sometimes returns <tt>null</tt>
-/// (if there <em>are</em> other embedded resources but not the one you're
-/// looking for)
+/// (if there are other embedded resources but not the one you're looking for)
 ///
 /// @exception ResourceTypeMismatchException
 /// An appropriate resource exists, but it is not a <tt>T</tt>

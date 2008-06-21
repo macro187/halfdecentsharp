@@ -19,7 +19,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Com.Halfdecent.System;
-using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace

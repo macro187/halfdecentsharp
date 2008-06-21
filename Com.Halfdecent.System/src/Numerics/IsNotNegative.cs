@@ -80,7 +80,7 @@ SayConforms(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is not negative", termIdentifier );
+    return _S( "{0} is not negative", termIdentifier );
 }
 
 
@@ -92,7 +92,7 @@ SayDoesNotConform(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} is negative", termIdentifier );
+    return _S( "{0} is negative", termIdentifier );
 }
 
 
@@ -104,11 +104,13 @@ SayRequirement(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return Resource._S( "{0} must not be negative", termIdentifier );
+    return _S( "{0} must not be negative", termIdentifier );
 }
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

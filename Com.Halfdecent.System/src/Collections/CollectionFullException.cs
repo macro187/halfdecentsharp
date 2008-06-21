@@ -18,7 +18,6 @@
 using System;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
-using R = Com.Halfdecent.Resources.Resource;
 
 
 namespace
@@ -89,7 +88,7 @@ CollectionFullException(
     : base(
         (message != null
             ? message
-            : R._S("The operation can not complete because the collection is already full")
+            : _S("The operation can not complete because the collection is already full")
         ),
         innerException )
 {
@@ -97,6 +96,8 @@ CollectionFullException(
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

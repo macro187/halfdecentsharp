@@ -50,7 +50,7 @@ ResourceMissingException(
     string name
 )
     : base( LocalizedString.Format(
-        Resource._S("Type '{0}' contains no embedded resources named '{1}'"),
+        _S("Type '{0}' contains no embedded resources named '{1}'"),
         typename,
         name ))
 {
@@ -58,6 +58,8 @@ ResourceMissingException(
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

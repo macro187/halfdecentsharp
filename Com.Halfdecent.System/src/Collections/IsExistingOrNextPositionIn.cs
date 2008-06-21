@@ -18,7 +18,6 @@
 using System;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Globalization;
-using R = Com.Halfdecent.Resources.Resource;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Predicates;
 using Com.Halfdecent.Numerics;
@@ -123,7 +122,7 @@ SayConforms(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return R._S(
+    return _S(
         "{0} is the position of an existing item or the position following the last item",
         termIdentifier );
 }
@@ -139,7 +138,7 @@ SayDoesNotConform(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return R._S(
+    return _S(
         "{0} is not the position of an existing item or the position following the last item",
         termIdentifier );
 }
@@ -155,13 +154,15 @@ SayRequirement(
 )
 {
     new IsPresent< Localized< string > >().ReallyRequire( termIdentifier );
-    return R._S(
+    return _S(
         "{0} must be the position of an existing item or the position following the last item",
         termIdentifier );
 }
 
 
 
+
+private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace
