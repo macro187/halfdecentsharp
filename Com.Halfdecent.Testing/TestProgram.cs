@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -16,8 +16,8 @@
 
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
-
 
 
 namespace
@@ -26,9 +26,8 @@ Com.Halfdecent.Testing
 
 
 
-/// <summary>
 /// Test runner
-/// </summary>
+///
 public class
 TestProgram
 {
@@ -40,14 +39,13 @@ TestProgram
 // Methods
 // -----------------------------------------------------------------------------
 
-/// <summary>
 /// Run all tests in a given assembly
-/// </summary>
-/// <returns>
-/// An <c>int</c> suitable for use as a program exit code, ie. 0 if all tests
-/// passed, non-zero otherwise
-/// </returns>
-public static int
+///
+/// @returns An <c>int</c> suitable for use as a program exit code, ie. 0 if
+/// all tests passed, non-zero otherwise
+///
+public static
+int
 RunTests()
 {
     int tests_total = 0;
@@ -79,7 +77,10 @@ RunTests()
             Console.WriteLine( "  Testing {0}...", testattr.Description );
             bool passed = true;
             try {
+                ConsoleTraceListener listener = new ConsoleTraceListener();
+                Debug.Listeners.Add( listener );
                 m.Invoke( null, null );
+                Debug.Listeners.Remove( listener );
             } catch( TargetInvocationException e ) {
                 TestMessage( e.InnerException.ToString() );
                 passed = false;
@@ -106,11 +107,13 @@ RunTests()
 
 
 
-/// <summary>
 /// Emit a test-level console message
-/// </summary>
-public static void
-TestMessage( string message )
+///
+public static
+void
+TestMessage(
+    string message
+)
 {
     if( message == null ) throw new ArgumentNullException( "message" );
     Console.WriteLine( "    - {0}", message.Replace( "\n", "\n    " ) );
