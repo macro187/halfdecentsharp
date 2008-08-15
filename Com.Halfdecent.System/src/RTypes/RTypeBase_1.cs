@@ -14,55 +14,69 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
-using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
+using System.Collections.Generic;
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.RTypes
+{
+
+
+
+// =============================================================================
+/// Base class for 1-term RTypes with single IsA supertypes
+// =============================================================================
+//
+public abstract class
+RTypeBase<
+    TIsA
+>
+    : RType1Base
 {
 
 
 
 
-/// An exception indicating that a resource was not of the expected type
+/// Return <tt>true</tt> if <tt>null</tt> unless this RType explicitly
+/// disallows <tt>null</tt>s
 ///
-public class
-ResourceTypeMismatchException
-    : SimpleLocalisedExceptionBase
-{
+protected abstract
+bool
+MyCheck(
+    TIsA item
+);
 
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// RType1Base
 // -----------------------------------------------------------------------------
 
-/// Initialise a new <tt>ResourceTypeMismatchException</tt>
-///
-public
-ResourceTypeMismatchException(
-    string expectedtypename,
-    string actualtypename,
-    string typename,
-    string name,
-    string culturename
+protected override
+bool
+MyCheck(
+    object item
 )
-    : base( LocalisedString.Format(
-        _S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
-        name,
-        typename,
-        culturename,
-        expectedtypename,
-        actualtypename ))
 {
+    // TODO Check is TIsA to verify subclass yielded base.Supers in Supers?
+    return this.MyCheck( (TIsA)item );
 }
 
 
 
+public override
+IEnumerable< IRType1 >
+Supers
+{
+    get
+    {
+        foreach( IRType1 super in base.Supers ) yield return super;
+        yield return new IsA< TIsA >();
+    }
+}
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+
+
 
 } // type
 } // namespace

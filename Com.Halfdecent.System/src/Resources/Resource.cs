@@ -21,6 +21,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
 using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.RTypes;
 
 
 namespace
@@ -106,9 +107,9 @@ _S(
     params object[] formatargs
 )
 {
-    new IsPresent< Type >().ReallyRequire( type );
-    new IsPresent< string >().ReallyRequire( untranslated );
-    new IsNotBlank().Require( untranslated );
+    new NonNull().Check( type );
+    new NonNull().Check( untranslated );
+    new NonBlankString().Check( untranslated );
 
     Localised<string> ls = new LocalisedStringResource(
         type, untranslated, formatargs );
@@ -148,9 +149,9 @@ _R<
     where T
         : class
 {
-    new IsPresent< Type >().ReallyRequire( type );
-    new IsPresent< string >().ReallyRequire( name );
-    new IsNotBlank().Require( name );
+    new NonNull().Check( type );
+    new NonNull().Check( name );
+    new NonBlankString().Check( name );
 
     // Fail early if a version for the invariant culture doesn't exist
     if( Get< T >( type, name, CultureInfo.GetCultureInfo( "" ) ) == null )
@@ -204,10 +205,10 @@ Get<
     where T
         : class
 {
-    new IsPresent< Type >().ReallyRequire( type );
-    new IsPresent< string >().ReallyRequire( name );
-    new IsNotBlank().Require( name );
-    new IsPresent< CultureInfo >().ReallyRequire( culture );
+    new NonNull().Check( type );
+    new NonNull().Check( name );
+    new NonBlankString().Check( name );
+    new NonNull().Check( culture );
 
     T result = null;
     object o;
@@ -267,7 +268,7 @@ GetResourceManager(
     Type type
 )
 {
-    new IsPresent< Type >().ReallyRequire( type );
+    new NonNull().Check( type );
     ResourceManager result;
     lock( managers ) {
         if( !managers.TryGetValue( type, out result ) ) {
@@ -322,7 +323,7 @@ MyResourceManager
         bool        tryParents
     )
     {
-        new IsPresent< CultureInfo >().ReallyRequire( culture );
+        new NonNull().Check( culture );
         ResourceSet result = null;
 
         if( this.MainAssembly != null ) {

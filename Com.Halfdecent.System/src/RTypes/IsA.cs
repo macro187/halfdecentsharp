@@ -14,49 +14,71 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.RTypes
 {
 
 
 
-
-/// An exception indicating that a resource was not of the expected type
-///
 public class
-ResourceTypeMismatchException
-    : SimpleLocalisedExceptionBase
+IsA<
+    T
+>
+    : RType1Base
 {
 
 
 
 
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-/// Initialise a new <tt>ResourceTypeMismatchException</tt>
-///
-public
-ResourceTypeMismatchException(
-    string expectedtypename,
-    string actualtypename,
-    string typename,
-    string name,
-    string culturename
+protected override
+bool
+MyCheck(
+    object item
 )
-    : base( LocalisedString.Format(
-        _S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
-        name,
-        typename,
-        culturename,
-        expectedtypename,
-        actualtypename ))
 {
+    return item == null ? true : ( item is T );
+}
+
+
+
+public override
+Localised< string >
+SayIs(
+    Localised< string > r
+)
+{
+    return LocalisedString.Format(
+        _S("{0} is a {1}"),
+        r, typeof( T ).FullName );
+}
+
+
+
+public override
+Localised< string >
+SayIsNot(
+    Localised< string > r
+)
+{
+    return LocalisedString.Format(
+        _S("{0} is not a {1}"),
+        r, typeof( T ).FullName );
+}
+
+
+
+public override
+Localised< string >
+SayMustBe(
+    Localised< string > r
+)
+{
+    return LocalisedString.Format(
+        _S("{0} must be a {1}"),
+        r, typeof( T ).FullName );
 }
 
 

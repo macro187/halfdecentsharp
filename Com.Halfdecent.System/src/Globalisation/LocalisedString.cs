@@ -14,21 +14,18 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using System.Threading;
 using System.Globalization;
-using Com.Halfdecent.System;
-
+using Com.Halfdecent.RTypes;
 
 namespace
 Com.Halfdecent.Globalisation
 {
 
-
-
-
+// =============================================================================
 /// Utilities for working with <tt>Localised< string ></tt>s
+// =============================================================================
 ///
 public static class
 LocalisedString
@@ -68,8 +65,8 @@ Format(
     params object[]     args
 )
 {
-    new IsPresent< Localised< string > >().ReallyRequire( format );
-    new IsPresent< object[] >().ReallyRequire( args );
+    new NonNull().Check( format );
+    new NonNull().Check( args );
     return new FormattedLocalisedString( format, args );
 }
 
@@ -106,7 +103,7 @@ FormattedLocalisedString
     {
         get
         {
-            new IsPresent< CultureInfo >().Require( culture );
+            new NonNull().Check( culture );
             string result;
             CultureInfo cc = CultureInfo.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = culture;

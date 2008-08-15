@@ -18,16 +18,16 @@ using System;
 using System.Threading;
 using System.Globalization;
 using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.RTypes;
 
 namespace
 Com.Halfdecent.Resources
 {
 
-
-
-
+// =============================================================================
 /// A read-only <tt>Localised< string ></tt> that represents a (possibly)
 /// localised string
+// =============================================================================
 ///
 public class
 LocalisedStringResource
@@ -73,9 +73,9 @@ LocalisedStringResource(
 )
     : base( type, Resource.STRING_RESOURCE_NAME_PREFIX + untranslated )
 {
-    new IsPresent< string >().ReallyRequire( untranslated );
-    new IsNotBlank().ReallyRequire( untranslated );
-    new IsPresent< object[] >().ReallyRequire( formatargs );
+    new NonNull().Check( untranslated );
+    new NonBlankString().Check( untranslated );
+    new NonNull().Check( formatargs );
     this.untranslated = untranslated;
     this.formatargs = formatargs;
 }
@@ -100,7 +100,7 @@ this[
 {
     get
     {
-        new IsPresent< CultureInfo >().ReallyRequire( culture );
+        new NonNull().Check( culture );
         string r;
         r = Resource.Get<string>( this.type, this.name, culture );
         if( r == null )

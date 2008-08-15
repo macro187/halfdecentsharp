@@ -14,55 +14,37 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.Exceptions
 {
 
 
 
-
-/// An exception indicating that a resource was not of the expected type
+// =============================================================================
+/// An <tt>Exception</tt> with localised messaging
+// =============================================================================
 ///
-public class
-ResourceTypeMismatchException
-    : SimpleLocalisedExceptionBase
+public interface
+ILocalisedException
 {
 
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Properties
 // -----------------------------------------------------------------------------
 
-/// Initialise a new <tt>ResourceTypeMismatchException</tt>
-///
-public
-ResourceTypeMismatchException(
-    string expectedtypename,
-    string actualtypename,
-    string typename,
-    string name,
-    string culturename
-)
-    : base( LocalisedString.Format(
-        _S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
-        name,
-        typename,
-        culturename,
-        expectedtypename,
-        actualtypename ))
+Localised< string >
+Message
 {
+    get;
 }
 
 
 
-
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

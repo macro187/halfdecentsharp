@@ -14,65 +14,111 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.RTypes
 {
 
 
 
 // =============================================================================
-/// Exception indicating a programming error encountered at runtime
+/// Base class for 1-term RTypes
 // =============================================================================
+//
+public abstract class
+RType1Base
+    : IRType1
+{
+
+
+
+
+/// Return <tt>true</tt> if <tt>null</tt> unless this RType explicitly
+/// disallows <tt>null</tt>s
 ///
-public class
-BugException
-    : SimpleLocalisedExceptionBase
+protected virtual
+bool
+MyCheck(
+    object item
+)
 {
+    return true;
+}
 
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// IRType1
 // -----------------------------------------------------------------------------
 
-public
-BugException()
-    :this( null, null )
+public virtual
+IEnumerable< IRType1 >
+Supers
 {
+    get { return new IRType1[]{}; }
+}
+
+
+
+public virtual
+IEnumerable< IRType1 >
+Components
+{
+    get { return new IRType1[]{}; }
 }
 
 
 
 public
-BugException(
-    Localised< string > message
+void
+Check(
+    object item
 )
-    :this( message, null )
 {
+    foreach( IRType1 st in this.Supers )
+        st.Check( item );
+    foreach( IRType1 c in this.Components )
+        foreach( IRType1 cst in c.Supers )
+            cst.Check( item );
+    foreach( IRType1 c in this.Components )
+        try {
+            c.Check( item );
+        } catch( RTypeException rte ) {
+            throw new RTypeException( this, rte );
+        }
+    if( !this.MyCheck( item ) )
+        throw new RTypeException( this );
 }
 
 
 
-public
-BugException(
-    Localised< string > message,
-    Exception           innerException
-)
-    :base(
-        message ??
-            _S("A condition indicating a programming error was encountered"),
-        innerException )
-{
-}
+public abstract
+Localised< string >
+SayIs(
+    Localised< string > reference
+);
 
 
 
+public abstract
+Localised< string >
+SayIsNot(
+    Localised< string > reference
+);
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+
+
+public abstract
+Localised< string >
+SayMustBe(
+    Localised< string > reference
+);
+
+
+
 
 } // type
 } // namespace

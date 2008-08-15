@@ -17,19 +17,21 @@
 using System;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Exceptions;
+//using Com.Halfdecent.Meta;
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.RTypes
 {
 
 
 
 
-/// An exception indicating that a resource was not of the expected type
+/// A value was found not to be of a particular <tt>RType</tt> when it was
+/// required to be
 ///
 public class
-ResourceTypeMismatchException
-    : SimpleLocalisedExceptionBase
+RTypeException
+    : LocalisedExceptionBase
 {
 
 
@@ -39,24 +41,65 @@ ResourceTypeMismatchException
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new <tt>ResourceTypeMismatchException</tt>
-///
 public
-ResourceTypeMismatchException(
-    string expectedtypename,
-    string actualtypename,
-    string typename,
-    string name,
-    string culturename
+RTypeException(
+    IRType1 rtype
 )
-    : base( LocalisedString.Format(
-        _S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
-        name,
-        typename,
-        culturename,
-        expectedtypename,
-        actualtypename ))
+    : this( rtype, null )
 {
+}
+
+
+
+public
+RTypeException(
+    // Value    value
+    IRType1     rtype,
+    Exception   innerException
+)
+    : base( innerException )
+{
+    if( rtype == null ) throw new BugException(
+        _S("'rtype' is a required parameter") );
+    this.rtype = rtype;
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+IRType1
+RType
+{
+    get { return this.rtype; }
+}
+
+private
+IRType1
+rtype;
+
+
+
+
+// -----------------------------------------------------------------------------
+// LocalisedException
+// -----------------------------------------------------------------------------
+
+override public
+Localised< string >
+Message
+{
+    get
+    {
+        // TODO Use a value reference when added to class and
+        //      captitalise in a localised fashion
+        //      (maybe make a LocalisedString.Capitalise())
+        return this.RType.SayIsNot( _S("a value") );
+    }
 }
 
 

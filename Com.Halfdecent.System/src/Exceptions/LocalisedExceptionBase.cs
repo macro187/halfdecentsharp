@@ -16,20 +16,21 @@
 
 using System;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.Exceptions
 {
 
 
 
-
-/// An exception indicating that a resource was not of the expected type
+// =============================================================================
+/// Base class for implementing <tt>ILocalisedException</tt>s
+// =============================================================================
 ///
-public class
-ResourceTypeMismatchException
-    : SimpleLocalisedExceptionBase
+public abstract class
+LocalisedExceptionBase
+    : LocalisedExceptionShim
+    , ILocalisedException
 {
 
 
@@ -39,24 +40,45 @@ ResourceTypeMismatchException
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new <tt>ResourceTypeMismatchException</tt>
-///
 public
-ResourceTypeMismatchException(
-    string expectedtypename,
-    string actualtypename,
-    string typename,
-    string name,
-    string culturename
-)
-    : base( LocalisedString.Format(
-        _S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
-        name,
-        typename,
-        culturename,
-        expectedtypename,
-        actualtypename ))
+LocalisedExceptionBase()
+    : this( null )
 {
+}
+
+
+
+public
+LocalisedExceptionBase(
+    Exception innerException
+)
+    : base(
+        _S("(description not available because not using Message property)"),
+        innerException )
+{
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// ILocalisedException
+// -----------------------------------------------------------------------------
+
+new public abstract
+Localised< string >
+Message
+{
+    get;
+}
+
+
+
+protected override
+string
+BaseMessage
+{
+    get { return this.Message; }
 }
 
 

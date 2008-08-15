@@ -1,6 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007, 2008
-// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -16,17 +15,23 @@
 // -----------------------------------------------------------------------------
 
 namespace
-Com.Halfdecent.System.Test
+Com.Halfdecent.RTypes
 {
 
+
+
 // =============================================================================
-/// Container type for test resources
+/// An n-term RType
 // =============================================================================
 //
-public class
-TestRes
+public interface
+IRType
 {
 
+
+
+
+// TODO API for RType with n terms
 
 
 

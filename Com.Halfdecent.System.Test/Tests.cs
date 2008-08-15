@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2007, 2008
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,25 +15,20 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using System.Globalization;
 using System.Threading;
-
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.System;
-
-
 
 namespace
 Com.Halfdecent.System.Test
 {
 
-
-
-/// <summary>
-/// Test program for <c>Com.Halfdecent.System</c>
-/// </summary>
+// =============================================================================
+/// Test program for <tt>Com.Halfdecent.System</tt>
+// =============================================================================
+//
 public class
 Tests
     : TestBase
@@ -41,14 +37,8 @@ Tests
 
 
 
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// <summary>
-/// Test program entry point
-/// </summary>
-public static int
+public static
+int
 Main()
 {
     return TestProgram.RunTests();

@@ -14,23 +14,25 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.RTypes
 {
 
 
 
-
-/// An exception indicating that an embedded resource that was expected to
-/// exist couldn't be found
-///
-public class
-ResourceMissingException
-    : LocalisedExceptionBase
+// =============================================================================
+/// Base class for 1-term RTypes with single IsA supertypes and simple
+/// IsA, IsNotA, and MustBe text
+// =============================================================================
+//
+public abstract class
+SimpleTextRTypeBase<
+    TIsA
+>
+    : RTypeBase< TIsA >
 {
 
 
@@ -40,59 +42,76 @@ ResourceMissingException
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a <tt>ResourceMissingException</tt>
-///
-public
-ResourceMissingException(
-    string typename,
-    string name
+protected
+SimpleTextRTypeBase(
+    Localised< string > isText,
+    Localised< string > isNotText,
+    Localised< string > mustBeText
 )
 {
-    this.typename = typename;
-    this.name = name;
+    new NonNull().Check( isText );
+    new NonNull().Check( isNotText );
+    new NonNull().Check( mustBeText );
+    this.istext = isText;
+    this.isnottext = isNotText;
+    this.mustbetext = mustBeText;
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// RType1Base
 // -----------------------------------------------------------------------------
 
-// TODO property
+public override
+Localised< string >
+SayIs(
+    Localised< string > r
+)
+{
+    new NonNull().Check( r );
+    return LocalisedString.Format( this.istext, r );
+}
 
 private
-string
-typename;
+Localised< string >
+istext;
 
-
-
-// TODO property
-
-private
-string
-name;
-
-
-
-
-// -----------------------------------------------------------------------------
-// LocalisedException
-// -----------------------------------------------------------------------------
 
 
 public override
 Localised< string >
-Message
+SayIsNot(
+    Localised< string > r
+)
 {
-    get { return LocalisedString.Format(
-            _S("Type '{0}' contains no embedded resources named '{1}'"),
-            this.typename, this.name ); }
+    new NonNull().Check( r );
+    return LocalisedString.Format( this.isnottext, r );
 }
 
+private
+Localised< string >
+isnottext;
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+
+public override
+Localised< string >
+SayMustBe(
+    Localised< string > r
+)
+{
+    new NonNull().Check( r );
+    return LocalisedString.Format( this.mustbetext, r );
+}
+
+private
+Localised< string >
+mustbetext;
+
+
+
 
 } // type
 } // namespace

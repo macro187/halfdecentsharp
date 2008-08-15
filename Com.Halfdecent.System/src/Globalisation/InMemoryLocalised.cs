@@ -18,7 +18,8 @@
 using System;
 using System.Globalization;
 using System.Collections.Generic;
-using Com.Halfdecent.System;
+using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Exceptions;
 
 
 namespace
@@ -57,7 +58,7 @@ InMemoryLocalised(
                             ///  - <tt>IsPresent< T ></tt>
 )
 {
-    new IsPresent< T >().Require( invariantVariation );
+    new NonNull().Check( invariantVariation );
     this[ CultureInfo.InvariantCulture ] = invariantVariation;
 }
 
@@ -103,7 +104,7 @@ Contains(
                         ///  - <tt>IsPresent< T ></tt>
 )
 {
-    new IsPresent< CultureInfo >().Require( culture );
+    new NonNull().Check( culture );
     return this.Data.ContainsKey( culture );
 }
 
@@ -128,7 +129,7 @@ GetBest(
                         ///  - <tt>IsPresent< T ></tt>
 )
 {
-    new IsPresent< CultureInfo >().Require( culture );
+    new NonNull().Check( culture );
     T result;
     for( CultureInfo c = culture; ; c = c.Parent ) {
         if( this.Contains( c ) ) {
@@ -159,9 +160,8 @@ Get(
                         ///  - TODO <tt>IsEXISTINGKEYIN( this )</tt>
 )
 {
-    new IsPresent< CultureInfo >().Require( culture );
+    new NonNull().Check( culture );
     // TODO if( !this.Contains( culture ) ) throw new SOMEKINDOFException();
-    if( !this.Contains( culture ) ) throw new ValueException();
         // _S("This item has no variation for {0}")
     return this.Data[ culture ];
 }
@@ -182,8 +182,8 @@ Set(
                             ///  - <tt>IsPresent< T ></tt>
 )
 {
-    new IsPresent< CultureInfo >().Require( culture );
-    new IsPresent< T >().Require( value );
+    new NonNull().Check( culture );
+    new NonNull().Check( value );
     this.Data[ culture ] = value;
 }
 
@@ -202,12 +202,12 @@ Remove(
                             ///  - TODO <tt>IsNotInvariantCulture</tt>
 )
 {
-    new IsPresent< CultureInfo >().Require( culture );
+    new NonNull().Check( culture );
     // TODO new IsNotInvariantCulture().Require( culture );
-    if( culture == CultureInfo.InvariantCulture ) throw new ValueException();
+    //if( culture == CultureInfo.InvariantCulture ) throw new ValueException();
         // _S("{0} must not be the invariant culture")
     // TODO if( !this.Contains( culture ) ) throw new SOMEKINDOFException();
-    if( !this.Contains( culture ) ) throw new ValueException();
+    //if( !this.Contains( culture ) ) throw new ValueException();
         // _S("A variation of the item must exist for {0}")
     this.Data.Remove( culture );
 }

@@ -14,49 +14,69 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.RTypes
 {
 
 
 
-
-/// An exception indicating that a resource was not of the expected type
-///
 public class
-ResourceTypeMismatchException
-    : SimpleLocalisedExceptionBase
+NonBlankString
+    : RTypeBase< string >
 {
 
 
 
 
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-/// Initialise a new <tt>ResourceTypeMismatchException</tt>
-///
-public
-ResourceTypeMismatchException(
-    string expectedtypename,
-    string actualtypename,
-    string typename,
-    string name,
-    string culturename
+protected override
+bool
+MyCheck(
+    string item
 )
-    : base( LocalisedString.Format(
-        _S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
-        name,
-        typename,
-        culturename,
-        expectedtypename,
-        actualtypename ))
 {
+    return item == null ? true : ( item != string.Empty );
+}
+
+
+
+public override
+Localised< string >
+SayIs(
+    Localised< string > r
+)
+{
+    return LocalisedString.Format(
+        _S("{0} is not blank"),
+        r );
+}
+
+
+
+public override
+Localised< string >
+SayIsNot(
+    Localised< string > r
+)
+{
+    return LocalisedString.Format(
+        _S("{0} is blank"),
+        r );
+}
+
+
+
+public override
+Localised< string >
+SayMustBe(
+    Localised< string > r
+)
+{
+    return LocalisedString.Format(
+        _S("{0} must not be blank"),
+        r );
 }
 
 

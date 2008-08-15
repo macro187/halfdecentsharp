@@ -16,20 +16,21 @@
 
 using System;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 
 namespace
-Com.Halfdecent.Resources
+Com.Halfdecent.Exceptions
 {
 
 
 
-
-/// An exception indicating that a resource was not of the expected type
+// =============================================================================
+/// Base class for implementing <tt>ILocalisedException</tt>s with a simple
+/// <tt>Message</tt>
+// =============================================================================
 ///
-public class
-ResourceTypeMismatchException
-    : SimpleLocalisedExceptionBase
+public abstract class
+SimpleLocalisedExceptionBase
+    :LocalisedExceptionBase
 {
 
 
@@ -39,25 +40,45 @@ ResourceTypeMismatchException
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new <tt>ResourceTypeMismatchException</tt>
-///
 public
-ResourceTypeMismatchException(
-    string expectedtypename,
-    string actualtypename,
-    string typename,
-    string name,
-    string culturename
+SimpleLocalisedExceptionBase(
+    Localised< string > message
 )
-    : base( LocalisedString.Format(
-        _S("Resource '{0}' for type '{1}', culture '{2}' was expected to be of (or convertable to) type '{3}' but was type '{4}'"),
-        name,
-        typename,
-        culturename,
-        expectedtypename,
-        actualtypename ))
+    : this( message, null )
 {
 }
+
+
+
+public
+SimpleLocalisedExceptionBase(
+    Localised< string > message,
+    Exception           innerException
+)
+    : base( innerException )
+{
+    if( message == null ) throw new BugException(
+        _S("SimpleLocalisedExceptionBase subclasses are required to provide a message") );
+    this.message = message;
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// ILocalisedException
+// -----------------------------------------------------------------------------
+
+public override
+Localised< string >
+Message
+{
+    get { return this.message; }
+}
+
+private
+Localised< string >
+message;
 
 
 

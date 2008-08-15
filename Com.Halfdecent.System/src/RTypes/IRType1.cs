@@ -1,6 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007, 2008
-// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -15,18 +14,79 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Com.Halfdecent.Globalisation;
+
 namespace
-Com.Halfdecent.System.Test
+Com.Halfdecent.RTypes
 {
 
+
+
 // =============================================================================
-/// Container type for test resources
+/// A 1-term RType
 // =============================================================================
 //
-public class
-TestRes
+public interface
+IRType1
+    : IRType
 {
 
+
+
+
+IEnumerable< IRType1 >
+Supers
+{
+    get;
+}
+
+
+
+IEnumerable< IRType1 >
+Components
+{
+    get;
+}
+
+
+
+void
+Check(
+    object item
+);
+
+
+
+
+/// Generate a natural language statement that an item is of this type
+///
+Localised< string >
+SayIs(
+    Localised< string > reference
+    ///< What to refer to the item as
+);
+
+
+
+/// Generate a natural language statement that an item is not of this type
+///
+Localised< string >
+SayIsNot(
+    Localised< string > reference
+    ///< What to refer to the item as
+);
+
+
+
+/// Generate a natural language statement that an item is required to be of
+/// this type
+///
+Localised< string >
+SayMustBe(
+    Localised< string > reference
+    ///< What to refer to the item as
+);
 
 
 

@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.RTypes;
 
 namespace
 Com.Halfdecent.Resources
@@ -62,9 +63,9 @@ LocalisedResource(
                     ///  - <tt>IsNotBlank</tt>
 )
 {
-    new IsPresent< Type >().ReallyRequire( type );
-    new IsPresent< string >().ReallyRequire( name );
-    new IsNotBlank().Require( name );
+    new NonNull().Check( type );
+    new NonNull().Check( name );
+    new NonBlankString().Check( name );
     this.type = type;
     this.name = name;
 }
@@ -93,7 +94,7 @@ this[
 {
     get
     {
-        new IsPresent< CultureInfo >().ReallyRequire( culture );
+        new NonNull().Check( culture );
         T r;
         r = Resource.Get<T>( this.type, this.name, culture );
         if( r == null ) throw new ResourceMissingException(

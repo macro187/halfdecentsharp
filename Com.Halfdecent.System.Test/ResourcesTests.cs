@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2007, 2008
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,27 +15,22 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using System.Globalization;
 using System.Threading;
-
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.System;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Resources;
-
-
 
 namespace
 Com.Halfdecent.System.Test
 {
 
-
-
-/// <summary>
-/// Tests for <c>Com.Halfdecent.Resources</c>
-/// </summary>
+// =============================================================================
+/// Tests for <tt>Com.Halfdecent.Resources</tt>
+// =============================================================================
+///
 public class
 ResourcesTests
     : TestBase
@@ -43,12 +39,9 @@ ResourcesTests
 
 
 
-// -----------------------------------------------------------------------------
-// Tests
-// -----------------------------------------------------------------------------
-
 [Test( "Resource.Get<T>()" )]
-public static void
+public static
+void
 Test_Resource_Get()
 {
     CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
@@ -105,14 +98,12 @@ Test_Resource_Get()
 
 
 [Test( "Resource._R<T>( Type, string )" )]
-public static void
+public static
+void
 Test_Resource__R_type_string()
 {
-    Localized<string>  ls;
+    Localised<string>  ls;
     CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
-    //CultureInfo         en_CA = CultureInfo.GetCultureInfo( "en-CA" );
-    //CultureInfo         en_US = CultureInfo.GetCultureInfo( "en-US" );
-    //CultureInfo         fr_FR = CultureInfo.GetCultureInfo( "fr-FR" );
     bool                threw;
 
 
@@ -153,13 +144,13 @@ Test_Resource__R_type_string()
 
 
 [Test( "Resource._S( type, string )" )]
-public static void
+public static
+void
 Test_Resource__S_type_string()
 {
-    Localized<string>  ls;
+    Localised<string>  ls;
     CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
     CultureInfo         en_CA = CultureInfo.GetCultureInfo( "en-CA" );
-    //CultureInfo         en_US = CultureInfo.GetCultureInfo( "en-US" );
     CultureInfo         fr_FR = CultureInfo.GetCultureInfo( "fr-FR" );
 
 
@@ -191,18 +182,12 @@ Test_Resource__S_type_string()
 
 
 [Test( "Resource._S( type, string, params object[] )" )]
-public static void
+public static
+void
 Test_Resource__S_type_string_paramsobject()
 {
-    Localized<string>  ls;
-    /*
-    CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
-    CultureInfo         en_CA = CultureInfo.GetCultureInfo( "en-CA" );
-    //CultureInfo         en_US = CultureInfo.GetCultureInfo( "en-US" );
+    Localised<string>  ls;
 
-    Print( "Retrieve string resource (which has resource translations)" );
-    ls = Resource._S( typeof(TestRes), "Hello (code)" );
-    */
     CultureInfo         fr_FR = CultureInfo.GetCultureInfo( "fr-FR" );
     CultureInfo         ja_JP = CultureInfo.GetCultureInfo( "ja-JP" );
 
