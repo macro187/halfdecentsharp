@@ -18,7 +18,7 @@
 /// Multiple languages and cultures
 ///
 namespace
-Com.Halfdecent.Globalization
+Com.Halfdecent.Globalisation
 {
 }
 

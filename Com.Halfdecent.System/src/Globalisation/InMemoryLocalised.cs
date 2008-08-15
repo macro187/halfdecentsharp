@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -22,19 +22,19 @@ using Com.Halfdecent.System;
 
 
 namespace
-Com.Halfdecent.Globalization
+Com.Halfdecent.Globalisation
 {
 
 
 
 
-/// A read/write in-memory <tt>Localized< T ></tt>
+/// A read/write in-memory <tt>Localised< T ></tt>
 ///
 public class
-InMemoryLocalized<
+InMemoryLocalised<
     T
 >
-    : Localized< T >
+    : Localised< T >
     where T
         : class
 {
@@ -46,11 +46,11 @@ InMemoryLocalized<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Create a new <tt>InMemoryLocalized< T ></tt> with a given invariant culture
+/// Create a new <tt>InMemoryLocalised< T ></tt> with a given invariant culture
 /// variation
 ///
 public
-InMemoryLocalized(
+InMemoryLocalised(
     T invariantVariation    ///< Invariant culture variation of the item
                             ///
                             ///  Requirements:
@@ -216,10 +216,10 @@ Remove(
 
 
 // -----------------------------------------------------------------------------
-// Localized< T >
+// Localised< T >
 // -----------------------------------------------------------------------------
 
-/// (See <tt>Localized< T >.this[]</tt>)
+/// (See <tt>Localised< T >.this[]</tt>)
 ///
 /// Getting this property retrieves the most appropriate variation for the
 /// specified culture.
@@ -261,7 +261,7 @@ this[
 
 
 
-private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

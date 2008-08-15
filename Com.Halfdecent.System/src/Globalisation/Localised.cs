@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,31 +14,29 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using System.Globalization;
 
-
 namespace
-Com.Halfdecent.Globalization
+Com.Halfdecent.Globalisation
 {
 
 
 
-/// An item plus localized variations referred to as one
+/// An item plus localised variations referred to as one
 ///
-/// A <tt>Localized< T ></tt> can be used anywhere a <tt>T</tt> can.  When
+/// A <tt>Localised< T ></tt> can be used anywhere a <tt>T</tt> can.  When
 /// this is done, it will transparently "unbox" to the variation most
 /// appropriate for the current culture.
 ///
 /// The opposite is also true.  That is, a <tt>T</tt> can be used anywhere a
-/// <tt>Localized< T ></tt> is called for.  In these situation, the <tt>T</tt>
-/// will "box" into a <tt>Localized< T ></tt> as the invariant or default
+/// <tt>Localised< T ></tt> is called for.  In these situation, the <tt>T</tt>
+/// will "box" into a <tt>Localised< T ></tt> as the invariant or default
 /// variation of the item.
 ///
 public abstract class
-Localized<
-    T   ///< The type of localized item
+Localised<
+    T   ///< The type of localised item
 >
     where T
         : class
@@ -61,7 +59,7 @@ Localized<
 /// able to provide at least an invariant/default variation.
 ///
 /// @exception HDNotSupportedException
-/// If the <tt>Localized< t ></tt> is read-only and an attempt is made to
+/// If the <tt>Localised< t ></tt> is read-only and an attempt is made to
 /// <tt>set</tt> this property (This is a compromise due to C#'s inability to
 /// have only a <tt>get</tt> in this type and add <tt>set</tt>s only in
 /// writable subclasses)
@@ -108,12 +106,12 @@ ForCurrentCulture()
 
 /// Implicit conversion to <tt>T</tt>
 ///
-/// "Unboxes" the <tt>Localized< T ></tt> to the variation most appropriate
+/// "Unboxes" the <tt>Localised< T ></tt> to the variation most appropriate
 /// for the current culture (via <tt>ForCurrentCulture()</tt>)
 ///
 public static
 implicit operator T(
-    Localized<T> l
+    Localised<T> l
 )
 {
     return (l != null ? l.ForCurrentCulture() : null);
@@ -123,15 +121,15 @@ implicit operator T(
 
 /// Implicit conversion from <tt>T</tt>
 ///
-/// "Boxes" the <tt>T</tt> into a <tt>Localized< T ></tt> (specifically, an
-/// <tt>InMemoryLocalized< T ></tt>) as the invariant culture's variation.
+/// "Boxes" the <tt>T</tt> into a <tt>Localised< T ></tt> (specifically, an
+/// <tt>InMemoryLocalised< T ></tt>) as the invariant culture's variation.
 ///
 public static
-implicit operator Localized< T >(
+implicit operator Localised< T >(
     T t
 )
 {
-    return (t != null ? new InMemoryLocalized< T >( t ) : null);
+    return (t != null ? new InMemoryLocalised< T >( t ) : null);
 }
 
 
@@ -148,7 +146,7 @@ string
 ToString()
 {
     // TODO
-    // Localized< typeof(T).FullName >
+    // Localised< typeof(T).FullName >
     //   (invariant) ...
     //   en          ...
     //   ja_JP       ...

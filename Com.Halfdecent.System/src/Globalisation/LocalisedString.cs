@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -22,16 +22,16 @@ using Com.Halfdecent.System;
 
 
 namespace
-Com.Halfdecent.Globalization
+Com.Halfdecent.Globalisation
 {
 
 
 
 
-/// Utilities for working with <tt>Localized< string ></tt>s
+/// Utilities for working with <tt>Localised< string ></tt>s
 ///
 public static class
-LocalizedString
+LocalisedString
 {
 
 
@@ -41,13 +41,13 @@ LocalizedString
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Localization-aware equivalent of <tt>String.Format()</tt>
+/// Localisation-aware equivalent of <tt>String.Format()</tt>
 ///
-/// <tt>Format()</tt> returns a <tt>Localized< string ></tt> that performs the
+/// <tt>Format()</tt> returns a <tt>Localised< string ></tt> that performs the
 /// underlying <tt>System.String.Format()</tt> operation in an on-demand
 /// fashion.
 ///
-/// This means that the returned <tt>Localized< string ></tt>'s final value
+/// This means that the returned <tt>Localised< string ></tt>'s final value
 /// may appear differently at different times depending on the thread's
 /// <tt>CurrentCulture</tt> (or the requested culture if the <tt>[]</tt>
 /// operator is used)
@@ -56,21 +56,21 @@ LocalizedString
 /// formatted appropriately according to the current/requested culture.
 ///
 /// Note that if any format <tt>args</tt> are themselves
-/// <tt>Localized< T ></tt>s, they too may change according to culture, thus
+/// <tt>Localised< T ></tt>s, they too may change according to culture, thus
 /// influencing final values.  Indeed, strings consisting of multiple nested
-/// <tt>Localized< T ></tt>'s can result, with all constituent items being
+/// <tt>Localised< T ></tt>'s can result, with all constituent items being
 /// evaluated appropriately on-demand.
 ///
 public static
-Localized< string >
+Localised< string >
 Format(
-    Localized< string > format,
+    Localised< string > format,
     params object[]     args
 )
 {
-    new IsPresent< Localized< string > >().ReallyRequire( format );
+    new IsPresent< Localised< string > >().ReallyRequire( format );
     new IsPresent< object[] >().ReallyRequire( args );
-    return new FormattedLocalizedString( format, args );
+    return new FormattedLocalisedString( format, args );
 }
 
 
@@ -81,12 +81,12 @@ Format(
 // -----------------------------------------------------------------------------
 
 private class
-FormattedLocalizedString
-    : Localized<string>
+FormattedLocalisedString
+    : Localised<string>
 {
     internal
-    FormattedLocalizedString(
-        Localized<string>   format,
+    FormattedLocalisedString(
+        Localised<string>   format,
         params object[]     args
     )
     {
@@ -95,7 +95,7 @@ FormattedLocalizedString
         this.args = args;
     }
 
-    private Localized<string>
+    private Localised<string>
     format;
 
     private object[]
