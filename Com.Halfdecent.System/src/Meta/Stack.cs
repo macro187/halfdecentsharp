@@ -53,10 +53,13 @@ public static
 Context
 Current
 {
-    if( stack.Count <= 0 )
-        throw new InvalidOperationException(
-            "Can't get Current because stack is empty" );
-    return stack[ stack.Count-1 ];
+    get
+    {
+        if( stack.Count <= 0 )
+            throw new InvalidOperationException(
+                "Can't get Current because stack is empty" );
+        return stack[ stack.Count-1 ];
+    }
 }
 
 
