@@ -14,29 +14,53 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
 
 namespace
 Com.Halfdecent.Meta
 {
 
 
-/// A method local variable
+
+/// An execution context
 ///
 public class
-LocalVariable
-    : Variable
+Context
 {
 
 
 
 
 public
-LocalVariable(
-    string name
-)
-    : base( name )
+Context()
 {
 }
+
+
+
+
+// -----------------------------------------------------------------------------
+// IDisposable
+// -----------------------------------------------------------------------------
+
+public
+void
+Dispose()
+{
+    if( disposed )
+        throw new InvalidOperationException(
+            "This Context has already been Dispose()d" );
+    if( this != Stack.Current )
+        throw new InvalidOperationException(
+            "Can't Dispose() this Context because it isn't Stack.Current" );
+    Stack.Pop();
+    this.disposed = true;
+}
+
+private
+bool
+disposed = false;
 
 
 

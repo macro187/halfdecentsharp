@@ -24,7 +24,7 @@ Com.Halfdecent.Meta
 ///
 public class
 Parameter
-    : Variable
+    : Value
 {
 
 
@@ -32,12 +32,49 @@ Parameter
 
 public
 Parameter(
+    IValue parent,
     string name
 )
     : base( name )
 {
+    if( parent == null ) throw new ArgumentNullException( "parent" );
+    if( name == null ) throw new ArgumentNullException( "name" );
+    if( name == "" ) throw new ArgumentException( "name is blank" );
+    this.parent = parent;
+    this.name = name;
 }
 
+
+
+
+public
+IValue
+Parent
+{
+    get { return this.parent; }
+}
+
+private
+IValue
+parent;
+
+
+
+public
+string
+Name
+{
+    get { return this.name; }
+}
+
+private
+string
+name;
+
+
+
+
+// TODO Compare-by-value Object.Equals() and friends
 
 
 

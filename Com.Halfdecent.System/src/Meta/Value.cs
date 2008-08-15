@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -20,37 +20,25 @@ Com.Halfdecent.Meta
 {
 
 
-/// A variable
+
+/// A value
 ///
 public abstract class
-Variable
+Value
 {
 
 
 
-
+/*
 public
-Variable(
+Property
+Property(
     string name
 )
 {
-    // TODO check null
-    // TODO check blank
-    this.name = name;
+    return new Property( this, name );
 }
-
-
-
-public
-string
-Name
-{
-    get { return this.name; }
-}
-
-private
-string
-name;
+*/
 
 
 
