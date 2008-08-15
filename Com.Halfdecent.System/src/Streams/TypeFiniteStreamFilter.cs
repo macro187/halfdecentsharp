@@ -14,10 +14,8 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using Com.Halfdecent.System;
-
 
 namespace
 Com.Halfdecent.Streams

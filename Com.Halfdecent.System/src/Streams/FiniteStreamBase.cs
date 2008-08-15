@@ -14,12 +14,9 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Com.Halfdecent.System;
-
 
 namespace
 Com.Halfdecent.Streams
