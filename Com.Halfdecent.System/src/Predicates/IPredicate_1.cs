@@ -20,6 +20,10 @@ Com.Halfdecent.Predicates
 
 
 
+/// A monadic predicate
+///
+/// TODO Reasoning behind separate Require() and RequireTermRequirements()
+///
 public interface
 IPredicate<
     T
@@ -38,6 +42,13 @@ Evaluate(
 
 void
 Require(
+    T term
+);
+
+
+
+void
+RequireTermRequirements(
     T term
 );
 

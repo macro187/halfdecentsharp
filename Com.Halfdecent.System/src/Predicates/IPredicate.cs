@@ -30,7 +30,7 @@ IPredicate
 
 
 
-// TODO Non-Generic predicate API
+// TODO Non-generic predicate API
 
 
 

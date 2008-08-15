@@ -16,12 +16,6 @@
 
 using Com.Halfdecent.Meta;
 
-/*
-using System;
-using Com.Halfdecent.System;
-using Com.Halfdecent.Globalization;
-*/
-
 namespace
 Com.Halfdecent.Predicates
 {

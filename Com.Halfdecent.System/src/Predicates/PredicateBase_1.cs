@@ -15,7 +15,7 @@
 // -----------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.Globalisation;
 
 namespace
 Com.Halfdecent.Predicates
@@ -23,7 +23,24 @@ Com.Halfdecent.Predicates
 
 
 
+// =============================================================================
 /// Base class for implementing <tt>IPredicate< T ></tt>
+///
+/// Logic implementing the predicate can be specified...
+/// - Declaratively, by providing <tt>components</tt> to the constructor
+/// - Programmatically, by overriding <tt>MyEvaluate()</tt>
+/// ...or a combination of the two.
+///
+/// Term requirements are inherited from components.  Additional requirements
+/// can be specified...
+/// - Declaratively, by providing <tt>termRequirements</tt> to the constructor
+/// - Programmatically, by overriding <tt>MyRequirements()</tt>
+/// ...or a combination of the two.
+///
+/// Natural language sentences ("true of", "false of", and "required") must be
+/// provided to the constructor.  Implementations requiring finer control can
+/// provide empty strings and override the appropriate <tt>Say*</tt> methods.
+// =============================================================================
 ///
 public abstract class
 PredicateBase<
@@ -36,31 +53,57 @@ PredicateBase<
 
 
 // -----------------------------------------------------------------------------
-// Protected (Overridable)
+// Constructors
 // -----------------------------------------------------------------------------
 
-/// Prerequisite predicates
-///
-protected virtual
-IEnumerable< IPredicate< T > >
-GetPrerequisites()
+protected
+PredicateBase(
+    Localised< string >             trueSentence,
+    ///< Natural language sentence stating that the predicate is true of a
+    ///  term, where <tt>{0}</tt> is a reference to the term.
+    Localised< string >             falseSentence,
+    ///< Natural language sentence stating that the predicate is false of a
+    ///  term, where <tt>{0}</tt> is a reference to the term.
+    Localised< string >             requiredSentence,
+    ///< Natural language sentence stating that the predicate is required of a
+    ///  term, where <tt>{0}</tt> is a reference to the term.
+    IEnumerable< IPredicate< T > >  components,
+    ///< Optional
+    IEnumerable< IPredicate< T > >  termRequirements
+    ///< Optional
+)
 {
-    yield break;
+    if( trueSentence == null )
+        throw new ArgumentNullException( "trueSentence" );
+    if( falseSentence == null )
+        throw new ArgumentNullException( "falseSentence" );
+    if( requiredSentence == null )
+        throw new ArgumentNullException( "requiredSentence" );
+    this.truesentence = trueSentence;
+    this.falsesentence = falseSentence;
+    this.requiredsentence = requiredSentence;
+    this.components = components;
+    this.termrequirements = termRequirements;
 }
 
 
 
-/// Hard-coded prerequisite checks
+
+// -----------------------------------------------------------------------------
+// Protected (Overridable)
+// -----------------------------------------------------------------------------
+
+/// Hard-coded term requirements
 ///
-/// Run after prerequisite predicates from <tt>GetPrerequisites</tt>.  Throw
-/// an appropriate <tt>ValueException</tt> if the term fails.
+/// Checked after any predicates from <tt>GetTermRequirements()</tt>.
+/// Throw appropriate <tt>ValueException</tt>s if terms fail.
 ///
 /// @Exception ValueException
-/// The term did not pass a hard-coded prerequisite check
+/// The term did not meet a requirement
 ///
 protected virtual
 void
-MyRequirePrerequisites(
+MyTermRequirements(
     T term
 )
 {
@@ -68,20 +111,10 @@ MyRequirePrerequisites(
 
 
 
-/// Component predicates
-///
-protected virtual
-IEnumerable< IPredicate< T > >
-GetComponents()
-{
-    yield break;
-}
-
-
-
 /// Hard-coded evaluation
 ///
-/// Evaluated only after all components have evaluated <tt>true</tt>
+/// Evaluated after any components from <tt>GetComponents()</tt> have evaluated
+/// <tt>true</tt>
 ///
 protected virtual
 bool
@@ -90,26 +123,6 @@ MyEvaluate(
 )
 {
     return true;
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// Protected
-// -----------------------------------------------------------------------------
-
-protected
-void
-RequirePrerequisites(
-    T term
-)
-{
-    foreach( Predicate< T > pr in GetPrerequisites() )
-        pr.Require( term );
-    foreach( Predicate< T > c in GetComponents() )
-        c.RequirePrerequisites( term );
-    this.MyRequirePrerequisites( term );
 }
 
 
@@ -125,9 +138,10 @@ Evaluate(
     T term
 )
 {
-    this.RequirePrerequisites( term );
-    foreach( Predicate< T > c in this.GetComponents() )
-        if( !c.Evaluate( term ) ) return false;
+    this.RequireTermRequirements( term );
+    if( this.components != null )
+        foreach( IPredicate< T > c in this.components )
+            if( !c.Evaluate( term ) ) return false;
     return this.MyEvaluate( term );
 }
 
@@ -139,40 +153,108 @@ Require(
     T term
 )
 {
-    this.RequirePrerequisites( term );
-    try {
-        foreach( Predicate< T > c in GetComponents() )
-            c.Require( term );
-    } catch( ValueException ve ) {
-        throw new PredicateValueException( this, ve );
-    }
+    this.RequireTermRequirements( term );
+    if( this.components != null )
+        try {
+            foreach( IPredicate< T > c in this.components )
+                c.Require( term );
+        } catch( ValueException ve ) {
+            throw new PredicateValueException( this, ve );
+        }
     if( !this.MyEvaluate( term ) )
         throw new PredicateValueException( this );
 }
 
 
 
-abstract public
-Localized< string >
-SayIsTrueOf(
-    Localized< string > termIdentifier
-);
+private
+void
+RequireTermRequirements(
+    T term
+)
+{
+    if( this.components != null )
+        foreach( IPredicate< T > c in this.components )
+            c.RequireTermRequirements( term );
+    if( this.termrequirements != null )
+        foreach( IPredicate< T > tr in this.termrequirements )
+            tr.Require( term );
+    this.MyTermRequirements( term );
+}
 
 
 
-abstract public
-Localized< string >
-SayIsFalseOf(
-    Localized< string > termIdentifier
-);
+public virtual
+Localised< string >
+SayTrueOf(
+    Localised< string > termIdentifier
+)
+{
+    if( termIdentifier == null )
+        throw new ArgumentNullException( "termIdentifier" );
+    return LocalisedString.Format( this.truesentence, termIdentifier );
+}
 
 
 
-abstract public
-Localized< string >
-SayIsRequiredOf(
-    Localized< string > termIdentifier
-);
+public virtual
+Localised< string >
+SayFalseOf(
+    Localised< string > termIdentifier
+)
+{
+    if( termIdentifier == null )
+        throw new ArgumentNullException( "termIdentifier" );
+    return LocalisedString.Format( this.falsesentence, termIdentifier );
+}
+
+
+
+public virtual
+Localised< string >
+SayRequiredOf(
+    Localised< string > termIdentifier
+)
+{
+    if( termIdentifier == null )
+        throw new ArgumentNullException( "termIdentifier" );
+    return LocalisedString.Format( this.requiredsentence, termIdentifier );
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// Privates
+// -----------------------------------------------------------------------------
+
+private
+IEnumerable< IPredicate< T > >
+termrequirements;
+
+
+
+private
+IEnumerable< IPredicate< T > >
+components;
+
+
+
+private
+Localised< string >
+truesentence;
+
+
+
+private
+Localised< string >
+falsesentence;
+
+
+
+private
+Localised< string >
+requiredsentence;
 
 
 
