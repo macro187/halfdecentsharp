@@ -14,45 +14,72 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+using Com.Halfdecent.Globalisation;
+
 namespace
 Com.Halfdecent.Predicates
 {
 
 
 
-/// Predicate: "... is present"
-///
-/// In programming terms, "is not <tt>null</tt>"
+/// Predicate:  Is present (not <tt>null</tt>)
 ///
 public class
 IsPresent<
     T
 >
-    : PredicateBase< T >
+    : IPredicate< T >
 {
+
 
 
 
 public
-IsPresent()
-    : base(
-        _S("{0} is present"),
-        _S("{0} is not present"),
-        _S("{0} is required"),
-        null,
-        null )
+void
+Require(
+    T term
+)
 {
+    if( term == null ) throw new PredicateValueException( this );
 }
 
 
 
-override internal
-bool
-MyEvaluate(
-    T term
+public
+Localised< string >
+SayIsTrueOf(
+    Localised< string > termIdentifier
 )
 {
-    return (term != null);
+    return LocalisedString.Format(
+        _S( "{0} is present" ),
+        termIdentifier );
+}
+
+
+
+public
+Localised< string >
+SayIsFalseOf(
+    Localised< string > termIdentifier
+)
+{
+    return LocalisedString.Format(
+        _S( "{0} is not present "),
+        termIdentifier );
+}
+
+
+
+public
+Localised< string >
+SayIsRequiredOf(
+    Localised< string > termIdentifier
+)
+{
+    return LocalisedString.Format(
+        _S( "{0} is required" ),
+        termIdentifier );
 }
 
 

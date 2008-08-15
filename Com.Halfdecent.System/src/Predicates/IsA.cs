@@ -14,53 +14,86 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+using Com.Halfdecent.Globalisation;
+
 namespace
 Com.Halfdecent.Predicates
 {
 
 
 
-/// Predicate: "<tt>x</tt> is of runtime type <tt>T</tt>"
+/// Predicate:  Is of runtime type <tt>T</tt>
 ///
 public class
 IsA<
     T,
-    U
-    ///< The runtime type the predicate checks for
+    TTerm
 >
-    : PredicateBase< T >
+    : IPredicate< TTerm >
 {
 
 
 
 
 public
-IsA()
-    : base(
-        _S( "{{0}} is a {0}", typeof(U).Name ),
-        _S( "{{0}} is not a {0}", typeof(U).Name ),
-        _S( "{{0}} must be a {0}", typeof(U).Name ),
-        null,
-        new IPredicate<T>[] { new IsPresent< T >() } )
-{
-}
-
-
-
-
-override protected
-bool
-MyEval(
-    T term
+void
+Require(
+    TTerm term
 )
 {
-    return (term is U);
+    Predicate.PredicateRequire( term, new IsPresent< TTerm >() );
+    if( !( term is T ) ) throw new PredicateValueException( this );
+}
+
+
+
+public
+Localised< string >
+SayIsTrueOf(
+    Localised< string > termIdentifier
+)
+{
+    return LocalisedString.Format(
+        _S( "{0} is a {1}" ),
+        termIdentifier,
+        typeof( U ).Name
+        );
+}
+
+
+
+public
+Localised< string >
+SayIsFalseOf(
+    Localised< string > termIdentifier
+)
+{
+    return LocalisedString.Format(
+        _S( "{0} is not a {1}" ),
+        termIdentifier,
+        typeof( U ).Name
+        );
+}
+
+
+
+public
+Localised< string >
+SayIsRequiredOf(
+    Localised< string > termIdentifier
+)
+{
+    return LocalisedString.Format(
+        _S( "{0} must be a {1}" ),
+        termIdentifier,
+        typeof( U ).Name
+        );
 }
 
 
 
 
-private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

@@ -20,31 +20,21 @@ Com.Halfdecent.Predicates
 
 
 
-/// A monadic predicate
-///
-/// TODO Reasoning behind separate Require() and RequireTermRequirements()
-///
 public interface
 IPredicate<
     T
 >
+    : IPredicate
 {
 
 
 
 
-bool
-Evaluate(
-    T term
-);
-
-
-
-/// @exception BugException
-/// If the term fails any requirements
-///
 /// @exception PredicateValueException
-/// If the predicate evalutes <tt>false</tt> against the term
+/// <tt>term</tt> does not adhere to the predicate or one of it's requirements.
+/// In the latter case, the subclass <tt>PredicateRequirementException</tt>
+/// will occur.  This distinction is expected to be of interest only when
+/// implementing composed predicates.
 ///
 void
 Require(
@@ -53,33 +43,23 @@ Require(
 
 
 
-/// @exception BugException
-/// If the term fails any requirements
-///
-void
-RequireTermRequirements(
-    T term
-);
-
-
-
-Localized< string >
+Localised< string >
 SayIsTrueOf(
-    Localized< string > termIdentifier
+    Localised< string > termIdentifier
 );
 
 
 
-Localized< string >
+Localised< string >
 SayIsFalseOf(
-    Localized< string > termIdentifier
+    Localised< string > termIdentifier
 );
 
 
 
-Localized< string >
+Localised< string >
 SayIsRequiredOf(
-    Localized< string > termIdentifier
+    Localised< string > termIdentifier
 );
 
 

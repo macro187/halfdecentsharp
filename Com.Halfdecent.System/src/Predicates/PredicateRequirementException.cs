@@ -14,7 +14,6 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 namespace
 Com.Halfdecent.Predicates
 {
@@ -22,12 +21,21 @@ Com.Halfdecent.Predicates
 
 
 
-/// A predicate
-///
-public interface
-IPredicate
+public class
+PredicateRequirementException
+    : PredicateValueException
 {
 
+
+
+
+public
+PredicateRequirementException(
+    PredicateValueException copyFrom
+)
+    : base( copyFrom )
+{
+}
 
 
 

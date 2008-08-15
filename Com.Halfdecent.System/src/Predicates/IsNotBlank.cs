@@ -14,43 +14,71 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+using Com.Halfdecent.Globalisation;
+
 namespace
 Com.Halfdecent.Predicates
 {
 
 
 
-/// Predicate: "<tt>x</tt> is not blank"
+/// Predicate:  String is not blank
 ///
 public class
 IsNotBlank
-    : PredicateBase< string >
+    : IPredicate< string >
 {
 
 
 
 
 public
-IsNotBlank()
-    : base(
-        _S( "{0} is not blank" ),
-        _S( "{0} is blank" ),
-        _S( "{0} must not be blank" ),
-        null,
-        new IPredicate< string >[] { new IsPresent< string >() } )
+void
+Require(
+    string term
+)
 {
+    new IsPresent< string >().Require( term );
+    if( term == "" ) throw new PredicateValueException( this );
 }
 
 
 
-
-override protected
-bool
-MyEvaluate(
-    string term
+public
+Localised< string >
+SayIsTrueOf(
+    Localised< string > termIdentifier
 )
 {
-    return (term != "");
+    return LocalisedString.Format(
+        _S( "{0} is not blank" ),
+        termIdentifier );
+}
+
+
+
+public
+Localised< string >
+SayIsFalseOf(
+    Localised< string > termIdentifier
+)
+{
+    return LocalisedString.Format(
+        _S( "{0} is blank" ),
+        termIdentifier );
+}
+
+
+
+public
+Localised< string >
+SayIsRequiredOf(
+    Localised< string > termIdentifier
+)
+{
+    return LocalisedString.Format(
+        _S( "{0} must not be blank" ),
+        termIdentifier );
 }
 
 

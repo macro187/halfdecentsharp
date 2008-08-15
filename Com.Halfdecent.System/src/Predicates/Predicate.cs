@@ -22,12 +22,29 @@ Com.Halfdecent.Predicates
 
 
 
-/// A predicate
-///
-public interface
-IPredicate
+public static class
+Predicate
 {
 
+
+
+
+public static
+void
+PredicateRequire<
+    TTerm
+>(
+    TTerm               term,
+    IPredicate< TTerm > requirement
+)
+{
+    new IsPresent< IPredicate< TTerm > >().Require( term );
+    try {
+        requirement.Require( term );
+    } catch( PredicateValueException pve ) {
+        throw new PredicateRequirementException( pve );
+    }
+}
 
 
 

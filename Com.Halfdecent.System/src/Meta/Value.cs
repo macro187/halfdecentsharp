@@ -14,6 +14,7 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+using Com.Halfdecent.Predicates;
 
 namespace
 Com.Halfdecent.Meta
@@ -28,17 +29,6 @@ Value
 {
 
 
-
-/*
-public
-Property
-Property(
-    string name
-)
-{
-    return new Property( this, name );
-}
-*/
 
 
 

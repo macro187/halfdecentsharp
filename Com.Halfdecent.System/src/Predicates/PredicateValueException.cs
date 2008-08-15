@@ -24,7 +24,7 @@ Com.Halfdecent.Predicates
 
 
 
-/// A value failed a requirement
+/// A value failed a requirement in the form of an <tt>IPredicate</tt>
 ///
 public class
 PredicateValueException
@@ -40,7 +40,7 @@ PredicateValueException
 
 public
 PredicateValueException(
-    IPredicate  predicate
+    IPredicate  failedRequirement
     ///< Failed requirement
     ///
     ///  Requirements
@@ -54,7 +54,7 @@ PredicateValueException(
 
 public
 PredicateValueException(
-    IPredicate  predicate,
+    IPredicate  failedRequirement,
     ///< Failed requirement
     ///
     ///  Requirements
@@ -65,8 +65,20 @@ PredicateValueException(
 )
     : base( innerException )
 {
-    new IsPresent< IPredicate >().Require( predicate );
-    this.predicate = predicate;
+    if( failedRequirement == null )
+        throw new ArgumentNullException( "failedRequirement" );
+    this.failedrequirement = failedRequirement;
+}
+
+
+
+protected
+PredicateValueException(
+    PredicateValueException copyFrom
+)
+{
+    new IsPresent< PredicateValueException >().Require( copyFrom );
+    this( copyFrom.FailedRequirement, copyFrom.InnerException );
 }
 
 
@@ -80,14 +92,14 @@ PredicateValueException(
 ///
 public
 IPredicate
-Predicate
+FailedRequirement
 {
-    get { return this.predicate; }
+    get { return this.failedrequirement; }
 }
 
 private
 IPredicate
-predicate;
+failedrequirement;
 
 
 
@@ -102,8 +114,9 @@ SayProblem(
     Localized< string > valueIdentifier
 )
 {
-    new IsPresent< Localized< string > >().ReallyRequire( valueIdentifier );
-    return this.Predicate.SayDoesNotConform( valueIdentifier );
+    if( valueIdentifier == null )
+        throw new ArgumentNullException( "valueIdentifier" );
+    return this.FailedRequirement.SayDoesNotConform( valueIdentifier );
 }
 
 
