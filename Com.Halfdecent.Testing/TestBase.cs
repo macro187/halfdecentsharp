@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2007, 2008
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,20 +15,16 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
-
-
 
 namespace
 Com.Halfdecent.Testing
 {
 
-
-
-/// <summary>
+// =============================================================================
 /// A test
-/// </summary>
+// =============================================================================
+//
 public abstract class
 TestBase
 {
@@ -39,10 +36,10 @@ TestBase
 // Methods
 // -----------------------------------------------------------------------------
 
-/// <summary>
 /// Emit a message from within a test
-/// </summary>
-public static void
+///
+public static
+void
 Print(
     string message
 )
@@ -51,10 +48,11 @@ Print(
 }
 
 
-/// <summary>
+
 /// Emit a formatted message from within a test
-/// </summary>
-public static void
+///
+public static
+void
 Print(
     string          message,
     params object[] args
@@ -65,7 +63,8 @@ Print(
 
 
 
-public static void
+public static
+void
 Assert(
     bool condition
 )
@@ -73,7 +72,10 @@ Assert(
     Assert( "", condition );
 }
 
-public static void
+
+
+public static
+void
 Assert(
     string description,
     bool condition
@@ -88,23 +90,43 @@ Assert(
 }
 
 
-public static void
+
+public static
+void
+AssertEqual(
+    object actual,
+    object expected
+)
+{
+    if( !(actual == null && expected == null) )
+        if( !expected.Equals( actual ) )
+            throw new AssertFailedException( String.Format(
+                "Expected '{0}'\nActual '{1}'",
+                expected,
+                actual ) );
+}
+
+
+
+public static
+void
 AssertEqual<T>(
     T actual,
     T expected
 )
-//    where T : IComparable
 {
     AssertEqual<T>( "", actual, expected );
 }
 
-public static void
+
+
+public static
+void
 AssertEqual<T>(
     string description,
     T actual,
     T expected
 )
-//    where T : IComparable
 {
     if( description != "" ) {
         Print( "AssertEqual: " + description );
@@ -149,6 +171,31 @@ AssertElementsEqual<T>(
         }
     }
 }
+
+
+
+public static
+void
+Expect<
+    TExpected
+>(
+    Action actions
+)
+    where TExpected : Exception
+{
+    if( actions == null ) throw new ArgumentNullException( "actions" );
+    bool threw = false;
+    try {
+        actions();
+    } catch( TExpected ) {
+        threw = true;
+    }
+    if( !threw )
+        throw new AssertFailedException( String.Format(
+            "Expected {0} but it didn't occur",
+            typeof( TExpected ).FullName ) );
+}
+
 
 
 
