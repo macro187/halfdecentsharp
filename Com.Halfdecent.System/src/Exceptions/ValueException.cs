@@ -48,7 +48,7 @@ ValueException(
     ///< Problematic value
     Exception           innerException,
     ///< Underlying cause
-    Localised< string > description,
+    Localised< string > description
     ///< Formatted description of the problem with <tt>{0}</tt> as the value
     ///  identifier
 )

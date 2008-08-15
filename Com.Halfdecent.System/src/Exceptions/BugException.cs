@@ -61,7 +61,9 @@ BugException(
     Localised< string > description,
     Exception           innerException
 )
-    : base( description, innerException )
+    : base(
+        description ?? _S("A programming bug was detected"),
+        innerException )
 {
 }
 
