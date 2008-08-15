@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,26 +14,23 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Exceptions;
 
-
 namespace
-Com.Halfdecent.System
+Com.Halfdecent.Exceptions
 {
 
 
 
-
-/// <tt>System.Exception</tt> replacement supporting <tt>IHDException</tt>
-/// features
+// =============================================================================
+/// An <tt>Exception</tt> with localised messaging
+// =============================================================================
 ///
 public class
-HDException
-    : ExceptionShim
-    , IHDException
+LocalisedException
+    : LocalisedExceptionShim
 {
 
 
@@ -43,11 +40,17 @@ HDException
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Create a new <tt>HDException</tt> with a given message
-///
 public
-HDException(
-    Localized< string > message
+LocalisedException()
+    : this( null, null )
+{
+}
+
+
+
+public
+LocalisedException(
+    Localised< string > message
 )
     : this( message, null )
 {
@@ -55,12 +58,19 @@ HDException(
 
 
 
-/// Create a new <tt>HDException</tt> with a given message and inner
-/// exception
-///
 public
-HDException(
-    Localized< string > message,
+LocalisedException(
+    Exception innerException
+)
+    : this( null, innerException )
+{
+}
+
+
+
+public
+LocalisedException(
+    Localised< string > message,
     Exception           innerException
 )
     : base( message, innerException )
@@ -75,22 +85,19 @@ HDException(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// A message explaining the reason for the exception
-///
 new virtual public
-Localized< string >
+Localised< string >
 Message
 {
     get { return this.message; }
 }
 
 private
-Localized< string >
+Localised< string >
 message;
 
 
 
-/// Override of <tt>Exception.Message</tt> via <tt>ExceptionShim</tt>
 protected override
 string
 BaseMessage
@@ -101,7 +108,7 @@ BaseMessage
 
 
 
-private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

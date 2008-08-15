@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -16,7 +16,7 @@
 
 
 using System;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.Globalisation;
 
 
 namespace
@@ -26,46 +26,49 @@ Com.Halfdecent.Exceptions
 
 
 
-/// INTERNAL: Shim that "renames" <tt>Message</tt> to <tt>BaseMessage</tt>,
-/// enabling <tt>Message</tt> to be, effectively, both overridden and shadowed
-/// in a subclass
+/// A situation indicating a programming error was encountered
 ///
-public abstract class
-ExceptionShim
-    : Exception
+public class
+BugException
+    : LocalisedException
 {
 
 
 
-internal
-ExceptionShim(
-    string              message,
+
+public
+BugException(
+    Localised< string > description
+)
+    : this( description, null )
+{
+}
+
+
+
+public
+BugException(
+    Exception innerException
+)
+    : this( null, innerException )
+{
+}
+
+
+
+public
+BugException(
+    Localised< string > description,
     Exception           innerException
 )
-    : base( message, innerException )
+    : base( description, innerException )
 {
 }
 
 
 
-override public
-string
-Message
-{
-    get { return this.BaseMessage; }
-}
 
-
-
-abstract protected
-string
-BaseMessage
-{
-    get;
-}
-
-
-
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace
