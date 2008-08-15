@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,12 +14,9 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using System.Globalization;
-using Com.Halfdecent.System;
-using Com.Halfdecent.Globalization;
-
+using Com.Halfdecent.Globalisation;
 
 namespace
 Com.Halfdecent.Resources
@@ -28,14 +25,14 @@ Com.Halfdecent.Resources
 
 
 
-/// A read-only <tt>Localized< T ></tt> representing localized embedded
+/// A read-only <tt>Localised< T ></tt> representing localised embedded
 /// resources of a particular name
 ///
 public class
-LocalizedResource<
+LocalisedResource<
     T
 >
-    : Localized< T >
+    : Localised< T >
     where T
         // TODO why? necessary?
         : class
@@ -48,12 +45,12 @@ LocalizedResource<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new <tt>LocalizedResource< T ></tt> representing localized
+/// Initialise a new <tt>LocalisedResource< T ></tt> representing localised
 /// variations of an item embedded under a given name as resources associated
 /// with a given type
 ///
 internal
-LocalizedResource(
+LocalisedResource(
     Type    type,   ///< Type the resource(s) are associated with
                     ///
                     ///  Requirements:
@@ -76,7 +73,7 @@ LocalizedResource(
 
 
 // -----------------------------------------------------------------------------
-// Localized< T >
+// Localised< T >
 // -----------------------------------------------------------------------------
 
 /// Get the variation of the resource most appropriate for the given culture

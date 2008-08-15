@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,15 +14,13 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using System.Diagnostics;
 using System.Resources;
 using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
-using Com.Halfdecent.System;
-using Com.Halfdecent.Globalization;
+using Com.Halfdecent.Globalisation;
 
 
 namespace
@@ -60,22 +58,22 @@ STRING_RESOURCE_NAME_PREFIX = "__";
 // -----------------------------------------------------------------------------
 
 /*
-/// Produce a <tt>Localized< string ></tt> from an untranslated <tt>string</tt>
-/// whose localized variants will, if present, come from embedded string
+/// Produce a <tt>Localised< string ></tt> from an untranslated <tt>string</tt>
+/// whose localised variants will, if present, come from embedded string
 /// resources
 ///
 /// The name of the embedded string resources is the untranslated string itself
 /// prefixed by <tt>STRING_RESOURCE_NAME_PREFIX</tt> 
 ///
-/// The resultant <tt>Localized< string ></tt> searches for and retrieves
+/// The resultant <tt>Localised< string ></tt> searches for and retrieves
 /// resources in an on-demand fashion using <tt>Get< T >()</tt>, so any
 /// exceptions it throws may occur at those times.
 ///
 public static
-Localized< string >
+Localised< string >
 _S(
     Type    type,           ///< Type that embedded resources containing
-                            ///  localized variants of <tt>untranslated</tt>
+                            ///  localised variants of <tt>untranslated</tt>
                             ///  are associated with
                             ///
                             ///  Requirements:
@@ -97,11 +95,11 @@ _S(
 
 
 /* _S() to put in each class:
-private static Com.Halfdecent.Globalization.Localized< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 */
 
 public static
-Localized< string >
+Localised< string >
 _S(
     Type            type,
     string          untranslated,
@@ -112,17 +110,17 @@ _S(
     new IsPresent< string >().ReallyRequire( untranslated );
     new IsNotBlank().Require( untranslated );
 
-    Localized<string> ls = new LocalizedStringResource(
+    Localised<string> ls = new LocalisedStringResource(
         type, untranslated, formatargs );
     if( formatargs.Length > 0 ) {
-        ls = LocalizedString.Format( ls, formatargs );
+        ls = LocalisedString.Format( ls, formatargs );
     }
     return ls;
 }
 
 
 
-/// Get a <tt>Localized< T ></tt> whose localized variations are embedded under
+/// Get a <tt>Localised< T ></tt> whose localised variations are embedded under
 /// a given name as resources belonging to a given type
 ///
 /// @exception ResourceMissingException
@@ -130,7 +128,7 @@ _S(
 /// A version of the resource does not exist for at least the invariant culture
 ///
 public static
-Localized< T >  /// @returns A <tt>Localized< T ></tt> whose localized
+Localised< T >  /// @returns A <tt>Localised< T ></tt> whose localised
                 /// variations are embedded resources
 _R<
     T           ///< Item type.  Underlying resources are implied to be the
@@ -163,7 +161,7 @@ _R<
     //Check all existing versions for correct type
     //#endif
 
-    return new LocalizedResource< T >( type, name );
+    return new LocalisedResource< T >( type, name );
 }
 
 

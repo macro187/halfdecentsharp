@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,13 +14,10 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using System.Threading;
 using System.Globalization;
-using Com.Halfdecent.System;
-using Com.Halfdecent.Globalization;
-
+using Com.Halfdecent.Globalisation;
 
 namespace
 Com.Halfdecent.Resources
@@ -29,12 +26,12 @@ Com.Halfdecent.Resources
 
 
 
-/// A read-only <tt>Localized< string ></tt> that represents a (possibly)
-/// localized string
+/// A read-only <tt>Localised< string ></tt> that represents a (possibly)
+/// localised string
 ///
 public class
-LocalizedStringResource
-    : LocalizedResource< string >
+LocalisedStringResource
+    : LocalisedResource< string >
 {
 
 
@@ -44,11 +41,11 @@ LocalizedStringResource
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Create a new <tt>LocalizedStringResource</tt> which may have translated
+/// Create a new <tt>LocalisedStringResource</tt> which may have translated
 /// versions available as embedded resources in a given type
 ///
 internal
-LocalizedStringResource(
+LocalisedStringResource(
     Type    type,
     string  untranslated
 )
@@ -58,18 +55,18 @@ LocalizedStringResource(
 
 
 
-/// Create a new <tt>LocalizedStringResource</tt> which may have translated
+/// Create a new <tt>LocalisedStringResource</tt> which may have translated
 /// versions available as embedded resources in a given type and which, when
 /// used, will be <tt>String.Format</tt>ted with the given arguments in a
 /// culture-specific fashion
 ///
-// TODO move formatted Localized< string > functionality out into a separate
-// type (eg. FormattedLocalizedString?) and remove all associated functionality
+// TODO move formatted Localised< string > functionality out into a separate
+// type (eg. FormattedLocalisedString?) and remove all associated functionality
 // from here and from Resource.  Programmers will have to call
-// LocalizedString.Format if they want formatting.
+// LocalisedString.Format if they want formatting.
 //
 internal
-LocalizedStringResource(
+LocalisedStringResource(
     Type            type,
     string          untranslated,
     params object[] formatargs
