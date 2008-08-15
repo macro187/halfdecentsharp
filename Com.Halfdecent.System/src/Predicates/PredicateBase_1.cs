@@ -173,13 +173,17 @@ RequireTermRequirements(
     T term
 )
 {
-    if( this.components != null )
-        foreach( IPredicate< T > c in this.components )
-            c.RequireTermRequirements( term );
-    if( this.termrequirements != null )
-        foreach( IPredicate< T > tr in this.termrequirements )
-            tr.Require( term );
-    this.MyTermRequirements( term );
+    try {
+        if( this.components != null )
+            foreach( IPredicate< T > c in this.components )
+                c.RequireTermRequirements( term );
+        if( this.termrequirements != null )
+            foreach( IPredicate< T > tr in this.termrequirements )
+                tr.Require( term );
+        this.MyTermRequirements( term );
+    } catch( ValueException ve ) {
+        throw new BugException( ve );
+    }
 }
 
 

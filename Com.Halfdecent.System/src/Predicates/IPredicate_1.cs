@@ -40,6 +40,12 @@ Evaluate(
 
 
 
+/// @exception BugException
+/// If the term fails any requirements
+///
+/// @exception PredicateValueException
+/// If the predicate evalutes <tt>false</tt> against the term
+///
 void
 Require(
     T term
@@ -47,6 +53,9 @@ Require(
 
 
 
+/// @exception BugException
+/// If the term fails any requirements
+///
 void
 RequireTermRequirements(
     T term
