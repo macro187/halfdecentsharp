@@ -70,9 +70,22 @@ Supers
 {
     get
     {
-        foreach( IRType1 super in base.Supers ) yield return super;
+        foreach( IRType1 super in GetBaseSupers() ) yield return super;
         yield return new IsA< TIsA >();
     }
+}
+
+// Heed the following suggestion from the Microsoft compiler:
+//   Access to member 'Com.Halfdecent.RTypes.RType1Base.Supers' through a
+//   'base' keyword from an anonymous method or iterator results in
+//   unverifiable code. Consider moving the access into a helper method on
+//   the containing type.
+//
+private
+IEnumerable< IRType1 >
+GetBaseSupers()
+{
+    return base.Supers;
 }
 
 

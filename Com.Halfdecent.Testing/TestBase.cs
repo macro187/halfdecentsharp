@@ -179,14 +179,14 @@ void
 Expect<
     TExpected
 >(
-    Action actions
+    ExpectAction action
 )
     where TExpected : Exception
 {
-    if( actions == null ) throw new ArgumentNullException( "actions" );
+    if( action == null ) throw new ArgumentNullException( "action" );
     bool threw = false;
     try {
-        actions();
+        action();
     } catch( TExpected ) {
         threw = true;
     }
@@ -196,6 +196,9 @@ Expect<
             typeof( TExpected ).FullName ) );
 }
 
+public delegate
+void
+ExpectAction();
 
 
 
