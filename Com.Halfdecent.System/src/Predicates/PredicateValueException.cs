@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,11 +14,13 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+using Com.Halfdecent.Meta;
 
+/*
 using System;
 using Com.Halfdecent.System;
 using Com.Halfdecent.Globalization;
-
+*/
 
 namespace
 Com.Halfdecent.Predicates
@@ -27,8 +29,7 @@ Com.Halfdecent.Predicates
 
 
 
-/// A <tt>ValueException</tt> resulting from a value failing to conform to a
-/// predicate
+/// A value failed a requirement
 ///
 public class
 PredicateValueException
@@ -42,15 +43,13 @@ PredicateValueException
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new <tt>PredicateValueException</tt> resulting from a value
-/// failing to conform to a given <tt>IPredicate</tt>
-///
 public
 PredicateValueException(
-    IPredicate  predicate   ///< Predicate that was failed
-                            ///
-                            ///  Requirements:
-                            ///  - Really <tt>IsPresent< T ></tt>
+    IPredicate  predicate
+    ///< Failed requirement
+    ///
+    ///  Requirements
+    ///  - <tt>IsPresent< T ></tt>
 )
     : this( predicate, null )
 {
@@ -58,22 +57,20 @@ PredicateValueException(
 
 
 
-/// Initialise a new <tt>PredicateValueException</tt> resulting from some value
-/// failing to conform to a given <tt>IPredicate</tt>, and reference to the
-/// inner <tt>Exception</tt> that is the cause of this exception.
-///
 public
 PredicateValueException(
-    IPredicate  predicate,      ///< Predicate that was failed
-                                ///
-                                ///  Requirements:
-                                ///  - Really <tt>IsPresent< T ></tt>
-    Exception   innerException  ///< Exception indicating the underlying cause
-                                ///  of this one
+    IPredicate  predicate,
+    ///< Failed requirement
+    ///
+    ///  Requirements
+    ///  - <tt>IsPresent< T ></tt>
+    // TODO Could this be a more specific type? ValueException maybe?
+    Exception   innerException
+    ///< The underlying cause
 )
     : base( innerException )
 {
-    new IsPresent< IPredicate >().ReallyRequire( predicate );
+    new IsPresent< IPredicate >().Require( predicate );
     this.predicate = predicate;
 }
 
@@ -84,8 +81,7 @@ PredicateValueException(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// The <tt>IPredicate</tt> that the value failed to conform to which lead to
-/// this exception
+/// The failed requirement
 ///
 public
 IPredicate

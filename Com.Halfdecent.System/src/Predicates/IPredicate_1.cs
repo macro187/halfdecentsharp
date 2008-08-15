@@ -14,23 +14,54 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 namespace
 Com.Halfdecent.Predicates
 {
 
 
 
-
-/// A predicate
-///
 public interface
-IPredicate
+IPredicate<
+    T
+>
 {
 
 
 
-// TODO Non-Generic predicate API
+
+bool
+Evaluate(
+    T term
+);
+
+
+
+void
+Require(
+    T term
+);
+
+
+
+Localized< string >
+SayIsTrueOf(
+    Localized< string > termIdentifier
+);
+
+
+
+Localized< string >
+SayIsFalseOf(
+    Localized< string > termIdentifier
+);
+
+
+
+Localized< string >
+SayIsRequiredOf(
+    Localized< string > termIdentifier
+);
+
 
 
 
