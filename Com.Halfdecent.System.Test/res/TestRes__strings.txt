@@ -1,8 +1,0 @@
-Hello (code)
-Hello (invariant)
-
-Today is {0:f}
-Today is {0:f} (from invariant resources)
-
-Pi is {0:f}
-Pi is {0:f} (from invariant resources)
