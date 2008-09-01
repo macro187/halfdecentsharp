@@ -176,6 +176,137 @@ Test_LocalisedString_Format()
 
 
 
+[Test( "LocalisedExceptionBase" )]
+public static
+void
+Test_LocalisedExceptionBase()
+{
+    TestException te = new TestException();
+
+    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    CultureInfo current;
+
+    Print( "Message" );
+    ILocalisedException le = te;
+    AssertEqual( le.Message[ en ], "Test Exception" );
+    AssertEqual( le.Message[ fr ], "Le Test Exception" );
+
+    Print( "Message (via Exception.Message)" );
+    Exception e = te;
+    current = Thread.CurrentThread.CurrentCulture;
+    try {
+        Thread.CurrentThread.CurrentCulture = en;
+        AssertEqual( e.Message, "Test Exception" );
+        Thread.CurrentThread.CurrentCulture = fr;
+        AssertEqual( e.Message, "Le Test Exception" );
+    } finally {
+        Thread.CurrentThread.CurrentCulture = current;
+    }
+}
+
+
+
+[Test( "SimpleLocalisedExceptionBase" )]
+public static
+void
+Test_SimpleLocalisedExceptionBase()
+{
+    SimpleTestException te = new SimpleTestException();
+
+    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    CultureInfo current;
+
+    Print( "Message" );
+    ILocalisedException le = te;
+    AssertEqual( le.Message[ en ], "Simple Test Exception" );
+    AssertEqual( le.Message[ fr ], "Le Simple Test Exception" );
+
+    Print( "Message (via Exception.Message)" );
+    Exception e = te;
+    current = Thread.CurrentThread.CurrentCulture;
+    try {
+        Thread.CurrentThread.CurrentCulture = en;
+        AssertEqual( e.Message, "Simple Test Exception" );
+        Thread.CurrentThread.CurrentCulture = fr;
+        AssertEqual( e.Message, "Le Simple Test Exception" );
+    } finally {
+        Thread.CurrentThread.CurrentCulture = current;
+    }
+}
+
+
+
+
+public class
+TestException
+    : LocalisedExceptionBase
+{
+
+public
+TestException()
+    : this( null )
+{
+}
+
+public
+TestException(
+    Exception innerException
+)
+    : base( innerException )
+{
+}
+
+override public
+Localised< string >
+Message
+{
+    get
+    {
+        Localised< string > message =
+            new InMemoryLocalised< string >( "Test Exception" );
+        CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+        CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+        message[ en ] = "Test Exception";
+        message[ fr ] = "Le Test Exception";
+        return message;
+    }
+}
+
+} // TestException
+
+
+
+
+public class
+SimpleTestException
+    : SimpleLocalisedExceptionBase
+{
+
+static
+SimpleTestException()
+{
+    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    MESSAGE[ en ] = "Simple Test Exception";
+    MESSAGE[ fr ] = "Le Simple Test Exception";
+}
+
+static private
+Localised< string >
+MESSAGE = new InMemoryLocalised< string >( "Simple Test Exception" );
+
+public
+SimpleTestException()
+    : base( MESSAGE )
+{
+}
+
+} // SimpleTestException
+
+
+
 
 } // type
 } // namespace
