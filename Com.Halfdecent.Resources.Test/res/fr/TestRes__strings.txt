@@ -1,0 +1,5 @@
+Today is {0:f}
+Aujourd'hui est {0:f}
+
+Pi is {0:f}
+Pi est {0:f}
