@@ -39,11 +39,14 @@ RTypeBase<
 /// Return <tt>true</tt> if <tt>null</tt> unless this RType explicitly
 /// disallows <tt>null</tt>s
 ///
-protected abstract
+protected virtual
 bool
 MyCheck(
     TIsA item
-);
+)
+{
+    return true;
+}
 
 
 

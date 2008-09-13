@@ -50,6 +50,11 @@ Components
 
 
 
+/// Check that an item is of this RType
+///
+/// @exception RTypeException
+/// The item is not of this RType
+///
 void
 Check(
     object  item,
