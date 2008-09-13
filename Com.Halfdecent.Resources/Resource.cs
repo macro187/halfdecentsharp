@@ -78,8 +78,7 @@ _S(
     if( untranslated == "" )
         throw new ArgumentException( "Is blank", "untranslated" );
 
-    Localised<string> ls = new LocalisedStringResource(
-        type, untranslated, formatargs );
+    Localised<string> ls = new LocalisedStringResource( type, untranslated );
     if( formatargs.Length > 0 ) {
         ls = LocalisedString.Format( ls, formatargs );
     }
