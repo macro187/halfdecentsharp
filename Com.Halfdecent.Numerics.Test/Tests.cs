@@ -15,8 +15,11 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+using System;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Meta;
 
 namespace
 Com.Halfdecent.Numerics.Test
@@ -144,145 +147,259 @@ Test_DecimalInteger()
 
 
 
-/*
-[Test( "IsNotZero" )]
+[Test( "Interval" )]
 public static void
-Test_IsNotZero()
+Test_Interval()
 {
-    IsNotZero< Real > p = new IsNotZero< Real >();
+    int smaller = 0;
+    int from = 5;
+    int between = 7;
+    int to = 10;
+    int bigger = 20;
 
-    Print( ".5 passes" );
-    AssertEqual( p.Evaluate( Real.From( 0.5m ) ), true );
+    IInterval< int > inc = new Interval< int >( 5, 10 );
+    IInterval< int > exc = new Interval< int >( 5, false, 10, false );
+    IInterval< int > frominc = new Interval< int >( 5, true, 10, false );
+    IInterval< int > toinc = new Interval< int >( 5, false, 10, true );
 
-    Print( "0 fails" );
-    AssertEqual( p.Evaluate( Real.From( 0 ) ), false );
+    Print( "Both Inclusive" );
+    AssertEqual( inc.Contains( smaller ), false );
+    AssertEqual( inc.Contains( from ), true );
+    AssertEqual( inc.Contains( between ), true );
+    AssertEqual( inc.Contains( to ), true );
+    AssertEqual( inc.Contains( bigger ), false );
 
-    Print( "-.5 passes" );
-    AssertEqual( p.Evaluate( Real.From( -0.5m ) ), true );
+    Print( "Both Exclusive" );
+    AssertEqual( exc.Contains( smaller ), false );
+    AssertEqual( exc.Contains( from ), false );
+    AssertEqual( exc.Contains( between ), true );
+    AssertEqual( exc.Contains( to ), false );
+    AssertEqual( exc.Contains( bigger ), false );
+
+    Print( "From Inclusive" );
+    AssertEqual( frominc.Contains( smaller ), false );
+    AssertEqual( frominc.Contains( from ), true );
+    AssertEqual( frominc.Contains( between ), true );
+    AssertEqual( frominc.Contains( to ), false );
+    AssertEqual( frominc.Contains( bigger ), false );
+
+    Print( "To Inclusive" );
+    AssertEqual( toinc.Contains( smaller ), false );
+    AssertEqual( toinc.Contains( from ), false );
+    AssertEqual( toinc.Contains( between ), true );
+    AssertEqual( toinc.Contains( to ), true );
+    AssertEqual( toinc.Contains( bigger ), false );
+
+    Print( "ToString()" );
+    Print( inc.ToString() );
+    Print( exc.ToString() );
+    Print( frominc.ToString() );
+    Print( toinc.ToString() );
 }
 
 
 
-[Test( "IsNotFractional" )]
+[Test( "Comparison RTypes" )]
 public static void
-Test_IsNotFractional()
+Test_ComparisonRTypes()
 {
-    IsNotFractional< Real > p = new IsNotFractional< Real >();
+    int val = 5;
+    int ltval = 0;
+    int gtval = 10;
+    IRType1 gt = new GT< int >( val );
+    IRType1 gte = new GTE< int >( val );
+    IRType1 lt = new LT< int >( val );
+    IRType1 lte = new LTE< int >( val );
+    IRType1 equals = new Equals< int >( val );
 
-    Print( "0 passes" );
-    AssertEqual( p.Evaluate( Real.From( 0 ) ), true );
+    Print( "GT: Less than fails" );
+    Expect< RTypeException >( delegate() {
+        gt.Check( ltval, new Local( "ltval" ) );
+    } );
+    Print( "GT: Equal fails" );
+    Expect< RTypeException >( delegate() {
+        gt.Check( val, new Local( "val" ) );
+    } );
+    Print( "GT: Greater than passes" );
+    gt.Check( gtval, new Local( "gtval" ) );
 
-    Print( "1 passes" );
-    AssertEqual( p.Evaluate( Real.From( 1 ) ), true );
+    Print( "GTE: Less than fails" );
+    Expect< RTypeException >( delegate() {
+        gte.Check( ltval, new Local( "ltval" ) );
+    } );
+    Print( "GTE: Equal passes" );
+    gte.Check( val, new Local( "val" ) );
+    Print( "GTE: Greater than passes" );
+    gte.Check( gtval, new Local( "gtval" ) );
 
-    Print( "-1 passes" );
-    AssertEqual( p.Evaluate( Real.From( -1 ) ), true );
+    Print( "LT: Less than passes" );
+    lt.Check( ltval, new Local( "ltval" ) );
+    Print( "LT: Equal fails" );
+    Expect< RTypeException >( delegate() {
+        lt.Check( val, new Local( "val" ) );
+    } );
+    Print( "LT: Greater than fails" );
+    Expect< RTypeException >( delegate() {
+        lt.Check( gtval, new Local( "gtval" ) );
+    } );
 
-    Print( ".5 fails" );
-    AssertEqual( p.Evaluate( Real.From( 0.5m ) ), false );
+    Print( "LTE: Less than passes" );
+    lte.Check( ltval, new Local( "ltval" ) );
+    Print( "LTE: Equal passes" );
+    lte.Check( val, new Local( "val" ) );
+    Print( "LTE: Greater than fails" );
+    Expect< RTypeException >( delegate() {
+        lte.Check( gtval, new Local( "gtval" ) );
+    } );
 
-    Print( "-.5 fails" );
-    AssertEqual( p.Evaluate( Real.From( -0.5m ) ), false );
+    Print( "Equals: Less than fails" );
+    Expect< RTypeException >( delegate() {
+        equals.Check( ltval, new Local( "ltval" ) );
+    } );
+    Print( "Equals: Equal passes" );
+    equals.Check( val, new Local( "val" ) );
+    Print( "Equals: Greater than fails" );
+    Expect< RTypeException >( delegate() {
+        equals.Check( gtval, new Local( "gtval" ) );
+    } );
 }
 
 
 
-[Test( "IsNotNegative" )]
+[Test( "InInterval" )]
 public static void
-Test_IsNotNegative()
+Test_InInterval()
 {
-    IsNotNegative< Real > p = new IsNotNegative< Real >();
+    int lt          = 3;
+    int from        = 5;
+    int between     = 7;
+    int to          = 10;
+    int gt          = 12;
+    IValue _lt      = new Local( "lt" );
+    IValue _from    = new Local( "from" );
+    IValue _between = new Local( "between" );
+    IValue _to      = new Local( "to" );
+    IValue _gt      = new Local( "gt" );
 
-    Print( "Positive passes" );
-    AssertEqual( p.Evaluate( Real.From( 1 ) ), true );
+    IRType1 rtinc = new InInterval< int >(
+        new Interval< int >( from, true, to, true ) );
+    IRType1 rtexc = new InInterval< int >(
+        new Interval< int >( from, false, to, false ) );
+    IRType1 rtfrominc = new InInterval< int >(
+        new Interval< int >( from, true, to, false ) );
+    IRType1 rttoinc = new InInterval< int >(
+        new Interval< int >( from, false, to, true ) );
 
-    Print( "Zero passes" );
-    AssertEqual( p.Evaluate( Real.From( 0 ) ), true );
+    IRType1 rt;
+    string id = "...";
 
-    Print( "Negative fails" );
-    AssertEqual( p.Evaluate( Real.From( -1 ) ), false );
+    Print( "Inclusive" );
+    rt = rtinc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( lt, _lt );
+    } );
+    rt.Check( from, _from );
+    rt.Check( between, _between );
+    rt.Check( to, _to );
+    Expect< RTypeException >( delegate() {
+        rt.Check( gt, _gt );
+    } );
+
+    Print( "Exclusive" );
+    rt = rtexc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( lt, _lt );
+    } );
+    Expect< RTypeException >( delegate() {
+        rt.Check( from, _from );
+    } );
+    rt.Check( between, _between );
+    Expect< RTypeException >( delegate() {
+        rt.Check( to, _to );
+    } );
+    Expect< RTypeException >( delegate() {
+        rt.Check( gt, _gt );
+    } );
+
+    Print( "From Inclusive" );
+    rt = rtfrominc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( lt, _lt );
+    } );
+    rt.Check( from, _from );
+    rt.Check( between, _between );
+    Expect< RTypeException >( delegate() {
+        rt.Check( to, _to );
+    } );
+    Expect< RTypeException >( delegate() {
+        rt.Check( gt, _gt );
+    } );
+
+    Print( "To Inclusive" );
+    rt = rttoinc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( lt, _lt );
+    } );
+    Expect< RTypeException >( delegate() {
+        rt.Check( from, _from );
+    } );
+    rt.Check( between, _between );
+    rt.Check( to, _to );
+    Expect< RTypeException >( delegate() {
+        rt.Check( gt, _gt );
+    } );
 }
 
 
 
-[Test( "IsLT" )]
+[Test( "InInt32Range" )]
 public static void
-Test_IsLT()
+Test_InInt32Range()
 {
-    IsLT< Real > p = new IsLT< Real >( Real.From( 10 ) );
+    IInteger lt         = Integer.From( Int32.MinValue - 1m );
+    IInteger min        = Integer.From( Int32.MinValue );
+    IInteger between    = Integer.From( 5m );
+    IInteger max        = Integer.From( Int32.MaxValue );
+    IInteger gt         = Integer.From( Int32.MaxValue + 1m );
+    IValue _lt          = new Local( "lt" );
+    IValue _min         = new Local( "min" );
+    IValue _between     = new Local( "between" );
+    IValue _max         = new Local( "max" );
+    IValue _gt          = new Local( "gt" );
 
-    // TODO "Evaluate( null ) throws BugException
+    IRType1 rt = new InInt32Range();
 
-    Print( "Less than passes" );
-    AssertEqual( p.Evaluate( Real.From( 9 ) ), true );
+    Print( "null passes" );
+    rt.Check( null, new Literal() );
 
-    Print( "Equal fails" );
-    AssertEqual( p.Evaluate( Real.From( 10 ) ), false );
-
-    Print( "Greater than fails" );
-    AssertEqual( p.Evaluate( Real.From( 11 ) ), false );
+    Print( "Less than min fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( lt, _lt );
+    } );
+    Print( "Min passes" );
+    rt.Check( min, _min );
+    Print( "In range passes" );
+    rt.Check( between, _between );
+    Print( "Max passes" );
+    rt.Check( max, _max );
+    Print( "Greater than max fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( gt, _gt );
+    } );
 }
 
-
-
-[Test( "IsLTE" )]
-public static void
-Test_IsLTE()
-{
-    IsLTE< Real > p = new IsLTE< Real >( Real.From( 10 ) );
-
-    // TODO "Evaluate( null ) throws BugException
-
-    Print( "Less than passes" );
-    AssertEqual( p.Evaluate( Real.From( 9 ) ), true );
-
-    Print( "Equal passes" );
-    AssertEqual( p.Evaluate( Real.From( 10 ) ), true );
-
-    Print( "Greater than fails" );
-    AssertEqual( p.Evaluate( Real.From( 11 ) ), false );
-}
-
-
-
-[Test( "IsGT" )]
-public static void
-Test_IsGT()
-{
-    IsGT< Real > p = new IsGT< Real >( Real.From( 10 ) );
-
-    // TODO "Evaluate( null ) throws BugException
-
-    Print( "Less than fails" );
-    AssertEqual( p.Evaluate( Real.From( 9 ) ), false );
-
-    Print( "Equal fails" );
-    AssertEqual( p.Evaluate( Real.From( 10 ) ), false );
-
-    Print( "Greater than passes" );
-    AssertEqual( p.Evaluate( Real.From( 11 ) ), true );
-}
-
-
-
-[Test( "IsGTE" )]
-public static void
-Test_IsGTE()
-{
-    IsGTE< Real > p = new IsGTE< Real >( Real.From( 10 ) );
-
-    // TODO "Evaluate( null ) throws BugException
-
-    Print( "Less than fails" );
-    AssertEqual( p.Evaluate( Real.From( 9 ) ), false );
-
-    Print( "Equal passes" );
-    AssertEqual( p.Evaluate( Real.From( 10 ) ), true );
-
-    Print( "Greater than passes" );
-    AssertEqual( p.Evaluate( Real.From( 11 ) ), true );
-}
-*/
 
 
 

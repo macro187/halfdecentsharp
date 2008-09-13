@@ -15,6 +15,8 @@
 // -----------------------------------------------------------------------------
 
 using System;
+using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 namespace
@@ -22,13 +24,16 @@ Com.Halfdecent.Numerics
 {
 
 // =============================================================================
-/// <tt>IInteger</tt> implementation using <tt>System.Decimal</tt>
+/// RType: A value that is greater than or equal to some other constant value
+///
+/// According to <tt>IComparable< T >.CompareTo()</tt>
 // =============================================================================
 //
-internal class
-DecimalInteger
-    : DecimalReal
-    , IInteger
+public class
+GTE<
+    T
+>
+    : SimpleRTypeBase< IComparable< T > >
 {
 
 
@@ -38,54 +43,60 @@ DecimalInteger
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Narrowing conversion from <tt>IReal</tt>
-///
 public
-DecimalInteger(
-    IReal value
+GTE(
+    T compareAgainst
 )
-    : base( value )
+    : base(
+        _S( "{{0}} is {0} or greater", compareAgainst ),
+        _S( "{{0}} is less than {0}", compareAgainst ),
+        _S( "{{0}} must be {0} or greater", compareAgainst )
+    )
 {
-    // TODO Check for no fractional value using a new RType
+    new NonNull().Check( compareAgainst, new Parameter( "compareAgainst" ) );
+    this.compareagainst = compareAgainst;
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// IInteger
+// Properties
 // -----------------------------------------------------------------------------
 
-public bool GT( IInteger i ) { return base.GT( i ); }
-
-public bool GTE( IInteger i ) { return base.GTE( i ); }
-
-public bool LT( IInteger i ) { return base.LT( i ); }
-
-public bool LTE( IInteger i ) { return base.LTE( i ); }
-
-public IInteger Plus( IInteger i )
+/// The value to compare against
+public
+T
+CompareAgainst
 {
-    return new DecimalInteger( base.Plus( i ) );
+    get { return this.compareagainst; }
 }
 
-public IInteger Minus( IInteger i )
+private
+T
+compareagainst;
+
+
+
+
+// -----------------------------------------------------------------------------
+// RTypeBase< T >
+// -----------------------------------------------------------------------------
+
+protected override
+bool
+MyCheck(
+    IComparable< T > item
+)
 {
-    return new DecimalInteger( base.Minus( i ) );
+    if( item == null ) return true;
+    return item.CompareTo( this.CompareAgainst ) >= 0;
 }
 
-public IInteger Times( IInteger i )
-{
-    return new DecimalInteger( base.Times( i ) );
-}
-
-public IInteger RemainderWhenDividedBy( IInteger i )
-{
-    return new DecimalInteger( base.RemainderWhenDividedBy( i ) );
-}
 
 
 
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

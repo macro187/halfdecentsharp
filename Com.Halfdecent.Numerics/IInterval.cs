@@ -21,15 +21,52 @@ Com.Halfdecent.Numerics
 {
 
 // =============================================================================
-/// An integer
-///
-/// <tt>http://en.wikipedia.org/wiki/Integer</tt>
+/// An interval
 // =============================================================================
 //
 public interface
-IInteger
-    : IReal
+IInterval<
+    T
+>
+    where T : IComparable< T >
 {
+
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+T
+From
+{
+    get;
+}
+
+
+
+bool
+FromInclusive
+{
+    get;
+}
+
+
+
+T
+To
+{
+    get;
+}
+
+
+
+bool
+ToInclusive
+{
+    get;
+}
 
 
 
@@ -38,79 +75,10 @@ IInteger
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Determine whether this integer is greater than another
-///
 bool
-GT(
-    IInteger x
+Contains(
+    T value
 );
-
-
-
-/// Determine whether this integer is greater than or equal to another
-///
-bool
-GTE(
-    IInteger x
-);
-
-
-
-/// Determine whether this integer is less than another
-///
-bool
-LT(
-    IInteger x
-);
-
-
-
-/// Determine whether this integer is less than or equal to another
-///
-bool
-LTE(
-    IInteger x
-);
-
-
-
-/// Compute this integer plus another
-///
-IInteger
-Plus(
-    IInteger x
-);
-
-
-
-/// Compute this integer minus another
-///
-IInteger
-Minus(
-    IInteger x
-);
-
-
-
-/// Compute this integer times another
-///
-IInteger
-Times(
-    IInteger x
-);
-
-
-
-/// Compute the remainder when this integer is divided by another
-///
-IInteger
-RemainderWhenDividedBy(
-    IInteger x
-);
-
-
-
-// TODO Integer Div (?)
 
 
 
