@@ -19,11 +19,29 @@
 // =============================================================================
 /// Numbers and arithmetic
 ///
-/// Provides:
-/// - Abstract numeric datatypes
-///   (see <tt>http://en.wikipedia.org/wiki/Numerical_tower</tt>)
-/// - Implementations based on <tt>System.Decimal</tt>
-/// - Numeric RTypes
+/// Abstract numeric types
+/// (see <tt>http://en.wikipedia.org/wiki/Numerical_tower</tt>)
+/// - <tt>IReal</tt>
+/// - <tt>IInteger</tt>
+///
+/// Numeric implementations based on <tt>System.Decimal</tt>
+/// - <tt>DecimalReal</tt>
+/// - <tt>DecimalInteger</tt>
+///
+/// Intervals
+/// - <tt>IInterval< T ></tt>
+/// - <tt>Interval< T ></tt>
+///
+/// RTypes for restricting numeric, <tt>IEquatable< T ></tt>, and
+/// <tt>IComparable< T ></tt> values
+/// - <tt>Equals< T ></tt>
+/// - <tt>GT< T ></tt>
+/// - <tt>GTE< T ></tt>
+/// - <tt>LT< T ></tt>
+/// - <tt>LTE< T ></tt>
+/// - <tt>InInterval< T ></tt>
+/// - <tt>InDecimalRange</tt>
+/// - <tt>InInt32Range</tt>
 // =============================================================================
 //
 namespace
