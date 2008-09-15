@@ -364,21 +364,72 @@ Test_InInterval()
 
 
 
+[Test( "InInt64Range" )]
+public static void
+Test_InInt64Range()
+{
+    IRType1 rt = new InInt64Range();
+
+    Print( "null passes" );
+    rt.Check( null, new Literal() );
+
+    Print( "Less than min fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( Int64.MinValue - 1m ), new Literal() );
+    } );
+
+    Print( "Min passes" );
+    rt.Check( Integer.From( Int64.MinValue ), new Literal() );
+
+    Print( "In range passes" );
+    rt.Check( Integer.From( 5m ), new Literal() );
+
+    Print( "Max passes" );
+    rt.Check( Integer.From( Int64.MaxValue ), new Literal() );
+
+    Print( "Greater than max fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( Int64.MaxValue + 1m ), new Literal() );
+    } );
+}
+
+
+
+[Test( "InUInt64Range" )]
+public static void
+Test_InUInt64Range()
+{
+    IRType1 rt = new InUInt64Range();
+
+    Print( "null passes" );
+    rt.Check( null, new Literal() );
+
+    Print( "Less than min fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( UInt64.MinValue - 1m ), new Literal() );
+    } );
+
+    Print( "Min passes" );
+    rt.Check( Integer.From( UInt64.MinValue ), new Literal() );
+
+    Print( "In range passes" );
+    rt.Check( Integer.From( 5m ), new Literal() );
+
+    Print( "Max passes" );
+    rt.Check( Integer.From( UInt64.MaxValue ), new Literal() );
+
+    Print( "Greater than max fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( UInt64.MaxValue + 1m ), new Literal() );
+    } );
+}
+
+
+
 [Test( "InInt32Range" )]
 public static void
 Test_InInt32Range()
 {
-    IInteger lt         = Integer.From( Int32.MinValue - 1m );
-    IInteger min        = Integer.From( Int32.MinValue );
-    IInteger between    = Integer.From( 5m );
-    IInteger max        = Integer.From( Int32.MaxValue );
-    IInteger gt         = Integer.From( Int32.MaxValue + 1m );
-    IValue _lt          = new Local( "lt" );
-    IValue _min         = new Local( "min" );
-    IValue _between     = new Local( "between" );
-    IValue _max         = new Local( "max" );
-    IValue _gt          = new Local( "gt" );
-
     IRType1 rt = new InInt32Range();
 
     Print( "null passes" );
@@ -386,17 +437,145 @@ Test_InInt32Range()
 
     Print( "Less than min fails" );
     Expect< RTypeException >( delegate() {
-        rt.Check( lt, _lt );
+        rt.Check( Integer.From( Int32.MinValue - 1m ), new Literal() );
     } );
+
     Print( "Min passes" );
-    rt.Check( min, _min );
+    rt.Check( Integer.From( Int32.MinValue ), new Literal() );
+
     Print( "In range passes" );
-    rt.Check( between, _between );
+    rt.Check( Integer.From( 5m ), new Literal() );
+
     Print( "Max passes" );
-    rt.Check( max, _max );
+    rt.Check( Integer.From( Int32.MaxValue ), new Literal() );
+
     Print( "Greater than max fails" );
     Expect< RTypeException >( delegate() {
-        rt.Check( gt, _gt );
+        rt.Check( Integer.From( Int32.MaxValue + 1m ), new Literal() );
+    } );
+}
+
+
+
+[Test( "InUInt32Range" )]
+public static void
+Test_InUInt32Range()
+{
+    IRType1 rt = new InUInt32Range();
+
+    Print( "null passes" );
+    rt.Check( null, new Literal() );
+
+    Print( "Less than min fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( UInt32.MinValue - 1m ), new Literal() );
+    } );
+
+    Print( "Min passes" );
+    rt.Check( Integer.From( UInt32.MinValue ), new Literal() );
+
+    Print( "In range passes" );
+    rt.Check( Integer.From( 5m ), new Literal() );
+
+    Print( "Max passes" );
+    rt.Check( Integer.From( UInt32.MaxValue ), new Literal() );
+
+    Print( "Greater than max fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( UInt32.MaxValue + 1m ), new Literal() );
+    } );
+}
+
+
+
+[Test( "InInt16Range" )]
+public static void
+Test_InInt16Range()
+{
+    IRType1 rt = new InInt16Range();
+
+    Print( "null passes" );
+    rt.Check( null, new Literal() );
+
+    Print( "Less than min fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( Int16.MinValue - 1m ), new Literal() );
+    } );
+
+    Print( "Min passes" );
+    rt.Check( Integer.From( Int16.MinValue ), new Literal() );
+
+    Print( "In range passes" );
+    rt.Check( Integer.From( 5m ), new Literal() );
+
+    Print( "Max passes" );
+    rt.Check( Integer.From( Int16.MaxValue ), new Literal() );
+
+    Print( "Greater than max fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( Int16.MaxValue + 1m ), new Literal() );
+    } );
+}
+
+
+
+[Test( "InUInt16Range" )]
+public static void
+Test_InUInt16Range()
+{
+    IRType1 rt = new InUInt16Range();
+
+    Print( "null passes" );
+    rt.Check( null, new Literal() );
+
+    Print( "Less than min fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( UInt16.MinValue - 1m ), new Literal() );
+    } );
+
+    Print( "Min passes" );
+    rt.Check( Integer.From( UInt16.MinValue ), new Literal() );
+
+    Print( "In range passes" );
+    rt.Check( Integer.From( 5m ), new Literal() );
+
+    Print( "Max passes" );
+    rt.Check( Integer.From( UInt16.MaxValue ), new Literal() );
+
+    Print( "Greater than max fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( UInt16.MaxValue + 1m ), new Literal() );
+    } );
+}
+
+
+
+[Test( "InByteRange" )]
+public static void
+Test_InByteRange()
+{
+    IRType1 rt = new InByteRange();
+
+    Print( "null passes" );
+    rt.Check( null, new Literal() );
+
+    Print( "Less than min fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( Byte.MinValue - 1m ), new Literal() );
+    } );
+
+    Print( "Min passes" );
+    rt.Check( Integer.From( Byte.MinValue ), new Literal() );
+
+    Print( "In range passes" );
+    rt.Check( Integer.From( 5m ), new Literal() );
+
+    Print( "Max passes" );
+    rt.Check( Integer.From( Byte.MaxValue ), new Literal() );
+
+    Print( "Greater than max fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Integer.From( Byte.MaxValue + 1m ), new Literal() );
     } );
 }
 
@@ -407,6 +586,9 @@ public static void
 Test_NonFractional()
 {
     IRType1 rt = new NonFractional();
+
+    Print( "Null passes" );
+    rt.Check( null, new Literal() );
 
     Print( "Not fractional passes" );
     rt.Check( Real.From( 5m ), new Literal() );
@@ -432,6 +614,9 @@ public static void
 Test_NonZero()
 {
     IRType1 rt = new NonZero();
+
+    Print( "Null passes" );
+    rt.Check( null, new Literal() );
 
     Print( "Negative passes" );
     rt.Check( Real.From( -5m ), new Literal() );
