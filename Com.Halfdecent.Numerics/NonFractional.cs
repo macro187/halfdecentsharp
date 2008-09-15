@@ -22,7 +22,7 @@ Com.Halfdecent.Numerics
 {
 
 public class
-NotFractional
+NonFractional
     : SimpleRTypeBase< IReal >
 {
 
@@ -34,7 +34,7 @@ NotFractional
 // -----------------------------------------------------------------------------
 
 public
-NotFractional()
+NonFractional()
     : base(
         _S("{0} is not fractional"),
         _S("{0} is fractional"),
