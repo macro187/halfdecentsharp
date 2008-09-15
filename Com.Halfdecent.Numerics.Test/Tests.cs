@@ -210,7 +210,7 @@ Test_ComparisonRTypes()
     IRType1 gte = new GTE< int >( val );
     IRType1 lt = new LT< int >( val );
     IRType1 lte = new LTE< int >( val );
-    IRType1 equals = new Equals< int >( val );
+    IRType1 equals = new EQ< int >( val );
 
     Print( "GT: Less than fails" );
     Expect< RTypeException >( delegate() {
@@ -252,13 +252,13 @@ Test_ComparisonRTypes()
         lte.Check( gtval, new Local( "gtval" ) );
     } );
 
-    Print( "Equals: Less than fails" );
+    Print( "EQ: Less than fails" );
     Expect< RTypeException >( delegate() {
         equals.Check( ltval, new Local( "ltval" ) );
     } );
-    Print( "Equals: Equal passes" );
+    Print( "EQ: Equal passes" );
     equals.Check( val, new Local( "val" ) );
-    Print( "Equals: Greater than fails" );
+    Print( "EQ: Greater than fails" );
     Expect< RTypeException >( delegate() {
         equals.Check( gtval, new Local( "gtval" ) );
     } );
@@ -402,11 +402,11 @@ Test_InInt32Range()
 
 
 
-[Test( "NotFractional" )]
+[Test( "NonFractional" )]
 public static void
-Test_NotFractional()
+Test_NonFractional()
 {
-    IRType1 rt = new NotFractional();
+    IRType1 rt = new NonFractional();
 
     Print( "Not fractional passes" );
     rt.Check( Real.From( 5m ), new Literal() );
@@ -422,6 +422,26 @@ Test_NotFractional()
     Print( "Negative fractional fails" );
     Expect< RTypeException >( delegate() {
         rt.Check( Real.From( -5.5m ), new Literal() );
+    } );
+}
+
+
+
+[Test( "NonZero" )]
+public static void
+Test_NonZero()
+{
+    IRType1 rt = new NonZero();
+
+    Print( "Negative passes" );
+    rt.Check( Real.From( -5m ), new Literal() );
+
+    Print( "Positive passes" );
+    rt.Check( Real.From( 5m ), new Literal() );
+
+    Print( "Zero fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Real.From( 0m ), new Literal() );
     } );
 }
 

@@ -24,7 +24,7 @@
 /// - <tt>IReal</tt>
 /// - <tt>IInteger</tt>
 ///
-/// Numeric implementations based on <tt>System.Decimal</tt>
+/// Numeric implementations using <tt>System.Decimal</tt>
 /// - <tt>DecimalReal</tt>
 /// - <tt>DecimalInteger</tt>
 ///
@@ -32,14 +32,20 @@
 /// - <tt>IInterval< T ></tt>
 /// - <tt>Interval< T ></tt>
 ///
-/// RTypes for restricting numeric, <tt>IEquatable< T ></tt>, and
-/// <tt>IComparable< T ></tt> values
-/// - <tt>Equals< T ></tt>
+/// RTypes for <tt>IEquatable< T ></tt> values
+/// - <tt>EQ< T ></tt>
+/// - <tt>NEQ< T ></tt>
+///
+/// RTypes for <tt>IComparable< T ></tt> values
 /// - <tt>GT< T ></tt>
 /// - <tt>GTE< T ></tt>
 /// - <tt>LT< T ></tt>
 /// - <tt>LTE< T ></tt>
 /// - <tt>InInterval< T ></tt>
+///
+/// RTypes for numeric values
+/// - <tt>NonZero</tt>
+/// - <tt>NonFractional</tt>
 /// - <tt>InDecimalRange</tt>
 /// - <tt>InInt32Range</tt>
 // =============================================================================

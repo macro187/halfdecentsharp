@@ -24,13 +24,13 @@ Com.Halfdecent.Numerics
 {
 
 // =============================================================================
-/// RType: A value that equals some other constant value
+/// Equals some other value
 ///
 /// According to <tt>IEquatable< T >.Equals()</tt>
 // =============================================================================
 //
 public class
-Equals<
+EQ<
     T
 >
     : SimpleRTypeBase< IEquatable< T > >
@@ -44,17 +44,17 @@ Equals<
 // -----------------------------------------------------------------------------
 
 public
-Equals(
-    T compareAgainst
+EQ(
+    T compareTo
 )
     : base(
-        _S( "{{0}} is equal to {0}", compareAgainst ),
-        _S( "{{0}} isn't equal to {0}", compareAgainst ),
-        _S( "{{0}} must be equal to {0}", compareAgainst )
+        _S( "{{0}} is equal to {0}", compareTo ),
+        _S( "{{0}} isn't equal to {0}", compareTo ),
+        _S( "{{0}} must be equal to {0}", compareTo )
     )
 {
-    new NonNull().Check( compareAgainst, new Parameter( "compareAgainst" ) );
-    this.compareagainst = compareAgainst;
+    new NonNull().Check( compareTo, new Parameter( "compareTo" ) );
+    this.compareto = compareTo;
 }
 
 
@@ -64,17 +64,17 @@ Equals(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// The value to compare against
+/// The value to compare to
 public
 T
-CompareAgainst
+CompareTo
 {
-    get { return this.compareagainst; }
+    get { return this.compareto; }
 }
 
 private
 T
-compareagainst;
+compareto;
 
 
 
@@ -90,7 +90,7 @@ MyCheck(
 )
 {
     if( item == null ) return true;
-    return item.Equals( this.CompareAgainst );
+    return item.Equals( this.CompareTo );
 }
 
 
