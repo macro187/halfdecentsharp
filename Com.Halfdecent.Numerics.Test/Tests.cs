@@ -402,6 +402,31 @@ Test_InInt32Range()
 
 
 
+[Test( "NotFractional" )]
+public static void
+Test_NotFractional()
+{
+    IRType1 rt = new NotFractional();
+
+    Print( "Not fractional passes" );
+    rt.Check( Real.From( 5m ), new Literal() );
+
+    Print( "Fractional fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Real.From( 5.5m ), new Literal() );
+    } );
+
+    Print( "Negative not fractional passes" );
+    rt.Check( Real.From( -5m ), new Literal() );
+
+    Print( "Negative fractional fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Real.From( -5.5m ), new Literal() );
+    } );
+}
+
+
+
 
 } // type
 } // namespace

@@ -14,22 +14,16 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
-using Com.Halfdecent.Meta;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
 
 namespace
 Com.Halfdecent.Numerics
 {
 
-// =============================================================================
-/// <tt>IInteger</tt> implementation using <tt>System.Decimal</tt>
-// =============================================================================
-//
-internal class
-DecimalInteger
-    : DecimalReal
-    , IInteger
+public class
+NotFractional
+    : SimpleRTypeBase< IReal >
 {
 
 
@@ -39,54 +33,37 @@ DecimalInteger
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Narrowing conversion from <tt>IReal</tt>
-///
 public
-DecimalInteger(
-    IReal value
+NotFractional()
+    : base(
+        _S("{0} is not fractional"),
+        _S("{0} is fractional"),
+        _S("{0} must not be fractional")
+    )
+{
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// RTypeBase< T >
+// -----------------------------------------------------------------------------
+
+protected override
+bool
+MyCheck(
+    IReal item
 )
-    : base( value )
 {
-    new NotFractional().Check( value, new Parameter( "value" ) );
+    if( item == null ) return true;
+    return item.Equals( item.Truncate() );
 }
 
 
 
 
-// -----------------------------------------------------------------------------
-// IInteger
-// -----------------------------------------------------------------------------
-
-public bool GT( IInteger i ) { return base.GT( i ); }
-
-public bool GTE( IInteger i ) { return base.GTE( i ); }
-
-public bool LT( IInteger i ) { return base.LT( i ); }
-
-public bool LTE( IInteger i ) { return base.LTE( i ); }
-
-public IInteger Plus( IInteger i )
-{
-    return new DecimalInteger( base.Plus( i ) );
-}
-
-public IInteger Minus( IInteger i )
-{
-    return new DecimalInteger( base.Minus( i ) );
-}
-
-public IInteger Times( IInteger i )
-{
-    return new DecimalInteger( base.Times( i ) );
-}
-
-public IInteger RemainderWhenDividedBy( IInteger i )
-{
-    return new DecimalInteger( base.RemainderWhenDividedBy( i ) );
-}
-
-
-
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace
