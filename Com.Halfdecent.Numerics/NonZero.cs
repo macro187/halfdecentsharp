@@ -37,8 +37,8 @@ NonZero
 public
 NonZero()
     : base(
-        _S("{0} is zero"),
         _S("{0} is not zero"),
+        _S("{0} is zero"),
         _S("{0} must not be zero")
     )
 {
