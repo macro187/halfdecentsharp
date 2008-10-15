@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 using System;
+using System.Collections;
 
 namespace
 Com.Halfdecent.Testing
@@ -64,7 +65,75 @@ Print(
 
 
 public static
-void
+    string
+Indent(
+    string s
+)
+{
+    return Indent( s, 1 );
+}
+
+public static
+    string
+Indent(
+    string  s,
+    int     level
+)
+{
+    if( s == null ) throw new ArgumentNullException( "s" );
+    if( level < 0 ) throw new ArgumentOutOfRangeException( "level" );
+    if( level == 0 ) return s;
+    string indentation = "";
+    for( int i=0; i<level; i++ )
+        indentation += "  ";
+    return indentation + s.Replace( "\n", "\n" + indentation );
+}
+
+
+
+public static
+    string
+CleanStackTrace(
+    string s
+)
+{
+    if( s == null ) throw new ArgumentNullException( "s" );
+    string[] a = s.Split( new char[] { '\n' } );
+    for( int i = 0; i<a.Length; i++ ) {
+        a[i] = a[i].TrimStart( null );
+        if( a[i].StartsWith( "at " ) )
+            a[i] = a[i].Substring( 3 );
+    }
+    return String.Join( "\n", a );
+}
+
+
+
+public static
+    string
+DumpException(
+    Exception e
+)
+{
+    if( e == null ) return "(null)";
+    string s = "";
+    s += e.Message + "\n";
+    s += "(" + e.GetType().FullName + ")";
+    if( e.Data != null )
+        foreach( DictionaryEntry de in e.Data )
+            s += "\n" + de.Key + ": " + de.Value;
+    if( e.Source != null && e.Source != "" )
+        s += "\nSource: " + e.Source;
+    s += "\nStack Trace:\n" + Indent( CleanStackTrace( e.StackTrace ) );
+    if( e.InnerException != null )
+        s += "\nInner Exception:\n" + Indent( DumpException( e.InnerException ) );
+    return s;
+}
+
+
+
+public static
+    void
 Assert(
     bool condition
 )
@@ -75,7 +144,7 @@ Assert(
 
 
 public static
-void
+    void
 Assert(
     string description,
     bool condition
@@ -187,13 +256,16 @@ Expect<
     bool threw = false;
     try {
         action();
-    } catch( TExpected ) {
+    } catch( TExpected e ) {
+        Print( "Expected '{0}' occurred:\n{1}",
+            typeof( TExpected ).Name,
+            Indent( DumpException( e ) ) );
         threw = true;
     }
     if( !threw )
         throw new AssertFailedException( String.Format(
             "Expected {0} but it didn't occur",
-            typeof( TExpected ).FullName ) );
+            typeof( TExpected ).Name ) );
 }
 
 public delegate
