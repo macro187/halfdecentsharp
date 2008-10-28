@@ -14,48 +14,101 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Globalization;
+using System.Threading;
+
 
 namespace
 Com.Halfdecent.Globalisation
 {
 
+
 // =============================================================================
-/// Utilities for working with <tt>Localised< string ></tt>s
+/// Localised, lazy-evaluated result of <tt>LocalisedString.Format()</tt>
 // =============================================================================
-///
-public static class
-LocalisedString
+
+public class
+FormattedLocalisedString
+    : Localised< string >
 {
 
 
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// Constructors
 // -----------------------------------------------------------------------------
 
-/// Localisation-aware equivalent of <tt>String.Format()</tt>
-///
-/// Because any <tt>args</tt> that are themselves <tt>Localised< T ></tt>s
-/// will also lazy-evalute, this method can be used to build up entire
-/// trees of objects that will be flattened down via
-/// <tt>System.String.Format()</tt> on-demand in a culture-sensitive fashion.
-///
-public static
-Localised< string >
-/// @returns A <tt>Localised< string ></tt> subclass that performs the
-/// <tt>System.String.Format()</tt> operation on-demand in a culture-sensitive
-/// fashion
-Format(
+internal
+FormattedLocalisedString(
     Localised< string > format,
-    ///< (see <tt>System.String</tt>)
     params object[]     args
-    ///< (see <tt>System.String.Format( string, object[] )</tt>)
 )
 {
-    return new FormattedLocalisedString( format, args );
+    if( format == null ) throw new ArgumentNullException( "format" );
+    if( args == null ) throw new ArgumentNullException( "args" );
+    this.format = format;
+    this.args = args;
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+Localised< string >
+Format
+{
+    get { return this.format; }
+}
+
+private
+Localised< string >
+format;
+
+
+
+public
+object[]
+Args
+{
+    get { return this.args; }
+}
+
+private
+object[]
+args;
+
+
+
+
+// -----------------------------------------------------------------------------
+// Localised< T >
+// -----------------------------------------------------------------------------
+
+protected override
+string
+ForCulture(
+    CultureInfo culture
+)
+{
+    string s;
+    CultureInfo cc = Thread.CurrentThread.CurrentCulture;
+    CultureInfo cuic = Thread.CurrentThread.CurrentUICulture;
+    Thread.CurrentThread.CurrentCulture = culture;
+    Thread.CurrentThread.CurrentUICulture = culture;
+    try {
+        s = String.Format( culture, this.format, this.args );
+    } finally {
+        Thread.CurrentThread.CurrentUICulture = cuic;
+        Thread.CurrentThread.CurrentCulture = cc;
+    }
+    return s;
 }
 
 
