@@ -40,22 +40,41 @@ ResourceMissingException
 
 /// Initialise a <tt>ResourceMissingException</tt>
 ///
+/// @exception ArgumentNullException
+/// <tt>typename</tt> is <tt>null</tt>
+/// -OR-
+/// <tt>name</tt> is <tt>null</tt>
+///
+/// @exception ArgumentException
+/// <tt>name</tt> is blank
+///
 public
 ResourceMissingException(
-    string typename,
-    string name
+
+    Type    type,
+    ///
+    ///< Name of the type the missing resource was supposed to belong to
+
+    string  name,
+    ///
+    ///< Name of the missing resource
+
+    Exception   innerException
+    ///
+    ///< (See <tt>System.Exception</tt>)
 )
-    : base( string.Format(
-        "Type '{0}' contains no embedded resources named '{1}'",
-        typename,
-        name ) )
+    : base(
+        string.Format(
+            "Type '{0}' contains no embedded resources named '{1}'",
+            type != null ? type.FullName : "(unknown)",
+            name ),
+        innerException )
 
 {
-    if( typename == null ) throw new ArgumentNullException( "typename" );
-    if( typename == "" ) throw new ArgumentException( "Is blank", "typename" );
+    if( type == null ) throw new ArgumentNullException( "type" );
     if( name == null ) throw new ArgumentNullException( "name" );
     if( name == "" ) throw new ArgumentException( "Is blank", "name" );
-    this.typename = typename;
+    this.type = type;
     this.name = name;
 }
 
@@ -67,24 +86,18 @@ ResourceMissingException(
 // -----------------------------------------------------------------------------
 
 public
-string
-TypeName
-{
-    get { return this.typename; }
-}
+Type
+Type { get { return this.type; } }
 
 private
-string
-typename;
+Type
+type;
 
 
 
 public
 string
-Name
-{
-    get { return this.name; }
-}
+Name { get { return this.name; } }
 
 private
 string

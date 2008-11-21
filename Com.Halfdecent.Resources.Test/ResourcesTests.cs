@@ -38,6 +38,17 @@ ResourcesTests
 
 
 
+public static
+int
+Main()
+{
+    return TestProgram.RunTests();
+}
+
+
+
+
+/*
 [Test( "Resource.Get<T>()" )]
 public static
 void
@@ -80,7 +91,7 @@ Test_Resource_Get()
     AssertEqual(
         Resource.Get<string>(
             typeof(TestRes),
-            "nonexistant",
+            "nonexistent",
             en_US ),
         null );
 
@@ -89,121 +100,105 @@ Test_Resource_Get()
     AssertEqual(
         Resource.Get<string>(
             typeof(NoRes),
-            "nonexistant",
+            "nonexistent",
             en_US ),
         null );
 }
+*/
 
 
 
-[Test( "Resource._R<T>( Type, string )" )]
+[Test( "Resource._R()" )]
 public static
 void
-Test_Resource__R_type_string()
+Test_Resource__R()
 {
-    Localised<string>  ls;
+    Localised<string>   ls;
     CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
-    bool                threw;
 
+    Print( "Can retrieve a resource (that exists)" );
+    ls = Resource._R< string >( typeof( TestRes ), "teststring" );
 
-    Print( "Retrieve resource (that exists)" );
-    ls = Resource._R<string>( typeof(TestRes), "teststring" );
-
-    Print( "Isn't null" );
+    Print( "...and it isn't null" );
     Assert( ls != null );
 
-
-    Print( "Works" );
+    Print( "...and it works" );
     AssertEqual( ls[ en_AU ], "Hello (en-AU)" );
 
 
-    Print( "Throws ResourceMissingException if missing (other resources exist)" );
-    threw = false;
-    try {
-        ls = Resource._R<string>( typeof(TestRes), "nonexistant" );
-        if( ls == null ) {}
-    } catch( ResourceMissingException ) {
-        threw = true;
-    }
-    Assert( threw );
+    Print( "ResourceMissingException if missing (other resources exist)" );
+    Expect< ResourceMissingException >( delegate() {
+        if(
+            Resource._R< string >( typeof( TestRes ), "nonexistent" )
+            == null
+        ){}
+    } );
 
 
-    Print( "Throws ResourceMissingException if missing (no other resources exist)" );
-    threw = false;
-    try {
-        ls = Resource._R<string>( typeof(NoRes), "nonexistant" );
-        if( ls == null ) {}
-    } catch( ResourceMissingException ) {
-        threw = true;
-    }
-    Assert( threw );
-
+    Print( "ResourceMissingException if missing (no other resources exist)" );
+    Expect< ResourceMissingException >( delegate() {
+        if(
+            Resource._R< string >( typeof( NoRes ), "nonexistent" )
+            == null
+        ){}
+    } );
 }
 
 
 
-[Test( "Resource._S( type, string )" )]
+[Test( "Resource._S()" )]
 public static
 void
-Test_Resource__S_type_string()
+Test_Resource__S()
 {
-    Localised<string>  ls;
+    Localised<string>   ls;
     CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
     CultureInfo         en_CA = CultureInfo.GetCultureInfo( "en-CA" );
     CultureInfo         fr_FR = CultureInfo.GetCultureInfo( "fr-FR" );
-
-
-    Print( "Retrieve string resource (which has resource translations)" );
-    ls = Resource._S( typeof(TestRes), "Hello (code)" );
-
-    Print( "Isn't null" );
-    Assert( ls != null );
-
-    Print( "Exact culture translation" );
-    AssertEqual<string>( ls[ en_AU ], "Hello (en-AU)" );
-
-    Print( "Neutral culture translation" );
-    AssertEqual<string>( ls[ en_CA ], "Hello (en)" );
-
-    Print( "Invariant culture translation" );
-    AssertEqual<string>( ls[ fr_FR ], "Hello (invariant)" );
-
-    Print( "Retrieve string resource (which has no resource versions at all)" );
-    ls = Resource._S( typeof(NoRes), "Hello (code)" );
-
-    Print( "Isn't null" );
-    Assert( ls != null );
-
-    Print( "Value is original string" );
-    AssertEqual<string>( ls[ en_AU ], "Hello (code)" );
-}
-
-
-
-[Test( "Resource._S( type, string, params object[] )" )]
-public static
-void
-Test_Resource__S_type_string_paramsobject()
-{
-    Localised<string>  ls;
-
-    CultureInfo         fr_FR = CultureInfo.GetCultureInfo( "fr-FR" );
     CultureInfo         ja_JP = CultureInfo.GetCultureInfo( "ja-JP" );
 
-    Print( "NOTE: CAN'T AUTOMATICALLY VERIFY THESE, PLEASE EYEBALL" );
+    Print( "Can retrieve with resource translations" );
+    ls = Resource._S( typeof( TestRes ), "Hello (code)" );
+
+    Print( "... and it isn't null" );
+    Assert( ls != null );
+
+    Print( "Exact culture variation is correct" );
+    AssertEqual( ls[ en_AU ], "Hello (en-AU)" );
+
+    Print( "Neutral culture variation is correct" );
+    AssertEqual( ls[ en_CA ], "Hello (en)" );
+
+    Print( "Invariant culture variation is correct" );
+    AssertEqual( ls[ fr_FR ], "Hello (invariant)" );
+
+    Print( "Can retrieve without resource translations" );
+    ls = Resource._S( typeof( NoRes ), "Hello (code)" );
+
+    Print( "...and it isn't null" );
+    Assert( ls != null );
+
+    Print( "Value is always the original untranslated string" );
+    AssertEqual( ls[ en_AU ], "Hello (code)" );
+    AssertEqual( ls[ en_CA ], "Hello (code)" );
+    AssertEqual( ls[ fr_FR ], "Hello (code)" );
+    AssertEqual( ls[ ja_JP ], "Hello (code)" );
+
+
+    Print( "NOTE: CAN'T AUTOMATICALLY CHECK THE FOLLOWING, PLEASE VERIFY" );
     Print( "(due to possible implementation differences in formatting)" );
 
-    ls = Resource._S( typeof(TestRes), "Today is {0:f}", DateTime.Now );
+    ls = Resource._S( typeof( TestRes ), "Today is {0:f}", DateTime.Now );
     Print( "Today's Date" );
-    Print( "Current culture: " + ls );
-    Print( "French:          " + ls[ fr_FR ] );
-    Print( "Japanese:        " + ls[ ja_JP ] );
+    Print( "en-AU: " + ls[ en_AU ] );
+    Print( "fr-FR: " + ls[ fr_FR ] );
+    Print( "ja-JP: " + ls[ ja_JP ] );
 
-    ls = Resource._S( typeof(TestRes), "Pi is {0:f}", 3.14 );
+    ls = Resource._S( typeof( TestRes ), "Pi is {0:f}", 3.14 );
     Print( "A Big Number" );
-    Print( "Current culture: " + ls );
-    Print( "French:          " + ls[ fr_FR ] );
-    Print( "Japanese:        " + ls[ ja_JP ] );
+    Print( "en-AU: " + ls[ en_AU ] );
+    Print( "fr-FR: " + ls[ fr_FR ] );
+    Print( "ja-JP: " + ls[ ja_JP ] );
 }
 
 

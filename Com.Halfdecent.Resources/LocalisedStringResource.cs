@@ -15,7 +15,6 @@
 // -----------------------------------------------------------------------------
 
 using System;
-using System.Threading;
 using System.Globalization;
 using Com.Halfdecent.Globalisation;
 
@@ -24,7 +23,7 @@ Com.Halfdecent.Resources
 {
 
 // =============================================================================
-/// A read-only <tt>Localised< string ></tt> that represents a (possibly)
+/// A <tt>Localised< string ></tt> that represents a (possibly)
 /// localised string
 // =============================================================================
 ///
@@ -32,6 +31,20 @@ public class
 LocalisedStringResource
     : LocalisedResource< string >
 {
+
+
+
+
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
+/// Localised variations of strings are named the untranslated string itself
+/// prefixed by this
+///
+public static readonly
+string
+RESOURCE_NAME_PREFIX = "__";
 
 
 
@@ -48,38 +61,16 @@ LocalisedStringResource(
     Type    type,
     string  untranslated
 )
-    : this( type, untranslated, new object[]{} )
-{
-}
-
-
-
-/// Create a new <tt>LocalisedStringResource</tt> which may have translated
-/// versions available as embedded resources in a given type and which, when
-/// used, will be <tt>String.Format</tt>ted with the given arguments in a
-/// culture-specific fashion
-///
-// TODO move formatted Localised< string > functionality out into a separate
-// type (eg. FormattedLocalisedString?) and remove all associated functionality
-// from here and from Resource.  Programmers will have to call
-// LocalisedString.Format if they want formatting.
-//
-internal
-LocalisedStringResource(
-    Type            type,
-    string          untranslated,
-    params object[] formatargs
-)
-    : base( type, Resource.STRING_RESOURCE_NAME_PREFIX + untranslated )
+    : base(
+        type,
+        RESOURCE_NAME_PREFIX + (untranslated ?? "(null)") )
 {
     if( untranslated == null )
         throw new ArgumentNullException( "untranslated" );
     if( untranslated == "" )
         throw new ArgumentException( "Is blank", "untranslated" );
-    if( formatargs == null )
-        throw new ArgumentNullException( "formatargs" );
+
     this.untranslated = untranslated;
-    this.formatargs = formatargs;
 }
 
 
@@ -89,60 +80,30 @@ LocalisedStringResource(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// The version of the string most suitable for a given culture
-///
-/// @exception ResourceTypeMismatchException
-/// Resource is not of (or convertable) to <tt>string</tt>
-///
-public override
+public
 string
-this[
-    CultureInfo culture
-]
-{
-    get
-    {
-        if( culture == null )
-            throw new ArgumentNullException( "culture" );
-        string r;
-        r = Resource.Get<string>( this.type, this.name, culture );
-        if( r == null )
-            r = this.untranslated;
-        if( this.formatargs.Length > 0 ) {
-            CultureInfo cc = CultureInfo.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = culture;
-            try {
-                r = String.Format( r, this.formatargs );
-            } finally {
-                Thread.CurrentThread.CurrentCulture = cc;
-            }
-        }
-        return r;
-    }
-    set
-    {
-        throw new InvalidOperationException();
-    }
-}
+Untranslated { get { return this.untranslated; } }
 
-
-
-
-// -----------------------------------------------------------------------------
-// Protected
-// -----------------------------------------------------------------------------
-
-// TODO to property
-protected
+private
 string
 untranslated;
 
 
 
-// TODO to property
-protected
-object[]
-formatargs;
+
+// -----------------------------------------------------------------------------
+// LocalisedBase< T >
+// -----------------------------------------------------------------------------
+
+protected override
+bool
+TryDefault(
+    out string value
+)
+{
+    value = this.Untranslated;
+    return true;
+}
 
 
 
