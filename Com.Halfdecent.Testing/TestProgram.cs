@@ -82,7 +82,8 @@ RunTests()
                 m.Invoke( null, null );
                 Debug.Listeners.Remove( listener );
             } catch( TargetInvocationException e ) {
-                TestMessage( e.InnerException.ToString() );
+                TestMessage(
+                    TestBase.DumpException( e.InnerException ) );
                 passed = false;
             }
             TestMessage( passed ? "Passed" : "FAILED" );
