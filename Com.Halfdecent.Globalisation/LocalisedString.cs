@@ -14,17 +14,19 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Globalization;
+
 
 namespace
 Com.Halfdecent.Globalisation
 {
 
+
 // =============================================================================
 /// Utilities for working with <tt>Localised< string ></tt>s
 // =============================================================================
-///
 public static class
 LocalisedString
 {

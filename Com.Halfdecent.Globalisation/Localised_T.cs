@@ -21,6 +21,7 @@ namespace
 Com.Halfdecent.Globalisation
 {
 
+// =============================================================================
 /// Represents localised variations of an item collectively as one
 ///
 /// A <tt>Localised< T ></tt> can be used anywhere a <tt>T</tt> is called for.
@@ -33,7 +34,8 @@ Com.Halfdecent.Globalisation
 /// will be transparently "boxed" into a <tt>Localised< T ></tt> as the
 /// invariant (and only) variation of the item via an implicit conversion
 /// operator.
-///
+// =============================================================================
+
 public abstract class
 Localised<
     T   ///< The type of underlying values
@@ -47,16 +49,13 @@ Localised<
 // Indexer
 // -----------------------------------------------------------------------------
 
-/// Retrieve a variation for a particular culture
+/// Retrieve the most applicable variation for a specified culture
 ///
 /// If a variation is not available for the exact culture specified, the
 /// "closest" available variant will be provided.
 ///
-/// A useful value for some culture or another will always be available;  This
-/// method never returns <tt>null</tt>.
-///
 /// @exception ArgumentNullException
-/// This specified <tt>culture</tt> is <tt>null</tt>
+/// The specified <tt>culture</tt> is <tt>null</tt>
 ///
 /// @exception Exception
 /// The underlying implementation generated a <tt>null</tt> value, which is a
@@ -64,6 +63,10 @@ Localised<
 ///
 public
 T
+/// @returns The most applicable variation for the specified culture.
+/// A useful value for some culture or another will always be available;  This
+/// method never returns <tt>null</tt>.
+///
 this[
     CultureInfo culture
 ]

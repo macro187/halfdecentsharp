@@ -14,74 +14,107 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
 using System.Globalization;
-using System.Threading;
-
+using System.Collections.Generic;
 
 namespace
 Com.Halfdecent.Globalisation
 {
 
+// =============================================================================
+/// Base class for implementing <tt>Localised< T ></tt>
+// =============================================================================
 
-// =============================================================================
-/// Localised, lazy-evaluated result of <tt>LocalisedString.Format()</tt>
-// =============================================================================
-public class
-FormattedLocalisedString
-    : Localised< string >
+public abstract class
+LocalisedBase<
+    T
+>
+    : Localised< T >
 {
 
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Methods
 // -----------------------------------------------------------------------------
 
-internal
-FormattedLocalisedString(
-    Localised< string > format,
-    params object[]     args
+/// Parent culture fallback algorithm
+///
+public static
+IEnumerable< CultureInfo >
+/// @returns
+/// - Must be <tt>NonNull</tt>
+/// - Yielded items must be <tt>NonNull</tt>
+ParentFallbacksFor(
+    CultureInfo culture
 )
 {
-    if( format == null ) throw new ArgumentNullException( "format" );
-    if( args == null ) throw new ArgumentNullException( "args" );
-    this.format = format;
-    this.args = args;
+    if( culture == null ) throw new ArgumentNullException( "culture" );
+    CultureInfo c = culture;
+    while( c.Name != "" ) {
+        c = c.Parent;
+        yield return c;
+    }
 }
+
+
+
+// TODO Fallback algorithm which also checks other regions with the same
+//      language in some prioritised order eg:
+//        en-AU => en, en-US, en-GB, en-CA, ..., (invariant)
+//        fr-CA => fr, fr-FR, ..., (invariant)
+//
+//public static
+//IEnumerable< CultureInfo >
+//PrioritisedRegionFallbacksFor(
+//    CultureInfo culture
+//)
+//{
+//    yield return ...;
+//}
 
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Protected
 // -----------------------------------------------------------------------------
 
-public
-Localised< string >
-Format
+protected virtual
+bool
+TryDefault(
+    out T value
+)
 {
-    get { return this.format; }
+    value = default( T );
+    return false;
 }
 
-private
-Localised< string >
-format;
 
 
-
-public
-object[]
-Args
+protected virtual
+bool
+TryFor(
+    out T       value,
+    CultureInfo culture
+)
 {
-    get { return this.args; }
+    value = default( T );
+    return false;
 }
 
-private
-object[]
-args;
+
+
+protected virtual
+IEnumerable< CultureInfo >
+FallbacksFor(
+    CultureInfo culture
+)
+{
+    yield break;
+}
 
 
 
@@ -91,23 +124,28 @@ args;
 // -----------------------------------------------------------------------------
 
 protected override
-string
+T
 ForCulture(
     CultureInfo culture
 )
 {
-    string s;
-    CultureInfo cc = Thread.CurrentThread.CurrentCulture;
-    CultureInfo cuic = Thread.CurrentThread.CurrentUICulture;
-    Thread.CurrentThread.CurrentCulture = culture;
-    Thread.CurrentThread.CurrentUICulture = culture;
-    try {
-        s = String.Format( culture, this.format, this.args );
-    } finally {
-        Thread.CurrentThread.CurrentUICulture = cuic;
-        Thread.CurrentThread.CurrentCulture = cc;
+    T r;
+
+    if( this.TryFor( out r, culture ) ) return r;
+
+    foreach( CultureInfo fb in this.FallbacksFor( culture ) ) {
+        // TODO BugException
+        if( fb == null ) throw new Exception( "null fallback culture" );
+        if( this.TryFor( out r, fb ) ) return r;
     }
-    return s;
+
+    if( this.TryDefault( out r ) ) return r;
+
+    // TODO BugException
+    throw new Exception( String.Format(
+        "Bug in LocalisedBase< T > subclass: No value produced for culture" +
+        " '{0}' by exact culture, fallback cultures, or TryDefault()",
+        culture.Name ) );
 }
 
 
