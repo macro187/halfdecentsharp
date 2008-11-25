@@ -76,6 +76,22 @@ Test_Conversions()
     AssertEqual( WantLocalised( "Hello" ), "Hello" );
 }
 
+
+
+[Test( "LocalisedTypeAdapter< TFrom, TTO>" )]
+public static
+void
+Test_LocalisedTypeAdapter()
+{
+    Localised< string > s = new SingleValueLocalised< string >( "hello" );
+    Localised< object > o = new LocalisedTypeAdapter< string, object >( s );
+
+    Print( "Correct value comes through adapter" );
+    AssertEqual( o.ToString(), "hello" );
+}
+
+
+
 public static
 string
 WantString( string s )
