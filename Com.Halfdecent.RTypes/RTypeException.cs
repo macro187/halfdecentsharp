@@ -128,7 +128,7 @@ Message
     get
     {
         return this.RType.SayIsNot(
-            string.Format( "'{0}'", this.ValueReference.ToString() ) );
+            string.Format( "{0}", this.ValueReference.ToString() ) );
     }
 }
 

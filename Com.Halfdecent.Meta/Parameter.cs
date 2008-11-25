@@ -44,7 +44,7 @@ public override
 string
 ToString()
 {
-    return string.Format( "(parameter) {0}", this.Name );
+    return string.Format( "(parameter '{0}')", this.Name );
 }
 
 
