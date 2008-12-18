@@ -15,7 +15,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Collections.Generic;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
 
@@ -25,56 +27,113 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// A readable RType
-///
-/// <tt>T</tt> is contravariant
+/// RType< T > contravariant type adapter
 // =============================================================================
 //
-public interface
-IWritableRType<
-    T
+public class
+RTypeTypeAdapter<
+    TFrom,
+    TTo
 >
-    : IRType
+    : IRType< TTo >
+    where TTo : TFrom
 {
 
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Constructors
 // -----------------------------------------------------------------------------
 
-IEnumerable< IWritableRType< T > >
-Supers
+public
+RTypeTypeAdapter(
+    IRType< TFrom > from
+)
 {
-    get;
+    NonNull.SCheck( from, new Parameter( "from" ) );
+    this.from = from;
 }
 
-
-
-IEnumerable< IWritableRType< T > >
-Components
-{
-    get;
-}
+private
+IRType< TFrom >
+from;
 
 
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// IRType< T >
 // -----------------------------------------------------------------------------
 
-/// Check that an item is of this RType
-///
-/// @exception RTypeException
-/// The item is not of this RType
-///
+public
 void
 Check(
-    T       item,
+    TTo     item,
     IValue  itemReference
-);
+)
+{
+    this.from.Check( item, itemReference );
+}
+
+
+
+public
+IEnumerable< IRType< TTo > >
+Supers
+{
+    get
+    {
+        foreach( IRType< TFrom > s in from.Supers )
+            yield return new RTypeTypeAdapter< TFrom, TTo >( s );
+    }
+}
+
+
+
+public
+IEnumerable< IRType< TTo > >
+Components
+{
+    get
+    {
+        foreach( IRType< TFrom > c in from.Components )
+            yield return new RTypeTypeAdapter< TFrom, TTo >( c );
+    }
+}
+
+
+
+public
+Localised< string >
+SayIs(
+    Localised< string > reference
+)
+{
+    return from.SayIs( reference );
+}
+
+
+
+public
+Localised< string >
+SayIsNot(
+    Localised< string > reference
+)
+{
+    return from.SayIsNot( reference );
+}
+
+
+
+public
+Localised< string >
+SayMustBe(
+    Localised< string > reference
+)
+{
+    return from.SayMustBe( reference );
+}
 
 
 

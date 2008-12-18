@@ -73,14 +73,14 @@ Check(
     if( itemReference == null )
         throw new ArgumentNullException( "itemReference" );
 
-    foreach( IWritableRType< T > st in this.Supers )
+    foreach( IRType< T > st in this.Supers )
         st.Check( item, itemReference );
 
-    foreach( IWritableRType< T > c in this.Components )
-        foreach( IWritableRType< T > cst in c.Supers )
+    foreach( IRType< T > c in this.Components )
+        foreach( IRType< T > cst in c.Supers )
             cst.Check( item, itemReference );
 
-    foreach( IWritableRType< T > c in this.Components )
+    foreach( IRType< T > c in this.Components )
         try {
             c.Check( item, itemReference );
         } catch( RTypeException rte ) {
@@ -94,19 +94,19 @@ Check(
 
 
 public virtual
-IEnumerable< IWritableRType< T > >
+IEnumerable< IRType< T > >
 Supers
 {
-    get { return new IWritableRType< T >[]{}; }
+    get { return new IRType< T >[]{}; }
 }
 
 
 
 public virtual
-IEnumerable< IWritableRType< T > >
+IEnumerable< IRType< T > >
 Components
 {
-    get { return new IWritableRType< T >[]{}; }
+    get { return new IRType< T >[]{}; }
 }
 
 

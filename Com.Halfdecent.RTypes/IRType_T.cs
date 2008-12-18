@@ -34,9 +34,46 @@ IRType<
     T
 >
     : IRType
-    , IReadableRType< T >
-    , IWritableRType< T >
 {
+
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+IEnumerable< IRType< T > >
+Supers
+{
+    get;
+}
+
+
+
+IEnumerable< IRType< T > >
+Components
+{
+    get;
+}
+
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Check that an item is of this RType
+///
+/// @exception RTypeException
+/// The item is not of this RType
+///
+void
+Check(
+    T       item,
+    IValue  itemReference
+);
 
 
 
