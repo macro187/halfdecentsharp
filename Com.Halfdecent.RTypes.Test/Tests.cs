@@ -49,7 +49,7 @@ public static
 void
 Test_NonNull()
 {
-    IRType1 rt = new NonNull();
+    IRType< object > rt = new NonNull< object >();
     object obj;
     IValue obj_ = new Local( "obj" );
 
@@ -71,7 +71,7 @@ public static
 void
 Test_IsA()
 {
-    IRType1 rt = new IsA< A >();
+    IRType< object > rt = new IsA< object, A >();
     object obj;
     IValue obj_ = new Local( "obj" );
 
@@ -100,7 +100,7 @@ public static
 void
 Test_NonBlankString()
 {
-    IRType1 rt = new NonBlankString();
+    IRType< string > rt = new NonBlankString();
     string s;
     IValue s_ = new Local( "s" );
 

@@ -14,82 +14,29 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System.Collections.Generic;
+using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Meta;
+
 
 namespace
 Com.Halfdecent.RTypes
 {
 
 
-
 // =============================================================================
-/// Base class for 1-term RTypes with single IsA supertypes
+/// An RType
 // =============================================================================
 //
-public abstract class
-RTypeBase<
-    TIsA
+public interface
+IRType<
+    T
 >
-    : RType1Base
+    : IRType
+    , IReadableRType< T >
+    , IWritableRType< T >
 {
-
-
-
-
-/// Return <tt>true</tt> if <tt>null</tt> unless this RType explicitly
-/// disallows <tt>null</tt>s
-///
-protected virtual
-bool
-MyCheck(
-    TIsA item
-)
-{
-    return true;
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// RType1Base
-// -----------------------------------------------------------------------------
-
-protected override
-bool
-MyCheck(
-    object item
-)
-{
-    // TODO Check is TIsA to verify subclass yielded base.Supers in Supers?
-    return this.MyCheck( (TIsA)item );
-}
-
-
-
-public override
-IEnumerable< IRType1 >
-Supers
-{
-    get
-    {
-        foreach( IRType1 super in GetBaseSupers() ) yield return super;
-        yield return new IsA< TIsA >();
-    }
-}
-
-// Heed the following suggestion from the Microsoft compiler:
-//   Access to member 'Com.Halfdecent.RTypes.RType1Base.Supers' through a
-//   'base' keyword from an anonymous method or iterator results in
-//   unverifiable code. Consider moving the access into a helper method on
-//   the containing type.
-//
-private
-IEnumerable< IRType1 >
-GetBaseSupers()
-{
-    return base.Supers;
-}
 
 
 

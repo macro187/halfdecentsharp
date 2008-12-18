@@ -17,7 +17,11 @@
 
 
 // =============================================================================
-/// Structured run-time value checking
+/// Composable run-time value checks
+///
+/// TODO
+/// - Define "static type" (of variables, properties, etc)
+/// - Define "dynamic type" (of objects)
 // =============================================================================
 //
 namespace

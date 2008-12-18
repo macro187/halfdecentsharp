@@ -14,25 +14,27 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.Exceptions;
 
+
 namespace
 Com.Halfdecent.RTypes
 {
 
+
 // =============================================================================
-/// Base class for 1-term RTypes with single IsA supertypes and simple
-/// IsA, IsNotA, and MustBe text
+/// Base class for RTypes with simple IsA, IsNotA, and MustBe text
 // =============================================================================
 //
 public abstract class
 SimpleRTypeBase<
-    TIsA
+    T
 >
-    : RTypeBase< TIsA >
+    : RTypeBase< T >
 {
 
 
@@ -61,7 +63,7 @@ SimpleRTypeBase(
 
 
 // -----------------------------------------------------------------------------
-// RType1Base
+// RTypeBase< T >
 // -----------------------------------------------------------------------------
 
 public override

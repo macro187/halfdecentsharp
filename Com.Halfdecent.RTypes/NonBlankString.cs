@@ -54,7 +54,7 @@ NonBlankString()
 public static
 void
 SCheck(
-    object  item,
+    string  item,
     IValue  itemReference
 )
 {

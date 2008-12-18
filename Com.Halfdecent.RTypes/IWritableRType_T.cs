@@ -14,112 +14,66 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System.Collections.Generic;
-using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
+
 
 namespace
 Com.Halfdecent.RTypes
 {
 
 
-
 // =============================================================================
-/// Base class for 1-term RTypes
+/// A readable RType
+///
+/// <tt>T</tt> is contravariant
 // =============================================================================
 //
-public abstract class
-RType1Base
-    : IRType1
+public interface
+IWritableRType<
+    T
+>
+    : IRType
 {
 
 
 
 
-/// Return <tt>true</tt> if <tt>null</tt> unless this RType explicitly
-/// disallows <tt>null</tt>s
-///
-protected virtual
-bool
-MyCheck(
-    object item
-)
-{
-    return true;
-}
-
-
-
-
 // -----------------------------------------------------------------------------
-// IRType1
+// Properties
 // -----------------------------------------------------------------------------
 
-public virtual
-IEnumerable< IRType1 >
+IEnumerable< IWritableRType< T > >
 Supers
 {
-    get { return new IRType1[]{}; }
+    get;
 }
 
 
 
-public virtual
-IEnumerable< IRType1 >
+IEnumerable< IWritableRType< T > >
 Components
 {
-    get { return new IRType1[]{}; }
+    get;
 }
 
 
 
-public
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Check that an item is of this RType
+///
+/// @exception RTypeException
+/// The item is not of this RType
+///
 void
 Check(
-    object  item,
+    T       item,
     IValue  itemReference
-)
-{
-    if( itemReference == null )
-        throw new BugException( "'itemReference' is required" );
-    foreach( IRType1 st in this.Supers )
-        st.Check( item, itemReference );
-    foreach( IRType1 c in this.Components )
-        foreach( IRType1 cst in c.Supers )
-            cst.Check( item, itemReference );
-    foreach( IRType1 c in this.Components )
-        try {
-            c.Check( item, itemReference );
-        } catch( RTypeException rte ) {
-            throw new RTypeException( item, itemReference, this, rte );
-        }
-    if( !this.MyCheck( item ) )
-        throw new RTypeException( item, itemReference, this );
-}
-
-
-
-public abstract
-Localised< string >
-SayIs(
-    Localised< string > reference
-);
-
-
-
-public abstract
-Localised< string >
-SayIsNot(
-    Localised< string > reference
-);
-
-
-
-public abstract
-Localised< string >
-SayMustBe(
-    Localised< string > reference
 );
 
 

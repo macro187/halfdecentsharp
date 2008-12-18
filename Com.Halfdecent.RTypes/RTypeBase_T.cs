@@ -14,106 +14,124 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
+using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
-using Com.Halfdecent.Exceptions;
+
 
 namespace
 Com.Halfdecent.RTypes
 {
 
+
 // =============================================================================
-/// Base class for 1-term RTypes with simple IsA, IsNotA, and MustBe text
+/// Base class for implementing RTypes
 // =============================================================================
 //
 public abstract class
-SimpleRType1Base
-    : RType1Base
+RTypeBase<
+    T
+>
+    : IRType< T >
 {
 
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Methods
 // -----------------------------------------------------------------------------
 
-protected
-SimpleRType1Base(
-    Localised< string > isText,
-    Localised< string > isNotText,
-    Localised< string > mustBeText
+/// Return <tt>true</tt> if <tt>null</tt> unless this RType explicitly
+/// disallows <tt>null</tt>s
+///
+protected virtual
+bool
+MyCheck(
+    T item
 )
 {
-    if( isText == null ) throw new BugException( "'isText' is null" );
-    if( isNotText == null ) throw new BugException( "'isNotText' is null" );
-    if( mustBeText == null ) throw new BugException( "'mustBeText' is null" );
-    this.istext = isText;
-    this.isnottext = isNotText;
-    this.mustbetext = mustBeText;
+    return true;
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// RType1Base
+// IRType< T >
 // -----------------------------------------------------------------------------
 
-public override
+public
+void
+Check(
+    T       item,
+    IValue  itemReference
+)
+{
+    if( itemReference == null )
+        throw new ArgumentNullException( "itemReference" );
+
+    foreach( IWritableRType< T > st in this.Supers )
+        st.Check( item, itemReference );
+
+    foreach( IWritableRType< T > c in this.Components )
+        foreach( IWritableRType< T > cst in c.Supers )
+            cst.Check( item, itemReference );
+
+    foreach( IWritableRType< T > c in this.Components )
+        try {
+            c.Check( item, itemReference );
+        } catch( RTypeException rte ) {
+            throw new RTypeException( item, itemReference, this, rte );
+        }
+
+    if( !this.MyCheck( item ) )
+        throw new RTypeException( item, itemReference, this );
+}
+
+
+
+public virtual
+IEnumerable< IWritableRType< T > >
+Supers
+{
+    get { return new IWritableRType< T >[]{}; }
+}
+
+
+
+public virtual
+IEnumerable< IWritableRType< T > >
+Components
+{
+    get { return new IWritableRType< T >[]{}; }
+}
+
+
+
+public abstract
 Localised< string >
 SayIs(
     Localised< string > reference
-)
-{
-    NonNull.SCheck( reference, SAYIS_REFERENCE );
-    return LocalisedString.Format( this.istext, reference );
-}
-
-private static readonly Parameter
-SAYIS_REFERENCE = new Parameter( "reference" );
-
-private
-Localised< string >
-istext;
+);
 
 
 
-public override
+public abstract
 Localised< string >
 SayIsNot(
     Localised< string > reference
-)
-{
-    NonNull.SCheck( reference, SAYISNOT_REFERENCE );
-    return LocalisedString.Format( this.isnottext, reference );
-}
-
-private static readonly Parameter
-SAYISNOT_REFERENCE = new Parameter( "reference" );
-
-private
-Localised< string >
-isnottext;
+);
 
 
 
-public override
+public abstract
 Localised< string >
 SayMustBe(
     Localised< string > reference
-)
-{
-    NonNull.SCheck( reference, SAYMUSTBE_REFERENCE );
-    return LocalisedString.Format( this.mustbetext, reference );
-}
-
-private static readonly Parameter
-SAYMUSTBE_REFERENCE = new Parameter( "reference" );
-
-private
-Localised< string >
-mustbetext;
+);
 
 
 

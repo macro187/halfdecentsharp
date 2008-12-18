@@ -14,14 +14,17 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
+using Com.Halfdecent.Globalisation;
+
+
 namespace
 Com.Halfdecent.RTypes
 {
 
 
-
 // =============================================================================
-/// An n-term RType
+// An RType
 // =============================================================================
 //
 public interface
@@ -31,7 +34,37 @@ IRType
 
 
 
-// TODO API for RType with n terms
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Generate a natural language statement stating that an item "is" this RType
+///
+Localised< string >
+SayIs(
+    Localised< string > reference
+    ///< What to refer to the item as, in natural language
+);
+
+
+
+/// Generate a natural language statement that an item "is not" this RType
+///
+Localised< string >
+SayIsNot(
+    Localised< string > reference
+    ///< What to refer to the item as, in natural language
+);
+
+
+
+/// Generate a natural language statement requiring an item to be this RType
+///
+Localised< string >
+SayMustBe(
+    Localised< string > reference
+    ///< What to refer to the item as, in natural language
+);
 
 
 

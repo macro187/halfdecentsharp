@@ -15,6 +15,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
@@ -25,12 +26,17 @@ Com.Halfdecent.RTypes
 {
 
 
+// =============================================================================
+/// WritableRType< T > contravariant type adapter
+// =============================================================================
+//
 public class
-IsA<
-    T,
-    TIsA
+WritableRTypeTypeAdapter<
+    TFrom,
+    TTo
 >
-    : SimpleRTypeBase< T >
+    : IRType< TTo >
+    where TTo : TFrom
 {
 
 
@@ -41,68 +47,97 @@ IsA<
 // -----------------------------------------------------------------------------
 
 public
-IsA()
-    : base(
-        LocalisedString.Format(
-            _S("{{0}} is a {0}"),
-            typeof( TIsA ).FullName ),
-        LocalisedString.Format(
-            _S("{{0}} is not a {0}"),
-            typeof( TIsA ).FullName ),
-        LocalisedString.Format(
-            _S("{{0}} must be a {0}"),
-            typeof( TIsA ).FullName )
-    )
-{
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// RTypeBase< T >
-// -----------------------------------------------------------------------------
-
-protected override
-bool
-MyCheck(
-    T item
+WritableRTypeTypeAdapter(
+    IWritableRType< TFrom > from
 )
 {
-    return item == null ? true : ( item is TIsA );
+    NonNull.SCheck( from, new Parameter( "from" ) );
+    this.from = from;
 }
 
-
-
-
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
-
-} // IsA< T >
+private
+IWritableRType< TFrom >
+from;
 
 
 
 
-public static class
-IsA
-{
+// -----------------------------------------------------------------------------
+// IWritableRType< T >
+// -----------------------------------------------------------------------------
 
-public static
+public
 void
-SCheck<
-    T,
-    TIsA
->(
-    T       item,
+Check(
+    TTo     item,
     IValue  itemReference
 )
 {
-    new IsA< T, TIsA >().Check( item, itemReference );
+    this.from.Check( item, itemReference );
 }
 
-} // IsA
+
+
+public
+IEnumerable< IWritableRType< TTo > >
+Supers
+{
+    get
+    {
+        foreach( IWritableRType< TFrom > s in from.Supers )
+            yield return new WritableRTypeTypeAdapter< TFrom, TTo >( s );
+    }
+}
+
+
+
+public
+IEnumerable< IWritableRType< TTo > >
+Components
+{
+    get
+    {
+        foreach( IWritableRType< TFrom > c in from.Components )
+            yield return new WritableRTypeTypeAdapter< TFrom, TTo >( c );
+    }
+}
+
+
+
+public
+Localised< string >
+SayIs(
+    Localised< string > reference
+)
+{
+    return from.SayIs( reference );
+}
+
+
+
+public
+Localised< string >
+SayIsNot(
+    Localised< string > reference
+)
+{
+    return from.SayIsNot( reference );
+}
+
+
+
+public
+Localised< string >
+SayMustBe(
+    Localised< string > reference
+)
+{
+    return from.SayMustBe( reference );
+}
 
 
 
 
+} // type
 } // namespace
 

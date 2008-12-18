@@ -14,84 +14,25 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System.Collections.Generic;
-using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Meta;
+
 
 namespace
 Com.Halfdecent.RTypes
 {
 
+
 // =============================================================================
-/// A 1-term RType
+/// A readable RType
 // =============================================================================
 //
 public interface
-IRType1
+IReadableRType<
+    T
+>
     : IRType
 {
-
-
-
-
-IEnumerable< IRType1 >
-Supers
-{
-    get;
-}
-
-
-
-IEnumerable< IRType1 >
-Components
-{
-    get;
-}
-
-
-
-/// Check that an item is of this RType
-///
-/// @exception RTypeException
-/// The item is not of this RType
-///
-void
-Check(
-    object  item,
-    IValue  itemReference
-);
-
-
-
-
-/// Generate a natural language statement that an item is of this type
-///
-Localised< string >
-SayIs(
-    Localised< string > reference
-    ///< What to refer to the item as
-);
-
-
-
-/// Generate a natural language statement that an item is not of this type
-///
-Localised< string >
-SayIsNot(
-    Localised< string > reference
-    ///< What to refer to the item as
-);
-
-
-
-/// Generate a natural language statement that an item is required to be of
-/// this type
-///
-Localised< string >
-SayMustBe(
-    Localised< string > reference
-    ///< What to refer to the item as
-);
 
 
 

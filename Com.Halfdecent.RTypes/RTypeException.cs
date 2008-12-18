@@ -14,14 +14,17 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 
+
 namespace
 Com.Halfdecent.RTypes
 {
+
 
 // =============================================================================
 /// A value was found not to be of a particular <tt>RType</tt> when it was
@@ -44,7 +47,7 @@ public
 RTypeException(
     object  value,
     IValue  valueReference,
-    IRType1 rType
+    IRType  rType
 )
     : this( value, valueReference, rType, null )
 {
@@ -56,7 +59,7 @@ public
 RTypeException(
     object      value,
     IValue      valueReference,
-    IRType1     rType,
+    IRType      rType,
     Exception   innerException
 )
     : base( innerException )
@@ -104,14 +107,14 @@ valuereference;
 
 
 public
-IRType1
+IRType
 RType
 {
     get { return this.rtype; }
 }
 
 private
-IRType1
+IRType
 rtype;
 
 

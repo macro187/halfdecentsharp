@@ -14,17 +14,22 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
+
 
 namespace
 Com.Halfdecent.RTypes
 {
 
+
 public class
-NonNull
-    : SimpleRType1Base
+NonNull<
+    T
+>
+    : SimpleRTypeBase< T >
 {
 
 
@@ -48,37 +53,16 @@ NonNull()
 
 
 // -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-public static
-void
-SCheck(
-    object  item,
-    IValue  itemReference
-)
-{
-    INSTANCE.Check( item, itemReference );
-}
-
-private static readonly
-NonNull
-INSTANCE = new NonNull();
-
-
-
-
-// -----------------------------------------------------------------------------
-// RType1Base
+// RTypeBase< T >
 // -----------------------------------------------------------------------------
 
 protected override
 bool
 MyCheck(
-    object item
+    T item
 )
 {
-    return ( item != null );
+    return ( (object)item != null );
 }
 
 
@@ -86,6 +70,31 @@ MyCheck(
 
 private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
-} // type
+} // NonNull< T >
+
+
+
+
+public static class
+NonNull
+{
+
+public static
+void
+SCheck<
+    T
+>(
+    T       item,
+    IValue  itemReference
+)
+{
+    new NonNull< T >().Check( item, itemReference );
+}
+
+} // NonNull
+
+
+
+
 } // namespace
 
