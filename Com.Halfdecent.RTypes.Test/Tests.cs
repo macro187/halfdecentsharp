@@ -117,6 +117,54 @@ Test_NonBlankString()
 
 
 
+[Test( "EQ" )]
+public static
+void
+Test_EQ()
+{
+    int i = 1;
+    int eq = 1;
+    int neq = 2;
+
+    IRType< int > rt = new EQ< int, int >( i );
+
+    // TODO null doesn't pass
+
+    Print( "Equal passes" );
+    rt.Check( eq, new Local( "eq" ) );
+
+    Print( "Inequal fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( neq, new Local( "neq" ) );
+    } );
+}
+
+
+
+[Test( "NEQ" )]
+public static
+void
+Test_NEQ()
+{
+    int i = 1;
+    int eq = 1;
+    int neq = 2;
+
+    IRType< int > rt = new NEQ< int, int >( i );
+
+    // TODO null doesn't pass
+
+    Print( "Inequal passes" );
+    rt.Check( neq, new Local( "neq" ) );
+
+    Print( "Equal fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( eq, new Local( "eq" ) );
+    } );
+}
+
+
+
 
 } // type
 } // namespace

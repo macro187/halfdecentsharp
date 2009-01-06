@@ -14,14 +14,17 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
+
 namespace
-Com.Halfdecent.Numerics
+Com.Halfdecent.RTypes
 {
+
 
 // =============================================================================
 /// Does not equal some constant value
@@ -31,9 +34,11 @@ Com.Halfdecent.Numerics
 //
 public class
 NEQ<
-    T
+    T,
+    U
 >
-    : SimpleRTypeBase< IEquatable< T > >
+    : SimpleRTypeBase< T >
+    where T : IEquatable< U >
 {
 
 
@@ -45,7 +50,7 @@ NEQ<
 
 public
 NEQ(
-    T compareTo
+    U compareTo
 )
     : base(
         _S( "{{0}} is not equal to {0}", compareTo ),
@@ -53,7 +58,7 @@ NEQ(
         _S( "{{0}} must not be equal to {0}", compareTo )
     )
 {
-    new NonNull().Check( compareTo, new Parameter( "compareTo" ) );
+    NonNull.SCheck( compareTo, new Parameter( "compareTo" ) );
     this.compareto = compareTo;
 }
 
@@ -66,14 +71,14 @@ NEQ(
 
 /// The value to compare to
 public
-T
+U
 CompareTo
 {
     get { return this.compareto; }
 }
 
 private
-T
+U
 compareto;
 
 
@@ -86,7 +91,7 @@ compareto;
 protected override
 bool
 MyCheck(
-    IEquatable< T > item
+    T item
 )
 {
     if( item == null ) return true;

@@ -28,7 +28,7 @@ Com.Halfdecent.RTypes
 public class
 IsA<
     T,
-    TIsA
+    U
 >
     : SimpleRTypeBase< T >
 {
@@ -45,13 +45,13 @@ IsA()
     : base(
         LocalisedString.Format(
             _S("{{0}} is a {0}"),
-            typeof( TIsA ).FullName ),
+            typeof( U ).FullName ),
         LocalisedString.Format(
             _S("{{0}} is not a {0}"),
-            typeof( TIsA ).FullName ),
+            typeof( U ).FullName ),
         LocalisedString.Format(
             _S("{{0}} must be a {0}"),
-            typeof( TIsA ).FullName )
+            typeof( U ).FullName )
     )
 {
 }
@@ -69,7 +69,7 @@ MyCheck(
     T item
 )
 {
-    return item == null ? true : ( item is TIsA );
+    return item == null ? true : ( item is U );
 }
 
 
@@ -90,13 +90,13 @@ public static
 void
 SCheck<
     T,
-    TIsA
+    U
 >(
     T       item,
     IValue  itemReference
 )
 {
-    new IsA< T, TIsA >().Check( item, itemReference );
+    new IsA< T, U >().Check( item, itemReference );
 }
 
 } // IsA
