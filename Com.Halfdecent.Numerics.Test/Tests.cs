@@ -206,11 +206,11 @@ Test_ComparisonRTypes()
     int val = 5;
     int ltval = 0;
     int gtval = 10;
-    IRType1 gt = new GT< int >( val );
-    IRType1 gte = new GTE< int >( val );
-    IRType1 lt = new LT< int >( val );
-    IRType1 lte = new LTE< int >( val );
-    IRType1 equals = new EQ< int >( val );
+    IRType< int > gt        = new GT < int, int >( val );
+    IRType< int > gte       = new GTE< int, int >( val );
+    IRType< int > lt        = new LT < int, int >( val );
+    IRType< int > lte       = new LTE< int, int >( val );
+    IRType< int > equals    = new EQ < int, int >( val );
 
     Print( "GT: Less than fails" );
     Expect< RTypeException >( delegate() {
@@ -275,22 +275,27 @@ Test_InInterval()
     int between     = 7;
     int to          = 10;
     int gt          = 12;
+
     IValue _lt      = new Local( "lt" );
     IValue _from    = new Local( "from" );
     IValue _between = new Local( "between" );
     IValue _to      = new Local( "to" );
     IValue _gt      = new Local( "gt" );
 
-    IRType1 rtinc = new InInterval< int >(
-        new Interval< int >( from, true, to, true ) );
-    IRType1 rtexc = new InInterval< int >(
-        new Interval< int >( from, false, to, false ) );
-    IRType1 rtfrominc = new InInterval< int >(
-        new Interval< int >( from, true, to, false ) );
-    IRType1 rttoinc = new InInterval< int >(
-        new Interval< int >( from, false, to, true ) );
+    IRType< int > rtinc =
+        new InInterval< int, int >(
+            new Interval< int >( from, true, to, true ) );
+    IRType< int > rtexc =
+        new InInterval< int, int >(
+            new Interval< int >( from, false, to, false ) );
+    IRType< int > rtfrominc =
+        new InInterval< int, int >(
+            new Interval< int >( from, true, to, false ) );
+    IRType< int > rttoinc =
+        new InInterval< int, int >(
+            new Interval< int >( from, false, to, true ) );
 
-    IRType1 rt;
+    IRType< int > rt;
     string id = "...";
 
     Print( "Inclusive" );
@@ -368,7 +373,7 @@ Test_InInterval()
 public static void
 Test_InInt64Range()
 {
-    IRType1 rt = new InInt64Range();
+    IRType< IReal > rt = new InInt64Range< IReal >();
 
     Print( "null passes" );
     rt.Check( null, new Literal() );
@@ -399,7 +404,7 @@ Test_InInt64Range()
 public static void
 Test_InUInt64Range()
 {
-    IRType1 rt = new InUInt64Range();
+    IRType< IReal > rt = new InUInt64Range< IReal >();
 
     Print( "null passes" );
     rt.Check( null, new Literal() );
@@ -430,7 +435,7 @@ Test_InUInt64Range()
 public static void
 Test_InInt32Range()
 {
-    IRType1 rt = new InInt32Range();
+    IRType< IReal > rt = new InInt32Range< IReal >();
 
     Print( "null passes" );
     rt.Check( null, new Literal() );
@@ -461,7 +466,7 @@ Test_InInt32Range()
 public static void
 Test_InUInt32Range()
 {
-    IRType1 rt = new InUInt32Range();
+    IRType< IReal > rt = new InUInt32Range< IReal >();
 
     Print( "null passes" );
     rt.Check( null, new Literal() );
@@ -492,7 +497,7 @@ Test_InUInt32Range()
 public static void
 Test_InInt16Range()
 {
-    IRType1 rt = new InInt16Range();
+    IRType< IReal > rt = new InInt16Range< IReal >();
 
     Print( "null passes" );
     rt.Check( null, new Literal() );
@@ -523,7 +528,7 @@ Test_InInt16Range()
 public static void
 Test_InUInt16Range()
 {
-    IRType1 rt = new InUInt16Range();
+    IRType< IReal > rt = new InUInt16Range< IReal >();
 
     Print( "null passes" );
     rt.Check( null, new Literal() );
@@ -554,7 +559,7 @@ Test_InUInt16Range()
 public static void
 Test_InByteRange()
 {
-    IRType1 rt = new InByteRange();
+    IRType< IReal > rt = new InByteRange< IReal >();
 
     Print( "null passes" );
     rt.Check( null, new Literal() );
@@ -585,7 +590,7 @@ Test_InByteRange()
 public static void
 Test_NonFractional()
 {
-    IRType1 rt = new NonFractional();
+    IRType< IReal > rt = new NonFractional< IReal >();
 
     Print( "Null passes" );
     rt.Check( null, new Literal() );
@@ -613,7 +618,7 @@ Test_NonFractional()
 public static void
 Test_NonZero()
 {
-    IRType1 rt = new NonZero();
+    IRType< IReal > rt = new NonZero< IReal >();
 
     Print( "Null passes" );
     rt.Check( null, new Literal() );

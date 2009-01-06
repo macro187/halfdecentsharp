@@ -14,26 +14,23 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
+
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
 
-// =============================================================================
-/// RType: A value that is greater than some other constant value
-///
-/// According to <tt>IComparable< T >.CompareTo()</tt>
-// =============================================================================
-//
+
 public class
-GT<
+NonZero<
     T
 >
-    : SimpleRTypeBase< IComparable< T > >
+    : SimpleRTypeBase< T >
+    where T : IReal
 {
 
 
@@ -44,53 +41,30 @@ GT<
 // -----------------------------------------------------------------------------
 
 public
-GT(
-    T compareAgainst
-)
+NonZero()
     : base(
-        _S( "{{0}} is greater than {0}", compareAgainst ),
-        _S( "{{0}} isn't greater than {0}", compareAgainst ),
-        _S( "{{0}} must be greater than {0}", compareAgainst )
+        _S("{0} is not zero"),
+        _S("{0} is zero"),
+        _S("{0} must not be zero")
     )
 {
-    new NonNull().Check( compareAgainst, new Parameter( "compareAgainst" ) );
-    this.compareagainst = compareAgainst;
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// RType1Base
 // -----------------------------------------------------------------------------
 
-/// The value to compare against
-public
-T
-CompareAgainst
+public override
+IEnumerable< IRType< T > >
+Components
 {
-    get { return this.compareagainst; }
-}
-
-private
-T
-compareagainst;
-
-
-
-
-// -----------------------------------------------------------------------------
-// RTypeBase< T >
-// -----------------------------------------------------------------------------
-
-protected override
-bool
-MyCheck(
-    IComparable< T > item
-)
-{
-    if( item == null ) return true;
-    return item.CompareTo( this.CompareAgainst ) > 0;
+    get
+    {
+        yield return new NEQ< T, IReal >( Real.From( 0m ) );
+    }
 }
 
 

@@ -14,22 +14,26 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
+
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 public class
 InInterval<
-    T
+    T,
+    TInterval
 >
     : RTypeBase< T >
-    where T : IComparable< T >
+    where T : IComparable< TInterval >
 {
 
 
@@ -41,10 +45,10 @@ InInterval<
 
 public
 InInterval(
-    IInterval< T > interval
+    IInterval< TInterval > interval
 )
 {
-    new NonNull().Check( interval, new Parameter( "interval" ) );
+    NonNull.SCheck( interval, new Parameter( "interval" ) );
     this.interval = interval;
 }
 
@@ -56,14 +60,14 @@ InInterval(
 // -----------------------------------------------------------------------------
 
 public
-IInterval< T >
+IInterval< TInterval >
 Interval
 {
     get { return this.interval; }
 }
 
 private
-IInterval< T >
+IInterval< TInterval >
 interval;
 
 
@@ -74,20 +78,20 @@ interval;
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType1 >
+IEnumerable< IRType< T > >
 Components
 {
     get
     {
         if( this.interval.FromInclusive )
-            yield return new GTE< T >( this.interval.From );
+            yield return new GTE< T, TInterval >( this.interval.From );
         else
-            yield return new GT< T >( this.interval.From );
+            yield return new GT< T, TInterval >( this.interval.From );
 
         if( this.interval.ToInclusive )
-            yield return new LTE< T >( this.interval.To );
+            yield return new LTE< T, TInterval >( this.interval.To );
         else
-            yield return new LT< T >( this.interval.To );
+            yield return new LT< T, TInterval >( this.interval.To );
     }
 }
 
@@ -104,7 +108,7 @@ SayIs(
     Localised< string > reference
 )
 {
-    new NonNull().Check( reference, new Parameter( "reference" ) );
+    new NonNull< string >().Check( reference, new Parameter( "reference" ) );
     if( this.interval.FromInclusive && this.interval.ToInclusive )
         return _S( "{0} is between {1} and {2}, inclusive",
             reference,
@@ -135,7 +139,7 @@ SayIsNot(
     Localised< string > reference
 )
 {
-    new NonNull().Check( reference, new Parameter( "reference" ) );
+    new NonNull< string >().Check( reference, new Parameter( "reference" ) );
     if( this.interval.FromInclusive && this.interval.ToInclusive )
         return _S( "{0} is not between {1} and {2}, inclusive",
             reference,
@@ -166,7 +170,7 @@ SayMustBe(
     Localised< string > reference
 )
 {
-    new NonNull().Check( reference, new Parameter( "reference" ) );
+    new NonNull< string >().Check( reference, new Parameter( "reference" ) );
     if( this.interval.FromInclusive && this.interval.ToInclusive )
         return _S( "{0} must be between {1} and {2}, inclusive",
             reference,

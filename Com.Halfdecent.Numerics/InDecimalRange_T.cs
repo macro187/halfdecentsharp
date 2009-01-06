@@ -14,26 +14,23 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
 
-// =============================================================================
-/// RType: A value that is greater than or equal to some other constant value
-///
-/// According to <tt>IComparable< T >.CompareTo()</tt>
-// =============================================================================
-//
+
 public class
-GTE<
+InDecimalRange<
     T
 >
-    : SimpleRTypeBase< IComparable< T > >
+    : SimpleRTypeBase< T >
+    where T : IComparable< IReal >
 {
 
 
@@ -44,37 +41,14 @@ GTE<
 // -----------------------------------------------------------------------------
 
 public
-GTE(
-    T compareAgainst
-)
+InDecimalRange()
     : base(
-        _S( "{{0}} is {0} or greater", compareAgainst ),
-        _S( "{{0}} is less than {0}", compareAgainst ),
-        _S( "{{0}} must be {0} or greater", compareAgainst )
+        _S("{0} is in range of System.Decimal"),
+        _S("{0} is not in range of System.Decimal"),
+        _S("{0} must be in range of System.Decimal")
     )
 {
-    new NonNull().Check( compareAgainst, new Parameter( "compareAgainst" ) );
-    this.compareagainst = compareAgainst;
 }
-
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// The value to compare against
-public
-T
-CompareAgainst
-{
-    get { return this.compareagainst; }
-}
-
-private
-T
-compareagainst;
 
 
 
@@ -86,11 +60,12 @@ compareagainst;
 protected override
 bool
 MyCheck(
-    IComparable< T > item
+    T item
 )
 {
-    if( item == null ) return true;
-    return item.CompareTo( this.CompareAgainst ) >= 0;
+    // TODO Update once there are implementations of IReal that are larger
+    //      than Decimal
+    return true;
 }
 
 

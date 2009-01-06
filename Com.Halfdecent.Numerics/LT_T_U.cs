@@ -14,14 +14,17 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
+
 namespace
 Com.Halfdecent.Numerics
 {
+
 
 // =============================================================================
 /// RType: A value that is less than some other constant value
@@ -31,9 +34,11 @@ Com.Halfdecent.Numerics
 //
 public class
 LT<
-    T
+    T,
+    U
 >
-    : SimpleRTypeBase< IComparable< T > >
+    : SimpleRTypeBase< T >
+    where T : IComparable< U >
 {
 
 
@@ -45,7 +50,7 @@ LT<
 
 public
 LT(
-    T compareAgainst
+    U compareAgainst
 )
     : base(
         _S( "{{0}} is less than {0}", compareAgainst ),
@@ -53,7 +58,7 @@ LT(
         _S( "{{0}} must be less than {0}", compareAgainst )
     )
 {
-    new NonNull().Check( compareAgainst, new Parameter( "compareAgainst" ) );
+    NonNull.SCheck( compareAgainst, new Parameter( "compareAgainst" ) );
     this.compareagainst = compareAgainst;
 }
 
@@ -66,14 +71,14 @@ LT(
 
 /// The value to compare against
 public
-T
+U
 CompareAgainst
 {
     get { return this.compareagainst; }
 }
 
 private
-T
+U
 compareagainst;
 
 
@@ -86,7 +91,7 @@ compareagainst;
 protected override
 bool
 MyCheck(
-    IComparable< T > item
+     T item
 )
 {
     if( item == null ) return true;

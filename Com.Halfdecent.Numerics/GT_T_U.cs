@@ -15,21 +15,49 @@
 // -----------------------------------------------------------------------------
 
 using System;
+using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 
 namespace
 Com.Halfdecent.Numerics
 {
 
 // =============================================================================
-/// An interval
+/// RType: A value that is greater than some other constant value
+///
+/// According to <tt>IComparable< T >.CompareTo()</tt>
 // =============================================================================
 //
-public interface
-IInterval<
-    T
+public class
+GT<
+    T,
+    U
 >
-    where T : IComparable< T >
+    : SimpleRTypeBase< T >
+    where T : IComparable< U >
 {
+
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+public
+GT(
+    U compareAgainst
+)
+    : base(
+        _S( "{{0}} is greater than {0}", compareAgainst ),
+        _S( "{{0}} isn't greater than {0}", compareAgainst ),
+        _S( "{{0}} must be greater than {0}", compareAgainst )
+    )
+{
+    NonNull.SCheck( compareAgainst, new Parameter( "compareAgainst" ) );
+    this.compareagainst = compareAgainst;
+}
 
 
 
@@ -38,50 +66,39 @@ IInterval<
 // Properties
 // -----------------------------------------------------------------------------
 
-T
-From
+/// The value to compare against
+public
+U
+CompareAgainst
 {
-    get;
+    get { return this.compareagainst; }
 }
 
-
-
-bool
-FromInclusive
-{
-    get;
-}
-
-
-
-T
-To
-{
-    get;
-}
-
-
-
-bool
-ToInclusive
-{
-    get;
-}
+private
+U
+compareagainst;
 
 
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// RTypeBase< T >
 // -----------------------------------------------------------------------------
 
+protected override
 bool
-Contains(
-    T value
-);
+MyCheck(
+    T item
+)
+{
+    if( item == null ) return true;
+    return item.CompareTo( this.CompareAgainst ) > 0;
+}
 
 
 
+
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

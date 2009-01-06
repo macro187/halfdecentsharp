@@ -14,17 +14,24 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
+using System;
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 public class
-NonZero
-    : SimpleRTypeBase< IReal >
+InInt64Range<
+    T
+>
+    : SimpleRTypeBase< T >
+    where T : IComparable< IReal >
 {
 
 
@@ -35,11 +42,11 @@ NonZero
 // -----------------------------------------------------------------------------
 
 public
-NonZero()
+InInt64Range()
     : base(
-        _S("{0} is not zero"),
-        _S("{0} is zero"),
-        _S("{0} must not be zero")
+        _S("{0} is in range of System.Int64"),
+        _S("{0} is not in range of System.Int64"),
+        _S("{0} must be in range of System.Int64")
     )
 {
 }
@@ -48,16 +55,20 @@ NonZero()
 
 
 // -----------------------------------------------------------------------------
-// RType1Base
+// RTypeBase< T >
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType1 >
+IEnumerable< IRType< T > >
 Components
 {
     get
     {
-        yield return new NEQ< IReal >( Real.From( 0m ) );
+        yield return
+            new InInterval< T, IReal >(
+                new Interval< IReal >(
+                    Real.From( Int64.MinValue ), true,
+                    Real.From( Int64.MaxValue ), true ) );
     }
 }
 

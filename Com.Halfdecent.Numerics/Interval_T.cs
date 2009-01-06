@@ -15,7 +15,6 @@
 // -----------------------------------------------------------------------------
 
 using System;
-using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -24,16 +23,14 @@ Com.Halfdecent.Numerics
 {
 
 // =============================================================================
-/// RType: A value that is less than or equal to some other constant value
-///
-/// According to <tt>IComparable< T >.CompareTo()</tt>
+/// <tt>IInterval</tt> implementation
 // =============================================================================
 //
 public class
-LTE<
+Interval<
     T
 >
-    : SimpleRTypeBase< IComparable< T > >
+    : IInterval< T >
 {
 
 
@@ -44,59 +41,132 @@ LTE<
 // -----------------------------------------------------------------------------
 
 public
-LTE(
-    T compareAgainst
+Interval(
+    T from,
+    T to
 )
-    : base(
-        _S( "{{0}} is {0} or less", compareAgainst ),
-        _S( "{{0}} is greater than {0}", compareAgainst ),
-        _S( "{{0}} must be {0} or less", compareAgainst )
-    )
+    : this( from, true, to, true )
 {
-    new NonNull().Check( compareAgainst, new Parameter( "compareAgainst" ) );
-    this.compareagainst = compareAgainst;
+}
+
+
+
+public
+Interval(
+    T       from,
+    bool    fromInclusive,
+    T       to,
+    bool    toInclusive
+)
+{
+    NonNull.SCheck( from, new Parameter( "from" ) );
+    NonNull.SCheck( to, new Parameter( "to" ) );
+    this.from = from;
+    this.frominclusive = fromInclusive;
+    this.to = to;
+    this.toinclusive = toInclusive;
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// IInterval< T >
 // -----------------------------------------------------------------------------
 
-/// The value to compare against
 public
 T
-CompareAgainst
+From
 {
-    get { return this.compareagainst; }
+    get { return this.from; }
 }
 
 private
 T
-compareagainst;
+from;
 
 
 
-
-// -----------------------------------------------------------------------------
-// RTypeBase< T >
-// -----------------------------------------------------------------------------
-
-protected override
+public
 bool
-MyCheck(
-    IComparable< T > item
+FromInclusive
+{
+    get { return this.frominclusive; }
+}
+
+private
+bool
+frominclusive;
+
+
+
+public
+T
+To
+{
+    get { return this.to; }
+}
+
+private
+T
+to;
+
+
+
+public
+bool
+ToInclusive
+{
+    get { return this.toinclusive; }
+}
+
+private
+bool
+toinclusive;
+
+
+
+// XXX This logic is duplicated in InInterval< T >, not sure if there's any
+//     way around that
+public
+bool
+Contains(
+    IComparable< T > value
 )
 {
-    if( item == null ) return true;
-    return item.CompareTo( this.CompareAgainst ) <= 0;
+    new NonNull< IComparable< T > >().Check( value, new Parameter( "value" ) );
+    return
+        ( this.FromInclusive
+            ? value.CompareTo( this.From ) >= 0
+            : value.CompareTo( this.From ) > 0
+        )
+        && ( this.ToInclusive
+            ? value.CompareTo( this.To ) <= 0
+            : value.CompareTo( this.To ) < 0
+        );
 }
 
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
+
+public override
+string
+ToString()
+{
+    return string.Format(
+        "{0} {1} x {2} {3}",
+        this.From,
+        this.FromInclusive ? "<=" : "<",
+        this.ToInclusive ? "<=" : "<",
+        this.To );
+}
+
+
+
 
 } // type
 } // namespace

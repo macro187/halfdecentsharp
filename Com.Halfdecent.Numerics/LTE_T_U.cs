@@ -14,24 +14,31 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 // =============================================================================
-/// <tt>IInterval</tt> implementation
+/// RType: A value that is less than or equal to some other constant value
+///
+/// According to <tt>IComparable< T >.CompareTo()</tt>
 // =============================================================================
 //
 public class
-Interval<
-    T
+LTE<
+    T,
+    U
 >
-    : IInterval< T >
-    where T :IComparable< T >
+    : SimpleRTypeBase< T >
+    where T : IComparable< U >
 {
 
 
@@ -42,130 +49,59 @@ Interval<
 // -----------------------------------------------------------------------------
 
 public
-Interval(
-    T from,
-    T to
+LTE(
+    U compareAgainst
 )
-    : this( from, true, to, true )
+    : base(
+        _S( "{{0}} is {0} or less", compareAgainst ),
+        _S( "{{0}} is greater than {0}", compareAgainst ),
+        _S( "{{0}} must be {0} or less", compareAgainst )
+    )
 {
-}
-
-
-
-public
-Interval(
-    T       from,
-    bool    fromInclusive,
-    T       to,
-    bool    toInclusive
-)
-{
-    new NonNull().Check( from, new Parameter( "from" ) );
-    new NonNull().Check( to, new Parameter( "to" ) );
-    this.from = from;
-    this.frominclusive = fromInclusive;
-    this.to = to;
-    this.toinclusive = toInclusive;
+    NonNull.SCheck( compareAgainst, new Parameter( "compareAgainst" ) );
+    this.compareagainst = compareAgainst;
 }
 
 
 
 
 // -----------------------------------------------------------------------------
-// IInterval< T >
+// Properties
 // -----------------------------------------------------------------------------
 
+/// The value to compare against
 public
-T
-From
+U
+CompareAgainst
 {
-    get { return this.from; }
+    get { return this.compareagainst; }
 }
 
 private
-T
-from;
+U
+compareagainst;
 
 
 
-public
+
+// -----------------------------------------------------------------------------
+// RTypeBase< T >
+// -----------------------------------------------------------------------------
+
+protected override
 bool
-FromInclusive
-{
-    get { return this.frominclusive; }
-}
-
-private
-bool
-frominclusive;
-
-
-
-public
-T
-To
-{
-    get { return this.to; }
-}
-
-private
-T
-to;
-
-
-
-public
-bool
-ToInclusive
-{
-    get { return this.toinclusive; }
-}
-
-private
-bool
-toinclusive;
-
-
-
-public
-bool
-Contains(
-    T value
+MyCheck(
+    T item
 )
 {
-    new NonNull().Check( value, new Parameter( "value" ) );
-    return
-        ( this.FromInclusive
-            ? value.CompareTo( this.From ) >= 0
-            : value.CompareTo( this.From ) > 0
-        )
-        && ( this.ToInclusive
-            ? value.CompareTo( this.To ) <= 0
-            : value.CompareTo( this.To ) < 0
-        );
+    if( item == null ) return true;
+    return item.CompareTo( this.CompareAgainst ) <= 0;
 }
 
 
 
 
-// -----------------------------------------------------------------------------
-// System.Object
-// -----------------------------------------------------------------------------
-
-public override
-string
-ToString()
-{
-    return string.Format(
-        "{0} {1} x {2} {3}",
-        this.From,
-        this.FromInclusive ? "<=" : "<",
-        this.ToInclusive ? "<=" : "<",
-        this.To );
-}
-
-
-
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

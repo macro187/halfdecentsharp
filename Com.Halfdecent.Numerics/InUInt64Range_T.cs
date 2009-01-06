@@ -14,18 +14,24 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
 
+
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 public class
-InUInt32Range
-    : SimpleRTypeBase< IInteger >
+InUInt64Range<
+    T
+>
+    : SimpleRTypeBase< T >
+    where T : IComparable< IReal >
 {
 
 
@@ -36,11 +42,11 @@ InUInt32Range
 // -----------------------------------------------------------------------------
 
 public
-InUInt32Range()
+InUInt64Range()
     : base(
-        _S("{0} is in range of System.UInt32"),
-        _S("{0} is not in range of System.UInt32"),
-        _S("{0} must be in range of System.UInt32")
+        _S("{0} is in range of System.UInt64"),
+        _S("{0} is not in range of System.UInt64"),
+        _S("{0} must be in range of System.UInt64")
     )
 {
 }
@@ -53,15 +59,16 @@ InUInt32Range()
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType1 >
+IEnumerable< IRType< T > >
 Components
 {
     get
     {
-        yield return new InInterval< IReal >(
-            new Interval< IReal >(
-                Real.From( UInt32.MinValue ), true,
-                Real.From( UInt32.MaxValue ), true ) );
+        yield return
+            new InInterval< T, IReal >(
+                new Interval< IReal >(
+                    Real.From( UInt64.MinValue ), true,
+                    Real.From( UInt64.MaxValue ), true ) );
     }
 }
 
