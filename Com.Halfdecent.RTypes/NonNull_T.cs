@@ -81,7 +81,7 @@ NonNull
 
 public static
 void
-SCheck<
+Check<
     T
 >(
     T       item,

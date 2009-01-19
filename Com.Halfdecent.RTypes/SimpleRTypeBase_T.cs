@@ -72,7 +72,7 @@ SayIs(
     Localised< string > reference
 )
 {
-    NonNull.SCheck( reference, SAYIS_REFERENCE );
+    NonNull.Check( reference, SAYIS_REFERENCE );
     return LocalisedString.Format( this.istext, reference );
 }
 
@@ -91,7 +91,7 @@ SayIsNot(
     Localised< string > reference
 )
 {
-    NonNull.SCheck( reference, SAYISNOT_REFERENCE );
+    NonNull.Check( reference, SAYISNOT_REFERENCE );
     return LocalisedString.Format( this.isnottext, reference );
 }
 
@@ -110,7 +110,7 @@ SayMustBe(
     Localised< string > reference
 )
 {
-    NonNull.SCheck( reference, SAYMUSTBE_REFERENCE );
+    NonNull.Check( reference, SAYMUSTBE_REFERENCE );
     return LocalisedString.Format( this.mustbetext, reference );
 }
 

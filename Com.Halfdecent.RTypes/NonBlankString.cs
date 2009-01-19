@@ -14,19 +14,22 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
+
 
 namespace
 Com.Halfdecent.RTypes
 {
 
+
 public class
 NonBlankString
     : SimpleRTypeBase< string >
+    , IRType< string >
 {
-
 
 
 
@@ -48,27 +51,6 @@ NonBlankString()
 
 
 // -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-public static
-void
-SCheck(
-    string  item,
-    IValue  itemReference
-)
-{
-    INSTANCE.Check( item, itemReference );
-}
-
-private static readonly
-NonBlankString
-INSTANCE = new NonBlankString();
-
-
-
-
-// -----------------------------------------------------------------------------
 // RTypeBase< T >
 // -----------------------------------------------------------------------------
 
@@ -79,6 +61,21 @@ MyCheck(
 )
 {
     return item == null ? true : ( item != string.Empty );
+}
+
+
+
+// Note that instance Check() can no longer be called without casting to a
+// parent type
+new public static
+void
+Check(
+    string  item,
+    IValue  itemReference
+)
+{
+    IRType< string > rt = new NonBlankString();
+    rt.Check( item, itemReference );
 }
 
 

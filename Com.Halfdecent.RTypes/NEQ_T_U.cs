@@ -58,7 +58,7 @@ NEQ(
         _S( "{{0}} must not be equal to {0}", compareTo )
     )
 {
-    NonNull.SCheck( compareTo, new Parameter( "compareTo" ) );
+    NonNull.Check( compareTo, new Parameter( "compareTo" ) );
     this.compareto = compareTo;
 }
 

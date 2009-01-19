@@ -51,7 +51,7 @@ RTypeTypeAdapter(
     IRType< TFrom > from
 )
 {
-    NonNull.SCheck( from, new Parameter( "from" ) );
+    NonNull.Check( from, new Parameter( "from" ) );
     this.from = from;
 }
 

@@ -88,7 +88,7 @@ IsA
 
 public static
 void
-SCheck<
+Check<
     T,
     U
 >(
