@@ -32,7 +32,7 @@ Com.Halfdecent.Streams
 // =============================================================================
 //
 public class
-IStreamFromIEnumeratorAdapter<
+StreamFromEnumeratorAdapter<
     T
 >
     : StreamBase< T >
@@ -45,7 +45,7 @@ IStreamFromIEnumeratorAdapter<
 // -----------------------------------------------------------------------------
 
 public
-IStreamFromIEnumeratorAdapter(
+StreamFromEnumeratorAdapter(
     IEnumerator< T > enumerator
 )
 {

@@ -45,7 +45,7 @@ StreamBase<
 public
 StreamBase()
 {
-    this.enumeratoradapter = new IStreamToIEnumeratorAdapter< T >( this );
+    this.enumeratoradapter = new StreamToEnumeratorAdapter< T >( this );
 }
 
 

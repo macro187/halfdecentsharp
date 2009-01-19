@@ -121,13 +121,13 @@ Test_IStreamBase_T()
 
 
 
-[Test( "IStreamFromIEnumeratorAdapter< T >" )]
+[Test( "StreamFromEnumeratorAdapter< T >" )]
 public static
 void
-Test_IStreamFromIEnumeratorAdapter_T()
+Test_StreamFromEnumeratorAdapter_T()
 {
     IStream< int > s =
-        new IStreamFromIEnumeratorAdapter< int >(
+        new StreamFromEnumeratorAdapter< int >(
             IntEnumerable().GetEnumerator() );
     int i;
     bool b;
@@ -150,13 +150,13 @@ Test_IStreamFromIEnumeratorAdapter_T()
 
 
 
-[Test( "IStreamToIEnumeratorAdapter< T >" )]
+[Test( "StreamToEnumeratorAdapter< T >" )]
 public static
 void
-Test_IStreamToIEnumeratorAdapter_T()
+Test_StreamToEnumeratorAdapter_T()
 {
     IEnumerator< int > e =
-        new IStreamToIEnumeratorAdapter< int >(
+        new StreamToEnumeratorAdapter< int >(
             new TestStream() );
     bool b;
     Print( "Item #1" );
