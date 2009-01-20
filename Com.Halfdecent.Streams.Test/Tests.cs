@@ -100,21 +100,26 @@ void
 Test_IStreamBase_T()
 {
     IStream< int > s = new TestStream();
+
     int i;
     bool b;
+
     Print( "Item #1" );
     b = s.Yield( out i );
     Assert( b );
     AssertEqual( i, i );
+
     Print( "Item #2" );
     b = s.Yield( out i );
     Assert( b );
     AssertEqual( i, 2 );
+
     Print( "Item #3" );
     b = s.Yield( out i );
     Assert( b );
     AssertEqual( i, 3 );
-    Print( "Yield() now returns false" );
+
+    Print( "End of stream" );
     b = s.Yield( out i );
     Assert( !b );
 }
@@ -129,21 +134,26 @@ Test_StreamFromEnumeratorAdapter_T()
     IStream< int > s =
         new StreamFromEnumeratorAdapter< int >(
             IntEnumerable().GetEnumerator() );
+
     int i;
     bool b;
+
     Print( "Item #1" );
     b = s.Yield( out i );
     Assert( b );
     AssertEqual( i, i );
+
     Print( "Item #2" );
     b = s.Yield( out i );
     Assert( b );
     AssertEqual( i, 2 );
+
     Print( "Item #3" );
     b = s.Yield( out i );
     Assert( b );
     AssertEqual( i, 3 );
-    Print( "Yield() now returns false" );
+
+    Print( "End of stream" );
     b = s.Yield( out i );
     Assert( !b );
 }
@@ -158,22 +168,63 @@ Test_StreamToEnumeratorAdapter_T()
     IEnumerator< int > e =
         new StreamToEnumeratorAdapter< int >(
             new TestStream() );
+
     bool b;
+
     Print( "Item #1" );
     b = e.MoveNext();
     Assert( b );
     AssertEqual( e.Current, 1 );
+
     Print( "Item #2" );
     b = e.MoveNext();
     Assert( b );
     AssertEqual( e.Current, 2 );
+
     Print( "Item #3" );
     b = e.MoveNext();
     Assert( b );
     AssertEqual( e.Current, 3 );
-    Print( "MoveNext() now returns false" );
+
+    Print( "End of enumerator" );
     b = e.MoveNext();
     Assert( !b );
+}
+
+
+
+[Test( "StreamTypeAdapter< T >" )]
+public static
+void
+Test_StreamTypeAdapter_T()
+{
+    IStream< object > s =
+        new StreamTypeAdapter< int, object >(
+            new StreamFromEnumeratorAdapter< int >(
+                IntEnumerable().GetEnumerator() ) );
+
+    bool b;
+    object o;
+    Print( "First item" );
+
+    b = s.Yield( out o );
+    Assert( b );
+    AssertEqual( (int)o, 1 );
+
+    Print( "Second item" );
+    b = s.Yield( out o );
+    Assert( b );
+    AssertEqual( (int)o, 2 );
+
+    Print( "Third item" );
+    b = s.Yield( out o );
+    Assert( b );
+    AssertEqual( (int)o, 3 );
+
+    Print( "End of stream" );
+    b = s.Yield( out o );
+    Assert( !b );
+
 }
 
 
