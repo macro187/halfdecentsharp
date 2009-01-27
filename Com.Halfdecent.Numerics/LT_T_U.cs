@@ -58,7 +58,7 @@ LT(
         _S( "{{0}} must be less than {0}", compareAgainst )
     )
 {
-    NonNull.SCheck( compareAgainst, new Parameter( "compareAgainst" ) );
+    NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
     this.compareagainst = compareAgainst;
 }
 

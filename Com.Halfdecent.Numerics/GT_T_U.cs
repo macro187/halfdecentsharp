@@ -55,7 +55,7 @@ GT(
         _S( "{{0}} must be greater than {0}", compareAgainst )
     )
 {
-    NonNull.SCheck( compareAgainst, new Parameter( "compareAgainst" ) );
+    NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
     this.compareagainst = compareAgainst;
 }
 

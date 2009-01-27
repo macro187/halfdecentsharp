@@ -48,7 +48,7 @@ InInterval(
     IInterval< TInterval > interval
 )
 {
-    NonNull.SCheck( interval, new Parameter( "interval" ) );
+    NonNull.Check( interval, new Parameter( "interval" ) );
     this.interval = interval;
 }
 

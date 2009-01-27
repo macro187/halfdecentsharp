@@ -59,8 +59,8 @@ Interval(
     bool    toInclusive
 )
 {
-    NonNull.SCheck( from, new Parameter( "from" ) );
-    NonNull.SCheck( to, new Parameter( "to" ) );
+    NonNull.Check( from, new Parameter( "from" ) );
+    NonNull.Check( to, new Parameter( "to" ) );
     this.from = from;
     this.frominclusive = fromInclusive;
     this.to = to;

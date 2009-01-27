@@ -45,7 +45,7 @@ DecimalReal(
     IReal r
 )
 {
-    NonNull.SCheck( r, new Parameter( "r" ) );
+    NonNull.Check( r, new Parameter( "r" ) );
     this.value = r.ToDecimal();
 }
 
