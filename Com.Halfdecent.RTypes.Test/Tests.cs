@@ -165,6 +165,21 @@ Test_NEQ()
 
 
 
+[Test( "IRType.Contravary()" )]
+public static
+void
+Test_IRType_Contravary()
+{
+    IRType< string > rt =
+        new NonNull< object >()
+            .Contravary< object, string >();
+
+    Print( "Use an RType< object > to check a string" );
+    rt.Check( "I'm not null", new Literal() );
+}
+
+
+
 
 } // type
 } // namespace
