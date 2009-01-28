@@ -27,11 +27,8 @@ Com.Halfdecent.Numerics
 
 
 public class
-InInt64Range<
-    T
->
-    : SimpleRTypeBase< T >
-    where T : IComparable< IReal >
+InDecimalRange
+    : SimpleRTypeBase< IReal >
 {
 
 
@@ -42,11 +39,11 @@ InInt64Range<
 // -----------------------------------------------------------------------------
 
 public
-InInt64Range()
+InDecimalRange()
     : base(
-        _S("{0} is in range of System.Int64"),
-        _S("{0} is not in range of System.Int64"),
-        _S("{0} must be in range of System.Int64")
+        _S("{0} is in range of System.Decimal"),
+        _S("{0} is not in range of System.Decimal"),
+        _S("{0} must be in range of System.Decimal")
     )
 {
 }
@@ -59,16 +56,16 @@ InInt64Range()
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< T > >
+IEnumerable< IRType< IReal > >
 Components
 {
     get
     {
         yield return
-            new InInterval< T, IReal >(
+            new InInterval< IReal >(
                 new Interval< IReal >(
-                    Real.From( Int64.MinValue ), true,
-                    Real.From( Int64.MaxValue ), true ) );
+                    Real.From( Decimal.MinValue ), true,
+                    Real.From( Decimal.MaxValue ), true ) );
     }
 }
 

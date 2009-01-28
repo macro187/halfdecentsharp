@@ -14,31 +14,18 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-
 using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-
 
 namespace
 Com.Halfdecent.Numerics
 {
 
-
-// =============================================================================
-/// RType: A value that is less than or equal to some other constant value
-///
-/// According to <tt>IComparable< T >.CompareTo()</tt>
-// =============================================================================
-//
 public class
-LTE<
-    T,
-    U
->
-    : SimpleRTypeBase< T >
-    where T : IComparable< U >
+InByteRange
+    : SimpleRTypeBase< IReal >
 {
 
 
@@ -49,37 +36,14 @@ LTE<
 // -----------------------------------------------------------------------------
 
 public
-LTE(
-    U compareAgainst
-)
+InByteRange()
     : base(
-        _S( "{{0}} is {0} or less", compareAgainst ),
-        _S( "{{0}} is greater than {0}", compareAgainst ),
-        _S( "{{0}} must be {0} or less", compareAgainst )
+        _S("{0} is in range of System.Byte"),
+        _S("{0} is not in range of System.Byte"),
+        _S("{0} must be in range of System.Byte")
     )
 {
-    NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
-    this.compareagainst = compareAgainst;
 }
-
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// The value to compare against
-public
-U
-CompareAgainst
-{
-    get { return this.compareagainst; }
-}
-
-private
-U
-compareagainst;
 
 
 
@@ -88,14 +52,18 @@ compareagainst;
 // RTypeBase< T >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-MyCheck(
-    T item
-)
+public override
+IEnumerable< IRType< IReal > >
+Components
 {
-    if( item == null ) return true;
-    return item.CompareTo( this.CompareAgainst ) <= 0;
+    get
+    {
+        yield return
+            new InInterval< IReal >(
+                new Interval< IReal >(
+                    Real.From( Byte.MinValue ), true,
+                    Real.From( Byte.MaxValue ), true ) );
+    }
 }
 
 

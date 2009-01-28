@@ -22,23 +22,22 @@ using Com.Halfdecent.RTypes;
 
 
 namespace
-Com.Halfdecent.RTypes
+Com.Halfdecent.Numerics
 {
 
 
 // =============================================================================
-/// Equals some other value
+/// RType: A value that is less than or equal to some other constant value
 ///
-/// According to <tt>IEquatable< T >.Equals()</tt>
+/// According to <tt>IComparable< T >.CompareTo()</tt>
 // =============================================================================
 //
 public class
-EQ<
-    T,
-    U
+LTE<
+    T
 >
     : SimpleRTypeBase< T >
-    where T : IEquatable< U >
+    where T : IComparable< T >
 {
 
 
@@ -49,17 +48,17 @@ EQ<
 // -----------------------------------------------------------------------------
 
 public
-EQ(
-    U compareTo
+LTE(
+    T compareAgainst
 )
     : base(
-        _S( "{{0}} is equal to {0}", compareTo ),
-        _S( "{{0}} isn't equal to {0}", compareTo ),
-        _S( "{{0}} must be equal to {0}", compareTo )
+        _S( "{{0}} is {0} or less", compareAgainst ),
+        _S( "{{0}} is greater than {0}", compareAgainst ),
+        _S( "{{0}} must be {0} or less", compareAgainst )
     )
 {
-    NonNull.Check( compareTo, new Parameter( "compareTo" ) );
-    this.compareto = compareTo;
+    NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
+    this.compareagainst = compareAgainst;
 }
 
 
@@ -69,17 +68,17 @@ EQ(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// The value to compare to
+/// The value to compare against
 public
-U
-CompareTo
+T
+CompareAgainst
 {
-    get { return this.compareto; }
+    get { return this.compareagainst; }
 }
 
 private
-U
-compareto;
+T
+compareagainst;
 
 
 
@@ -95,7 +94,7 @@ MyCheck(
 )
 {
     if( item == null ) return true;
-    return item.Equals( this.CompareTo );
+    return item.CompareTo( this.CompareAgainst ) <= 0;
 }
 
 

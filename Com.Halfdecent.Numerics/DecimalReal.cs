@@ -106,13 +106,13 @@ public IReal Times( IReal r )
 
 public IReal DividedBy( IReal r )
 {
-    new NonZero<IReal>().Check( r, new Parameter( "r" ) );
+    new NonZero().Check( r, new Parameter( "r" ) );
     return new DecimalReal( this.value / r.ToDecimal() );
 }
 
 public IReal RemainderWhenDividedBy( IReal r )
 {
-    new NonZero<IReal>().Check( r, new Parameter( "r" ) );
+    new NonZero().Check( r, new Parameter( "r" ) );
     return new DecimalReal( Decimal.Remainder( this.value, r.ToDecimal() ) );
 }
 

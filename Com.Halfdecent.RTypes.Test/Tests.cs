@@ -126,7 +126,7 @@ Test_EQ()
     int eq = 1;
     int neq = 2;
 
-    IRType< int > rt = new EQ< int, int >( i );
+    IRType< int > rt = new EQ< int >( i );
 
     // TODO null doesn't pass
 
@@ -150,7 +150,7 @@ Test_NEQ()
     int eq = 1;
     int neq = 2;
 
-    IRType< int > rt = new NEQ< int, int >( i );
+    IRType< int > rt = new NEQ< int >( i );
 
     // TODO null doesn't pass
 

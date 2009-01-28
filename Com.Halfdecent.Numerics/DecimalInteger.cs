@@ -47,7 +47,7 @@ DecimalInteger(
 )
     : base( value )
 {
-    new NonFractional< IReal >().Check( value, new Parameter( "value" ) );
+    new NonFractional().Check( value, new Parameter( "value" ) );
 }
 
 

@@ -34,11 +34,10 @@ Com.Halfdecent.RTypes
 //
 public class
 NEQ<
-    T,
-    U
+    T
 >
     : SimpleRTypeBase< T >
-    where T : IEquatable< U >
+    where T : IEquatable< T >
 {
 
 
@@ -50,7 +49,7 @@ NEQ<
 
 public
 NEQ(
-    U compareTo
+    T compareTo
 )
     : base(
         _S( "{{0}} is not equal to {0}", compareTo ),
@@ -71,14 +70,14 @@ NEQ(
 
 /// The value to compare to
 public
-U
+T
 CompareTo
 {
     get { return this.compareto; }
 }
 
 private
-U
+T
 compareto;
 
 

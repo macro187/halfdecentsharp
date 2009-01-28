@@ -15,6 +15,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
@@ -26,11 +27,8 @@ Com.Halfdecent.Numerics
 
 
 public class
-NonZero<
-    T
->
-    : SimpleRTypeBase< T >
-    where T : IReal
+InUInt64Range
+    : SimpleRTypeBase< IReal >
 {
 
 
@@ -41,11 +39,11 @@ NonZero<
 // -----------------------------------------------------------------------------
 
 public
-NonZero()
+InUInt64Range()
     : base(
-        _S("{0} is not zero"),
-        _S("{0} is zero"),
-        _S("{0} must not be zero")
+        _S("{0} is in range of System.UInt64"),
+        _S("{0} is not in range of System.UInt64"),
+        _S("{0} must be in range of System.UInt64")
     )
 {
 }
@@ -54,16 +52,20 @@ NonZero()
 
 
 // -----------------------------------------------------------------------------
-// RType1Base
+// RTypeBase< T >
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< T > >
+IEnumerable< IRType< IReal > >
 Components
 {
     get
     {
-        yield return new NEQ< T, IReal >( Real.From( 0m ) );
+        yield return
+            new InInterval< IReal >(
+                new Interval< IReal >(
+                    Real.From( UInt64.MinValue ), true,
+                    Real.From( UInt64.MaxValue ), true ) );
     }
 }
 

@@ -16,8 +16,8 @@
 
 
 using System;
-using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
@@ -26,12 +26,18 @@ Com.Halfdecent.Numerics
 {
 
 
+// =============================================================================
+/// RType: A value that is greater than or equal to some other constant value
+///
+/// According to <tt>IComparable< T >.CompareTo()</tt>
+// =============================================================================
+//
 public class
-InInt32Range<
+GTE<
     T
 >
     : SimpleRTypeBase< T >
-    where T : IComparable< IReal >
+    where T : IComparable< T >
 {
 
 
@@ -42,14 +48,37 @@ InInt32Range<
 // -----------------------------------------------------------------------------
 
 public
-InInt32Range()
+GTE(
+    T compareAgainst
+)
     : base(
-        _S("{0} is in range of System.Int32"),
-        _S("{0} is not in range of System.Int32"),
-        _S("{0} must be in range of System.Int32")
+        _S( "{{0}} is {0} or greater", compareAgainst ),
+        _S( "{{0}} is less than {0}", compareAgainst ),
+        _S( "{{0}} must be {0} or greater", compareAgainst )
     )
 {
+    NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
+    this.compareagainst = compareAgainst;
 }
+
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+/// The value to compare against
+public
+T
+CompareAgainst
+{
+    get { return this.compareagainst; }
+}
+
+private
+T
+compareagainst;
 
 
 
@@ -58,18 +87,14 @@ InInt32Range()
 // RTypeBase< T >
 // -----------------------------------------------------------------------------
 
-public override
-IEnumerable< IRType< T > >
-Components
+protected override
+bool
+MyCheck(
+    T item
+)
 {
-    get
-    {
-        yield return
-            new InInterval< T, IReal >(
-                new Interval< IReal >(
-                    Real.From( Int32.MinValue ), true,
-                    Real.From( Int32.MaxValue ), true ) );
-    }
+    if( item == null ) return true;
+    return item.CompareTo( this.CompareAgainst ) >= 0;
 }
 
 

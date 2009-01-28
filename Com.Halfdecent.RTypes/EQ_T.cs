@@ -16,22 +16,28 @@
 
 
 using System;
-using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
 namespace
-Com.Halfdecent.Numerics
+Com.Halfdecent.RTypes
 {
 
 
+// =============================================================================
+/// Equals some other value
+///
+/// According to <tt>IEquatable< T >.Equals()</tt>
+// =============================================================================
+//
 public class
-InUInt64Range<
+EQ<
     T
 >
     : SimpleRTypeBase< T >
-    where T : IComparable< IReal >
+    where T : IEquatable< T >
 {
 
 
@@ -42,14 +48,37 @@ InUInt64Range<
 // -----------------------------------------------------------------------------
 
 public
-InUInt64Range()
+EQ(
+    T compareTo
+)
     : base(
-        _S("{0} is in range of System.UInt64"),
-        _S("{0} is not in range of System.UInt64"),
-        _S("{0} must be in range of System.UInt64")
+        _S( "{{0}} is equal to {0}", compareTo ),
+        _S( "{{0}} isn't equal to {0}", compareTo ),
+        _S( "{{0}} must be equal to {0}", compareTo )
     )
 {
+    NonNull.Check( compareTo, new Parameter( "compareTo" ) );
+    this.compareto = compareTo;
 }
+
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+/// The value to compare to
+public
+T
+CompareTo
+{
+    get { return this.compareto; }
+}
+
+private
+T
+compareto;
 
 
 
@@ -58,18 +87,14 @@ InUInt64Range()
 // RTypeBase< T >
 // -----------------------------------------------------------------------------
 
-public override
-IEnumerable< IRType< T > >
-Components
+protected override
+bool
+MyCheck(
+    T item
+)
 {
-    get
-    {
-        yield return
-            new InInterval< T, IReal >(
-                new Interval< IReal >(
-                    Real.From( UInt64.MinValue ), true,
-                    Real.From( UInt64.MaxValue ), true ) );
-    }
+    if( item == null ) return true;
+    return item.Equals( this.CompareTo );
 }
 
 

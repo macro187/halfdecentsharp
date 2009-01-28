@@ -27,11 +27,8 @@ Com.Halfdecent.Numerics
 
 
 public class
-InUInt16Range<
-    T
->
-    : SimpleRTypeBase< T >
-    where T : IComparable< IReal >
+InUInt32Range
+    : SimpleRTypeBase< IReal >
 {
 
 
@@ -42,11 +39,11 @@ InUInt16Range<
 // -----------------------------------------------------------------------------
 
 public
-InUInt16Range()
+InUInt32Range()
     : base(
-        _S("{0} is in range of System.UInt16"),
-        _S("{0} is not in range of System.UInt16"),
-        _S("{0} must be in range of System.UInt16")
+        _S("{0} is in range of System.UInt32"),
+        _S("{0} is not in range of System.UInt32"),
+        _S("{0} must be in range of System.UInt32")
     )
 {
 }
@@ -59,16 +56,16 @@ InUInt16Range()
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< T > >
+IEnumerable< IRType< IReal > >
 Components
 {
     get
     {
         yield return
-            new InInterval< T, IReal >(
+            new InInterval< IReal >(
                 new Interval< IReal >(
-                    Real.From( UInt16.MinValue ), true,
-                    Real.From( UInt16.MaxValue ), true ) );
+                    Real.From( UInt32.MinValue ), true,
+                    Real.From( UInt32.MaxValue ), true ) );
     }
 }
 

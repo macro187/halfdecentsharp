@@ -16,6 +16,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
 
@@ -26,11 +27,8 @@ Com.Halfdecent.Numerics
 
 
 public class
-InDecimalRange<
-    T
->
-    : SimpleRTypeBase< T >
-    where T : IComparable< IReal >
+InInt32Range
+    : SimpleRTypeBase< IReal >
 {
 
 
@@ -41,11 +39,11 @@ InDecimalRange<
 // -----------------------------------------------------------------------------
 
 public
-InDecimalRange()
+InInt32Range()
     : base(
-        _S("{0} is in range of System.Decimal"),
-        _S("{0} is not in range of System.Decimal"),
-        _S("{0} must be in range of System.Decimal")
+        _S("{0} is in range of System.Int32"),
+        _S("{0} is not in range of System.Int32"),
+        _S("{0} must be in range of System.Int32")
     )
 {
 }
@@ -57,15 +55,18 @@ InDecimalRange()
 // RTypeBase< T >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-MyCheck(
-    T item
-)
+public override
+IEnumerable< IRType< IReal > >
+Components
 {
-    // TODO Update once there are implementations of IReal that are larger
-    //      than Decimal
-    return true;
+    get
+    {
+        yield return
+            new InInterval< IReal >(
+                new Interval< IReal >(
+                    Real.From( Int32.MinValue ), true,
+                    Real.From( Int32.MaxValue ), true ) );
+    }
 }
 
 

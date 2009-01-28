@@ -15,9 +15,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
@@ -26,21 +24,10 @@ Com.Halfdecent.Numerics
 {
 
 
-// =============================================================================
-/// RType: A value that is greater than or equal to some other constant value
-///
-/// According to <tt>IComparable< T >.CompareTo()</tt>
-// =============================================================================
-//
 public class
-GTE<
-    T,
-    U
->
-    : SimpleRTypeBase< T >
-    where T : IComparable< U >
+NonFractional
+    : SimpleRTypeBase< IReal >
 {
-
 
 
 
@@ -49,38 +36,14 @@ GTE<
 // -----------------------------------------------------------------------------
 
 public
-GTE(
-    U compareAgainst
-)
+NonFractional()
     : base(
-        _S( "{{0}} is {0} or greater", compareAgainst ),
-        _S( "{{0}} is less than {0}", compareAgainst ),
-        _S( "{{0}} must be {0} or greater", compareAgainst )
+        _S("{0} is not fractional"),
+        _S("{0} is fractional"),
+        _S("{0} must not be fractional")
     )
 {
-    NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
-    this.compareagainst = compareAgainst;
 }
-
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// The value to compare against
-public
-U
-CompareAgainst
-{
-    get { return this.compareagainst; }
-}
-
-private
-U
-compareagainst;
-
 
 
 
@@ -91,11 +54,11 @@ compareagainst;
 protected override
 bool
 MyCheck(
-    T item
+    IReal item
 )
 {
     if( item == null ) return true;
-    return item.CompareTo( this.CompareAgainst ) >= 0;
+    return item.Equals( item.Truncate() );
 }
 
 

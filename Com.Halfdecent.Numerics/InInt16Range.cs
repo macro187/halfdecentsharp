@@ -14,6 +14,8 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
 
@@ -22,11 +24,8 @@ Com.Halfdecent.Numerics
 {
 
 public class
-NonFractional<
-    T
->
-    : SimpleRTypeBase< T >
-    where T : IReal
+InInt16Range
+    : SimpleRTypeBase< IReal >
 {
 
 
@@ -37,11 +36,11 @@ NonFractional<
 // -----------------------------------------------------------------------------
 
 public
-NonFractional()
+InInt16Range()
     : base(
-        _S("{0} is not fractional"),
-        _S("{0} is fractional"),
-        _S("{0} must not be fractional")
+        _S("{0} is in range of System.Int16"),
+        _S("{0} is not in range of System.Int16"),
+        _S("{0} must be in range of System.Int16")
     )
 {
 }
@@ -53,14 +52,18 @@ NonFractional()
 // RTypeBase< T >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-MyCheck(
-    T item
-)
+public override
+IEnumerable< IRType< IReal > >
+Components
 {
-    if( item == null ) return true;
-    return item.Equals( item.Truncate() );
+    get
+    {
+        yield return
+            new InInterval< IReal >(
+                new Interval< IReal >(
+                    Real.From( Int16.MinValue ), true,
+                    Real.From( Int16.MaxValue ), true ) );
+    }
 }
 
 

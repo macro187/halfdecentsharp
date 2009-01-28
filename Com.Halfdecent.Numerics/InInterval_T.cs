@@ -29,11 +29,10 @@ Com.Halfdecent.Numerics
 
 public class
 InInterval<
-    T,
-    TInterval
+    T
 >
     : RTypeBase< T >
-    where T : IComparable< TInterval >
+    where T : IComparable< T >
 {
 
 
@@ -45,7 +44,7 @@ InInterval<
 
 public
 InInterval(
-    IInterval< TInterval > interval
+    IInterval< T > interval
 )
 {
     NonNull.Check( interval, new Parameter( "interval" ) );
@@ -60,14 +59,14 @@ InInterval(
 // -----------------------------------------------------------------------------
 
 public
-IInterval< TInterval >
+IInterval< T >
 Interval
 {
     get { return this.interval; }
 }
 
 private
-IInterval< TInterval >
+IInterval< T >
 interval;
 
 
@@ -84,14 +83,14 @@ Components
     get
     {
         if( this.interval.FromInclusive )
-            yield return new GTE< T, TInterval >( this.interval.From );
+            yield return new GTE< T >( this.interval.From );
         else
-            yield return new GT< T, TInterval >( this.interval.From );
+            yield return new GT< T >( this.interval.From );
 
         if( this.interval.ToInclusive )
-            yield return new LTE< T, TInterval >( this.interval.To );
+            yield return new LTE< T >( this.interval.To );
         else
-            yield return new LT< T, TInterval >( this.interval.To );
+            yield return new LT< T >( this.interval.To );
     }
 }
 

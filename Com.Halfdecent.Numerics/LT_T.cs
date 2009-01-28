@@ -14,28 +14,30 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
+
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 // =============================================================================
-/// RType: A value that is greater than some other constant value
+/// RType: A value that is less than some other constant value
 ///
 /// According to <tt>IComparable< T >.CompareTo()</tt>
 // =============================================================================
 //
 public class
-GT<
-    T,
-    U
+LT<
+    T
 >
     : SimpleRTypeBase< T >
-    where T : IComparable< U >
+    where T : IComparable< T >
 {
 
 
@@ -46,13 +48,13 @@ GT<
 // -----------------------------------------------------------------------------
 
 public
-GT(
-    U compareAgainst
+LT(
+    T compareAgainst
 )
     : base(
-        _S( "{{0}} is greater than {0}", compareAgainst ),
-        _S( "{{0}} isn't greater than {0}", compareAgainst ),
-        _S( "{{0}} must be greater than {0}", compareAgainst )
+        _S( "{{0}} is less than {0}", compareAgainst ),
+        _S( "{{0}} isn't less than {0}", compareAgainst ),
+        _S( "{{0}} must be less than {0}", compareAgainst )
     )
 {
     NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
@@ -68,14 +70,14 @@ GT(
 
 /// The value to compare against
 public
-U
+T
 CompareAgainst
 {
     get { return this.compareagainst; }
 }
 
 private
-U
+T
 compareagainst;
 
 
@@ -88,11 +90,11 @@ compareagainst;
 protected override
 bool
 MyCheck(
-    T item
+     T item
 )
 {
     if( item == null ) return true;
-    return item.CompareTo( this.CompareAgainst ) > 0;
+    return item.CompareTo( this.CompareAgainst ) < 0;
 }
 
 
