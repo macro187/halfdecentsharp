@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008
+// Copyright (c) 2008, 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -161,6 +161,73 @@ Test_Interval()
     IInterval< int > exc = new Interval< int >( 5, false, 10, false );
     IInterval< int > frominc = new Interval< int >( 5, true, 10, false );
     IInterval< int > toinc = new Interval< int >( 5, false, 10, true );
+
+    Print( "Both Inclusive" );
+    AssertEqual( inc.Contains( smaller ), false );
+    AssertEqual( inc.Contains( from ), true );
+    AssertEqual( inc.Contains( between ), true );
+    AssertEqual( inc.Contains( to ), true );
+    AssertEqual( inc.Contains( bigger ), false );
+
+    Print( "Both Exclusive" );
+    AssertEqual( exc.Contains( smaller ), false );
+    AssertEqual( exc.Contains( from ), false );
+    AssertEqual( exc.Contains( between ), true );
+    AssertEqual( exc.Contains( to ), false );
+    AssertEqual( exc.Contains( bigger ), false );
+
+    Print( "From Inclusive" );
+    AssertEqual( frominc.Contains( smaller ), false );
+    AssertEqual( frominc.Contains( from ), true );
+    AssertEqual( frominc.Contains( between ), true );
+    AssertEqual( frominc.Contains( to ), false );
+    AssertEqual( frominc.Contains( bigger ), false );
+
+    Print( "To Inclusive" );
+    AssertEqual( toinc.Contains( smaller ), false );
+    AssertEqual( toinc.Contains( from ), false );
+    AssertEqual( toinc.Contains( between ), true );
+    AssertEqual( toinc.Contains( to ), true );
+    AssertEqual( toinc.Contains( bigger ), false );
+
+    Print( "ToString()" );
+    Print( inc.ToString() );
+    Print( exc.ToString() );
+    Print( frominc.ToString() );
+    Print( toinc.ToString() );
+}
+
+
+
+[Test( "Interval covariance" )]
+public static void
+Test_Interval_Covariance()
+{
+    IReal smaller = Real.From( 0 );
+    IReal from = Real.From( 5 );
+    IReal between = Real.From( 7 );
+    IReal to = Real.From( 10 );
+    IReal bigger = Real.From( 20 );
+
+    IInterval< IReal > inc =
+        new Interval< IInteger >(
+            Integer.From( 5 ), Integer.From( 10 ) )
+        .Covary< IInteger, IReal >();
+    IInterval< IReal > exc =
+        new Interval< IInteger >(
+            Integer.From( 5 ), false,
+            Integer.From( 10 ), false )
+        .Covary< IInteger, IReal >();
+    IInterval< IReal > frominc =
+        new Interval< IInteger >(
+            Integer.From( 5 ), true,
+            Integer.From( 10 ), false )
+        .Covary< IInteger, IReal >();
+    IInterval< IReal > toinc =
+        new Interval< IInteger >(
+            Integer.From( 5 ), false,
+            Integer.From( 10 ), true )
+        .Covary< IInteger, IReal >();
 
     Print( "Both Inclusive" );
     AssertEqual( inc.Contains( smaller ), false );
