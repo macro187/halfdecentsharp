@@ -126,6 +126,35 @@ Test_IStreamBase_T()
 
 
 
+[Test( "Stream.Yield( this IStream )" )]
+public static
+void
+Test_Stream_Yield()
+{
+    IStream< int > s = new TestStream();
+
+    int i;
+
+    Print( "Item #1" );
+    i = s.Yield();
+    AssertEqual( i, i );
+
+    Print( "Item #2" );
+    i = s.Yield();
+    AssertEqual( i, 2 );
+
+    Print( "Item #3" );
+    i = s.Yield();
+    AssertEqual( i, 3 );
+
+    Print( "EndOfStreamException" );
+    Expect< EndOfStreamException >( delegate() {
+        i = s.Yield();
+    } );
+}
+
+
+
 [Test( "StreamFromEnumeratorAdapter< T >" )]
 public static
 void
