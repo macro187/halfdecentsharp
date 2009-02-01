@@ -222,6 +222,48 @@ Test_StreamToEnumeratorAdapter_T()
 
 
 
+[Test( "EnumeratorToEnumerableAdapter< T >" )]
+public static
+void
+Test_EnumeratorToEnumerableAdapter_T()
+{
+    IEnumerable< int > enumerable =
+        new EnumeratorToEnumerableAdapter< int >(
+            new StreamToEnumeratorAdapter< int >(
+                new TestStream() ) );
+
+    IEnumerator< int > e = enumerable.GetEnumerator();
+
+    bool b;
+
+    Print( "Item #1" );
+    b = e.MoveNext();
+    Assert( b );
+    AssertEqual( e.Current, 1 );
+
+    Print( "Item #2" );
+    b = e.MoveNext();
+    Assert( b );
+    AssertEqual( e.Current, 2 );
+
+    Print( "Item #3" );
+    b = e.MoveNext();
+    Assert( b );
+    AssertEqual( e.Current, 3 );
+
+    Print( "End of enumerator" );
+    b = e.MoveNext();
+    Assert( !b );
+
+    e = enumerable.GetEnumerator();
+
+    Print( "Still end of enumerator with new GetEnumerator()" );
+    b = e.MoveNext();
+    Assert( !b );
+}
+
+
+
 [Test( "StreamTypeAdapter< T >" )]
 public static
 void
