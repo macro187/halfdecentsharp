@@ -126,30 +126,30 @@ Test_IStreamBase_T()
 
 
 
-[Test( "Stream.Yield( this IStream )" )]
+[Test( "Stream.Expect( this IStream )" )]
 public static
 void
-Test_Stream_Yield()
+Test_Stream_Expect()
 {
     IStream< int > s = new TestStream();
 
     int i;
 
     Print( "Item #1" );
-    i = s.Yield();
+    i = s.Expect();
     AssertEqual( i, i );
 
     Print( "Item #2" );
-    i = s.Yield();
+    i = s.Expect();
     AssertEqual( i, 2 );
 
     Print( "Item #3" );
-    i = s.Yield();
+    i = s.Expect();
     AssertEqual( i, 3 );
 
     Print( "EndOfStreamException" );
     Expect< EndOfStreamException >( delegate() {
-        i = s.Yield();
+        i = s.Expect();
     } );
 }
 

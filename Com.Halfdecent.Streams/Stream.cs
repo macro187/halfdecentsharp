@@ -40,14 +40,14 @@ Stream
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Yield an item from the stream, expecting it to exist
+/// Yield an item that is expected to exist
 ///
 /// @exception EndOfStreamException
 /// There were no more items on <tt>stream</tt>
 ///
 public static
 T
-Yield<
+Expect<
     T
 >(
     this IStream< T > stream
