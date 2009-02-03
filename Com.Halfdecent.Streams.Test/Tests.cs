@@ -222,6 +222,40 @@ Test_StreamToEnumeratorAdapter_T()
 
 
 
+[Test( "StreamToExpectantEnumeratorAdapter< T >" )]
+public static
+void
+Test_StreamToExpectantEnumeratorAdapter_T()
+{
+    IEnumerator< int > e =
+        new StreamToExpectantEnumeratorAdapter< int >(
+            new TestStream() );
+
+    bool b;
+
+    Print( "Item #1" );
+    b = e.MoveNext();
+    Assert( b );
+    AssertEqual( e.Current, 1 );
+
+    Print( "Item #2" );
+    b = e.MoveNext();
+    Assert( b );
+    AssertEqual( e.Current, 2 );
+
+    Print( "Item #3" );
+    b = e.MoveNext();
+    Assert( b );
+    AssertEqual( e.Current, 3 );
+
+    Print( "EndOfStreamException at end of enumerator" );
+    Expect< EndOfStreamException >( delegate() {
+        b = e.MoveNext();
+    } );
+}
+
+
+
 [Test( "EnumeratorToEnumerableAdapter< T >" )]
 public static
 void
