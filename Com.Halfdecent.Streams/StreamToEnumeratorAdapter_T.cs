@@ -36,7 +36,7 @@ public class
 StreamToEnumeratorAdapter<
     T
 >
-    : IEnumerator< T >
+    : EnumeratorBase< T >
 {
 
 
@@ -52,31 +52,7 @@ StreamToEnumeratorAdapter(
 {
     NonNull.Check( stream, new Parameter( "stream" ) );
     this.stream = stream;
-    this.started = false;
-    this.finished = false;
 }
-
-
-
-// -----------------------------------------------------------------------------
-// Private
-// -----------------------------------------------------------------------------
-
-private
-bool
-started;
-
-
-
-private
-bool
-finished;
-
-
-
-private
-T
-current;
 
 
 
@@ -98,87 +74,25 @@ stream;
 
 
 // -----------------------------------------------------------------------------
-// IEnumerator< T >
+// EnumeratorBase< T >
 // -----------------------------------------------------------------------------
 
-/// @exception InvalidOperationException
-/// The enumerator is still positioned before the first item
-/// - OR -
-/// The enumerator is already positioned after the last item
-public
-T
-Current
-{
-    get
-    {
-        if( !this.started )
-            throw new InvalidOperationException(
-                _S("The current item cannot be retrieved because the enumerator is still positioned before the first item") );
-        if( this.finished )
-            throw new InvalidOperationException(
-                _S("The current item cannot be retrieved because the enumerator is already positioned after the last item") );
-        return this.current;
-    }
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IEnumerator
-// -----------------------------------------------------------------------------
-
-/// @exception InvalidOperationException
-/// The enumerator is still positioned before the first item
-/// - OR -
-/// The enumerator is already positioned after the last item
-object
-IEnumerator.Current
-{
-    get { return ((IEnumerator< T >)this).Current; }
-}
-
-
-
-public
+protected override
 bool
-MoveNext()
+MoveNext(
+    out T nextItem
+)
 {
-    bool result = this.stream.Yield( out this.current );
-    if( !this.started ) this.started = true;
-    if( !result ) this.finished = true;
-    return result;
+    return this.stream.Yield( out nextItem );
 }
 
 
-
-/// @exception InvalidOperationException
-/// Always, because streams are not resettable
-public
+public override
 void
 Reset()
 {
     throw new InvalidOperationException(
-        _S("This enumerator cannot be reset because it is enumerating an IStream, which cannot be reset") );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IDisposable
-// -----------------------------------------------------------------------------
-
-/// (see <tt>IDisposable.Dispose()</tt>)
-///
-/// The C# <tt>foreach</tt> statement unconditionally <tt>Dispose()</tt>s
-/// enumerators after using them.  This conflicts with <tt>IStream< T ></tt>'s
-/// semantics which allow it to be <tt>foreach</tt>ed more than once, so this
-/// method does nothing.  If the underlying <tt>IStream< T ></tt> is
-/// <tt>IDisposable</tt> it should be <tt>Dispose()</tt>d explicitly eg. via a
-/// <tt>using</tt> block.
-public
-void
-Dispose()
-{
+        _S("This enumerator is enumerating an IStream, which are not resettable") );
 }
 
 
