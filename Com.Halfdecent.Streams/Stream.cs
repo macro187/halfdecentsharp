@@ -62,6 +62,38 @@ Expect<
 
 
 
+public static
+IEnumerable< T >
+ToEnumerable<
+    T
+>(
+    this IStream< T > stream
+)
+{
+    NonNull.Check( stream, new Parameter( "stream" ) );
+    return new EnumeratorToEnumerableAdapter< T >(
+        new StreamToEnumeratorAdapter< T >(
+            stream ) );
+}
+
+
+
+public static
+IEnumerable< T >
+ToExpectantEnumerable<
+    T
+>(
+    this IStream< T > stream
+)
+{
+    NonNull.Check( stream, new Parameter( "stream" ) );
+    return new EnumeratorToEnumerableAdapter< T >(
+        new StreamToExpectantEnumeratorAdapter< T >(
+            stream ) );
+}
+
+
+
 
 } // type
 } // namespace

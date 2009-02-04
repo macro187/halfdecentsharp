@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.RTypes;
@@ -294,6 +295,43 @@ Test_EnumeratorToEnumerableAdapter_T()
     Print( "Still end of enumerator with new GetEnumerator()" );
     b = e.MoveNext();
     Assert( !b );
+}
+
+
+
+[Test( "Stream.ToEnumerable( this IStream )" )]
+public static
+void
+Test_Stream_ToEnumerable()
+{
+    IStream< int > s =
+        new StreamFromEnumeratorAdapter< int >(
+            IntEnumerable().GetEnumerator() );
+    IEnumerable< int > e = IntEnumerable();
+    Print( "Items in enumerable accurately reflect stream" );
+    Assert( s.ToEnumerable().SequenceEqual( e ) );
+}
+
+
+
+[Test( "Stream.ToExpectantEnumerable( this IStream )" )]
+public static
+void
+Test_Stream_ToExpectantEnumerable()
+{
+    IStream< int > s =
+        new StreamFromEnumeratorAdapter< int >(
+            IntEnumerable().GetEnumerator() );
+    IList< int > l = new List< int >();
+    IEnumerable< int > e = IntEnumerable();
+    Print( "EndOfStreamException after last item" );
+    Expect< EndOfStreamException >( delegate() {
+        foreach( int i in s.ToExpectantEnumerable() ) {
+            l.Add( i );
+        }
+    } );
+    Print( "Items from enumerable accurately reflect stream" );
+    Assert( l.SequenceEqual( e ) );
 }
 
 
