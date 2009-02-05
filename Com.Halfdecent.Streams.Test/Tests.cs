@@ -372,6 +372,21 @@ Test_StreamTypeAdapter_T()
 
 
 
+[Test( "Enumerable.ToStream()" )]
+public static
+void
+Test_Enumerable_ToStream()
+{
+    IStream< int > s =
+        IntEnumerable().ToStream();
+    IEnumerable< int > e = IntEnumerable();
+
+    Print( "Items in stream accurately reflect enumerable" );
+    Assert( s.ToEnumerable().SequenceEqual( e ) );
+}
+
+
+
 
 } // type
 } // namespace
