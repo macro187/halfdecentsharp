@@ -40,14 +40,14 @@ Stream
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Yield an item that is expected to exist
+/// Produce the next item in the stream, expecting one to exist
 ///
 /// @exception EndOfStreamException
 /// There were no more items on <tt>stream</tt>
 ///
 public static
 T
-Expect<
+Get<
     T
 >(
     this IStream< T > stream
@@ -55,7 +55,7 @@ Expect<
 {
     NonNull.Check( stream, new Parameter( "stream" ) );
     T r;
-    if( !stream.Yield( out r ) )
+    if( !stream.TryGet( out r ) )
         throw new EndOfStreamException( new Parameter( "stream" ) );
     return r;
 }

@@ -65,7 +65,7 @@ TestStream
 
     public override
     bool
-    Yield(
+    TryGet(
         out int item
     )
     {
@@ -106,51 +106,51 @@ Test_IStreamBase_T()
     bool b;
 
     Print( "Item #1" );
-    b = s.Yield( out i );
+    b = s.TryGet( out i );
     Assert( b );
     AssertEqual( i, i );
 
     Print( "Item #2" );
-    b = s.Yield( out i );
+    b = s.TryGet( out i );
     Assert( b );
     AssertEqual( i, 2 );
 
     Print( "Item #3" );
-    b = s.Yield( out i );
+    b = s.TryGet( out i );
     Assert( b );
     AssertEqual( i, 3 );
 
     Print( "End of stream" );
-    b = s.Yield( out i );
+    b = s.TryGet( out i );
     Assert( !b );
 }
 
 
 
-[Test( "Stream.Expect( this IStream )" )]
+[Test( "Stream.Get( this IStream )" )]
 public static
 void
-Test_Stream_Expect()
+Test_Stream_Get()
 {
     IStream< int > s = new TestStream();
 
     int i;
 
     Print( "Item #1" );
-    i = s.Expect();
+    i = s.Get();
     AssertEqual( i, i );
 
     Print( "Item #2" );
-    i = s.Expect();
+    i = s.Get();
     AssertEqual( i, 2 );
 
     Print( "Item #3" );
-    i = s.Expect();
+    i = s.Get();
     AssertEqual( i, 3 );
 
     Print( "EndOfStreamException" );
     Expect< EndOfStreamException >( delegate() {
-        i = s.Expect();
+        i = s.Get();
     } );
 }
 
@@ -169,22 +169,22 @@ Test_StreamFromEnumeratorAdapter_T()
     bool b;
 
     Print( "Item #1" );
-    b = s.Yield( out i );
+    b = s.TryGet( out i );
     Assert( b );
     AssertEqual( i, i );
 
     Print( "Item #2" );
-    b = s.Yield( out i );
+    b = s.TryGet( out i );
     Assert( b );
     AssertEqual( i, 2 );
 
     Print( "Item #3" );
-    b = s.Yield( out i );
+    b = s.TryGet( out i );
     Assert( b );
     AssertEqual( i, 3 );
 
     Print( "End of stream" );
-    b = s.Yield( out i );
+    b = s.TryGet( out i );
     Assert( !b );
 }
 
@@ -350,22 +350,22 @@ Test_StreamTypeAdapter_T()
     object o;
     Print( "First item" );
 
-    b = s.Yield( out o );
+    b = s.TryGet( out o );
     Assert( b );
     AssertEqual( (int)o, 1 );
 
     Print( "Second item" );
-    b = s.Yield( out o );
+    b = s.TryGet( out o );
     Assert( b );
     AssertEqual( (int)o, 2 );
 
     Print( "Third item" );
-    b = s.Yield( out o );
+    b = s.TryGet( out o );
     Assert( b );
     AssertEqual( (int)o, 3 );
 
     Print( "End of stream" );
-    b = s.Yield( out o );
+    b = s.TryGet( out o );
     Assert( !b );
 
 }

@@ -23,11 +23,11 @@ Com.Halfdecent.Streams
 
 // =============================================================================
 /// Presents an <tt>IStream< T ></tt> as an <tt>IEnumerator< T ></tt> via
-/// <tt>Stream.Expect()</tt>
+/// <tt>Stream.Get()</tt>
 ///
-/// This adapter is useful when a finite number of items will be pulled from
-/// the enumerator, all of which are expected to exist.  An
-/// <tt>EndOfStreamException</tt> will result (via <tt>Stream.Expect()</tt>) if
+/// This adapter is useful when a finite number of items are to be pulled from
+/// the enumerator, and these items are expected to exist.  An
+/// <tt>EndOfStreamException</tt>, results (via <tt>Stream.Expect()</tt>) if
 /// the end of the stream is reached.
 // =============================================================================
 //
@@ -64,7 +64,7 @@ MoveNext(
     out T nextItem
 )
 {
-    nextItem = this.Stream.Expect();
+    nextItem = this.Stream.Get();
     return true;
 }
 

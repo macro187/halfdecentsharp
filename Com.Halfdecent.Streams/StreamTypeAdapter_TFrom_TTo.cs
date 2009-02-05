@@ -80,13 +80,13 @@ from;
 
 public override
 bool
-Yield(
+TryGet(
     out TTo item
 )
 {
     bool result;
     TFrom fromitem;
-    result = this.from.Yield( out fromitem );
+    result = this.from.TryGet( out fromitem );
     item = fromitem;
     return result;
 }

@@ -56,22 +56,22 @@ IStream<
 
 
 
-/// Produce the next item in the stream
+/// Try to produce the next item in the stream
 ///
 /// <tt>IStream< T ></tt> does not imply how long this method will take to
 /// return, if ever.
 ///
 /// Once this method returns <tt>false</tt>, indicating the end of the stream
-/// has been reached, it will never yield items again.
+/// has been reached, it will never produce items again.
 ///
 bool
 /// @returns The next item in the stream
-Yield(
+TryGet(
     out T item
     ///< The next item in the stream
     ///  - OR -
     ///  An undefined and unusable value if there are no more items on the
-    ///  stream
+    ///  stream (as indicated by the return value)
 );
 
 
