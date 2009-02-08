@@ -56,7 +56,7 @@ StreamBase()
 
 public abstract
 bool
-TryGet(
+TryPull(
     out T item
 );
 

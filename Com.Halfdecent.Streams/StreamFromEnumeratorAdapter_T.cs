@@ -71,7 +71,7 @@ enumerator;
 
 public override
 bool
-TryGet(
+TryPull(
     out T item
 )
 {

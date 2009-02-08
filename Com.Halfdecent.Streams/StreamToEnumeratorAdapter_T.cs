@@ -83,7 +83,7 @@ MoveNext(
     out T nextItem
 )
 {
-    return this.stream.TryGet( out nextItem );
+    return this.stream.TryPull( out nextItem );
 }
 
 

@@ -23,7 +23,7 @@ Com.Halfdecent.Streams
 
 // =============================================================================
 /// Presents an <tt>IStream< T ></tt> as an <tt>IEnumerator< T ></tt> via
-/// <tt>Stream.Get()</tt>
+/// <tt>Stream.Pull()</tt>
 ///
 /// This adapter is useful when a finite number of items are to be pulled from
 /// the enumerator, and these items are expected to exist.  An
@@ -64,7 +64,7 @@ MoveNext(
     out T nextItem
 )
 {
-    nextItem = this.Stream.Get();
+    nextItem = this.Stream.Pull();
     return true;
 }
 

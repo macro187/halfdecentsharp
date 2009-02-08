@@ -65,7 +65,7 @@ TestStream
 
     public override
     bool
-    TryGet(
+    TryPull(
         out int item
     )
     {
@@ -106,51 +106,51 @@ Test_IStreamBase_T()
     bool b;
 
     Print( "Item #1" );
-    b = s.TryGet( out i );
+    b = s.TryPull( out i );
     Assert( b );
     AssertEqual( i, i );
 
     Print( "Item #2" );
-    b = s.TryGet( out i );
+    b = s.TryPull( out i );
     Assert( b );
     AssertEqual( i, 2 );
 
     Print( "Item #3" );
-    b = s.TryGet( out i );
+    b = s.TryPull( out i );
     Assert( b );
     AssertEqual( i, 3 );
 
     Print( "End of stream" );
-    b = s.TryGet( out i );
+    b = s.TryPull( out i );
     Assert( !b );
 }
 
 
 
-[Test( "Stream.Get( this IStream )" )]
+[Test( "Stream.Pull( this IStream )" )]
 public static
 void
-Test_Stream_Get()
+Test_Stream_Pull()
 {
     IStream< int > s = new TestStream();
 
     int i;
 
     Print( "Item #1" );
-    i = s.Get();
+    i = s.Pull();
     AssertEqual( i, i );
 
     Print( "Item #2" );
-    i = s.Get();
+    i = s.Pull();
     AssertEqual( i, 2 );
 
     Print( "Item #3" );
-    i = s.Get();
+    i = s.Pull();
     AssertEqual( i, 3 );
 
     Print( "EndOfStreamException" );
     Expect< EndOfStreamException >( delegate() {
-        i = s.Get();
+        i = s.Pull();
     } );
 }
 
@@ -169,22 +169,22 @@ Test_StreamFromEnumeratorAdapter_T()
     bool b;
 
     Print( "Item #1" );
-    b = s.TryGet( out i );
+    b = s.TryPull( out i );
     Assert( b );
     AssertEqual( i, i );
 
     Print( "Item #2" );
-    b = s.TryGet( out i );
+    b = s.TryPull( out i );
     Assert( b );
     AssertEqual( i, 2 );
 
     Print( "Item #3" );
-    b = s.TryGet( out i );
+    b = s.TryPull( out i );
     Assert( b );
     AssertEqual( i, 3 );
 
     Print( "End of stream" );
-    b = s.TryGet( out i );
+    b = s.TryPull( out i );
     Assert( !b );
 }
 
@@ -350,22 +350,22 @@ Test_StreamTypeAdapter_T()
     object o;
     Print( "First item" );
 
-    b = s.TryGet( out o );
+    b = s.TryPull( out o );
     Assert( b );
     AssertEqual( (int)o, 1 );
 
     Print( "Second item" );
-    b = s.TryGet( out o );
+    b = s.TryPull( out o );
     Assert( b );
     AssertEqual( (int)o, 2 );
 
     Print( "Third item" );
-    b = s.TryGet( out o );
+    b = s.TryPull( out o );
     Assert( b );
     AssertEqual( (int)o, 3 );
 
     Print( "End of stream" );
-    b = s.TryGet( out o );
+    b = s.TryPull( out o );
     Assert( !b );
 
 }

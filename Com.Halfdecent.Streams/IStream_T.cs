@@ -66,7 +66,7 @@ IStream<
 ///
 bool
 /// @returns The next item in the stream
-TryGet(
+TryPull(
     out T item
     ///< The next item in the stream
     ///  - OR -

@@ -40,14 +40,14 @@ Stream
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Produce the next item in the stream, expecting one to exist
+/// Pull the next item from the stream, expecting one to be available
 ///
 /// @exception EndOfStreamException
-/// There were no more items on <tt>stream</tt>
+/// There were no more items in <tt>stream</tt>
 ///
 public static
 T
-Get<
+Pull<
     T
 >(
     this IStream< T > stream
@@ -55,7 +55,7 @@ Get<
 {
     NonNull.Check( stream, new Parameter( "stream" ) );
     T r;
-    if( !stream.TryGet( out r ) )
+    if( !stream.TryPull( out r ) )
         throw new EndOfStreamException( new Parameter( "stream" ) );
     return r;
 }

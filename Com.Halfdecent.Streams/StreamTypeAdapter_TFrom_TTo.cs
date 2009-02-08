@@ -80,13 +80,13 @@ from;
 
 public override
 bool
-TryGet(
+TryPull(
     out TTo item
 )
 {
     bool result;
     TFrom fromitem;
-    result = this.from.TryGet( out fromitem );
+    result = this.from.TryPull( out fromitem );
     item = fromitem;
     return result;
 }
