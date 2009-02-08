@@ -148,8 +148,8 @@ Test_Stream_Pull()
     i = s.Pull();
     AssertEqual( i, 3 );
 
-    Print( "EndOfStreamException" );
-    Expect< EndOfStreamException >( delegate() {
+    Print( "StreamEmptyException" );
+    Expect< StreamEmptyException >( delegate() {
         i = s.Pull();
     } );
 }
@@ -249,8 +249,8 @@ Test_StreamToExpectantEnumeratorAdapter_T()
     Assert( b );
     AssertEqual( e.Current, 3 );
 
-    Print( "EndOfStreamException at end of enumerator" );
-    Expect< EndOfStreamException >( delegate() {
+    Print( "StreamEmptyException at end of enumerator" );
+    Expect< StreamEmptyException >( delegate() {
         b = e.MoveNext();
     } );
 }
@@ -324,8 +324,8 @@ Test_Stream_ToExpectantEnumerable()
             IntEnumerable().GetEnumerator() );
     IList< int > l = new List< int >();
     IEnumerable< int > e = IntEnumerable();
-    Print( "EndOfStreamException after last item" );
-    Expect< EndOfStreamException >( delegate() {
+    Print( "StreamEmptyException after last item" );
+    Expect< StreamEmptyException >( delegate() {
         foreach( int i in s.ToExpectantEnumerable() ) {
             l.Add( i );
         }

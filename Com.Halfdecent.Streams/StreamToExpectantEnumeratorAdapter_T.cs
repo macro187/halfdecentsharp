@@ -26,8 +26,8 @@ Com.Halfdecent.Streams
 /// <tt>Stream.Pull()</tt>
 ///
 /// This adapter is useful when a finite number of items are to be pulled from
-/// the enumerator, and these items are expected to exist.  An
-/// <tt>EndOfStreamException</tt>, results (via <tt>Stream.Expect()</tt>) if
+/// the enumerator, and these items are expected to exist.  A
+/// <tt>StreamEmptyException</tt> results (via <tt>Stream.Pull()</tt>) if
 /// the end of the stream is reached.
 // =============================================================================
 //

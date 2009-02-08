@@ -29,11 +29,11 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// The end of a stream was reached sooner than expected
+/// A stream contains no more items
 // =============================================================================
 //
 public class
-EndOfStreamException
+StreamEmptyException
     : LocalisedExceptionBase
 {
 
@@ -45,7 +45,7 @@ EndOfStreamException
 // -----------------------------------------------------------------------------
 
 public
-EndOfStreamException(
+StreamEmptyException(
     IValue  streamReference
 )
     :this( streamReference, null )
@@ -55,7 +55,7 @@ EndOfStreamException(
 
 
 public
-EndOfStreamException(
+StreamEmptyException(
     IValue      streamReference,
     Exception   innerException
 )

@@ -42,7 +42,7 @@ Stream
 
 /// Pull the next item from the stream, expecting one to be available
 ///
-/// @exception EndOfStreamException
+/// @exception StreamEmptyException
 /// There were no more items in <tt>stream</tt>
 ///
 public static
@@ -56,7 +56,7 @@ Pull<
     NonNull.Check( stream, new Parameter( "stream" ) );
     T r;
     if( !stream.TryPull( out r ) )
-        throw new EndOfStreamException( new Parameter( "stream" ) );
+        throw new StreamEmptyException( new Parameter( "stream" ) );
     return r;
 }
 
