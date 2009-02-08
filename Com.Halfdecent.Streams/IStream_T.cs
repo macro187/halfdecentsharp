@@ -56,7 +56,7 @@ IStream<
 
 
 
-/// Try to produce the next item in the stream
+/// Try to pull the next item from the stream
 ///
 /// <tt>IStream< T ></tt> does not imply how long this method will take to
 /// return, if ever.
@@ -65,13 +65,13 @@ IStream<
 /// has been reached, it will never produce items again.
 ///
 bool
-/// @returns The next item in the stream
+/// @returns Whether there was another item in the stream
 TryPull(
     out T item
     ///< The next item in the stream
     ///  - OR -
     ///  An undefined and unusable value if there are no more items on the
-    ///  stream (as indicated by the return value)
+    ///  stream (as indicated by a return value of <tt>false</tt>)
 );
 
 
