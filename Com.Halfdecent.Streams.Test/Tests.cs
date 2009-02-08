@@ -387,6 +387,57 @@ Test_Enumerable_ToStream()
 
 
 
+// A test ISink<T> implementation that holds 3 ints
+private class
+TestSink
+    :ISink< int >
+{
+    public
+    int[]
+    Items = new int[3];
+
+    public
+    bool
+    TryPush(
+        int item
+    )
+    {
+        if( this.current >= this.Items.Length ) return false;
+        this.Items[ this.current ] = item;
+        this.current++;
+        return true;
+    }
+
+    private
+    int
+    current = 0;
+}
+
+
+
+[Test( "Sink.Push()" )]
+public static
+void
+Test_Sink_Push()
+{
+    TestSink ts = new TestSink();
+    ISink< int > s = ts;
+    Print( "Push items" );
+    s.Push( 0 );
+    s.Push( 1 );
+    s.Push( 2 );
+    Print( "Check pushed items" );
+    AssertEqual( ts.Items[0], 0 );
+    AssertEqual( ts.Items[1], 1 );
+    AssertEqual( ts.Items[2], 2 );
+    Print( "SinkFullException if we try to push another" );
+    Expect< SinkFullException >( delegate() {
+        s.Push( 3 );
+    } );
+}
+
+
+
 
 } // type
 } // namespace
