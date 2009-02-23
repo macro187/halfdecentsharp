@@ -435,6 +435,21 @@ Test_Sink_Push()
 
 
 
+[Test( "Stream.PushTo()" )]
+public static
+void
+Test_Stream_PushTo()
+{
+    int[] from = new int[] { 1, 2, 3 };
+    List< int > to = new List< int >();
+    Print( "PushTo() a list" );
+    from.AsStream().PushTo( to.AsSink() );
+    Print( "Check items" );
+    Assert( to.SequenceEqual( from ) );
+}
+
+
+
 
 } // type
 } // namespace

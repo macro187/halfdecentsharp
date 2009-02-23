@@ -61,6 +61,22 @@ Pull<
 }
 
 
+public static
+void
+PushTo<
+    T
+>(
+    this IStream< T >   from,
+    ISink< T >          to
+)
+{
+    NonNull.Check( from, new Parameter( "from" ) );
+    NonNull.Check( to, new Parameter( "to" ) );
+    T item;
+    while( from.TryPull( out item ) )
+        if( !to.TryPush( item ) ) break;
+}
+
 
 public static
 IEnumerable< T >
