@@ -47,6 +47,7 @@ Covary<
 >(
     this IInterval< TFrom> from
 )
+    where TFrom : TTo
 {
     NonNull.Check( from, new Parameter( "from" ) );
     return new IntervalTypeAdapter< TFrom, TTo >( from );
