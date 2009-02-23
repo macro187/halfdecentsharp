@@ -296,25 +296,25 @@ Test_EnumeratorToEnumerableAdapter_T()
 
 
 
-[Test( "Stream.ToEnumerable( this IStream )" )]
+[Test( "Stream.AsEnumerable( this IStream )" )]
 public static
 void
-Test_Stream_ToEnumerable()
+Test_Stream_AsEnumerable()
 {
     IStream< int > s =
         new StreamFromEnumeratorAdapter< int >(
             IntEnumerable().GetEnumerator() );
     IEnumerable< int > e = IntEnumerable();
     Print( "Items in enumerable accurately reflect stream" );
-    Assert( s.ToEnumerable().SequenceEqual( e ) );
+    Assert( s.AsEnumerable().SequenceEqual( e ) );
 }
 
 
 
-[Test( "Stream.ToExpectantEnumerable( this IStream )" )]
+[Test( "Stream.AsExpectantEnumerable( this IStream )" )]
 public static
 void
-Test_Stream_ToExpectantEnumerable()
+Test_Stream_AsExpectantEnumerable()
 {
     IStream< int > s =
         new StreamFromEnumeratorAdapter< int >(
@@ -323,7 +323,7 @@ Test_Stream_ToExpectantEnumerable()
     IEnumerable< int > e = IntEnumerable();
     Print( "StreamEmptyException after last item" );
     Expect< StreamEmptyException >( delegate() {
-        foreach( int i in s.ToExpectantEnumerable() ) {
+        foreach( int i in s.AsExpectantEnumerable() ) {
             l.Add( i );
         }
     } );
@@ -369,17 +369,17 @@ Test_StreamTypeAdapter_T()
 
 
 
-[Test( "Enumerable.ToStream()" )]
+[Test( "Enumerable.AsStream()" )]
 public static
 void
-Test_Enumerable_ToStream()
+Test_Enumerable_AsStream()
 {
     IStream< int > s =
-        IntEnumerable().ToStream();
+        IntEnumerable().AsStream();
     IEnumerable< int > e = IntEnumerable();
 
     Print( "Items in stream accurately reflect enumerable" );
-    Assert( s.ToEnumerable().SequenceEqual( e ) );
+    Assert( s.AsEnumerable().SequenceEqual( e ) );
 }
 
 

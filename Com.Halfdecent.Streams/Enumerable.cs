@@ -42,7 +42,7 @@ Enumerable
 
 public static
 IStream< T >
-ToStream<
+AsStream<
     T
 >(
     this IEnumerable< T > enumerable

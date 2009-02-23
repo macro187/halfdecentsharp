@@ -64,7 +64,7 @@ Pull<
 
 public static
 IEnumerable< T >
-ToEnumerable<
+AsEnumerable<
     T
 >(
     this IStream< T > stream
@@ -80,7 +80,7 @@ ToEnumerable<
 
 public static
 IEnumerable< T >
-ToExpectantEnumerable<
+AsExpectantEnumerable<
     T
 >(
     this IStream< T > stream
