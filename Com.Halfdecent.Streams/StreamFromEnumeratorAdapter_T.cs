@@ -35,7 +35,7 @@ public class
 StreamFromEnumeratorAdapter<
     T
 >
-    : StreamBase< T >
+    : IStream< T >
 {
 
 
@@ -66,10 +66,10 @@ enumerator;
 
 
 // -----------------------------------------------------------------------------
-// StreamBase< T >
+// IStream< T >
 // -----------------------------------------------------------------------------
 
-public override
+public
 bool
 TryPull(
     out T item

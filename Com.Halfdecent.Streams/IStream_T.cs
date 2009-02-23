@@ -37,21 +37,12 @@ Com.Halfdecent.Streams
 /// any) are available, nor how long (if ever) it will take to yield the next
 /// one.  Implementations should document their semantics in these regards
 /// and/or implement stream subtypes with more specific semantics.
-///
-/// @par <tt>IEnumerable< T ></tt>
-/// As a convenience, streams implement <tt>IEnumerable< T ></tt>.
-/// <tt>GetEnumerator()</tt> returns the same enumerator no matter how
-/// many times it's called, reflecting the single underlying stream.  Not only
-/// does this allow iteration with <tt>foreach</tt>, it allows doing so more
-/// than once, with each subsequent <tt>foreach</tt> iteration picking up from
-/// the stream's current "position".
 // =============================================================================
 //
 public interface
 IStream<
     T
 >
-    : IEnumerable< T >
 {
 
 

@@ -54,16 +54,13 @@ Main()
 //
 private class
 TestStream
-    : StreamBase< int >
+    : IStream< int >
 {
-    public
-    TestStream() {}
-
     private
     int
     i = 1;
 
-    public override
+    public
     bool
     TryPull(
         out int item

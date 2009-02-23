@@ -36,7 +36,7 @@ StreamTypeAdapter<
     TFrom,
     TTo
 >
-    : StreamBase< TTo >
+    : IStream< TTo >
     where TFrom : TTo
 {
 
@@ -75,10 +75,10 @@ from;
 
 
 // -----------------------------------------------------------------------------
-// StreamBase< T >
+// IStream< T >
 // -----------------------------------------------------------------------------
 
-public override
+public
 bool
 TryPull(
     out TTo item
