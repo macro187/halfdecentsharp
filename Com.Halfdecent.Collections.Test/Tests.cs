@@ -48,15 +48,14 @@ Main()
 
 
 
-[Test( "BagFromCollectionAdapter< T >" )]
+[Test( "BagFromCollectionAdapter< T > and Collection.AsBag()" )]
 public static
 void
-Test_BagFromCollectionAdapter()
+Test_BagFromCollectionAdapter_and_AsBag()
 {
     int[]                           from = new int[] { 1, 2, 3 };
     SCG.List< int >                 list = new SCG.List< int >();
-    BagFromCollectionAdapter< int > bag =
-        new BagFromCollectionAdapter< int >( list );
+    BagFromCollectionAdapter< int > bag = list.AsBag();
     SCG.List< int >                 to = new SCG.List< int >();
 
     Print( "Check initial .Count" );
