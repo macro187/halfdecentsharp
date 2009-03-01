@@ -49,6 +49,15 @@ FilterBase<
 // Constructors
 // -----------------------------------------------------------------------------
 
+public
+FilterBase()
+{
+    this.process = Process();
+    this.Tick();
+    if( this.process.Current == true ) throw new BugException(
+        "Process() says it has produced an before having consumed any" );
+}
+
 
 
 // -----------------------------------------------------------------------------
@@ -71,11 +80,6 @@ haveinitem = false;
 
 
 private
-bool
-processhasconsumed = false;
-
-
-private
 TOut
 outitem;
 
@@ -83,11 +87,6 @@ outitem;
 private
 bool
 haveoutitem = false;
-
-
-private
-bool
-processhasproduced = false;
 
 
 
@@ -119,17 +118,10 @@ processhasproduced = false;
 ///   <tt>this.DisposeItem()</tt>
 /// - Produce an item...
 ///   <tt>this.PutItem()</tt> then <tt>yield return true</tt>
-/// - Finish processing the block...
+/// - Finish processing and close the filter, allowing no more items through
+///   ever again...
 ///   Exit the iterator
 ///
-/// TODO Detailed Process() rules
-/// - Must consume at least 1 and produce at least 1 item per block
-/// - ???
-//
-// XXX Process() is called once per block (ie. for each item in a 1-to-1
-//     filter).  Does creating an iterator involve an allocation?  That could
-//     be a problem.
-//
 protected abstract
 IEnumerator< bool >
 Process();
@@ -148,7 +140,6 @@ GetItem()
     TIn r = this.initem;
     this.initem = default( TIn );
     this.haveinitem = false;
-    this.processhasconsumed = true;
     return r;
 }
 
@@ -167,7 +158,6 @@ PutItem(
         _S( "PutItem() called when haveoutitem, Process() implementation probably forgot to 'yield return true' following last PutItem() call" ) );
     this.outitem = item;
     this.haveoutitem = true;
-    this.processhasproduced = true;
 }
 
 
@@ -222,79 +212,72 @@ to = null;
 // IStream< TOut >
 // -----------------------------------------------------------------------------
 
+private
+void
+Tick()
+{
+    if( this.process == null ) throw new InvalidOperationException(
+        "Process() has already exited, can't Tick()" );
+    if( !this.process.MoveNext() )
+        this.process = null;
+}
+
+
 public
 bool
 TryPush(
     TIn item
 )
 {
+    // TODO
+    // - Check that Process() produces at least one output item per input
+    //   item?
+
     if( this.To == null ) throw new InvalidOperationException(
         "this.To must be set before items can be pushed" );
 
-    bool r = true;
+    bool itemgiven = false;  // Have we given Process() our item yet?
+    for( ;; ) {
 
-    bool itemconsumed = false;
-    // We don't need to tick if a Process() is already in progress
-    bool skiptick = ( this.process != null );
-    while( true ) {
+        // This filter is closed
+        if( this.process == null )
+            return false;
 
-        // New Process() iterator if needed
-        if( this.process == null ) {
-            this.process = Process();
-            this.processhasproduced = false;
-            this.processhasconsumed = false;
-        }
-
-        // Tick the Process() iterator
-        if( !skiptick ) {
-            if( !this.process.MoveNext() ) {
-
-                // This block is finished.  Jump back and start a new one.
-                if( !this.processhasconsumed )
-                    throw new BugException(
-                        _S("Process() finished without consuming any items") );
-                if( !this.processhasproduced )
-                    throw new BugException(
-                        _S("Process() finished without producing any items") );
-                this.process = null;
-                continue;
-            }
-        } else {
-            skiptick = false;
-        }
-
-        // Process() wants to consume an item
+        // Process() wants an item
         if( !this.process.Current ) {
-            if( this.haveinitem )
-                throw new BugException(
-                    _S("Process() asked for another item before GetItem()ing the last one") );
+            if( this.haveinitem ) throw new BugException(
+                _S("Process() asked for another item before GetItem()ing the last one") );
 
-            // If we've already given Process() our item, that means it's now
-            // been processed.  We're done.
-            if( itemconsumed ) break;
+            // Give it our item, if we haven't already...
+            if( !itemgiven ) {
+                this.initem = item;
+                this.haveinitem = true;
+                itemgiven = true;
 
-            this.initem = item;
-            this.haveinitem = true;
-            itemconsumed = true;
-
-        // Process() produced an item
-        } else {
-            if( !this.haveoutitem )
-                throw new BugException(
-                    _S("Process() says it produced an item but didn't PutItem() it") );
-
-            // If To is full, say we're full too and we're done.
-            if( !this.To.TryPush( this.outitem ) ) {
-                r = false;
-                break;
+            // ...otherwise we're done
+            } else {
+                return true;
             }
 
-            this.outitem = default( TOut );
-            this.haveoutitem = false;
-        }
-    }
+        // Process() has produced an item
+        } else {
+            if( !this.haveoutitem ) throw new BugException(
+                _S("Process() says it produced an item but didn't PutItem() it") );
 
-    return r;
+            // Pass it along to .To
+            if( this.To.TryPush( this.outitem ) ) {
+                this.outitem = default( TOut );
+                this.haveoutitem = false;
+
+            // If .To is full, so are we
+            } else {
+                return false;
+            }
+
+        }
+
+        this.Tick();
+    }
 }
 
 

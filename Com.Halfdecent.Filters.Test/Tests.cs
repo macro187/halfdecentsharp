@@ -58,9 +58,11 @@ PassThrough
     IEnumerator< bool >
     Process()
     {
-        int i;
-        yield return false; i = this.GetItem();
-        this.PutItem( i ); yield return true;
+        for( ;; ) {
+            yield return false;
+            this.PutItem( this.GetItem() );
+            yield return true;
+        }
     }
 }
 
@@ -74,10 +76,12 @@ DoubleUp
     IEnumerator< bool >
     Process()
     {
-        int i;
-        yield return false; i = this.GetItem();
-        this.PutItem( i ); yield return true;
-        this.PutItem( i ); yield return true;
+        for( ;; ) {
+            int i;
+            yield return false; i = this.GetItem();
+            this.PutItem( i ); yield return true;
+            this.PutItem( i ); yield return true;
+        }
     }
 }
 
@@ -91,10 +95,12 @@ AddPairs
     IEnumerator< bool >
     Process()
     {
-        int i,j;
-        yield return false; i = this.GetItem();
-        yield return false; j = this.GetItem();
-        this.PutItem( i + j ); yield return true;
+        for( ;; ) {
+            int i,j;
+            yield return false; i = this.GetItem();
+            yield return false; j = this.GetItem();
+            this.PutItem( i + j ); yield return true;
+        }
     }
 }
 
@@ -108,30 +114,38 @@ Test_FilterBase_Push()
     int[]               from = new int[] { 1, 2, 3, 4 };
     IFilter< int, int > f;
     List< int >         to = new List< int >();
+    //List< int >         too = new List< int >();
 
-    Print( "Push() through PassThrough (a 1-to-1 filter)" );
+    Print( "Push(), 1-to-1 filter" );
     to.Clear();
     f = new PassThrough { To = to.AsBag() };
     foreach( int i in from ) f.Push( i );
-
-    Print( "Check results" );
     Assert( to.SequenceEqual( from ) );
 
-    Print( "Push() through DoubleUp (a 1-to-many filter)" );
+    Print( "Push(), 1-to-many filter" );
     to.Clear();
     f = new DoubleUp { To = to.AsBag() };
     foreach( int i in from ) f.Push( i );
-
-    Print( "Check results" );
     Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
 
-    Print( "Push() through AddPairs (a many-to-1 filter)" );
+    Print( "Push(), many-to-1 filter" );
     to.Clear();
     f = new AddPairs { To = to.AsBag() };
     foreach( int i in from ) f.Push( i );
-
-    Print( "Check results" );
     Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
+
+    /*
+    Print( "Push(), 1-to-many filter, switch .To mid-block" );
+    to.Clear();
+    too.Clear();
+    f = new DoubleUp();
+    f.To = to.AsBag();
+    // ...
+    f.To = too.AsBag();
+    // ...
+    Assert( to.SequenceEqual( new int[] { ... } ) );
+    Assert( too.SequenceEqual( new int[] { ... } ) );
+    */
 }
 
 
