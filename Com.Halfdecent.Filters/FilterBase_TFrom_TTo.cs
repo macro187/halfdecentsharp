@@ -177,11 +177,61 @@ DisposeItem(
 }
 
 
+private
+void
+Tick()
+{
+    if( this.process == null ) throw new InvalidOperationException(
+        "Process() has already exited, can't Tick()" );
+
+    if( !this.process.MoveNext() ) {
+        this.process = null;
+        // TODO Check end-of-processing invariants?
+        return;
+    }
+
+    if( !this.process.Current && this.haveinitem ) throw new BugException(
+        _S("Process() asked for another item before GetItem()ing the last one") );
+    if( this.process.Current && !this.haveoutitem ) throw new BugException(
+        _S("Process() says it produced an item but didn't PutItem() it") );
+}
+
+
+private
+void
+GiveToProcess(
+    TIn item
+)
+{
+    this.initem = item;
+    this.haveinitem = true;
+}
+
+
+private
+TOut
+PeekFromProcess()
+{
+    return this.outitem;
+}
+
+
+private
+void
+AcceptFromProcess()
+{
+    this.outitem = default( TOut );
+    this.haveoutitem = false;
+}
+
+
 
 // -----------------------------------------------------------------------------
 // IFilter< TIn, TOut >
 // -----------------------------------------------------------------------------
 
+/// Upstream stream
+///
 public
 IStream< TIn >
 From
@@ -194,12 +244,28 @@ IStream< TIn >
 from = null;
 
 
+/// Downstream sink
+///
+/// When set, an immediate attempt is made to flush any pending items to the
+/// new sink
+///
 public
 ISink< TOut >
 To
 {
     get { return this.to; }
-    set { this.to = value; }
+    set
+    {
+        this.to = value;
+        if( value == null ) return;
+        for( ;; ) {
+            if( this.process == null ) return;
+            if( !this.process.Current ) return;
+            if( !this.To.TryPush( this.PeekFromProcess() ) ) return;
+            this.AcceptFromProcess();
+            this.Tick();
+        }
+    }
 }
 private
 ISink< TOut >
@@ -212,67 +278,31 @@ to = null;
 // IStream< TOut >
 // -----------------------------------------------------------------------------
 
-private
-void
-Tick()
-{
-    if( this.process == null ) throw new InvalidOperationException(
-        "Process() has already exited, can't Tick()" );
-    if( !this.process.MoveNext() )
-        this.process = null;
-}
-
-
 public
 bool
 TryPush(
     TIn item
 )
 {
-    // TODO
-    // - Check that Process() produces at least one output item per input
-    //   item?
-
     if( this.To == null ) throw new InvalidOperationException(
         "this.To must be set before items can be pushed" );
 
-    bool itemgiven = false;  // Have we given Process() our item yet?
+    bool itemgiven = false;
     for( ;; ) {
 
-        // This filter is closed
-        if( this.process == null )
-            return false;
+        // Process() is done
+        if( this.process == null ) return itemgiven;
 
         // Process() wants an item
         if( !this.process.Current ) {
-            if( this.haveinitem ) throw new BugException(
-                _S("Process() asked for another item before GetItem()ing the last one") );
-
-            // Give it our item, if we haven't already...
-            if( !itemgiven ) {
-                this.initem = item;
-                this.haveinitem = true;
-                itemgiven = true;
-
-            // ...otherwise we're done
-            } else {
-                return true;
-            }
+            if( itemgiven ) return true;
+            this.GiveToProcess( item );
+            itemgiven = true;
 
         // Process() has produced an item
         } else {
-            if( !this.haveoutitem ) throw new BugException(
-                _S("Process() says it produced an item but didn't PutItem() it") );
-
-            // Pass it along to .To
-            if( this.To.TryPush( this.outitem ) ) {
-                this.outitem = default( TOut );
-                this.haveoutitem = false;
-
-            // If .To is full, so are we
-            } else {
-                return false;
-            }
+            if( !this.To.TryPush( this.PeekFromProcess() ) ) return false;
+            this.AcceptFromProcess();
 
         }
 

@@ -51,6 +51,22 @@ Main()
 
 
 public class
+PassOne
+    : FilterBase< int, int >
+{
+    protected override
+    IEnumerator< bool >
+    Process()
+    {
+        yield return false;
+        this.PutItem( this.GetItem() );
+        yield return true;
+    }
+}
+
+
+
+public class
 PassThrough
     : FilterBase< int, int >
 {
@@ -133,6 +149,13 @@ Test_FilterBase_Push()
     f = new AddPairs { To = to.AsBag() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
+
+    Print( "Push(), closing filter" );
+    to.Clear();
+    f = new PassOne { To = to.AsBag() };
+    f.Push( 1 );
+    AssertEqual( f.TryPush( 2 ), false );
+    Assert( to.SequenceEqual( new int[] { 1 } ) );
 
     /*
     Print( "Push(), 1-to-many filter, switch .To mid-block" );
