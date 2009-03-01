@@ -130,7 +130,7 @@ Test_FilterBase_Push()
     int[]               from = new int[] { 1, 2, 3, 4 };
     IFilter< int, int > f;
     List< int >         to = new List< int >();
-    //List< int >         too = new List< int >();
+    List< int >         too = new List< int >();
 
     Print( "Push(), 1-to-1 filter" );
     to.Clear();
@@ -157,18 +157,17 @@ Test_FilterBase_Push()
     AssertEqual( f.TryPush( 2 ), false );
     Assert( to.SequenceEqual( new int[] { 1 } ) );
 
-    /*
     Print( "Push(), 1-to-many filter, switch .To mid-block" );
     to.Clear();
     too.Clear();
-    f = new DoubleUp();
-    f.To = to.AsBag();
-    // ...
+    f = new DoubleUp { To =
+        new PassOne { To =
+        to.AsBag() } };
+    f.Push( 1 );
+    Assert( to.SequenceEqual( new int[] { 1 } ) );
     f.To = too.AsBag();
-    // ...
-    Assert( to.SequenceEqual( new int[] { ... } ) );
-    Assert( too.SequenceEqual( new int[] { ... } ) );
-    */
+    // (filter immediately flushes pending item to new sink)
+    Assert( too.SequenceEqual( new int[] { 1 } ) );
 }
 
 

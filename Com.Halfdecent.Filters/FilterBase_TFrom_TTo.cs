@@ -301,7 +301,7 @@ TryPush(
 
         // Process() has produced an item
         } else {
-            if( !this.To.TryPush( this.PeekFromProcess() ) ) return false;
+            if( !this.To.TryPush( this.PeekFromProcess() ) ) return itemgiven;
             this.AcceptFromProcess();
 
         }
