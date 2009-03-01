@@ -126,8 +126,9 @@ processhasproduced = false;
 /// - Must consume at least 1 and produce at least 1 item per block
 /// - ???
 //
-// XXX Process() is called (at least) once per stream item.  Does creating an
-//     iterator involve an allocation?  That could be a deal breaker.
+// XXX Process() is called once per block (ie. for each item in a 1-to-1
+//     filter).  Does creating an iterator involve an allocation?  That could
+//     be a problem.
 //
 protected abstract
 IEnumerator< bool >
