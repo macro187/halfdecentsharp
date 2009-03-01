@@ -704,6 +704,29 @@ Test_NonZero()
 
 
 
+[Test( "NonNegative" )]
+public static void
+Test_NonNegative()
+{
+    IRType< IReal > rt = new NonNegative();
+
+    Print( "Null passes" );
+    rt.Check( null, new Literal() );
+
+    Print( "Negative fails" );
+    Expect< RTypeException >( delegate() {
+        rt.Check( Real.From( -5m ), new Literal() );
+    } );
+
+    Print( "Zero passes" );
+    rt.Check( Real.From( 0m ), new Literal() );
+
+    Print( "Positive passes" );
+    rt.Check( Real.From( 5m ), new Literal() );
+}
+
+
+
 
 } // type
 } // namespace
