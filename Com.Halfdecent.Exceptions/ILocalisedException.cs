@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,70 +15,34 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-using System;
+
+using Com.Halfdecent.Globalisation;
+
 
 namespace
-Com.Halfdecent.Globalisation
+Com.Halfdecent.Exceptions
 {
-
 
 
 // =============================================================================
-/// Base class for implementing <tt>ILocalisedException</tt>s with a simple
-/// <tt>Message</tt>
+/// An <tt>Exception</tt> with localised messaging
 // =============================================================================
-///
-public abstract class
-SimpleLocalisedExceptionBase
-    :LocalisedExceptionBase
+
+public interface
+ILocalisedException
 {
 
 
 
-
 // -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-SimpleLocalisedExceptionBase(
-    Localised< string > message
-)
-    : this( message, null )
-{
-}
-
-
-
-public
-SimpleLocalisedExceptionBase(
-    Localised< string > message,
-    Exception           innerException
-)
-    : base( innerException )
-{
-    if( message == null )
-        throw new Exception( "SimpleLocalisedExceptionBase subclasses are required to provide a message" );
-    this.message = message;
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// ILocalisedException
+// Properties
 // -----------------------------------------------------------------------------
 
-public override
 Localised< string >
 Message
 {
-    get { return this.message; }
+    get;
 }
-
-private
-Localised< string >
-message;
 
 
 

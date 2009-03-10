@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,24 +15,26 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
+using Com.Halfdecent.Globalisation;
+
 
 namespace
-Com.Halfdecent.Globalisation
+Com.Halfdecent.Exceptions
 {
 
 
+// =============================================================================
+/// <tt>System.ArgumentNullException</tt> that implements
+/// <tt>ILocalisedException</tt>
+// =============================================================================
 
-// =============================================================================
-/// Base class for implementing <tt>ILocalisedException</tt>s
-// =============================================================================
-///
-public abstract class
-LocalisedExceptionBase
-    : LocalisedExceptionShim
+public class
+LocalisedFormatException
+    : FormatExceptionShim
     , ILocalisedException
 {
-
 
 
 
@@ -40,23 +43,30 @@ LocalisedExceptionBase
 // -----------------------------------------------------------------------------
 
 public
-LocalisedExceptionBase()
-    : this( null )
+LocalisedFormatException()
+    : this( null, null )
 {
 }
-
 
 
 public
-LocalisedExceptionBase(
-    Exception innerException
+LocalisedFormatException(
+    Localised< string > message
 )
-    : base(
-        "(description not available because not using Message property)",
-        innerException )
+    : this( message, null )
 {
 }
 
+
+public
+LocalisedFormatException(
+    Localised< string > message,
+    Exception           innerException
+)
+    : base( message, innerException )
+{
+    this.message = message;
+}
 
 
 
@@ -64,18 +74,21 @@ LocalisedExceptionBase(
 // ILocalisedException
 // -----------------------------------------------------------------------------
 
-new public abstract
+new public virtual
 Localised< string >
 Message
 {
-    get;
+    get { return this.message ?? this.BaseMessage; }
 }
 
+private
+Localised< string >
+message;
 
 
 protected override
 string
-BaseMessage
+ShimMessage
 {
     get { return this.Message; }
 }

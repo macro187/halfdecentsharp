@@ -15,22 +15,26 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
+using System;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Exceptions;
+using Com.Halfdecent.Globalisation;
+
 
 namespace
 Com.Halfdecent.Exceptions.Test
 {
 
+
 // =============================================================================
 /// Test program for <tt>Com.Halfdecent.Exceptions</tt>
 // =============================================================================
-//
+
 public class
 Tests
     : TestBase
 {
-
 
 
 
@@ -39,6 +43,72 @@ int
 Main()
 {
     return TestProgram.RunTests();
+}
+
+
+
+[Test( "Localised Exceptions" )]
+public static
+void
+Test_LocalisedExceptions()
+{
+    Exception           ie = new Exception();
+    Localised< string > m =
+        new SingleValueLocalised< string >( "message" );
+    string              pn = "paramname";
+    object              av = new object();
+
+    Print( "LocalisedException" );
+    try {
+        throw new LocalisedException( m, ie );
+    } catch( LocalisedException e ) {
+        AssertEqual( e.Message, m );
+        AssertEqual( e.InnerException, ie );
+    }
+
+    Print( "LocalisedArgumentException" );
+    try {
+        throw new LocalisedArgumentException( m, pn, ie );
+    } catch( LocalisedArgumentException e ) {
+        AssertEqual( e.Message, m );
+        AssertEqual( e.ParamName, pn );
+        AssertEqual( e.InnerException, ie );
+    }
+
+    Print( "LocalisedArgumentNullException" );
+    try {
+        throw new LocalisedArgumentNullException( pn, m, ie );
+    } catch( LocalisedArgumentNullException e ) {
+        AssertEqual( e.ParamName, pn );
+        AssertEqual( e.Message, m );
+        AssertEqual( e.InnerException, ie );
+    }
+
+    Print( "LocalisedArgumentOutOfRangeException" );
+    try {
+        throw new LocalisedArgumentOutOfRangeException( pn, av, m, ie );
+    } catch( LocalisedArgumentOutOfRangeException e ) {
+        AssertEqual( e.ParamName, pn );
+        AssertEqual( e.ActualValue, av );
+        AssertEqual( e.Message, m );
+        AssertEqual( e.InnerException, ie );
+    }
+
+    Print( "LocalisedFormatException" );
+    try {
+        throw new LocalisedFormatException( m, ie );
+    } catch( LocalisedFormatException e ) {
+        AssertEqual( e.Message, m );
+        AssertEqual( e.InnerException, ie );
+    }
+
+    Print( "LocalisedInvalidOperationException" );
+    try {
+        throw new LocalisedInvalidOperationException( m, ie );
+    } catch( LocalisedInvalidOperationException e ) {
+        AssertEqual( e.Message, m );
+        AssertEqual( e.InnerException, ie );
+    }
 }
 
 

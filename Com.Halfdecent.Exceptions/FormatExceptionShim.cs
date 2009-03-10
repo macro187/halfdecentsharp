@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,25 +15,25 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
-using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Resources;
+
 
 namespace
 Com.Halfdecent.Exceptions
 {
 
 
-
 // =============================================================================
-/// Exception indicating a programming error encountered at runtime
+/// INTERNAL: Shim that "renames" <tt>Message</tt> to <tt>BaseMessage</tt>,
+/// enabling <tt>Message</tt> to be, effectively, both overridden and shadowed
+/// in a subclass
 // =============================================================================
-///
-public class
-BugException
-    : SimpleLocalisedExceptionBase
+//
+public abstract class
+FormatExceptionShim
+    : FormatException
 {
-
 
 
 
@@ -40,40 +41,51 @@ BugException
 // Constructors
 // -----------------------------------------------------------------------------
 
-public
-BugException()
-    :this( null, null )
-{
-}
-
-
-
-public
-BugException(
-    Localised< string > message
+internal
+FormatExceptionShim(
+    string      message,
+    Exception   innerException
 )
-    :this( message, null )
+    : base( message, innerException )
 {
 }
 
 
 
-public
-BugException(
-    Localised< string > message,
-    Exception           innerException
-)
-    :base(
-        message ??
-            _S("A condition indicating a programming error was encountered"),
-        innerException )
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+override public
+string
+Message
 {
+    get { return this.ShimMessage; }
 }
 
 
 
+// -----------------------------------------------------------------------------
+// Protected
+// -----------------------------------------------------------------------------
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+abstract protected
+string
+ShimMessage
+{
+    get;
+}
+
+
+protected
+string
+BaseMessage
+{
+    get { return base.Message; }
+}
+
+
+
 
 } // type
 } // namespace

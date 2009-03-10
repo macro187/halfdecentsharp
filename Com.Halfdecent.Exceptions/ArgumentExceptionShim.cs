@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,20 +15,41 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
+using System;
+
+
 namespace
-Com.Halfdecent.Globalisation
+Com.Halfdecent.Exceptions
+{
+
+
+// =============================================================================
+/// INTERNAL: Shim that "renames" <tt>Message</tt> to <tt>BaseMessage</tt>,
+/// enabling <tt>Message</tt> to be, effectively, both overridden and shadowed
+/// in a subclass
+// =============================================================================
+
+public abstract class
+ArgumentExceptionShim
+    : ArgumentException
 {
 
 
 
-// =============================================================================
-/// An <tt>Exception</tt> with localised messaging
-// =============================================================================
-///
-public interface
-ILocalisedException
-{
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
 
+internal
+ArgumentExceptionShim(
+    string      message,
+    string      paramName,
+    Exception   innerException
+)
+    : base( message, paramName, innerException )
+{
+}
 
 
 
@@ -35,10 +57,32 @@ ILocalisedException
 // Properties
 // -----------------------------------------------------------------------------
 
-Localised< string >
+override public
+string
 Message
 {
+    get { return this.ShimMessage; }
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Protected
+// -----------------------------------------------------------------------------
+
+abstract protected
+string
+ShimMessage
+{
     get;
+}
+
+
+protected
+string
+BaseMessage
+{
+    get { return base.Message; }
 }
 
 
