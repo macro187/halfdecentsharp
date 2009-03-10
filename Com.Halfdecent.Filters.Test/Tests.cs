@@ -132,32 +132,32 @@ Test_FilterBase_Push()
     List< int >         to = new List< int >();
     List< int >         too = new List< int >();
 
-    Print( "Push(), 1-to-1 filter" );
+    Print( "1-to-1 filter" );
     to.Clear();
     f = new PassThrough { To = to.AsBag() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( from ) );
 
-    Print( "Push(), 1-to-many filter" );
+    Print( "1-to-many filter" );
     to.Clear();
     f = new DoubleUp { To = to.AsBag() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
 
-    Print( "Push(), many-to-1 filter" );
+    Print( "Many-to-1 filter" );
     to.Clear();
     f = new AddPairs { To = to.AsBag() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
 
-    Print( "Push(), closing filter" );
+    Print( "Closing filter" );
     to.Clear();
     f = new PassOne { To = to.AsBag() };
     f.Push( 1 );
     AssertEqual( f.TryPush( 2 ), false );
     Assert( to.SequenceEqual( new int[] { 1 } ) );
 
-    Print( "Push(), 1-to-many filter, switch .To mid-block" );
+    Print( "1-to-many filter, switch .To mid-block" );
     to.Clear();
     too.Clear();
     f = new DoubleUp { To =
@@ -168,6 +168,57 @@ Test_FilterBase_Push()
     f.To = too.AsBag();
     // (filter immediately flushes pending item to new sink)
     Assert( too.SequenceEqual( new int[] { 1 } ) );
+}
+
+
+
+[Test( "FilterBase.Pull()" )]
+public static
+void
+Test_FilterBase_Pull()
+{
+    IReadableBag< int >             from = new int[] { 1, 2, 3, 4 }.AsBag();
+    IReadableBag< int >             from1 = new int[] { 1 }.AsBag();
+    IReadableBag< int >             from2 = new int[] { 2 }.AsBag();
+    IFilter< int, int >             f;
+    BagFromCollectionAdapter< int > to = new List< int >().AsBag();
+
+    Print( "1-to-1 filter" );
+    f = new PassThrough { From = from.Stream() };
+    to.Clear();
+    f.PushTo( to );
+    Assert( to.Stream().AsEnumerable().SequenceEqual(
+        from.Stream().AsEnumerable() ) );
+
+    Print( "1-to-many filter" );
+    f = new DoubleUp { From = from.Stream() };
+    to.Clear();
+    f.PushTo( to );
+    Assert( to.Stream().AsEnumerable().SequenceEqual(
+        new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
+
+    Print( "Many-to-1 filter" );
+    f = new AddPairs { From = from.Stream() };
+    to.Clear();
+    f.PushTo( to );
+    Assert( to.Stream().AsEnumerable().SequenceEqual(
+        new int[] { 3, 7 } ) );
+
+    Print( "Closing filter" );
+    f = new PassOne { From = from.Stream() };
+    to.Clear();
+    f.PushTo( to );
+    Assert( to.Stream().AsEnumerable().SequenceEqual(
+        new int[] { 1 } ) );
+
+    Print( "Many-to-1 filter, switch .From mid-block" );
+    f = new AddPairs { From = from1.Stream() };
+    to.Clear();
+    f.PushTo( to );
+    AssertEqual( to.Count.ToDecimal(), 0m );
+    f.From = from2.Stream();
+    f.PushTo( to );
+    Assert( to.Stream().AsEnumerable().SequenceEqual( new int[] { 3 } ) );
 }
 
 

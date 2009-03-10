@@ -317,7 +317,32 @@ TryPull(
     out TOut item
 )
 {
-    throw new NotImplementedException();
+    if( this.From == null ) throw new InvalidOperationException(
+        "this.From must be set before items can be pulled" );
+
+    item = default( TOut );
+    for( ;; ) {
+
+        // Process() is done
+        if( this.process == null ) return false;
+
+        // Process() has produced an item
+        if( this.process.Current ) {
+            item = this.PeekFromProcess();
+            this.AcceptFromProcess();
+            this.Tick();
+            return true;
+
+        // Process() wants an item
+        } else {
+            TIn i;
+            if( !this.From.TryPull( out i ) ) return false;
+            this.GiveToProcess( i );
+
+        }
+
+        this.Tick();
+    }
 }
 
 
