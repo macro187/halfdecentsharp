@@ -41,7 +41,7 @@ public override
 string
 ToString()
 {
-    return "(in-code literal)";
+    return "an in-code literal value";
 }
 
 

@@ -43,7 +43,7 @@ public override
 string
 ToString()
 {
-    return "(this)";
+    return "'this'";
 }
 
 
