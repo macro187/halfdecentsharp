@@ -24,7 +24,7 @@ Com.Halfdecent.Meta
 ///
 public class
 This
-    : IValue
+    : Parameter
 {
 
 
@@ -32,6 +32,7 @@ This
 
 public
 This()
+    : base( "this" )
 {
 }
 
