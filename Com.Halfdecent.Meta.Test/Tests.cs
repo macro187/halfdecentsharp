@@ -102,6 +102,76 @@ Test_ValueException()
 }
 
 
+[Test( "ArgumentValueException" )]
+public static
+void
+Test_ArgumentValueException()
+{
+    Parameter           parameterReference = new Parameter( "fakeparam" );
+    Localised< string > messageFormat = "Fake problem with {0}";
+    Exception           innerException = new Exception();
+    Localised< string > reference = "some fake parameter";
+
+    ArgumentValueException e;
+    Print( "Using ArgumentValueException( parameterReference )..." );
+    e = new ArgumentValueException( parameterReference );
+    Print( ".ParameterReference" );
+    AssertEqual( e.ParameterReference, parameterReference );
+    Print( ".MessageFormat" );
+    Print( "\"{0}\"", e.MessageFormat );
+    Print( ".ValueReference" );
+    AssertEqual( e.ValueReference, parameterReference );
+    Print( ".SayMessage()" );
+    Print( "\"{0}\"", e.SayMessage( reference ) );
+    Print( ".Message" );
+    Print( "\"{0}\"", e.Message );
+    Print( ".InnerException" );
+    AssertEqual( e.InnerException, null );
+
+    Print( "Using ArgumentValueException( parameterReference, messageFormat )..." );
+    e = new ArgumentValueException( parameterReference, messageFormat );
+    Print( ".ParameterReference" );
+    AssertEqual( e.ParameterReference, parameterReference );
+    Print( ".MessageFormat" );
+    AssertEqual< string >( e.MessageFormat, messageFormat );
+    Print( ".ValueReference" );
+    AssertEqual( e.ValueReference, parameterReference );
+    Print( ".SayMessage()" );
+    AssertEqual< string >(
+        e.SayMessage( reference ),
+        LocalisedString.Format( messageFormat, reference) );
+    Print( ".Message" );
+    AssertEqual< string >(
+        e.Message,
+        LocalisedString.Format(
+            messageFormat,
+            parameterReference.ToString() ) );
+    Print( ".InnerException" );
+    AssertEqual( e.InnerException, null );
+
+    Print( "Using ArgumentValueException( parameterReference, messageFormat, innerException )..." );
+    e = new ArgumentValueException( parameterReference, messageFormat, innerException );
+    Print( ".ParameterReference" );
+    AssertEqual( e.ParameterReference, parameterReference );
+    Print( ".MessageFormat" );
+    AssertEqual< string >( e.MessageFormat, messageFormat );
+    Print( ".ValueReference" );
+    AssertEqual( e.ValueReference, parameterReference );
+    Print( ".SayMessage()" );
+    AssertEqual< string >(
+        e.SayMessage( reference ),
+        LocalisedString.Format( messageFormat, reference) );
+    Print( ".Message" );
+    AssertEqual< string >(
+        e.Message,
+        LocalisedString.Format(
+            messageFormat,
+            parameterReference.ToString() ) );
+    Print( ".InnerException" );
+    AssertEqual( e.InnerException, innerException );
+}
+
+
 
 
 } // type
