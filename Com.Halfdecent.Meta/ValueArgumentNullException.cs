@@ -17,7 +17,6 @@
 
 
 using System;
-using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Exceptions;
 
 
@@ -27,61 +26,36 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// An exception having to do with a particular value
+/// Wraps an <tt>IValueException</tt> in a <tt>System.ArgumentNullException</tt>
 // =============================================================================
 
-public static class
-ValueException
+public class
+ValueArgumentNullException<
+    TInnerException
+>
+    : LocalisedArgumentNullException
+    where TInnerException :
+        Exception,
+        IValueException< Parameter >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// Constructors
 // -----------------------------------------------------------------------------
 
-public static
-ValueException< T >
-Create<
-    T
->(
-    T valueReference
+public
+ValueArgumentNullException(
+    TInnerException innerException
 )
-    where T : IValue
+    : base(
+        innerException.ValueReference.Name,
+        innerException.Message,
+        innerException )
 {
-    return Create( valueReference, null, null );
-}
-
-
-public static
-ValueException< T >
-Create<
-    T
->(
-    T                   valueReference,
-    Localised< string > messageFormat
-)
-    where T : IValue
-{
-    return Create( valueReference, messageFormat, null );
-}
-
-
-public static
-ValueException< T >
-Create<
-    T
->(
-    T                   valueReference,
-    Localised< string > messageFormat,
-    Exception           innerException
-)
-    where T : IValue
-{
-    if( valueReference == null )
-        throw new LocalisedArgumentNullException( "valueReference" );
-    return new ValueException< T >(
-        valueReference, messageFormat, innerException );
+    if( innerException == null )
+        throw new LocalisedArgumentNullException( "innerException" );
 }
 
 

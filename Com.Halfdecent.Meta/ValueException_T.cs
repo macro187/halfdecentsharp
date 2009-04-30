@@ -27,13 +27,17 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// A <tt>System.ArgumentNullException</tt> having to do with a particular value
+/// An exception having to do with a particular value
 // =============================================================================
 
 public class
-ArgumentNullValueException
-    : LocalisedArgumentNullException
-    , IValueException
+ValueException<
+    T
+    ///< Kind of <tt>IValue</tt> involved
+>
+    : LocalisedException
+    , IValueException< T >
+    where T : IValue
 {
 
 
@@ -43,40 +47,36 @@ ArgumentNullValueException
 // -----------------------------------------------------------------------------
 
 public
-ArgumentNullValueException(
-    Parameter parameterReference
+ValueException(
+    T valueReference
 )
-    : this( parameterReference, null, null )
+    : this( valueReference, null, null )
 {
 }
 
 
 public
-ArgumentNullValueException(
-    Parameter           parameterReference,
+ValueException(
+    T                   valueReference,
     Localised< string > messageFormat
 )
-    : this( parameterReference, messageFormat, null )
+    : this( valueReference, messageFormat, null )
 {
 }
 
 
 public
-ArgumentNullValueException(
-    Parameter           parameterReference,
+ValueException(
+    T                   valueReference,
     Localised< string > messageFormat,
     Exception           innerException
 )
-    : base(
-        parameterReference != null ? parameterReference.Name : null,
-        null,
-        innerException )
+    : base( null, innerException )
 {
-    if( parameterReference == null )
-        throw new LocalisedArgumentNullException( "parameterReference" );
-    this.parameterreference = parameterReference;
-    this.messageformat =
-        messageFormat ?? _S("Unable to proceed because {0} is null");
+    if( valueReference == null )
+        throw new LocalisedArgumentNullException( "valueReference" );
+    this.valuereference = valueReference;
+    this.messageformat = messageFormat ?? _S("Unable to proceed due to {0}");
 }
 
 
@@ -84,18 +84,6 @@ ArgumentNullValueException(
 // -----------------------------------------------------------------------------
 // Properties
 // -----------------------------------------------------------------------------
-
-public
-Parameter
-ParameterReference
-{
-    get { return this.parameterreference; }
-}
-
-private
-Parameter
-parameterreference;
-
 
 public
 Localised< string >
@@ -111,16 +99,26 @@ messageformat;
 
 
 // -----------------------------------------------------------------------------
-// IValueException
+// IValueException< T >
 // -----------------------------------------------------------------------------
 
 public
-IValue
+T
 ValueReference
 {
-    get { return this.parameterreference; }
+    get { return this.valuereference; }
 }
 
+private
+T
+valuereference;
+
+
+
+
+// -----------------------------------------------------------------------------
+// IValueException
+// -----------------------------------------------------------------------------
 
 public
 Localised< string >
@@ -143,7 +141,7 @@ public override
 Localised< string >
 Message
 {
-    get { return this.SayMessage( this.ParameterReference.ToString() ); }
+    get { return this.SayMessage( this.ValueReference.ToString() ); }
 }
 
 

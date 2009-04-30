@@ -16,9 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 
 
 namespace
@@ -27,61 +25,29 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// An exception having to do with a particular value
+/// An exception having to do with a particular value of a particular
+/// <tt>IValue</tt> type
 // =============================================================================
 
-public static class
-ValueException
+public interface
+IValueException<
+    T
+    ///< Kind of <tt>IValue</tt> involved
+>
+    : IValueException
+    where T : IValue
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// Properties
 // -----------------------------------------------------------------------------
 
-public static
-ValueException< T >
-Create<
-    T
->(
-    T valueReference
-)
-    where T : IValue
+T
+ValueReference
 {
-    return Create( valueReference, null, null );
-}
-
-
-public static
-ValueException< T >
-Create<
-    T
->(
-    T                   valueReference,
-    Localised< string > messageFormat
-)
-    where T : IValue
-{
-    return Create( valueReference, messageFormat, null );
-}
-
-
-public static
-ValueException< T >
-Create<
-    T
->(
-    T                   valueReference,
-    Localised< string > messageFormat,
-    Exception           innerException
-)
-    where T : IValue
-{
-    if( valueReference == null )
-        throw new LocalisedArgumentNullException( "valueReference" );
-    return new ValueException< T >(
-        valueReference, messageFormat, innerException );
+    get;
 }
 
 
