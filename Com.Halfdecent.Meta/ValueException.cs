@@ -30,62 +30,114 @@ Com.Halfdecent.Meta
 /// An exception having to do with a particular value
 // =============================================================================
 
-public static class
+public class
 ValueException
+    : LocalisedException
+    , IValueException
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// Constructors
 // -----------------------------------------------------------------------------
 
-public static
-ValueException< T >
-Create<
-    T
->(
-    T valueReference
+public
+ValueException(
+    IValue valueReference
 )
-    where T : IValue
+    : this( valueReference, null, null )
 {
-    return Create( valueReference, null, null );
 }
 
 
-public static
-ValueException< T >
-Create<
-    T
->(
-    T                   valueReference,
+public
+ValueException(
+    IValue              valueReference,
     Localised< string > messageFormat
 )
-    where T : IValue
+    : this( valueReference, messageFormat, null )
 {
-    return Create( valueReference, messageFormat, null );
 }
 
 
-public static
-ValueException< T >
-Create<
-    T
->(
-    T                   valueReference,
+public
+ValueException(
+    IValue              valueReference,
     Localised< string > messageFormat,
     Exception           innerException
 )
-    where T : IValue
+    : base( null, innerException )
 {
     if( valueReference == null )
         throw new LocalisedArgumentNullException( "valueReference" );
-    return new ValueException< T >(
-        valueReference, messageFormat, innerException );
+    this.valuereference = valueReference;
+    this.messageformat = messageFormat ?? _S("Unable to proceed due to {0}");
 }
 
 
 
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+Localised< string >
+MessageFormat
+{
+    get { return this.messageformat; }
+}
+
+private
+Localised< string >
+messageformat;
+
+
+
+// -----------------------------------------------------------------------------
+// IValueException
+// -----------------------------------------------------------------------------
+
+public
+Localised< string >
+SayMessage(
+    Localised< string > reference
+)
+{
+    if( reference == null )
+        throw new LocalisedArgumentNullException( "reference" );
+    return LocalisedString.Format( this.MessageFormat, reference );
+}
+
+
+public
+IValue
+ValueReference
+{
+    get { return this.valuereference; }
+}
+
+private
+IValue
+valuereference;
+
+
+
+// -----------------------------------------------------------------------------
+// ILocalisedException
+// -----------------------------------------------------------------------------
+
+public override
+Localised< string >
+Message
+{
+    get { return this.SayMessage( this.ValueReference.ToString() ); }
+}
+
+
+
+
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

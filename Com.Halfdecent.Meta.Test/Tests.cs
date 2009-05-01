@@ -56,9 +56,9 @@ Test_ValueException()
     Exception           innerException = new Exception();
     Localised< string > reference = "some fake value";
 
-    ValueException< IValue > e;
+    ValueException e;
     Print( "ValueException( valueReference )" );
-    e = ValueException.Create( valueReference );
+    e = new ValueException( valueReference );
     Print( "Check .ValueReference" );
     AssertEqual( e.ValueReference, valueReference );
     Print( "SayMessage: {0}", e.SayMessage( reference ) );
@@ -67,7 +67,7 @@ Test_ValueException()
     AssertEqual( e.InnerException, null );
 
     Print( "ValueException( valueReference, messageFormat )" );
-    e = ValueException.Create( valueReference, messageFormat );
+    e = new ValueException( valueReference, messageFormat );
     Print( "Check .ValueReference" );
     AssertEqual( e.ValueReference, valueReference );
     Print( "Check .SayMessage()" );
@@ -84,7 +84,7 @@ Test_ValueException()
     AssertEqual( e.InnerException, null );
 
     Print( "ValueException( valueReference, messageFormat, innerException )" );
-    e = ValueException.Create( valueReference, messageFormat, innerException );
+    e = new ValueException( valueReference, messageFormat, innerException );
     Print( "Check .ValueReference" );
     AssertEqual( e.ValueReference, valueReference );
     Print( "Check .SayMessage()" );

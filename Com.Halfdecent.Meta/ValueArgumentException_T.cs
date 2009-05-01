@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Globalisation;
+using System;
+using Com.Halfdecent.Exceptions;
 
 
 namespace
@@ -25,33 +26,51 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// An exception having to do with a particular value of a particular
-/// <tt>IValue</tt> type
+/// Wraps an <tt>IValueException</tt> in a <tt>LocalisedArgumentException</tt>
 // =============================================================================
 
-public interface
-IValueException<
+public class
+ValueArgumentException<
     T
-    ///< Kind of <tt>IValue</tt> involved
+    ///< Type of <tt>InnerException</tt>, which must be an
+    ///  <tt>IValueException</tt> (and of course also a
+    ///  <tt>System.Exception</tt>)
 >
-    : IValueException
-    where T : IValue
+    : LocalisedArgumentException
+    where T :
+        Exception,
+        IValueException
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Constructors
 // -----------------------------------------------------------------------------
 
-T
-ValueReference
+public
+ValueArgumentException(
+    T innerException
+    ///< The <tt>IValueException</tt> to wrap, whose <tt>ValueReference</tt>
+    ///  must be a <tt>Parameter</tt>
+)
+    : base(
+        innerException.Message,
+        ((Parameter)(innerException.ValueReference)).Name,
+        innerException )
 {
-    get;
+    if( innerException == null )
+        throw new LocalisedArgumentNullException( "innerException" );
+    if( !( innerException.ValueReference is Parameter ) )
+        throw new LocalisedArgumentException(
+            _S("innerException.ValueReference is not a Parameter"),
+            "innerException" );
 }
 
 
 
+
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

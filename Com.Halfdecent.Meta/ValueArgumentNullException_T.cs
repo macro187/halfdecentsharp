@@ -32,12 +32,12 @@ Com.Halfdecent.Meta
 
 public class
 ValueArgumentNullException<
-    TInnerException
+    T
 >
     : LocalisedArgumentNullException
-    where TInnerException :
+    where T :
         Exception,
-        IValueException< Parameter >
+        IValueException
 {
 
 
@@ -48,19 +48,25 @@ ValueArgumentNullException<
 
 public
 ValueArgumentNullException(
-    TInnerException innerException
+    T innerException
 )
     : base(
-        innerException.ValueReference.Name,
+        ((Parameter)(innerException.ValueReference)).Name,
         innerException.Message,
         innerException )
 {
     if( innerException == null )
         throw new LocalisedArgumentNullException( "innerException" );
+    if( !( innerException.ValueReference is Parameter ) )
+        throw new LocalisedArgumentException(
+            _S("innerException.ValueReference is not a Parameter"),
+            "innerException" );
 }
 
 
 
+
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace
