@@ -27,7 +27,7 @@ Com.Halfdecent.Meta
 
 // =============================================================================
 /// Wraps an <tt>IValueException</tt> in a
-/// <tt>System.ArgumentOutOfRangeException</tt>
+/// <tt>LocalisedArgumentOutOfRangeException</tt>
 // =============================================================================
 
 public class

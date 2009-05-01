@@ -26,7 +26,8 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Wraps an <tt>IValueException</tt> in a <tt>System.ArgumentNullException</tt>
+/// Wraps an <tt>IValueException</tt> in a
+/// <tt>LocalisedArgumentNullException</tt>
 // =============================================================================
 
 public class
