@@ -98,7 +98,7 @@ messageformat;
 // IValueException
 // -----------------------------------------------------------------------------
 
-public
+public virtual
 Localised< string >
 SayMessage(
     Localised< string > reference
