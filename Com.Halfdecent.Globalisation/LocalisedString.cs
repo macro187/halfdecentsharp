@@ -27,10 +27,10 @@ Com.Halfdecent.Globalisation
 // =============================================================================
 /// Utilities for working with <tt>Localised< string ></tt>s
 // =============================================================================
+
 public static class
 LocalisedString
 {
-
 
 
 

@@ -26,11 +26,10 @@ Com.Halfdecent.RTypes
 // =============================================================================
 // An RType
 // =============================================================================
-//
+
 public interface
 IRType
 {
-
 
 
 
@@ -47,7 +46,6 @@ SayIs(
 );
 
 
-
 /// Generate a natural language statement that an item "is not" this RType
 ///
 Localised< string >
@@ -55,7 +53,6 @@ SayIsNot(
     Localised< string > reference
     ///< What to refer to the item as, in natural language
 );
-
 
 
 /// Generate a natural language statement requiring an item to be this RType

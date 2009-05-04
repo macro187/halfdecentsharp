@@ -14,19 +14,20 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 namespace
 Com.Halfdecent.Meta
 {
 
+
 // =============================================================================
 /// A reference to a value associated with a frame
 // =============================================================================
-///
+
 public interface
 IVariable
     : IValue
 {
-
 
 
 

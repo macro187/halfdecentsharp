@@ -14,14 +14,16 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 namespace
 Com.Halfdecent.Meta
 {
 
+
 // =============================================================================
 /// An in-code literal value
 // =============================================================================
-///
+
 public class
 Literal
     : IValue
@@ -29,12 +31,10 @@ Literal
 
 
 
-
 public
 Literal()
 {
 }
-
 
 
 public override

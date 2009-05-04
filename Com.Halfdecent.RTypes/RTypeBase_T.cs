@@ -29,14 +29,13 @@ Com.Halfdecent.RTypes
 // =============================================================================
 /// Base class for implementing RTypes
 // =============================================================================
-//
+
 public abstract class
 RTypeBase<
     T
 >
     : IRType< T >
 {
-
 
 
 
@@ -55,7 +54,6 @@ MyCheck(
 {
     return true;
 }
-
 
 
 
@@ -92,14 +90,12 @@ Check(
 }
 
 
-
 public virtual
 IEnumerable< IRType< T > >
 Supers
 {
     get { return new IRType< T >[]{}; }
 }
-
 
 
 public virtual
@@ -110,7 +106,6 @@ Components
 }
 
 
-
 public abstract
 Localised< string >
 SayIs(
@@ -118,13 +113,11 @@ SayIs(
 );
 
 
-
 public abstract
 Localised< string >
 SayIsNot(
     Localised< string > reference
 );
-
 
 
 public abstract

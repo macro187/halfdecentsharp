@@ -49,7 +49,6 @@ NonBlankString()
 
 
 
-
 // -----------------------------------------------------------------------------
 // RTypeBase< T >
 // -----------------------------------------------------------------------------
@@ -62,7 +61,6 @@ MyCheck(
 {
     return item == null ? true : ( item != string.Empty );
 }
-
 
 
 // Note that instance Check() can no longer be called without casting to a

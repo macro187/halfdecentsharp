@@ -65,7 +65,7 @@ RTypeException(
         throw new LocalisedArgumentNullException( "valueReference" );
     if( rType == null )
         throw new LocalisedArgumentNullException( "rType" );
-    this.rtype = rType;
+    this.RType = rType;
 }
 
 
@@ -78,12 +78,9 @@ public
 IRType
 RType
 {
-    get { return this.rtype; }
+    get;
+    private set;
 }
-
-private
-IRType
-rtype;
 
 
 
@@ -101,6 +98,7 @@ SayMessage(
         throw new LocalisedArgumentNullException( "reference" );
     return this.RType.SayIsNot( reference );
 }
+
 
 
 // -----------------------------------------------------------------------------

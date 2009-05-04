@@ -29,7 +29,7 @@ Com.Halfdecent.RTypes
 // =============================================================================
 /// RType< T > contravariant type adapter
 // =============================================================================
-//
+
 public class
 RTypeTypeAdapter<
     TFrom,
@@ -38,7 +38,6 @@ RTypeTypeAdapter<
     : IRType< TTo >
     where TTo : TFrom
 {
-
 
 
 
@@ -55,10 +54,15 @@ RTypeTypeAdapter(
     this.from = from;
 }
 
+
+
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
 private
 IRType< TFrom >
 from;
-
 
 
 
@@ -77,7 +81,6 @@ Check(
 }
 
 
-
 public
 IEnumerable< IRType< TTo > >
 Supers
@@ -88,7 +91,6 @@ Supers
             yield return new RTypeTypeAdapter< TFrom, TTo >( s );
     }
 }
-
 
 
 public
@@ -103,7 +105,6 @@ Components
 }
 
 
-
 public
 Localised< string >
 SayIs(
@@ -114,7 +115,6 @@ SayIs(
 }
 
 
-
 public
 Localised< string >
 SayIsNot(
@@ -123,7 +123,6 @@ SayIsNot(
 {
     return from.SayIsNot( reference );
 }
-
 
 
 public

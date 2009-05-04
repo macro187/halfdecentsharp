@@ -15,18 +15,19 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 namespace
 Com.Halfdecent.Resources.Test
 {
 
+
 // =============================================================================
 /// Container type for test resources
 // =============================================================================
-//
+
 public class
 TestRes
 {
-
 
 
 

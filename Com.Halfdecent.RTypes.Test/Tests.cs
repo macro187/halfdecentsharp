@@ -15,23 +15,25 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Meta;
+
 
 namespace
 Com.Halfdecent.RTypes.Test
 {
 
+
 // =============================================================================
 /// Test program for <tt>Com.Halfdecent.RTypes</tt>
 // =============================================================================
-//
+
 public class
 Tests
     : TestBase
 {
-
 
 
 
@@ -41,7 +43,6 @@ Main()
 {
     return TestProgram.RunTests();
 }
-
 
 
 [Test( "NonNull" )]
@@ -63,7 +64,6 @@ Test_NonNull()
         rt.Check( obj, obj_ );
     } );
 }
-
 
 
 [Test( "IsA" )]
@@ -90,9 +90,11 @@ Test_IsA()
     } );
 }
 
-public class A { }
-public class B : A { }
 
+public class A { }
+
+
+public class B : A { }
 
 
 [Test( "NonBlankString" )]
@@ -114,7 +116,6 @@ Test_NonBlankString()
         rt.Check( s, s_ );
     } );
 }
-
 
 
 [Test( "EQ" )]
@@ -140,7 +141,6 @@ Test_EQ()
 }
 
 
-
 [Test( "NEQ" )]
 public static
 void
@@ -162,7 +162,6 @@ Test_NEQ()
         rt.Check( eq, new Local( "eq" ) );
     } );
 }
-
 
 
 [Test( "IRType.Contravary()" )]

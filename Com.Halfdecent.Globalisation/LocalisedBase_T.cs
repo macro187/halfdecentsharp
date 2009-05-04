@@ -14,13 +14,16 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Globalization;
 using System.Collections.Generic;
 
+
 namespace
 Com.Halfdecent.Globalisation
 {
+
 
 // =============================================================================
 /// Base class for implementing <tt>Localised< T ></tt>
@@ -32,7 +35,6 @@ LocalisedBase<
 >
     : Localised< T >
 {
-
 
 
 
@@ -60,7 +62,6 @@ ParentFallbacksFor(
 }
 
 
-
 // TODO Fallback algorithm which also checks other regions with the same
 //      language in some prioritised order eg:
 //        en-AU => en, en-US, en-GB, en-CA, ..., (invariant)
@@ -74,7 +75,6 @@ ParentFallbacksFor(
 //{
 //    yield return ...;
 //}
-
 
 
 
@@ -93,7 +93,6 @@ TryDefault(
 }
 
 
-
 protected virtual
 bool
 TryFor(
@@ -106,7 +105,6 @@ TryFor(
 }
 
 
-
 protected virtual
 IEnumerable< CultureInfo >
 FallbacksFor(
@@ -115,7 +113,6 @@ FallbacksFor(
 {
     yield break;
 }
-
 
 
 

@@ -99,9 +99,7 @@ LocalisedArgumentNullException(
 public override
 string
 ParamName
-{
-    get { return this.paramname; }
-}
+{ get { return this.paramname; } }
 
 private
 string

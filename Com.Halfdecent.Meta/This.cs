@@ -14,19 +14,20 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 namespace
 Com.Halfdecent.Meta
 {
 
+
 // =============================================================================
 /// The <tt>this</tt> reference
 // =============================================================================
-///
+
 public class
 This
     : Parameter
 {
-
 
 
 
@@ -35,8 +36,6 @@ This()
     : base( "this" )
 {
 }
-
-
 
 
 public override

@@ -14,6 +14,7 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Globalization;
 using System.Resources;
@@ -21,9 +22,11 @@ using System.Collections.Generic;
 using System.IO;
 using Com.Halfdecent.Globalisation;
 
+
 namespace
 Com.Halfdecent.Resources
 {
+
 
 // =============================================================================
 /// A <tt>Localised< T ></tt> representing embedded resources of a particular
@@ -41,7 +44,6 @@ LocalisedResource<
 >
     : LocalisedBase< T >
 {
-
 
 
 
@@ -64,7 +66,6 @@ LocalisedResource(
 
 
 
-
 // -----------------------------------------------------------------------------
 // Private
 // -----------------------------------------------------------------------------
@@ -78,10 +79,53 @@ private
 string
 name;
 
+
 private
 ResourceManager
 manager = null;
 
+
+private class
+InternalResourceManager
+    : ResourceManager
+{
+    public
+    InternalResourceManager(
+        Type type
+    )
+        : base( type )
+    {
+        if( type == null ) throw new ArgumentNullException( "type" );
+        this.sourcetype = type;
+    }
+
+    private
+    Type
+    sourcetype;
+
+    protected override
+    ResourceSet
+    InternalGetResourceSet(
+        CultureInfo culture,
+        bool        Createifnotexists,
+        bool        tryParents
+    )
+    {
+        if( culture == null ) throw new ArgumentNullException( "culture" );
+
+        Stream s = null;
+        try {
+            s = this.MainAssembly.GetManifestResourceStream(
+                this.sourcetype,
+                this.GetResourceFileName( culture ) );
+        } catch( FileNotFoundException ) {
+        }
+        if( s != null ) return new ResourceSet( s );
+
+        return base.InternalGetResourceSet(
+            culture, Createifnotexists, tryParents );
+    }
+}
 
 
 
@@ -141,7 +185,6 @@ TryFor(
 }
 
 
-
 protected override
 IEnumerable< CultureInfo >
 FallbacksFor(
@@ -149,51 +192,6 @@ FallbacksFor(
 )
 {
     return LocalisedBase< T >.ParentFallbacksFor( culture );
-}
-
-
-
-
-private class
-InternalResourceManager
-    : ResourceManager
-{
-    public
-    InternalResourceManager(
-        Type type
-    )
-        : base( type )
-    {
-        if( type == null ) throw new ArgumentNullException( "type" );
-        this.sourcetype = type;
-    }
-
-    private
-    Type
-    sourcetype;
-
-    protected override
-    ResourceSet
-    InternalGetResourceSet(
-        CultureInfo culture,
-        bool        Createifnotexists,
-        bool        tryParents
-    )
-    {
-        if( culture == null ) throw new ArgumentNullException( "culture" );
-
-        Stream s = null;
-        try {
-            s = this.MainAssembly.GetManifestResourceStream(
-                this.sourcetype,
-                this.GetResourceFileName( culture ) );
-        } catch( FileNotFoundException ) {
-        }
-        if( s != null ) return new ResourceSet( s );
-
-        return base.InternalGetResourceSet(
-            culture, Createifnotexists, tryParents );
-    }
 }
 
 

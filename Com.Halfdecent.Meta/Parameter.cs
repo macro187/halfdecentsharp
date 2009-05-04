@@ -14,19 +14,20 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 namespace
 Com.Halfdecent.Meta
 {
 
+
 // =============================================================================
 /// A parameter
 // =============================================================================
-///
+
 public class
 Parameter
     : VariableBase
 {
-
 
 
 
@@ -37,7 +38,6 @@ Parameter(
     : base( name )
 {
 }
-
 
 
 public override

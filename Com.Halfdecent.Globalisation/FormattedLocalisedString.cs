@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -28,11 +29,11 @@ Com.Halfdecent.Globalisation
 // =============================================================================
 /// Localised, lazy-evaluated result of <tt>LocalisedString.Format()</tt>
 // =============================================================================
+
 public class
 FormattedLocalisedString
     : Localised< string >
 {
-
 
 
 
@@ -48,10 +49,9 @@ FormattedLocalisedString(
 {
     if( format == null ) throw new ArgumentNullException( "format" );
     if( args == null ) throw new ArgumentNullException( "args" );
-    this.format = format;
-    this.args = args;
+    this.Format = format;
+    this.Args = args;
 }
-
 
 
 
@@ -63,26 +63,18 @@ public
 Localised< string >
 Format
 {
-    get { return this.format; }
+    get;
+    private set;
 }
-
-private
-Localised< string >
-format;
-
 
 
 public
 object[]
 Args
 {
-    get { return this.args; }
+    get;
+    private set;
 }
-
-private
-object[]
-args;
-
 
 
 
@@ -102,7 +94,7 @@ ForCulture(
     Thread.CurrentThread.CurrentCulture = culture;
     Thread.CurrentThread.CurrentUICulture = culture;
     try {
-        s = String.Format( culture, this.format, this.args );
+        s = String.Format( culture, this.Format, this.Args );
     } finally {
         Thread.CurrentThread.CurrentUICulture = cuic;
         Thread.CurrentThread.CurrentCulture = cc;

@@ -39,7 +39,6 @@ SimpleRTypeBase<
 
 
 
-
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
@@ -61,7 +60,6 @@ SimpleRTypeBase(
     this.isnottext = isNotText;
     this.mustbetext = mustBeText;
 }
-
 
 
 
@@ -87,7 +85,6 @@ Localised< string >
 istext;
 
 
-
 public override
 Localised< string >
 SayIsNot(
@@ -104,7 +101,6 @@ SAYISNOT_REFERENCE = new Parameter( "reference" );
 private
 Localised< string >
 isnottext;
-
 
 
 public override

@@ -15,6 +15,7 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Globalization;
 using System.Threading;
@@ -22,19 +23,20 @@ using Com.Halfdecent.Testing;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Resources;
 
+
 namespace
 Com.Halfdecent.Resources.Test
 {
 
+
 // =============================================================================
 /// Tests for <tt>Com.Halfdecent.Resources</tt>
 // =============================================================================
-///
+
 public class
 ResourcesTests
     : TestBase
 {
-
 
 
 
@@ -44,8 +46,6 @@ Main()
 {
     return TestProgram.RunTests();
 }
-
-
 
 
 /*
@@ -107,7 +107,6 @@ Test_Resource_Get()
 */
 
 
-
 [Test( "Resource._R()" )]
 public static
 void
@@ -143,7 +142,6 @@ Test_Resource__R()
         ){}
     } );
 }
-
 
 
 [Test( "Resource._S()" )]

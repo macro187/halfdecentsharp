@@ -14,22 +14,24 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Globalisation;
+
 
 namespace
 Com.Halfdecent.Resources
 {
 
+
 // =============================================================================
 /// An exception indicating that a resource was not of the expected type
 // =============================================================================
-///
+
 public class
 ResourceTypeMismatchException
     : Exception
 {
-
 
 
 

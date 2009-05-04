@@ -14,12 +14,15 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Globalization;
+
 
 namespace
 Com.Halfdecent.Globalisation
 {
+
 
 // =============================================================================
 /// Represents localised variations of an item collectively as one
@@ -38,10 +41,10 @@ Com.Halfdecent.Globalisation
 
 public abstract class
 Localised<
-    T   ///< The type of underlying values
+    T
+    ///< The type of underlying values
 >
 {
-
 
 
 
@@ -83,7 +86,6 @@ this[
 
 
 
-
 // -----------------------------------------------------------------------------
 // Protected
 // -----------------------------------------------------------------------------
@@ -104,7 +106,6 @@ ForCulture(
 
 
 
-
 // -----------------------------------------------------------------------------
 // Object
 // -----------------------------------------------------------------------------
@@ -117,7 +118,6 @@ ToString()
 {
     return this[ CultureInfo.CurrentCulture ].ToString();
 }
-
 
 
 
@@ -139,7 +139,6 @@ implicit operator T(
         ? default( T )
         : localised[ CultureInfo.CurrentCulture ];
 }
-
 
 
 /// Implicit conversion from <tt>T</tt>

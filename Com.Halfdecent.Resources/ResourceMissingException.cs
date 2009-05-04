@@ -14,23 +14,25 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Globalisation;
+
 
 namespace
 Com.Halfdecent.Resources
 {
 
+
 // =============================================================================
 /// An exception indicating that an embedded resource that was expected to
 /// exist couldn't be found
 // =============================================================================
-///
+
 public class
 ResourceMissingException
     : Exception
 {
-
 
 
 
@@ -50,17 +52,11 @@ ResourceMissingException
 ///
 public
 ResourceMissingException(
-
-    Type    type,
-    ///
+    Type        type,
     ///< Name of the type the missing resource was supposed to belong to
-
-    string  name,
-    ///
+    string      name,
     ///< Name of the missing resource
-
     Exception   innerException
-    ///
     ///< (See <tt>System.Exception</tt>)
 )
     : base(
@@ -74,10 +70,9 @@ ResourceMissingException(
     if( type == null ) throw new ArgumentNullException( "type" );
     if( name == null ) throw new ArgumentNullException( "name" );
     if( name == "" ) throw new ArgumentException( "Is blank", "name" );
-    this.type = type;
-    this.name = name;
+    this.Type = type;
+    this.Name = name;
 }
-
 
 
 
@@ -87,21 +82,20 @@ ResourceMissingException(
 
 public
 Type
-Type { get { return this.type; } }
-
-private
 Type
-type;
-
+{
+    get;
+    private set;
+}
 
 
 public
 string
-Name { get { return this.name; } }
-
-private
-string
-name;
+Name
+{
+    get;
+    private set;
+}
 
 
 

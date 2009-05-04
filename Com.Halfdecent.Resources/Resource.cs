@@ -14,6 +14,7 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Diagnostics;
 using System.Resources;
@@ -22,9 +23,11 @@ using System.Collections.Generic;
 using System.IO;
 using Com.Halfdecent.Globalisation;
 
+
 namespace
 Com.Halfdecent.Resources
 {
+
 
 // =============================================================================
 /// Utilities for working with resources
@@ -38,7 +41,6 @@ Com.Halfdecent.Resources
 public static class
 Resource
 {
-
 
 
 
@@ -71,8 +73,6 @@ _S(
 }
 
 
-
-
 /// Get a <tt>Localised< T ></tt> whose localised variations are embedded under
 /// a given name as resources belonging to a given type
 ///
@@ -87,20 +87,16 @@ _S(
 ///
 public static
 Localised< T >
-///
 /// @returns A <tt>Localised< T ></tt> whose localised variations are embedded
 /// resources
 _R<
     T
-    ///
     ///< Type of the resource(s)
 >(
     Type type,
-    ///
     ///< Type the resource(s) belong to
 
     string name
-    ///
     ///< Name the resources are embedded under
 )
 {
@@ -124,9 +120,6 @@ _R<
 
     return r;
 }
-
-
-
 
 
 

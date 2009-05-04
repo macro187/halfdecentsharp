@@ -14,24 +14,26 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Globalization;
 using Com.Halfdecent.Globalisation;
+
 
 namespace
 Com.Halfdecent.Resources
 {
 
+
 // =============================================================================
 /// A <tt>Localised< string ></tt> that represents a (possibly)
 /// localised string
 // =============================================================================
-///
+
 public class
 LocalisedStringResource
     : LocalisedResource< string >
 {
-
 
 
 
@@ -45,7 +47,6 @@ LocalisedStringResource
 public static readonly
 string
 RESOURCE_NAME_PREFIX = "__";
-
 
 
 
@@ -70,9 +71,8 @@ LocalisedStringResource(
     if( untranslated == "" )
         throw new ArgumentException( "Is blank", "untranslated" );
 
-    this.untranslated = untranslated;
+    this.Untranslated = untranslated;
 }
-
 
 
 
@@ -82,12 +82,11 @@ LocalisedStringResource(
 
 public
 string
-Untranslated { get { return this.untranslated; } }
-
-private
-string
-untranslated;
-
+Untranslated
+{
+    get;
+    private set;
+}
 
 
 

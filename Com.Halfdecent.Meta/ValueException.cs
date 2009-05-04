@@ -71,8 +71,8 @@ ValueException(
 {
     if( valueReference == null )
         throw new LocalisedArgumentNullException( "valueReference" );
-    this.valuereference = valueReference;
-    this.messageformat = messageFormat ?? _S("Unable to proceed due to {0}");
+    this.ValueReference = valueReference;
+    this.MessageFormat = messageFormat ?? _S("Unable to proceed due to {0}");
 }
 
 
@@ -85,12 +85,9 @@ public
 Localised< string >
 MessageFormat
 {
-    get { return this.messageformat; }
+    get;
+    private set;
 }
-
-private
-Localised< string >
-messageformat;
 
 
 
@@ -114,12 +111,9 @@ public
 IValue
 ValueReference
 {
-    get { return this.valuereference; }
+    get;
+    private set;
 }
-
-private
-IValue
-valuereference;
 
 
 

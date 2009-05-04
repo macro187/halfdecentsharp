@@ -14,21 +14,23 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
+
 
 namespace
 Com.Halfdecent.Meta
 {
 
+
 // =============================================================================
 /// Base class for implementing IVariable
 // =============================================================================
-///
+
 public abstract class
 VariableBase
     : IVariable
 {
-
 
 
 
@@ -39,9 +41,8 @@ VariableBase(
 {
     if( name == null ) throw new ArgumentNullException( "name" );
     if( name == "" ) throw new ArgumentException( "Is blank", "name" );
-    this.name = name;
+    this.Name = name;
 }
-
 
 
 
@@ -53,12 +54,9 @@ public
 string
 Name
 {
-    get { return this.name; }
+    get;
+    private set;
 }
-
-private
-string
-name;
 
 
 

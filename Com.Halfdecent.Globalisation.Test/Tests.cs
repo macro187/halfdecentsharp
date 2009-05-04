@@ -15,26 +15,27 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using System.Globalization;
 using System.Threading;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Globalisation;
 
+
 namespace
 Com.Halfdecent.System.Test
 {
 
+
 // =============================================================================
 /// Test program for <tt>Com.Halfdecent.Globalisation</tt>
 // =============================================================================
-//
+
 public class
 Tests
     : TestBase
 {
-
-
 
 
 public static
@@ -43,8 +44,6 @@ Main()
 {
     return TestProgram.RunTests();
 }
-
-
 
 
 [Test( "Localised<T> creation" )]
@@ -58,7 +57,6 @@ Test_Creation()
     Print( "Created object is not null" );
     Assert( ls != null );
 }
-
 
 
 [Test( "Localised<T> implicit conversions" )]
@@ -77,7 +75,6 @@ Test_Conversions()
 }
 
 
-
 [Test( "LocalisedTypeAdapter< TFrom, TTO>" )]
 public static
 void
@@ -91,7 +88,6 @@ Test_LocalisedTypeAdapter()
 }
 
 
-
 public static
 string
 WantString( string s )
@@ -99,13 +95,13 @@ WantString( string s )
     return s;
 }
 
+
 public static
 string
 WantLocalised( Localised<string> ls )
 {
     return ls;
 }
-
 
 
 /* TODO update
@@ -157,7 +153,6 @@ Test_AssignmentRetrieval()
 }
 
 
-
 [Test( "LocalisedString.Format()" )]
 public static
 void
@@ -194,7 +189,6 @@ Test_LocalisedString_Format()
 }
 
 
-
 [Test( "LocalisedExceptionBase" )]
 public static
 void
@@ -225,7 +219,6 @@ Test_LocalisedExceptionBase()
 }
 
 
-
 [Test( "SimpleLocalisedExceptionBase" )]
 public static
 void
@@ -254,8 +247,6 @@ Test_SimpleLocalisedExceptionBase()
         Thread.CurrentThread.CurrentCulture = current;
     }
 }
-
-
 
 
 public class
@@ -294,8 +285,6 @@ Message
 }
 
 } // TestException
-
-
 
 
 public class

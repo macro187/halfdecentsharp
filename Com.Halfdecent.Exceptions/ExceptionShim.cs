@@ -29,7 +29,7 @@ Com.Halfdecent.Exceptions
 /// enabling <tt>Message</tt> to be, effectively, both overridden and shadowed
 /// in a subclass
 // =============================================================================
-//
+
 public abstract class
 ExceptionShim
     : Exception

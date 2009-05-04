@@ -31,7 +31,7 @@ Com.Halfdecent.RTypes
 ///
 /// According to <tt>IEquatable< T >.Equals()</tt>
 // =============================================================================
-//
+
 public class
 NEQ<
     T
@@ -39,7 +39,6 @@ NEQ<
     : SimpleRTypeBase< T >
     where T : IEquatable< T >
 {
-
 
 
 
@@ -58,9 +57,8 @@ NEQ(
     )
 {
     NonNull.Check( compareTo, new Parameter( "compareTo" ) );
-    this.compareto = compareTo;
+    this.CompareTo = compareTo;
 }
-
 
 
 
@@ -73,13 +71,9 @@ public
 T
 CompareTo
 {
-    get { return this.compareto; }
+    get;
+    private set;
 }
-
-private
-T
-compareto;
-
 
 
 

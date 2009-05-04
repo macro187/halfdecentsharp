@@ -14,19 +14,20 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 namespace
 Com.Halfdecent.Meta
 {
 
+
 // =============================================================================
 /// A local variable
 // =============================================================================
-///
+
 public class
 Local
     : VariableBase
 {
-
 
 
 
@@ -37,7 +38,6 @@ Local(
     : base( name )
 {
 }
-
 
 
 public override
