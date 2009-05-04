@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -30,12 +31,11 @@ Com.Halfdecent.RTypes
 /// A value was found not to be of a particular <tt>RType</tt> when it was
 /// required to be
 // =============================================================================
-//
+
 public class
 RTypeException
-    : LocalisedExceptionBase
+    : LocalisedException
 {
-
 
 
 
@@ -54,7 +54,6 @@ RTypeException(
 }
 
 
-
 public
 RTypeException(
     object      value,
@@ -62,17 +61,16 @@ RTypeException(
     IRType      rType,
     Exception   innerException
 )
-    : base( innerException )
+    : base( null, innerException )
 {
     if( valueReference == null )
-        throw new BugException( _S("'valueReference' is required") );
+        throw new LocalisedArgumentNullException( "valueReference" );
     if( rType == null )
-        throw new BugException( _S("'rType' is required") );
+        throw new LocalisedArgumentNullException( "rType" );
     this.value = value;
     this.valuereference = valueReference;
     this.rtype = rType;
 }
-
 
 
 
@@ -92,7 +90,6 @@ object
 value;
 
 
-
 public
 IValue
 ValueReference
@@ -105,7 +102,6 @@ IValue
 valuereference;
 
 
-
 public
 IRType
 RType
@@ -116,7 +112,6 @@ RType
 private
 IRType
 rtype;
-
 
 
 
@@ -138,7 +133,7 @@ Message
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

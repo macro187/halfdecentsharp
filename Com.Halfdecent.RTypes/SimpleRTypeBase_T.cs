@@ -29,7 +29,7 @@ Com.Halfdecent.RTypes
 // =============================================================================
 /// Base class for RTypes with simple IsA, IsNotA, and MustBe text
 // =============================================================================
-//
+
 public abstract class
 SimpleRTypeBase<
     T
@@ -51,9 +51,12 @@ SimpleRTypeBase(
     Localised< string > mustBeText
 )
 {
-    if( isText == null ) throw new BugException( "'isText' is null" );
-    if( isNotText == null ) throw new BugException( "'isNotText' is null" );
-    if( mustBeText == null ) throw new BugException( "'mustBeText' is null" );
+    if( isText == null )
+        throw new LocalisedArgumentNullException( "isText" );
+    if( isNotText == null )
+        throw new LocalisedArgumentNullException( "isNotText" );
+    if( mustBeText == null )
+        throw new LocalisedArgumentNullException( "mustBeText" );
     this.istext = isText;
     this.isnottext = isNotText;
     this.mustbetext = mustBeText;
