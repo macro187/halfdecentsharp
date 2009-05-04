@@ -34,7 +34,7 @@ Com.Halfdecent.RTypes
 
 public class
 RTypeException
-    : LocalisedException
+    : ValueException
 {
 
 
@@ -45,30 +45,26 @@ RTypeException
 
 public
 RTypeException(
-    object  value,
     IValue  valueReference,
     IRType  rType
 )
-    : this( value, valueReference, rType, null )
+    : this( valueReference, rType, null )
 {
 }
 
 
 public
 RTypeException(
-    object      value,
     IValue      valueReference,
     IRType      rType,
     Exception   innerException
 )
-    : base( null, innerException )
+    : base( valueReference, null, innerException )
 {
     if( valueReference == null )
         throw new LocalisedArgumentNullException( "valueReference" );
     if( rType == null )
         throw new LocalisedArgumentNullException( "rType" );
-    this.value = value;
-    this.valuereference = valueReference;
     this.rtype = rType;
 }
 
@@ -77,30 +73,6 @@ RTypeException(
 // -----------------------------------------------------------------------------
 // Properties
 // -----------------------------------------------------------------------------
-
-public
-object
-Value
-{
-    get { return this.value; }
-}
-
-private
-object
-value;
-
-
-public
-IValue
-ValueReference
-{
-    get { return this.valuereference; }
-}
-
-private
-IValue
-valuereference;
-
 
 public
 IRType
@@ -116,6 +88,22 @@ rtype;
 
 
 // -----------------------------------------------------------------------------
+// IValueException
+// -----------------------------------------------------------------------------
+
+public override
+Localised< string >
+SayMessage(
+    Localised< string > reference
+)
+{
+    if( reference == null )
+        throw new LocalisedArgumentNullException( "reference" );
+    return this.RType.SayIsNot( reference );
+}
+
+
+// -----------------------------------------------------------------------------
 // LocalisedException
 // -----------------------------------------------------------------------------
 
@@ -125,8 +113,7 @@ Message
 {
     get
     {
-        return this.RType.SayIsNot(
-            string.Format( "{0}", this.ValueReference.ToString() ) );
+        return this.SayMessage( this.ValueReference.ToString() );
     }
 }
 

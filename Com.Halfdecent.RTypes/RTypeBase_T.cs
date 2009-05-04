@@ -84,11 +84,11 @@ Check(
         try {
             c.Check( item, itemReference );
         } catch( RTypeException rte ) {
-            throw new RTypeException( item, itemReference, this, rte );
+            throw new RTypeException( itemReference, this, rte );
         }
 
     if( !this.MyCheck( item ) )
-        throw new RTypeException( item, itemReference, this );
+        throw new RTypeException( itemReference, this );
 }
 
 
