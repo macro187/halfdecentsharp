@@ -31,12 +31,11 @@ Com.Halfdecent.Streams
 // =============================================================================
 /// A sink doesn't have room for any more items
 // =============================================================================
-//
+
 public class
 SinkFullException
-    : LocalisedExceptionBase
+    : ValueException
 {
-
 
 
 
@@ -53,50 +52,16 @@ SinkFullException(
 }
 
 
-
 public
 SinkFullException(
     IValue      sinkReference,
     Exception   innerException
 )
-    :base( innerException )
+    :base(
+        sinkReference,
+        _S("There is no room for any more items in {0}"),
+        innerException )
 {
-    NonNull.Check( sinkReference, new Parameter( "sinkReference" ) );
-    this.sinkreference = sinkReference;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-IValue
-SinkReference
-{
-    get { return this.sinkreference; }
-}
-
-private
-IValue
-sinkreference;
-
-
-
-// -----------------------------------------------------------------------------
-// LocalisedException
-// -----------------------------------------------------------------------------
-
-override public
-Localised< string >
-Message
-{
-    get
-    {
-        return _S("There is no room for any more items in sink '{0}'",
-            this.SinkReference.ToString() );
-    }
 }
 
 
@@ -106,5 +71,4 @@ private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, pa
 
 } // type
 } // namespace
-
 

@@ -31,12 +31,11 @@ Com.Halfdecent.Streams
 // =============================================================================
 /// A stream contains no more items
 // =============================================================================
-//
+
 public class
 StreamEmptyException
-    : LocalisedExceptionBase
+    : ValueException
 {
-
 
 
 
@@ -53,50 +52,16 @@ StreamEmptyException(
 }
 
 
-
 public
 StreamEmptyException(
     IValue      streamReference,
     Exception   innerException
 )
-    :base( innerException )
+    :base(
+        streamReference,
+        _S("An attempt was made to read past the end of {0}"),
+        innerException )
 {
-    NonNull.Check( streamReference, new Parameter( "streamReference" ) );
-    this.streamreference = streamReference;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-IValue
-StreamReference
-{
-    get { return this.streamreference; }
-}
-
-private
-IValue
-streamreference;
-
-
-
-// -----------------------------------------------------------------------------
-// LocalisedException
-// -----------------------------------------------------------------------------
-
-override public
-Localised< string >
-Message
-{
-    get
-    {
-        return _S("An attempt was made to read past the end of stream '{0}'",
-            this.StreamReference.ToString() );
-    }
 }
 
 

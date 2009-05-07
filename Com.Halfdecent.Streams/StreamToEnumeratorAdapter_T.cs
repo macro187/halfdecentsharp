@@ -19,6 +19,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -91,7 +92,7 @@ public override
 void
 Reset()
 {
-    throw new InvalidOperationException(
+    throw new LocalisedInvalidOperationException(
         _S("This enumerator is enumerating an IStream, which are not resettable") );
 }
 

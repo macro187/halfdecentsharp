@@ -19,6 +19,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Com.Halfdecent.Exceptions;
 
 
 namespace
@@ -93,10 +94,10 @@ Current
     get
     {
         if( !this.started )
-            throw new InvalidOperationException(
+            throw new LocalisedInvalidOperationException(
                 _S("The current item cannot be retrieved because the enumerator is still positioned before the first item") );
         if( this.finished )
-            throw new InvalidOperationException(
+            throw new LocalisedInvalidOperationException(
                 _S("The current item cannot be retrieved because the enumerator is already positioned after the last item") );
         return this.current;
     }
@@ -142,7 +143,7 @@ public virtual
 void
 Reset()
 {
-    throw new InvalidOperationException(
+    throw new LocalisedInvalidOperationException(
         _S("This enumerator is not resettable") );
 }
 

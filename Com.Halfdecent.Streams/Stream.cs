@@ -56,7 +56,7 @@ Pull<
     NonNull.Check( stream, new Parameter( "stream" ) );
     T r;
     if( !stream.TryPull( out r ) )
-        throw new StreamEmptyException( new Parameter( "stream" ) );
+        throw new StreamEmptyException( new This() );
     return r;
 }
 
