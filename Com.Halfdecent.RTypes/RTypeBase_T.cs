@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 
 
@@ -69,7 +70,7 @@ Check(
 )
 {
     if( itemReference == null )
-        throw new ArgumentNullException( "itemReference" );
+        throw new LocalisedArgumentNullException( "itemReference" );
 
     foreach( IRType< T > st in this.Supers )
         st.Check( item, itemReference );
