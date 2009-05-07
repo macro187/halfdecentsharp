@@ -441,11 +441,11 @@ void
 Test_Stream_PushTo()
 {
     int[] from = new int[] { 1, 2, 3 };
-    List< int > to = new List< int >();
-    Print( "PushTo() a list" );
-    from.AsStream().PushTo( to.AsSink() );
+    TestSink sink = new TestSink();
+    Print( "PushTo() a sink" );
+    from.AsStream().PushTo( sink );
     Print( "Check items" );
-    Assert( to.SequenceEqual( from ) );
+    Assert( sink.Items.SequenceEqual( from ) );
 }
 
 
