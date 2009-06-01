@@ -54,9 +54,6 @@ AsBag<
 }
 
 
-// TODO Handle read-only ICollections too (will need a new adapter)
-
-
 
 
 } // type

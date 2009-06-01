@@ -42,7 +42,7 @@ Sink
 
 /// Push an item into the sink, expecting there to be room
 ///
-/// @exception SinkFullException
+/// @exception FullException
 /// There was no room for the item in <tt>sink</tt>
 ///
 public static
@@ -56,7 +56,7 @@ Push<
 {
     NonNull.Check( sink, new Parameter( "sink" ) );
     if( !sink.TryPush( item ) )
-        throw new SinkFullException( new This() );
+        throw new FullException( new This() );
 }
 
 

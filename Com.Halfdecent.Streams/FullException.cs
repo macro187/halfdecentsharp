@@ -17,27 +17,24 @@
 
 
 using System;
-using SCG = System.Collections.Generic;
+using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Collections
+Com.Halfdecent.Streams
 {
 
 
 // =============================================================================
-/// Present a growable bag as a sink
+/// A sink is at capacity and cannot accept any more items
 // =============================================================================
 
 public class
-GrowableBagToSinkAdapter<
-    T
->
-    : ISink< T >
+FullException
+    : ValueException
 {
 
 
@@ -47,50 +44,30 @@ GrowableBagToSinkAdapter<
 // -----------------------------------------------------------------------------
 
 public
-GrowableBagToSinkAdapter(
-    IGrowableBag< T > bag
+FullException(
+    IValue  sinkReference
 )
+    :this( sinkReference, null )
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
-    this.Bag = bag;
 }
 
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
 
 public
-IGrowableBag< T >
-Bag
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// ISink< T >
-// -----------------------------------------------------------------------------
-
-public
-bool
-TryPush(
-    T item
+FullException(
+    IValue      sinkReference,
+    Exception   innerException
 )
+    :base(
+        sinkReference,
+        _S("There is no room for any more items in {0}"),
+        innerException )
 {
-    try {
-        this.Bag.Add( item );
-    } catch( FullException ) {
-        return false;
-    }
-    return true;
 }
 
 
 
+
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

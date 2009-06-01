@@ -33,10 +33,16 @@ Com.Halfdecent.Collections
 /// Present a non-read-only <tt>System.Collections.Generic.Collection< T ></tt>
 /// as an <tt>IBag< T ></tt>
 ///
-/// @para FullException
-/// Because <tt>ICollection&lt; T &gt;.Add()</tt> doesn't define a way to signal
-/// when it fails because the collection is at capacity, neither can this class.
-/// It can't signal the full condition as a sink (via <tt>AsSink()</tt>) either.
+/// @par .IsReadOnly
+/// Refer to the namespace-wide <tt>Com.Halfdecent.Collections</tt>
+/// documentation for a discussion of important issues surrounding the
+/// readability / writability of collections in the base class library.
+///
+/// @par Undefined TryPush() failure
+/// Because <tt>ICollection< T >.Add()</tt> doesn't define how to fail when the
+/// collection is full, neither can this class.  So, <tt>TryPush()</tt> will
+/// either succeed, returning <tt>true</tt>, or fail in whatever undefined way
+/// the underlying collection's <tt>Add()</tt> fails.
 // =============================================================================
 
 public class
@@ -45,7 +51,7 @@ BagFromCollectionAdapter<
 >
     : IBag< T >
     , IReadableBag< T >
-    , IGrowableBag< T >
+    , ISink< T >
     , IShrinkableBag< T >
 {
 
@@ -61,11 +67,10 @@ BagFromCollectionAdapter(
 )
 {
     NonNull.Check( collection, new Parameter( "collection" ) );
-    // TODO Fix when exceptions are worked out
     if( collection.IsReadOnly )
-        throw new ArgumentException( "Collection is read-only", "collection" );
-    // XXX  The above check doesn't cover all cases, this is a dirty
-    //      situation...
+        throw new ValueException(
+            new Parameter( "collection" ),
+            _S("{0} is read-only, use BagFromReadOnlyCollectionAdapter") );
     this.Collection = collection;
 }
 
@@ -120,16 +125,17 @@ Stream()
 
 
 // -----------------------------------------------------------------------------
-// IGrowableBag< T >
+// ISink< T >
 // -----------------------------------------------------------------------------
 
 public
-void
-Add(
+bool
+TryPush(
     T item
 )
 {
     this.Collection.Add( item );
+    return true;
 }
 
 
@@ -147,6 +153,8 @@ Clear()
 
 
 
+
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

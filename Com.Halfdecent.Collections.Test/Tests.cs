@@ -61,8 +61,8 @@ Test_BagFromCollectionAdapter_and_AsBag()
     Print( "Check initial .Count" );
     Assert( bag.Count.ToDecimal() == 0 );
 
-    Print( "Add items via Add()" );
-    foreach( int i in from ) bag.Add( i );
+    Print( "Add items" );
+    foreach( int i in from ) bag.Push( i );
 
     Print( "Check .Count" );
     Assert( bag.Count.ToDecimal() == 3 );
@@ -78,18 +78,6 @@ Test_BagFromCollectionAdapter_and_AsBag()
 
     Print( "Check .Count" );
     Assert( bag.Count.ToDecimal() == 0 );
-
-    Print( "Add items via ISink" );
-    from.AsStream().PushTo( bag );
-
-    Print( "Check .Count" );
-    Assert( bag.Count.ToDecimal() == 3 );
-
-    Print( "Check items via Stream()" );
-    to.Clear();
-    foreach( int i in bag.Stream().AsEnumerable() ) to.Add( i );
-    to.Sort();  // Bags are unordered
-    Assert( to.SequenceEqual( from ) );
 }
 
 

@@ -33,7 +33,7 @@ Com.Halfdecent.Streams
 // =============================================================================
 
 public class
-StreamEmptyException
+EmptyException
     : ValueException
 {
 
@@ -44,7 +44,7 @@ StreamEmptyException
 // -----------------------------------------------------------------------------
 
 public
-StreamEmptyException(
+EmptyException(
     IValue  streamReference
 )
     :this( streamReference, null )
@@ -53,7 +53,7 @@ StreamEmptyException(
 
 
 public
-StreamEmptyException(
+EmptyException(
     IValue      streamReference,
     Exception   innerException
 )

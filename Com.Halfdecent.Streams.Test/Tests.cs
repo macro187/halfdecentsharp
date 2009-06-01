@@ -145,8 +145,8 @@ Test_Stream_Pull()
     i = s.Pull();
     AssertEqual( i, 3 );
 
-    Print( "StreamEmptyException" );
-    Expect< StreamEmptyException >( delegate() {
+    Print( "EmptyException" );
+    Expect< EmptyException >( delegate() {
         i = s.Pull();
     } );
 }
@@ -246,8 +246,8 @@ Test_StreamToExpectantEnumeratorAdapter_T()
     Assert( b );
     AssertEqual( e.Current, 3 );
 
-    Print( "StreamEmptyException at end of enumerator" );
-    Expect< StreamEmptyException >( delegate() {
+    Print( "EmptyException at end of enumerator" );
+    Expect< EmptyException >( delegate() {
         b = e.MoveNext();
     } );
 }
@@ -321,8 +321,8 @@ Test_Stream_AsExpectantEnumerable()
             IntEnumerable().GetEnumerator() );
     IList< int > l = new List< int >();
     IEnumerable< int > e = IntEnumerable();
-    Print( "StreamEmptyException after last item" );
-    Expect< StreamEmptyException >( delegate() {
+    Print( "EmptyException after last item" );
+    Expect< EmptyException >( delegate() {
         foreach( int i in s.AsExpectantEnumerable() ) {
             l.Add( i );
         }
@@ -427,8 +427,8 @@ Test_Sink_Push()
     AssertEqual( ts.Items[0], 0 );
     AssertEqual( ts.Items[1], 1 );
     AssertEqual( ts.Items[2], 2 );
-    Print( "SinkFullException if we try to push another" );
-    Expect< SinkFullException >( delegate() {
+    Print( "FullException if we try to push another" );
+    Expect< FullException >( delegate() {
         s.Push( 3 );
     } );
 }
