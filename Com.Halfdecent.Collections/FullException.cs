@@ -17,11 +17,8 @@
 
 
 using System;
-using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
+using Com.Halfdecent.Globalisation;
 
 
 namespace
@@ -30,14 +27,12 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// Present a growable bag as a sink
+/// A collection cannot contain any more items
 // =============================================================================
 
 public class
-GrowableBagToSinkAdapter<
-    T
->
-    : ISink< T >
+FullException
+    : ValueException
 {
 
 
@@ -47,50 +42,41 @@ GrowableBagToSinkAdapter<
 // -----------------------------------------------------------------------------
 
 public
-GrowableBagToSinkAdapter(
-    IGrowableBag< T > bag
+FullException(
+    IValue valueReference
 )
+    : this( valueReference, null, null )
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
-    this.Bag = bag;
 }
 
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
 
 public
-IGrowableBag< T >
-Bag
+FullException(
+    IValue              valueReference,
+    Localised< string > messageFormat
+)
+    : this( valueReference, messageFormat, null )
 {
-    get;
-    private set;
 }
 
-
-
-// -----------------------------------------------------------------------------
-// ISink< T >
-// -----------------------------------------------------------------------------
 
 public
-bool
-TryPush(
-    T item
+FullException(
+    IValue              valueReference,
+    Localised< string > messageFormat,
+    Exception           innerException
 )
+    : base(
+        valueReference,
+        messageFormat ?? _S("{0} cannot contain any more items"),
+        innerException )
 {
-    try {
-        this.Bag.Add( item );
-    } catch( FullException ) {
-        return false;
-    }
-    return true;
 }
 
 
 
+
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

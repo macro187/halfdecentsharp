@@ -32,6 +32,11 @@ Com.Halfdecent.Collections
 // =============================================================================
 /// Present a non-read-only <tt>System.Collections.Generic.Collection< T ></tt>
 /// as an <tt>IBag< T ></tt>
+///
+/// @para FullException
+/// Because <tt>ICollection&lt; T &gt;.Add()</tt> doesn't define a way to signal
+/// when it fails because the collection is at capacity, neither can this class.
+/// It can't signal the full condition as a sink (via <tt>AsSink()</tt>) either.
 // =============================================================================
 
 public class

@@ -41,6 +41,11 @@ IGrowableBag<
 // Methods
 // -----------------------------------------------------------------------------
 
+/// Add an item to the bag
+///
+/// @exception FullException
+/// The bag is at capacity and cannot contain any more items
+///
 void
 Add(
     T item
