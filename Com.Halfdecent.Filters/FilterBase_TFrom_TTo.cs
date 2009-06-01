@@ -54,8 +54,8 @@ FilterBase()
 {
     this.process = Process();
     this.Tick();
-    if( this.process.Current == true ) throw new Exception(
-        "Process() says it has produced an item before having consumed any" );
+    if( this.process.Current == true ) throw new LocalisedException(
+        _S("Process() says it has produced an item before having consumed any") );
 }
 
 
@@ -135,8 +135,8 @@ protected
 TIn
 GetItem()
 {
-    if( !this.haveinitem ) throw new Exception(
-        _S( "GetItem() called when !haveinitem, Process() implementation probably forgot to 'yield return false' before calling" ) );
+    if( !this.haveinitem ) throw new LocalisedException(
+        _S("GetItem() called when !haveinitem, Process() implementation probably forgot to 'yield return false' before calling") );
     TIn r = this.initem;
     this.initem = default( TIn );
     this.haveinitem = false;
@@ -154,8 +154,8 @@ PutItem(
     TOut item
 )
 {
-    if( this.haveoutitem ) throw new Exception(
-        _S( "PutItem() called when haveoutitem, Process() implementation probably forgot to 'yield return true' following last PutItem() call" ) );
+    if( this.haveoutitem ) throw new LocalisedException(
+        _S("PutItem() called when haveoutitem, Process() implementation probably forgot to 'yield return true' following last PutItem() call") );
     this.outitem = item;
     this.haveoutitem = true;
 }
@@ -181,8 +181,8 @@ private
 void
 Tick()
 {
-    if( this.process == null ) throw new InvalidOperationException(
-        "Process() has already exited, can't Tick()" );
+    if( this.process == null ) throw new LocalisedInvalidOperationException(
+        _S("Process() has already exited, can't Tick()") );
 
     if( !this.process.MoveNext() ) {
         this.process = null;
@@ -190,10 +190,12 @@ Tick()
         return;
     }
 
-    if( !this.process.Current && this.haveinitem ) throw new Exception(
-        _S("Process() asked for another item before GetItem()ing the last one") );
-    if( this.process.Current && !this.haveoutitem ) throw new Exception(
-        _S("Process() says it produced an item but didn't PutItem() it") );
+    if( !this.process.Current && this.haveinitem )
+        throw new LocalisedException(
+            _S("Process() asked for another item before GetItem()ing the last one") );
+    if( this.process.Current && !this.haveoutitem )
+        throw new LocalisedException(
+            _S("Process() says it produced an item but didn't PutItem() it") );
 }
 
 
@@ -284,8 +286,9 @@ TryPush(
     TIn item
 )
 {
-    if( this.To == null ) throw new InvalidOperationException(
-        "this.To must be set before items can be pushed" );
+    if( this.To == null )
+        throw new LocalisedInvalidOperationException(
+            _S("this.To must be set before items can be pushed") );
 
     bool itemgiven = false;
     for( ;; ) {
@@ -317,8 +320,9 @@ TryPull(
     out TOut item
 )
 {
-    if( this.From == null ) throw new InvalidOperationException(
-        "this.From must be set before items can be pulled" );
+    if( this.From == null )
+        throw new LocalisedInvalidOperationException(
+            _S("this.From must be set before items can be pulled") );
 
     item = default( TOut );
     for( ;; ) {
