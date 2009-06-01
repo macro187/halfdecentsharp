@@ -43,7 +43,7 @@ IReal
 /// "Narrowing" conversion to <tt>System.Decimal</tt>
 ///
 /// TODO: Is this right?
-/// @exception HDInvalidOperationException
+/// @exception InvalidOperationException
 /// If this Real's value is out of Decimal range
 ///
 decimal
