@@ -27,7 +27,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 /// A bag whose items can be retrieved
 // =============================================================================
-//
+
 public interface
 IReadableBag<
     T
@@ -42,7 +42,6 @@ IReadableBag<
 // -----------------------------------------------------------------------------
 
 /// Generate a stream of the items in the bag
-///
 IStream< T >
 Stream();
 

@@ -24,7 +24,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 /// A bag from which items can be removed
 // =============================================================================
-//
+
 public interface
 IShrinkableBag<
     T

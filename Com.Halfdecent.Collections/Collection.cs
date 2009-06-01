@@ -30,7 +30,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 /// <tt>System.Collections.Generic.ICollection< T ></tt> interop library
 // =============================================================================
-//
+
 public static class
 Collection
 {

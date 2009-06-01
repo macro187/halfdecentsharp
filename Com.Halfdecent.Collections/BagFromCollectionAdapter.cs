@@ -33,7 +33,7 @@ Com.Halfdecent.Collections
 /// Present a non-read-only <tt>System.Collections.Generic.Collection< T ></tt>
 /// as an <tt>IBag< T ></tt>
 // =============================================================================
-//
+
 public class
 BagFromCollectionAdapter<
     T

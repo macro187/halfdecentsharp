@@ -29,7 +29,7 @@ Com.Halfdecent.Collections
 ///
 /// See <tt>http://en.wikipedia.org/wiki/Multiset</tt>
 // =============================================================================
-//
+
 public interface
 IBag<
     T
