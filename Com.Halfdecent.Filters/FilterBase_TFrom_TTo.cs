@@ -54,8 +54,8 @@ FilterBase()
 {
     this.process = Process();
     this.Tick();
-    if( this.process.Current == true ) throw new BugException(
-        "Process() says it has produced an before having consumed any" );
+    if( this.process.Current == true ) throw new Exception(
+        "Process() says it has produced an item before having consumed any" );
 }
 
 
@@ -135,7 +135,7 @@ protected
 TIn
 GetItem()
 {
-    if( !this.haveinitem ) throw new BugException(
+    if( !this.haveinitem ) throw new Exception(
         _S( "GetItem() called when !haveinitem, Process() implementation probably forgot to 'yield return false' before calling" ) );
     TIn r = this.initem;
     this.initem = default( TIn );
@@ -154,7 +154,7 @@ PutItem(
     TOut item
 )
 {
-    if( this.haveoutitem ) throw new BugException(
+    if( this.haveoutitem ) throw new Exception(
         _S( "PutItem() called when haveoutitem, Process() implementation probably forgot to 'yield return true' following last PutItem() call" ) );
     this.outitem = item;
     this.haveoutitem = true;
@@ -190,9 +190,9 @@ Tick()
         return;
     }
 
-    if( !this.process.Current && this.haveinitem ) throw new BugException(
+    if( !this.process.Current && this.haveinitem ) throw new Exception(
         _S("Process() asked for another item before GetItem()ing the last one") );
-    if( this.process.Current && !this.haveoutitem ) throw new BugException(
+    if( this.process.Current && !this.haveoutitem ) throw new Exception(
         _S("Process() says it produced an item but didn't PutItem() it") );
 }
 
