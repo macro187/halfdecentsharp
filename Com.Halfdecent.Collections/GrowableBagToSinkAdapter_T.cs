@@ -16,7 +16,12 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+using SCG = System.Collections.Generic;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -25,16 +30,30 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// A finite, unordered collection of non-unique items
-///
-/// See <tt>http://en.wikipedia.org/wiki/Multiset</tt>
+/// Present a growable bag as a sink
 // =============================================================================
 
-public interface
-IBag<
+public class
+GrowableBagToSinkAdapter<
     T
 >
+    : ISink< T >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+public
+GrowableBagToSinkAdapter(
+    IGrowableBag< T > bag
+)
+{
+    NonNull.Check( bag, new Parameter( "bag" ) );
+    this.Bag = bag;
+}
 
 
 
@@ -42,17 +61,29 @@ IBag<
 // Properties
 // -----------------------------------------------------------------------------
 
-bool
-IsEmpty
+public
+IGrowableBag< T >
+Bag
 {
     get;
+    private set;
 }
 
 
-IInteger
-Count
+
+// -----------------------------------------------------------------------------
+// ISink< T >
+// -----------------------------------------------------------------------------
+
+public
+bool
+TryPush(
+    T item
+)
 {
-    get;
+    this.Bag.Add( item );
+    // TODO false if BagFullException
+    return true;
 }
 
 

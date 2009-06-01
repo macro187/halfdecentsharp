@@ -61,18 +61,22 @@ BagFromCollectionAdapter(
         throw new ArgumentException( "Collection is read-only", "collection" );
     // XXX  The above check doesn't cover all cases, this is a dirty
     //      situation...
-    this.c = collection;
+    this.Collection = collection;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Private
+// Properties
 // -----------------------------------------------------------------------------
 
-private
+public
 SCG.ICollection< T >
-c;
+Collection
+{
+    get;
+    private set;
+}
 
 
 
@@ -81,10 +85,18 @@ c;
 // -----------------------------------------------------------------------------
 
 public
+bool
+IsEmpty
+{
+    get { return this.Count == Integer.From( 0 ); }
+}
+
+
+public
 IInteger
 Count
 {
-    get { return Integer.From( this.c.Count ); }
+    get { return Integer.From( this.Collection.Count ); }
 }
 
 
@@ -97,7 +109,7 @@ public
 IStream< T >
 Stream()
 {
-    return this.c.AsStream();
+    return this.Collection.AsStream();
 }
 
 
@@ -112,22 +124,7 @@ Add(
     T item
 )
 {
-    this.c.Add( item );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// ISink< T >
-// -----------------------------------------------------------------------------
-
-public
-bool
-TryPush(
-    T item
-)
-{
-    return Bag.TryPush( this, item );
+    this.Collection.Add( item );
 }
 
 
@@ -140,7 +137,7 @@ public
 void
 Clear()
 {
-    this.c.Clear();
+    this.Collection.Clear();
 }
 
 

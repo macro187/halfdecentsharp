@@ -33,7 +33,6 @@ IGrowableBag<
     T
 >
     : IBag< T >
-    , ISink< T >
 {
 
 

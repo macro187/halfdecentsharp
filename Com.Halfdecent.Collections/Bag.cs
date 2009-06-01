@@ -40,21 +40,20 @@ Bag
 // Methods
 // -----------------------------------------------------------------------------
 
-/// <tt>IBag< T ></tt> implementation of <tt>ISink< T >.Push()</tt>
+/// Present a bag as a sink
+///
+/// Items pushed to the sink are added to the underlying bag
 ///
 public static
-bool
-TryPush<
+ISink< T >
+AsSink<
     T
 >(
-    IGrowableBag< T >   bag,
-    T                   item
+    this IGrowableBag< T >  bag
 )
 {
     NonNull.Check( bag, new Parameter( "bag" ) );
-    bag.Add( item );
-    // TODO Dispose as appropriate for Sinks, whenever that's figured out
-    return true;
+    return new GrowableBagToSinkAdapter< T >( bag );
 }
 
 

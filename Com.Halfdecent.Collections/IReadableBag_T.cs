@@ -41,7 +41,7 @@ IReadableBag<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Generate a stream of the items in the bag
+/// Produce a new stream of the items in the bag
 IStream< T >
 Stream();
 
