@@ -42,6 +42,18 @@ Collection
 // -----------------------------------------------------------------------------
 
 public static
+ReadOnlyBagFromCollectionAdapter< T >
+AsReadOnlyBag<
+    T
+>(
+    this SCG.ICollection< T > collection
+)
+{
+    return new ReadOnlyBagFromCollectionAdapter< T >( collection );
+}
+
+
+public static
 BagFromCollectionAdapter< T >
 AsBag<
     T
@@ -49,7 +61,6 @@ AsBag<
     this SCG.ICollection< T > collection
 )
 {
-    NonNull.Check( collection, new Parameter( "collection" ) );
     return new BagFromCollectionAdapter< T >( collection );
 }
 

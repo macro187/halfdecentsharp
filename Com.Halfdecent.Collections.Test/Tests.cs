@@ -48,6 +48,25 @@ Main()
 
 
 
+[Test( "ReadOnlyBagFromCollectionAdapter< T > and Collection.AsReadOnlyBag()" )]
+public static
+void
+Test_ReadOnlyBagFromCollectionAdapter_and_AsReadOnlyBag()
+{
+    int[]                           from = new int[] { 1, 2, 3 };
+    BagFromCollectionAdapter< int > bag = from.AsBag();
+    SCG.List< int >                 to = new SCG.List< int >();
+
+    Print( "Check .Count" );
+    Assert( bag.Count.ToDecimal() == 3 );
+
+    Print( "Check items via Stream()" );
+    foreach( int i in bag.Stream().AsEnumerable() ) to.Add( i );
+    to.Sort();  // Bags are unordered
+    Assert( to.SequenceEqual( from ) );
+}
+
+
 [Test( "BagFromCollectionAdapter< T > and Collection.AsBag()" )]
 public static
 void
