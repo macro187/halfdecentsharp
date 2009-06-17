@@ -74,7 +74,7 @@ PushTo<
     NonNull.Check( to, new Parameter( "to" ) );
     T item;
     while( from.TryPull( out item ) )
-        if( !to.TryPush( item ) ) break;
+        to.Push( item );
 }
 
 
