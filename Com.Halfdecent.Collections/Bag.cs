@@ -16,6 +16,10 @@
 // -----------------------------------------------------------------------------
 
 
+using SCG = System.Collections.Generic;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 
 
@@ -24,29 +28,45 @@ Com.Halfdecent.Collections
 {
 
 
-// =============================================================================
-/// A bag whose items can be retrieved
-// =============================================================================
-
-public interface
-IReadableBag<
-    T
->
-    : IBag< T >
+public static class
+Bag
 {
 
 
 
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
+/// Determine whether a bag is empty based on its <tt>Count</tt>
+///
+public static
+bool
+IsEmptyViaCount<
+    T
+>(
+    IBag< T > bag
+)
+{
+    NonNull.Check( bag, new Parameter( "bag" ) );
+    return bag.Count == Integer.From( 0 );
+}
 
-/// Produce a new stream of the items in the bag
-IStream< T >
-Stream();
+
+/// Present a bag as a <tt>System.Collections.Generic.Collection</tt>
+///
+public static
+SCG.ICollection< T >
+AsSCGCollection<
+    T
+>(
+    this IBag< T > bag
+)
+{
+    NonNull.Check( bag, new Parameter( "bag" ) );
+    return new BagToSCGCollectionAdapter< T >( bag );
+}
 
 
 
+
+//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

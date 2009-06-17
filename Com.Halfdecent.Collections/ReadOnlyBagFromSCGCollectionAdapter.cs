@@ -35,11 +35,10 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public class
-ReadOnlyBagFromCollectionAdapter<
+ReadOnlyBagFromSCGCollectionAdapter<
     T
 >
     : IBag< T >
-    , IReadableBag< T >
 {
 
 
@@ -49,7 +48,7 @@ ReadOnlyBagFromCollectionAdapter<
 // -----------------------------------------------------------------------------
 
 public
-ReadOnlyBagFromCollectionAdapter(
+ReadOnlyBagFromSCGCollectionAdapter(
     SCG.ICollection< T > collection
 )
 {
@@ -81,7 +80,7 @@ public
 bool
 IsEmpty
 {
-    get { return this.Count == Integer.From( 0 ); }
+    get { return Bag.IsEmptyViaCount( this ); }
 }
 
 
@@ -93,16 +92,21 @@ Count
 }
 
 
-
-// -----------------------------------------------------------------------------
-// IReadableBag< T >
-// -----------------------------------------------------------------------------
-
 public
 IStream< T >
 Stream()
 {
     return this.Collection.AsStream();
+}
+
+
+public
+bool
+Contains(
+    T item
+)
+{
+    return this.Collection.Contains( item );
 }
 
 

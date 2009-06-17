@@ -38,6 +38,17 @@ IShrinkableBag<
 // Methods
 // -----------------------------------------------------------------------------
 
+/// Remove an item from the bag
+///
+/// If the bag contains more than one occurrence of the specified item, only
+/// one is removed
+///
+void
+Remove(
+    T item
+);
+
+
 /// Remove all items from the bag
 ///
 void

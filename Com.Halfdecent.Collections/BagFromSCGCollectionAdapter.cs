@@ -46,10 +46,10 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public class
-BagFromCollectionAdapter<
+BagFromSCGCollectionAdapter<
     T
 >
-    : ReadOnlyBagFromCollectionAdapter< T >
+    : ReadOnlyBagFromSCGCollectionAdapter< T >
     , ISink< T >
     , IShrinkableBag< T >
 {
@@ -61,7 +61,7 @@ BagFromCollectionAdapter<
 // -----------------------------------------------------------------------------
 
 public
-BagFromCollectionAdapter(
+BagFromSCGCollectionAdapter(
     SCG.ICollection< T > collection
 )
     : base( collection )
@@ -69,7 +69,7 @@ BagFromCollectionAdapter(
     if( collection.IsReadOnly )
         throw new ValueException(
             new Parameter( "collection" ),
-            _S("{0} is read-only, use ReadOnlyBagFromCollectionAdapter") );
+            _S("{0} is read-only, use ReadOnlyBagFromSCGCollectionAdapter") );
 }
 
 
@@ -93,6 +93,16 @@ TryPush(
 // -----------------------------------------------------------------------------
 // IShrinkableBag< T >
 // -----------------------------------------------------------------------------
+
+public
+void
+Remove(
+    T item
+)
+{
+    this.Collection.Remove( item );
+}
+
 
 public
 void

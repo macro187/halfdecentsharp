@@ -32,7 +32,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public static class
-Collection
+SCGCollection
 {
 
 
@@ -42,26 +42,26 @@ Collection
 // -----------------------------------------------------------------------------
 
 public static
-ReadOnlyBagFromCollectionAdapter< T >
+ReadOnlyBagFromSCGCollectionAdapter< T >
 AsReadOnlyBag<
     T
 >(
     this SCG.ICollection< T > collection
 )
 {
-    return new ReadOnlyBagFromCollectionAdapter< T >( collection );
+    return new ReadOnlyBagFromSCGCollectionAdapter< T >( collection );
 }
 
 
 public static
-BagFromCollectionAdapter< T >
+BagFromSCGCollectionAdapter< T >
 AsBag<
     T
 >(
     this SCG.ICollection< T > collection
 )
 {
-    return new BagFromCollectionAdapter< T >( collection );
+    return new BagFromSCGCollectionAdapter< T >( collection );
 }
 
 

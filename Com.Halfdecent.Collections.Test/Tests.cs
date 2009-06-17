@@ -38,7 +38,6 @@ Tests
 {
 
 
-
 public static
 int
 Main()
@@ -47,15 +46,14 @@ Main()
 }
 
 
-
-[Test( "ReadOnlyBagFromCollectionAdapter< T > and Collection.AsReadOnlyBag()" )]
+[Test( "ReadOnlyBagFromSCGCollectionAdapter< T >" )]
 public static
 void
-Test_ReadOnlyBagFromCollectionAdapter_and_AsReadOnlyBag()
+Test_ReadOnlyBagFromSCGCollectionAdapter()
 {
-    int[]                           from = new int[] { 1, 2, 3 };
-    BagFromCollectionAdapter< int > bag = from.AsBag();
-    SCG.List< int >                 to = new SCG.List< int >();
+    int[]                               from = new int[] { 1, 2, 3 };
+    BagFromSCGCollectionAdapter< int >  bag = from.AsBag();
+    SCG.List< int >                     to = new SCG.List< int >();
 
     Print( "Check .Count" );
     Assert( bag.Count.ToDecimal() == 3 );
@@ -67,15 +65,15 @@ Test_ReadOnlyBagFromCollectionAdapter_and_AsReadOnlyBag()
 }
 
 
-[Test( "BagFromCollectionAdapter< T > and Collection.AsBag()" )]
+[Test( "BagFromSCGCollectionAdapter< T >" )]
 public static
 void
-Test_BagFromCollectionAdapter_and_AsBag()
+Test_BagFromSCGCollectionAdapter()
 {
-    int[]                           from = new int[] { 1, 2, 3 };
-    SCG.List< int >                 list = new SCG.List< int >();
-    BagFromCollectionAdapter< int > bag = list.AsBag();
-    SCG.List< int >                 to = new SCG.List< int >();
+    int[]                               from = new int[] { 1, 2, 3 };
+    SCG.List< int >                     list = new SCG.List< int >();
+    BagFromSCGCollectionAdapter< int >  bag = list.AsBag();
+    SCG.List< int >                     to = new SCG.List< int >();
 
     Print( "Check initial .Count" );
     Assert( bag.Count.ToDecimal() == 0 );
@@ -96,7 +94,52 @@ Test_BagFromCollectionAdapter_and_AsBag()
     bag.Clear();
 
     Print( "Check .Count" );
-    Assert( bag.Count.ToDecimal() == 0 );
+    AssertEqual( bag.Count.ToDecimal(), 0 );
+}
+
+
+[Test( "BagToSCGCollectionAdapter" )]
+public static
+void
+Test_BagToSCGCollectionAdapter()
+{
+    BagFromSCGCollectionAdapter< int > bag =
+        new BagFromSCGCollectionAdapter< int >( new SCG.List< int >() );
+    SCG.ICollection< int > col = bag.AsSCGCollection();
+
+    SCG.List< int > list = new SCG.List< int >();
+
+    Print( "Add 3 items" );
+    col.Add( 1 );
+    col.Add( 2 );
+    col.Add( 3 );
+
+    Print( "Check .Count" );
+    AssertEqual( col.Count, 3 );
+
+    Print( "Check items" );
+    list.Clear();
+    col.AsBag().Stream().PushTo( list.AsBag() );
+    list.Sort();
+    Assert( list.SequenceEqual( new int[] { 1, 2, 3 } ) );
+
+    Print( "Check for existence of a particular item" );
+    Assert( col.Contains( 2 ) );
+
+    Print( "Remove it" );
+    col.Remove( 2 );
+
+    Print( "Check new .Count" );
+    AssertEqual( col.Count, 2 );
+
+    Print( "Check new items" );
+    list.Clear();
+    col.AsBag().Stream().PushTo( list.AsBag() );
+    list.Sort();
+    Assert( list.SequenceEqual( new int[] { 1, 3 } ) );
+
+    Print( "Check that item doesn't exist anymore" );
+    Assert( !col.Contains( 2 ) );
 }
 
 

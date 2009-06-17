@@ -17,6 +17,7 @@
 
 
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -54,6 +55,22 @@ Count
 {
     get;
 }
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Produce a stream the items in the bag
+IStream< T >
+Stream();
+
+
+bool
+Contains(
+    T item
+);
 
 
 
