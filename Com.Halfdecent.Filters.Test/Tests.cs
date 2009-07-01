@@ -177,11 +177,11 @@ public static
 void
 Test_FilterBase_Pull()
 {
-    IReadableBag< int >             from = new int[] { 1, 2, 3, 4 }.AsBag();
-    IReadableBag< int >             from1 = new int[] { 1 }.AsBag();
-    IReadableBag< int >             from2 = new int[] { 2 }.AsBag();
+    IBag< int >                     from = new int[] { 1, 2, 3, 4 }.AsBag();
+    IBag< int >                     from1 = new int[] { 1 }.AsBag();
+    IBag< int >                     from2 = new int[] { 2 }.AsBag();
     IFilter< int, int >             f;
-    BagFromCollectionAdapter< int > to = new List< int >().AsBag();
+    BagFromSCGCollectionAdapter< int > to = new List< int >().AsBag();
 
     Print( "1-to-1 filter" );
     f = new PassThrough { From = from.Stream() };
