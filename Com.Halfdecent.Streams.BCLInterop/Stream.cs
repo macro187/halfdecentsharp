@@ -95,22 +95,6 @@ AsEnumerable<
 
 
 
-public static
-SCG.IEnumerable< T >
-AsExpectantEnumerable<
-    T
->(
-    this IStream< T > stream
-)
-{
-    NonNull.Check( stream, new Parameter( "stream" ) );
-    return new EnumeratorToEnumerableAdapter< T >(
-        new StreamToExpectantEnumeratorAdapter< T >(
-            stream ) );
-}
-
-
-
 
 } // type
 } // namespace
