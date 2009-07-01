@@ -16,14 +16,13 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Com.Halfdecent.Exceptions;
 
 
 namespace
-Com.Halfdecent.Streams
+Com.Halfdecent.Streams.BCLInterop
 {
 
 

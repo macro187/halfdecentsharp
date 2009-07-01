@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,83 +16,46 @@
 // -----------------------------------------------------------------------------
 
 
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Streams
+Com.Halfdecent.Streams.BCLInterop
 {
 
 
 // =============================================================================
-/// Covariant <tt>IStream< T ></tt> type adapter
+/// <tt>IEnumerable< T ></tt> Library
 // =============================================================================
-//
-public class
-StreamTypeAdapter<
-    TFrom,
-    TTo
->
-    : IStream< TTo >
-    where TFrom : TTo
+
+public static class
+Enumerable
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Extension Methods
 // -----------------------------------------------------------------------------
 
-public
-StreamTypeAdapter(
-    IStream< TFrom > from
+public static
+IStream< T >
+AsStream<
+    T
+>(
+    this SCG.IEnumerable< T > enumerable
 )
 {
-    NonNull.Check( from, new Parameter( "from" ) );
-    this.from = from;
+    NonNull.Check( enumerable, new Parameter( "enumerable" ) );
+    return new StreamFromEnumeratorAdapter< T >(
+        enumerable.GetEnumerator() );
 }
 
 
 
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-IStream< TFrom >
-From
-{
-    get { return this.from; }
-}
-
-private
-IStream< TFrom >
-from;
-
-
-
-// -----------------------------------------------------------------------------
-// IStream< T >
-// -----------------------------------------------------------------------------
-
-public
-bool
-TryPull(
-    out TTo item
-)
-{
-    bool result;
-    TFrom fromitem;
-    result = this.from.TryPull( out fromitem );
-    item = fromitem;
-    return result;
-}
-
-
-
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

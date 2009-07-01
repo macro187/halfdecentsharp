@@ -16,26 +16,26 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Streams
+Com.Halfdecent.Streams.BCLInterop
 {
 
 
 // =============================================================================
-/// Covariant <tt>IStream< T ></tt> type adapter
+/// Presents an <tt>IStream< T ></tt> as an <tt>IEnumerator< T ></tt>
 // =============================================================================
 //
 public class
-StreamTypeAdapter<
-    TFrom,
-    TTo
+StreamToEnumeratorAdapter<
+    T
 >
-    : IStream< TTo >
-    where TFrom : TTo
+    : EnumeratorBase< T >
 {
 
 
@@ -45,12 +45,12 @@ StreamTypeAdapter<
 // -----------------------------------------------------------------------------
 
 public
-StreamTypeAdapter(
-    IStream< TFrom > from
+StreamToEnumeratorAdapter(
+    IStream< T > stream
 )
 {
-    NonNull.Check( from, new Parameter( "from" ) );
-    this.from = from;
+    NonNull.Check( stream, new Parameter( "stream" ) );
+    this.stream = stream;
 }
 
 
@@ -60,39 +60,44 @@ StreamTypeAdapter(
 // -----------------------------------------------------------------------------
 
 public
-IStream< TFrom >
-From
+IStream< T >
+Stream
 {
-    get { return this.from; }
+    get { return this.stream; }
 }
 
 private
-IStream< TFrom >
-from;
+IStream< T >
+stream;
 
 
 
 // -----------------------------------------------------------------------------
-// IStream< T >
+// EnumeratorBase< T >
 // -----------------------------------------------------------------------------
 
-public
+protected override
 bool
-TryPull(
-    out TTo item
+MoveNext(
+    out T nextItem
 )
 {
-    bool result;
-    TFrom fromitem;
-    result = this.from.TryPull( out fromitem );
-    item = fromitem;
-    return result;
+    return this.stream.TryPull( out nextItem );
+}
+
+
+public override
+void
+Reset()
+{
+    throw new LocalisedInvalidOperationException(
+        _S("This enumerator is enumerating an IStream, which are not resettable") );
 }
 
 
 
 
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

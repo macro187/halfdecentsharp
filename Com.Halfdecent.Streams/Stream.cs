@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -75,37 +74,6 @@ PushTo<
     T item;
     while( from.TryPull( out item ) )
         to.Push( item );
-}
-
-
-public static
-IEnumerable< T >
-AsEnumerable<
-    T
->(
-    this IStream< T > stream
-)
-{
-    NonNull.Check( stream, new Parameter( "stream" ) );
-    return new EnumeratorToEnumerableAdapter< T >(
-        new StreamToEnumeratorAdapter< T >(
-            stream ) );
-}
-
-
-
-public static
-IEnumerable< T >
-AsExpectantEnumerable<
-    T
->(
-    this IStream< T > stream
-)
-{
-    NonNull.Check( stream, new Parameter( "stream" ) );
-    return new EnumeratorToEnumerableAdapter< T >(
-        new StreamToExpectantEnumeratorAdapter< T >(
-            stream ) );
 }
 
 

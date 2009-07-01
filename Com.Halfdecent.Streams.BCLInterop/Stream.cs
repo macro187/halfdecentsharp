@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,90 +16,101 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Com.Halfdecent.Exceptions;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Streams
+Com.Halfdecent.Streams.BCLInterop
 {
 
 
 // =============================================================================
-/// Presents an <tt>IStream< T ></tt> as an <tt>IEnumerator< T ></tt>
+/// <tt>IStream< T ></tt> Library
 // =============================================================================
-//
-public class
-StreamToEnumeratorAdapter<
+
+public static class
+Stream
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+/// Pull the next item from the stream, expecting one to be available
+///
+/// @exception EmptyException
+/// There were no more items in <tt>stream</tt>
+///
+public static
+T
+Pull<
     T
->
-    : EnumeratorBase< T >
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-StreamToEnumeratorAdapter(
-    IStream< T > stream
+>(
+    this IStream< T > stream
 )
 {
     NonNull.Check( stream, new Parameter( "stream" ) );
-    this.stream = stream;
+    T r;
+    if( !stream.TryPull( out r ) )
+        throw new EmptyException( new This() );
+    return r;
 }
 
 
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-IStream< T >
-Stream
-{
-    get { return this.stream; }
-}
-
-private
-IStream< T >
-stream;
-
-
-
-// -----------------------------------------------------------------------------
-// EnumeratorBase< T >
-// -----------------------------------------------------------------------------
-
-protected override
-bool
-MoveNext(
-    out T nextItem
+public static
+void
+PushTo<
+    T
+>(
+    this IStream< T >   from,
+    ISink< T >          to
 )
 {
-    return this.stream.TryPull( out nextItem );
+    NonNull.Check( from, new Parameter( "from" ) );
+    NonNull.Check( to, new Parameter( "to" ) );
+    T item;
+    while( from.TryPull( out item ) )
+        to.Push( item );
 }
 
 
-public override
-void
-Reset()
+public static
+SCG.IEnumerable< T >
+AsEnumerable<
+    T
+>(
+    this IStream< T > stream
+)
 {
-    throw new LocalisedInvalidOperationException(
-        _S("This enumerator is enumerating an IStream, which are not resettable") );
+    NonNull.Check( stream, new Parameter( "stream" ) );
+    return new EnumeratorToEnumerableAdapter< T >(
+        new StreamToEnumeratorAdapter< T >(
+            stream ) );
 }
 
 
 
+public static
+SCG.IEnumerable< T >
+AsExpectantEnumerable<
+    T
+>(
+    this IStream< T > stream
+)
+{
+    NonNull.Check( stream, new Parameter( "stream" ) );
+    return new EnumeratorToEnumerableAdapter< T >(
+        new StreamToExpectantEnumeratorAdapter< T >(
+            stream ) );
+}
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+
+
 
 } // type
 } // namespace

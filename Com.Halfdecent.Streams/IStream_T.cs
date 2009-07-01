@@ -16,9 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
-
-
 namespace
 Com.Halfdecent.Streams
 {

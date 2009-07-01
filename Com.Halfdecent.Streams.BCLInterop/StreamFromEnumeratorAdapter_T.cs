@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2008, 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,26 +16,26 @@
 // -----------------------------------------------------------------------------
 
 
+using System.Collections;
+using System.Collections.Generic;
+using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Meta;
+
+
 namespace
-Com.Halfdecent.Streams
+Com.Halfdecent.Streams.BCLInterop
 {
 
 
 // =============================================================================
-/// Presents an <tt>IStream< T ></tt> as an <tt>IEnumerator< T ></tt> via
-/// <tt>Stream.Pull()</tt>
-///
-/// This adapter is useful when a finite number of items are to be pulled from
-/// the enumerator, and these items are expected to exist.  A
-/// <tt>EmptyException</tt> results (via <tt>Stream.Pull()</tt>) if the end of
-/// the stream is reached.
+/// Presents an <tt>IEnumerator< T ></tt> as an <tt>IStream< T ></tt>
 // =============================================================================
 //
 public class
-StreamToExpectantEnumeratorAdapter<
+StreamFromEnumeratorAdapter<
     T
 >
-    : StreamToEnumeratorAdapter< T >
+    : IStream< T >
 {
 
 
@@ -45,27 +45,43 @@ StreamToExpectantEnumeratorAdapter<
 // -----------------------------------------------------------------------------
 
 public
-StreamToExpectantEnumeratorAdapter(
-    IStream< T > stream
+StreamFromEnumeratorAdapter(
+    IEnumerator< T > enumerator
 )
-    :base( stream )
 {
+    NonNull.Check( enumerator, new Parameter( "enumerator" ) );
+    this.enumerator = enumerator;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// EnumeratorBase< T >
+// Private
 // -----------------------------------------------------------------------------
 
-protected override
+private
+IEnumerator< T >
+enumerator;
+
+
+
+// -----------------------------------------------------------------------------
+// IStream< T >
+// -----------------------------------------------------------------------------
+
+public
 bool
-MoveNext(
-    out T nextItem
+TryPull(
+    out T item
 )
 {
-    nextItem = this.Stream.Pull();
-    return true;
+    if( this.enumerator.MoveNext() ) {
+        item = this.enumerator.Current;
+        return true;
+    } else {
+        item = default( T );
+        return false;
+    }
 }
 
 

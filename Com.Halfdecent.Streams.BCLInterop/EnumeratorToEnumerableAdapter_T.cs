@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,24 +18,25 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 
 
 namespace
-Com.Halfdecent.Streams
+Com.Halfdecent.Streams.BCLInterop
 {
 
 
 // =============================================================================
-/// Presents an <tt>IEnumerator< T ></tt> as an <tt>IStream< T ></tt>
+/// An <tt>IEnumerable< T ></tt> that always returns a given
+/// <tt>IEnumerator< T ></tt>
 // =============================================================================
 //
 public class
-StreamFromEnumeratorAdapter<
+EnumeratorToEnumerableAdapter<
     T
 >
-    : IStream< T >
+    : IEnumerable< T >
 {
 
 
@@ -45,7 +46,7 @@ StreamFromEnumeratorAdapter<
 // -----------------------------------------------------------------------------
 
 public
-StreamFromEnumeratorAdapter(
+EnumeratorToEnumerableAdapter(
     IEnumerator< T > enumerator
 )
 {
@@ -66,22 +67,26 @@ enumerator;
 
 
 // -----------------------------------------------------------------------------
-// IStream< T >
+// IEnumerable< T >
 // -----------------------------------------------------------------------------
 
 public
-bool
-TryPull(
-    out T item
-)
+IEnumerator< T >
+GetEnumerator()
 {
-    if( this.enumerator.MoveNext() ) {
-        item = this.enumerator.Current;
-        return true;
-    } else {
-        item = default( T );
-        return false;
-    }
+    return this.enumerator;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEnumerable
+// -----------------------------------------------------------------------------
+
+IEnumerator
+IEnumerable.GetEnumerator()
+{
+    return this.enumerator;
 }
 
 

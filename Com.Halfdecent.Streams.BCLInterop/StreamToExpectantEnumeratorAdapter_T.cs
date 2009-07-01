@@ -16,27 +16,29 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections;
-using System.Collections.Generic;
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Streams
+Com.Halfdecent.Streams.BCLInterop
 {
 
 
 // =============================================================================
-/// An <tt>IEnumerable< T ></tt> that always returns a given
-/// <tt>IEnumerator< T ></tt>
+/// Presents an <tt>IStream< T ></tt> as an <tt>IEnumerator< T ></tt> via
+/// <tt>Stream.Pull()</tt>
+///
+/// This adapter is useful when a finite number of items are to be pulled from
+/// the enumerator, and these items are expected to exist.  A
+/// <tt>EmptyException</tt> results (via <tt>Stream.Pull()</tt>) if the end of
+/// the stream is reached.
 // =============================================================================
 //
 public class
-EnumeratorToEnumerableAdapter<
+StreamToExpectantEnumeratorAdapter<
     T
 >
-    : IEnumerable< T >
+    : StreamToEnumeratorAdapter< T >
 {
 
 
@@ -46,47 +48,27 @@ EnumeratorToEnumerableAdapter<
 // -----------------------------------------------------------------------------
 
 public
-EnumeratorToEnumerableAdapter(
-    IEnumerator< T > enumerator
+StreamToExpectantEnumeratorAdapter(
+    IStream< T > stream
+)
+    :base( stream )
+{
+}
+
+
+
+// -----------------------------------------------------------------------------
+// EnumeratorBase< T >
+// -----------------------------------------------------------------------------
+
+protected override
+bool
+MoveNext(
+    out T nextItem
 )
 {
-    NonNull.Check( enumerator, new Parameter( "enumerator" ) );
-    this.enumerator = enumerator;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Private
-// -----------------------------------------------------------------------------
-
-private
-IEnumerator< T >
-enumerator;
-
-
-
-// -----------------------------------------------------------------------------
-// IEnumerable< T >
-// -----------------------------------------------------------------------------
-
-public
-IEnumerator< T >
-GetEnumerator()
-{
-    return this.enumerator;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IEnumerable
-// -----------------------------------------------------------------------------
-
-IEnumerator
-IEnumerable.GetEnumerator()
-{
-    return this.enumerator;
+    nextItem = this.Stream.Pull();
+    return true;
 }
 
 
