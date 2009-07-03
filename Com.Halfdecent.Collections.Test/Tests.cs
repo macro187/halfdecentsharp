@@ -52,9 +52,9 @@ public static
 void
 Test_ReadOnlyBagFromSCGCollectionAdapter()
 {
-    int[]                               from = new int[] { 1, 2, 3 };
-    BagFromSCGCollectionAdapter< int >  bag = from.AsBag();
-    SCG.List< int >                     to = new SCG.List< int >();
+    int[]                                       from = new int[] { 1, 2, 3 };
+    ReadOnlyBagFromSCGCollectionAdapter< int >  bag = from.AsReadOnlyBag();
+    SCG.List< int >                             to = new SCG.List< int >();
 
     Print( "Check .Count" );
     Assert( bag.Count.ToDecimal() == 3 );
