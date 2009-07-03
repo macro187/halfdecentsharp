@@ -23,6 +23,7 @@ using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
+using Com.Halfdecent.Streams.BCLInterop;
 using Com.Halfdecent.Numerics;
 
 

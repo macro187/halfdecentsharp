@@ -60,9 +60,14 @@ Pull<
 }
 
 
+/// Push all remaining items to a sink, expecting it to accept them
+///
+/// @exception FullException
+/// <tt>to</tt> wouldn't accept all items
+///
 public static
 void
-PushTo<
+EmptyTo<
     T
 >(
     this IStream< T >   from,

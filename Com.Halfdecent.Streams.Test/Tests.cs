@@ -236,15 +236,15 @@ Test_Sink_Push()
 
 
 
-[Test( "Stream.PushTo()" )]
+[Test( "Stream.EmptyTo()" )]
 public static
 void
-Test_Stream_PushTo()
+Test_Stream_EmptyTo()
 {
     TestStream from = new TestStream();
     TestSink to = new TestSink();
-    Print( "PushTo() a sink" );
-    from.PushTo( to );
+    Print( "EmptyTo() a sink" );
+    from.EmptyTo( to );
     Print( "Check items" );
     Assert( to.Items.SequenceEqual( from.Items ) );
 }

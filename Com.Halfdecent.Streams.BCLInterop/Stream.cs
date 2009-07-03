@@ -41,44 +41,6 @@ Stream
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Pull the next item from the stream, expecting one to be available
-///
-/// @exception EmptyException
-/// There were no more items in <tt>stream</tt>
-///
-public static
-T
-Pull<
-    T
->(
-    this IStream< T > stream
-)
-{
-    NonNull.Check( stream, new Parameter( "stream" ) );
-    T r;
-    if( !stream.TryPull( out r ) )
-        throw new EmptyException( new This() );
-    return r;
-}
-
-
-public static
-void
-PushTo<
-    T
->(
-    this IStream< T >   from,
-    ISink< T >          to
-)
-{
-    NonNull.Check( from, new Parameter( "from" ) );
-    NonNull.Check( to, new Parameter( "to" ) );
-    T item;
-    while( from.TryPull( out item ) )
-        to.Push( item );
-}
-
-
 public static
 SCG.IEnumerable< T >
 AsEnumerable<

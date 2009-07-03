@@ -21,6 +21,7 @@ using SCG = System.Collections.Generic;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Collections;
 using Com.Halfdecent.Streams;
+using Com.Halfdecent.Streams.BCLInterop;
 
 
 namespace
@@ -119,7 +120,7 @@ Test_BagToSCGCollectionAdapter()
 
     Print( "Check items" );
     list.Clear();
-    col.AsBag().Stream().PushTo( list.AsBag() );
+    col.AsBag().Stream().EmptyTo( list.AsBag() );
     list.Sort();
     Assert( list.SequenceEqual( new int[] { 1, 2, 3 } ) );
 
@@ -134,7 +135,7 @@ Test_BagToSCGCollectionAdapter()
 
     Print( "Check new items" );
     list.Clear();
-    col.AsBag().Stream().PushTo( list.AsBag() );
+    col.AsBag().Stream().EmptyTo( list.AsBag() );
     list.Sort();
     Assert( list.SequenceEqual( new int[] { 1, 3 } ) );
 

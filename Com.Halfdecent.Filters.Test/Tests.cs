@@ -22,6 +22,7 @@ using System.Linq;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Filters;
 using Com.Halfdecent.Streams;
+using Com.Halfdecent.Streams.BCLInterop;
 using Com.Halfdecent.Collections;
 
 
@@ -186,38 +187,38 @@ Test_FilterBase_Pull()
     Print( "1-to-1 filter" );
     f = new PassThrough { From = from.Stream() };
     to.Clear();
-    f.PushTo( to );
+    f.EmptyTo( to );
     Assert( to.Stream().AsEnumerable().SequenceEqual(
         from.Stream().AsEnumerable() ) );
 
     Print( "1-to-many filter" );
     f = new DoubleUp { From = from.Stream() };
     to.Clear();
-    f.PushTo( to );
+    f.EmptyTo( to );
     Assert( to.Stream().AsEnumerable().SequenceEqual(
         new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
 
     Print( "Many-to-1 filter" );
     f = new AddPairs { From = from.Stream() };
     to.Clear();
-    f.PushTo( to );
+    f.EmptyTo( to );
     Assert( to.Stream().AsEnumerable().SequenceEqual(
         new int[] { 3, 7 } ) );
 
     Print( "Closing filter" );
     f = new PassOne { From = from.Stream() };
     to.Clear();
-    f.PushTo( to );
+    f.EmptyTo( to );
     Assert( to.Stream().AsEnumerable().SequenceEqual(
         new int[] { 1 } ) );
 
     Print( "Many-to-1 filter, switch .From mid-block" );
     f = new AddPairs { From = from1.Stream() };
     to.Clear();
-    f.PushTo( to );
+    f.EmptyTo( to );
     AssertEqual( to.Count.ToDecimal(), 0m );
     f.From = from2.Stream();
-    f.PushTo( to );
+    f.EmptyTo( to );
     Assert( to.Stream().AsEnumerable().SequenceEqual( new int[] { 3 } ) );
 }
 
