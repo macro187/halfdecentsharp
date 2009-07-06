@@ -178,9 +178,10 @@ public static
 void
 Test_FilterBase_Pull()
 {
-    IBag< int >                     from = new int[] { 1, 2, 3, 4 }.AsBag();
-    IBag< int >                     from1 = new int[] { 1 }.AsBag();
-    IBag< int >                     from2 = new int[] { 2 }.AsBag();
+    IBag< int >                     from = new int[] { 1, 2, 3, 4 }
+                                        .AsReadOnlyBag();
+    IBag< int >                     from1 = new int[] { 1 }.AsReadOnlyBag();
+    IBag< int >                     from2 = new int[] { 2 }.AsReadOnlyBag();
     IFilter< int, int >             f;
     BagFromSCGCollectionAdapter< int > to = new List< int >().AsBag();
 
