@@ -150,41 +150,6 @@ Test_Stream_Pull()
 
 
 
-[Test( "StreamTypeAdapter< T >" )]
-public static
-void
-Test_StreamTypeAdapter_T()
-{
-    IStream< object > s =
-        new StreamTypeAdapter< int, object >(
-            new TestStream() );
-
-    bool b;
-    object o;
-    Print( "First item" );
-
-    b = s.TryPull( out o );
-    Assert( b );
-    AssertEqual( (int)o, 1 );
-
-    Print( "Second item" );
-    b = s.TryPull( out o );
-    Assert( b );
-    AssertEqual( (int)o, 2 );
-
-    Print( "Third item" );
-    b = s.TryPull( out o );
-    Assert( b );
-    AssertEqual( (int)o, 3 );
-
-    Print( "End of stream" );
-    b = s.TryPull( out o );
-    Assert( !b );
-
-}
-
-
-
 // A test ISink<T> implementation that holds 3 ints
 private class
 TestSink
