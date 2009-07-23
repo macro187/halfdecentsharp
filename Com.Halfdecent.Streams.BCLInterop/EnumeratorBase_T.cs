@@ -27,7 +27,7 @@ Com.Halfdecent.Streams.BCLInterop
 
 
 // =============================================================================
-/// Base class for implementing
+/// Base class for implementing non-resettable
 /// <tt>System.Collections.Generic.IEnumerable< T ></tt> (and, as a corollary,
 /// <tt>System.Collections.IEnumerable</tt>)
 // =============================================================================
@@ -60,20 +60,19 @@ finished;
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Simplified <tt>MoveNext()</tt> implementation
+/// Simplified enumerator implementation
 ///
-/// Override to implementations can call this default implementation when there are
-/// no more items.  Once this method returns <tt>false</tt>, it will never be
-/// called again.
+/// Once this method returns <tt>false</tt>, it will never be called again.
+///
 protected virtual
 bool
 /// @returns Whether there was another item
 MoveNext(
     out T nextItem
     ///< The next item
-    /// - OR -
-    ///  If there wasn't another item, an undefined value that will never be
-    ///  used
+    ///  - OR -
+    ///  An undefined value that will never be used, if there wasn't another
+    ///  item
 )
 {
     nextItem = default( T );
@@ -133,12 +132,9 @@ MoveNext()
 
 /// (see <tt>IEnumerable.Reset()</tt>
 ///
-/// The default implementation always throws an exception, implementing a
-/// non-resettable enumerator.  Override to make a resettable enumerator.
-///
 /// @exception InvalidOperationException
 /// Always
-public virtual
+public
 void
 Reset()
 {
