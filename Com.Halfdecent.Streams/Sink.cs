@@ -39,10 +39,10 @@ Sink
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Push an item into the sink, expecting there to be room
+/// Push an item into the sink, expecting there to be capacity for it
 ///
 /// @exception FullException
-/// There was no room for the item in <tt>sink</tt>
+/// The sink did not have capacity to accept the item
 ///
 public static
 void

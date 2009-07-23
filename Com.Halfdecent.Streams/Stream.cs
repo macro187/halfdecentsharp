@@ -42,7 +42,7 @@ Stream
 /// Pull the next item from the stream, expecting one to be available
 ///
 /// @exception EmptyException
-/// There were no more items in <tt>stream</tt>
+/// There were no more items available from <tt>stream</tt>
 ///
 public static
 T
@@ -60,25 +60,27 @@ Pull<
 }
 
 
-/// Push all remaining items to a sink, expecting it to accept them
+/// Push all items from the stream to <tt>sink</tt>, which is expected to have
+/// capacity to accept them all
 ///
 /// @exception FullException
-/// <tt>to</tt> wouldn't accept all items
+/// <tt>sink</tt> didn't have capacity to accept all items
+/// (via <tt>Sink.Push()</tt>)
 ///
 public static
 void
 EmptyTo<
     T
 >(
-    this IStream< T >   from,
-    ISink< T >          to
+    this IStream< T >   stream,
+    ISink< T >          sink
 )
 {
-    NonNull.Check( from, new Parameter( "from" ) );
-    NonNull.Check( to, new Parameter( "to" ) );
+    NonNull.Check( stream, new Parameter( "stream" ) );
+    NonNull.Check( sink, new Parameter( "sink" ) );
     T item;
-    while( from.TryPull( out item ) )
-        to.Push( item );
+    while( stream.TryPull( out item ) )
+        sink.Push( item );
 }
 
 
