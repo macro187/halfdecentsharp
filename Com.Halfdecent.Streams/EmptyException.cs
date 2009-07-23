@@ -59,7 +59,7 @@ EmptyException(
 )
     :base(
         streamReference,
-        _S("An attempt was made to read past the end of {0}"),
+        _S("{0} contains no more items"),
         innerException )
 {
 }
