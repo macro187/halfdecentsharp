@@ -86,15 +86,6 @@ MoveNext(
 }
 
 
-public override
-void
-Reset()
-{
-    throw new LocalisedInvalidOperationException(
-        _S("This enumerator is enumerating an IStream, which are not resettable") );
-}
-
-
 
 
 private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
