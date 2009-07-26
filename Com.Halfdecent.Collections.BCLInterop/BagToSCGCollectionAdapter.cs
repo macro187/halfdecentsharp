@@ -34,7 +34,7 @@ Com.Halfdecent.Collections.BCLInterop
 
 
 // =============================================================================
-/// Present a bag as a System.Generic.Collections collection
+/// Present a bag as a <tt>System.Generic.Collections</tt> collection
 ///
 /// This adapter allows the largest subset of <tt>ICollection< T ></tt>
 /// operations that the underlying bag is capable of.  Operations not supported
