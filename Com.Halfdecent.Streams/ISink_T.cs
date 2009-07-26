@@ -22,8 +22,21 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// TODO
+/// A programmatic consumer of items
+///
+/// See <tt>http://en.wikipedia.org/wiki/Sink_(computing)</tt>
+///
+/// @para Item Lifetime
+/// When given an item, a sink accepts responsiblity for destroying it
+/// if and when appropriate.  This would generally be when the item is no
+/// longer needed, is not being stored, and will not be further passed along or
+/// otherwise made available.  Specifically, this means (in .NET) that the sink
+/// will <tt>Dispose()</tt> the item (if applicable) and release all references
+/// so as not to prevent it's being garbage-collected.
 // =============================================================================
+
+// TODO Common external disposal routine used by all sinks that can be used
+//      eg. to capture and re-use objects etc.
 
 public interface
 ISink<

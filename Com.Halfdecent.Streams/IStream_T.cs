@@ -27,15 +27,12 @@ Com.Halfdecent.Streams
 ///
 /// See <tt>http://en.wikipedia.org/wiki/Stream_(computer)</tt>
 ///
-/// At any given time a stream is "positioned" just before the next item in the
-/// sequence.
-///
 /// On it's own, <tt>IStream< T ></tt> does not imply how many more items (if
 /// any) are available, nor how long (if ever) it will take to yield the next
 /// one.  Implementations should document their semantics in these regards
 /// and/or implement stream subtypes with more specific semantics.
 // =============================================================================
-//
+
 public interface
 IStream<
     T
@@ -59,7 +56,7 @@ TryPull(
     ///< The next item in the stream
     ///  - OR -
     ///  An undefined and unusable value if there are no more items on the
-    ///  stream (as indicated by a return value of <tt>false</tt>)
+    ///  stream (as indicated by a <tt>false</tt> return value)
 );
 
 
