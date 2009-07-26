@@ -38,10 +38,13 @@ IShrinkableBag<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Remove an item from the bag
+/// Remove (an occurrence of) an item from the bag that is equal to the
+/// specified item
+///
+//  TODO Clarify what "equal to" means here
 ///
 /// If the bag contains more than one occurrence of the specified item, only
-/// one is removed
+/// one occurrence is removed
 ///
 void
 Remove(

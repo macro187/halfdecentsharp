@@ -19,53 +19,40 @@
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
+using Com.Halfdecent.Collections;
 
 
 namespace
-Com.Halfdecent.Collections
+Com.Halfdecent.Collections.BCLInterop
 {
 
-
-// =============================================================================
-/// <tt>System.Collections.Generic.ICollection< T ></tt> interop library
-// =============================================================================
 
 public static class
-SCGCollection
+Bag
 {
 
 
 
-// -----------------------------------------------------------------------------
-// Extension Methods
-// -----------------------------------------------------------------------------
-
+/// Present a bag as a <tt>System.Collections.Generic</tt> collection
+///
 public static
-ReadOnlyBagFromSCGCollectionAdapter< T >
-AsReadOnlyBag<
+SCG.ICollection< T >
+AsSCGCollection<
     T
 >(
-    this SCG.ICollection< T > collection
+    this IBag< T > bag
 )
 {
-    return new ReadOnlyBagFromSCGCollectionAdapter< T >( collection );
-}
-
-
-public static
-BagFromSCGCollectionAdapter< T >
-AsBag<
-    T
->(
-    this SCG.ICollection< T > collection
-)
-{
-    return new BagFromSCGCollectionAdapter< T >( collection );
+    NonNull.Check( bag, new Parameter( "bag" ) );
+    return new BagToSCGCollectionAdapter< T >( bag );
 }
 
 
 
+
+//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

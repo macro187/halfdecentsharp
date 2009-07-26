@@ -23,36 +23,24 @@ using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Streams.BCLInterop;
+using Com.Halfdecent.Collections;
 
 
 namespace
-Com.Halfdecent.Collections
+Com.Halfdecent.Collections.BCLInterop
 {
 
 
 // =============================================================================
-/// Present a non-read-only <tt>System.Collections.Generic.Collection< T ></tt>
-/// as an <tt>IBag< T ></tt>
-///
-/// @par .IsReadOnly
-/// Refer to the namespace-wide <tt>Com.Halfdecent.Collections</tt>
-/// documentation for a discussion of important issues surrounding the
-/// readability / writability of collections in the base class library.
-///
-/// @par Undefined TryPush() failure
-/// Because <tt>ICollection< T >.Add()</tt> doesn't define how to fail when the
-/// collection is full, neither can this class.  So, <tt>TryPush()</tt> will
-/// either succeed, returning <tt>true</tt>, or fail in whatever undefined way
-/// the underlying collection's <tt>Add()</tt> fails.
+/// Present a <tt>System.Collections.Generic.Collection< T ></tt> as a
+/// read-only <tt>IBag< T ></tt>
 // =============================================================================
 
 public class
-BagFromSCGCollectionAdapter<
+ReadOnlyBagFromSCGCollectionAdapter<
     T
 >
-    : ReadOnlyBagFromSCGCollectionAdapter< T >
-    , ISink< T >
-    , IShrinkableBag< T >
+    : IBag< T >
 {
 
 
@@ -62,60 +50,71 @@ BagFromSCGCollectionAdapter<
 // -----------------------------------------------------------------------------
 
 public
-BagFromSCGCollectionAdapter(
+ReadOnlyBagFromSCGCollectionAdapter(
     SCG.ICollection< T > collection
 )
-    : base( collection )
 {
-    if( collection.IsReadOnly )
-        throw new ValueException(
-            new Parameter( "collection" ),
-            _S("{0} is read-only, use ReadOnlyBagFromSCGCollectionAdapter") );
+    NonNull.Check( collection, new Parameter( "collection" ) );
+    this.Collection = collection;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// ISink< T >
+// Properties
+// -----------------------------------------------------------------------------
+
+protected
+SCG.ICollection< T >
+Collection
+{
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IBag< T >
 // -----------------------------------------------------------------------------
 
 public
 bool
-TryPush(
-    T item
-)
+IsEmpty
 {
-    this.Collection.Add( item );
-    return true;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IShrinkableBag< T >
-// -----------------------------------------------------------------------------
-
-public
-void
-Remove(
-    T item
-)
-{
-    this.Collection.Remove( item );
+    get { return this.IsEmptyViaCount(); }
 }
 
 
 public
-void
-Clear()
+IInteger
+Count
 {
-    this.Collection.Clear();
+    get { return Integer.From( this.Collection.Count ); }
+}
+
+
+public
+IStream< T >
+Stream()
+{
+    return this.Collection.AsStream();
+}
+
+
+public
+bool
+Contains(
+    T item
+)
+{
+    return this.Collection.Contains( item );
 }
 
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

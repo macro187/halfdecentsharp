@@ -20,16 +20,6 @@
 /// Collections
 ///
 /// See <tt>http://en.wikipedia.org/wiki/Collection_(computing)</tt>
-///
-/// @par System.Collections.ICollection<T>.IsReadOnly
-/// In the base class library, the single <tt>ICollection<T></tt> type underlies
-/// all collections, with writability indicated in the boolean
-/// <tt>IsReadOnly</tt> property.  Besides preventing the compiler from helping
-/// to enforce writability, this design is inadequate because the single boolean
-/// <tt>false</tt> value is insufficent to represent the various shades of
-/// writability: changeable, growable, and shrinkable.  As a result of this lack
-/// of precision, ambiguities can arise when mapping between Halfdecent
-/// collections and base class library collections.
 // =============================================================================
 
 namespace

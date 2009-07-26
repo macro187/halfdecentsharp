@@ -34,33 +34,21 @@ Bag
 
 
 
-/// Determine whether a bag is empty based on its <tt>Count</tt>
+/// <tt>IsEmpty</tt> via <tt>Count</tt>
+///
+/// @para Complexity
+/// Depends on <tt>Count</tt>
 ///
 public static
 bool
 IsEmptyViaCount<
     T
 >(
-    IBag< T > bag
-)
-{
-    NonNull.Check( bag, new Parameter( "bag" ) );
-    return bag.Count == Integer.From( 0 );
-}
-
-
-/// Present a bag as a <tt>System.Collections.Generic.Collection</tt>
-///
-public static
-SCG.ICollection< T >
-AsSCGCollection<
-    T
->(
     this IBag< T > bag
 )
 {
     NonNull.Check( bag, new Parameter( "bag" ) );
-    return new BagToSCGCollectionAdapter< T >( bag );
+    return bag.Count == Integer.From( 0 );
 }
 
 

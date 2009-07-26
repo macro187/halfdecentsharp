@@ -20,17 +20,18 @@ using System.Linq;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Collections;
+using Com.Halfdecent.Collections.BCLInterop;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Streams.BCLInterop;
 
 
 namespace
-Com.Halfdecent.Streams.Test
+Com.Halfdecent.Streams.BCLInterop.Test
 {
 
 
 // =============================================================================
-/// Test program for <tt>Com.Halfdecent.Collections</tt>
+/// Test program for <tt>Com.Halfdecent.Collections.BCLInterop</tt>
 // =============================================================================
 //
 public class

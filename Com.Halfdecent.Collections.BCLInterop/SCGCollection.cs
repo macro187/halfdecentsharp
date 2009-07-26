@@ -16,104 +16,57 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.BCLInterop;
+using Com.Halfdecent.Collections;
 
 
 namespace
-Com.Halfdecent.Collections
+Com.Halfdecent.Collections.BCLInterop
 {
 
 
 // =============================================================================
-/// Present a <tt>System.Collections.Generic.Collection< T ></tt> as a
-/// read-only <tt>IBag< T ></tt>
+/// <tt>System.Collections.Generic.ICollection< T ></tt> interop library
 // =============================================================================
 
-public class
-ReadOnlyBagFromSCGCollectionAdapter<
+public static class
+SCGCollection
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+public static
+ReadOnlyBagFromSCGCollectionAdapter< T >
+AsReadOnlyBag<
     T
->
-    : IBag< T >
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-ReadOnlyBagFromSCGCollectionAdapter(
-    SCG.ICollection< T > collection
+>(
+    this SCG.ICollection< T > collection
 )
 {
-    NonNull.Check( collection, new Parameter( "collection" ) );
-    this.Collection = collection;
+    return new ReadOnlyBagFromSCGCollectionAdapter< T >( collection );
 }
 
 
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-protected
-SCG.ICollection< T >
-Collection
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IBag< T >
-// -----------------------------------------------------------------------------
-
-public
-bool
-IsEmpty
-{
-    get { return Bag.IsEmptyViaCount( this ); }
-}
-
-
-public
-IInteger
-Count
-{
-    get { return Integer.From( this.Collection.Count ); }
-}
-
-
-public
-IStream< T >
-Stream()
-{
-    return this.Collection.AsStream();
-}
-
-
-public
-bool
-Contains(
-    T item
+public static
+BagFromSCGCollectionAdapter< T >
+AsBag<
+    T
+>(
+    this SCG.ICollection< T > collection
 )
 {
-    return this.Collection.Contains( item );
+    return new BagFromSCGCollectionAdapter< T >( collection );
 }
 
 
 
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

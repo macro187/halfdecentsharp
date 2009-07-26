@@ -25,10 +25,11 @@ using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Streams.BCLInterop;
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Collections;
 
 
 namespace
-Com.Halfdecent.Collections
+Com.Halfdecent.Collections.BCLInterop
 {
 
 

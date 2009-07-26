@@ -16,69 +16,23 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-
+// =============================================================================
+/// <tt>System.Collections</tt> and <tt>System.Collections.Generic</tt>
+/// interoperability
+///
+/// @par System.Collections.ICollection<T>.IsReadOnly
+/// In the base class library, the single <tt>ICollection<T></tt> type underlies
+/// all collections, with writability indicated in the boolean
+/// <tt>IsReadOnly</tt> property.  Besides preventing the compiler from helping
+/// to enforce writability, this design is inadequate because the single boolean
+/// <tt>false</tt> value is insufficent to represent the various shades of
+/// writability: changeable, growable, and shrinkable.  As a result of this lack
+/// of precision, ambiguities can arise when mapping between Halfdecent
+/// collections and base class library collections.
+// =============================================================================
 
 namespace
-Com.Halfdecent.Collections
+Com.Halfdecent.Collections.BCLInterop
 {
-
-
-// =============================================================================
-/// A finite, unordered collection of non-unique items
-///
-/// See <tt>http://en.wikipedia.org/wiki/Multiset</tt>
-// =============================================================================
-
-public interface
-IBag<
-    T
->
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-IInteger
-Count
-{
-    get;
 }
-
-
-bool
-IsEmpty
-{
-    get;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Produce a stream of the items in the bag
-///
-IStream< T >
-Stream();
-
-
-/// Indicate whether the collection contains an item equal to a given one
-//  TODO Clarify what "equal to" means here
-///
-bool
-Contains(
-    T item
-);
-
-
-
-
-} // type
-} // namespace
 
