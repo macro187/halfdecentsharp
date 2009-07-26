@@ -30,9 +30,22 @@ Com.Halfdecent.Filters
 // =============================================================================
 /// Base class for implementing filters
 ///
-/// TODO Document ownership, ie. who Disposes() elements?  When? (actually a
-///      Sink issue)
-/// TODO Issues to do with multithreaded pipelines
+/// The simplest filters are 1-to-1 filters where one input item always yields
+/// one output item.  But some scenarios call for one-to-many and many-to-one
+/// filters, where a single input item yields multiple output items or
+/// vice-versa.  These kinds of filters are more difficult to implement because
+/// the processing routine must be interruptible mid-execution to process
+/// additional input (or output) items.
+///
+/// This base class makes it reasonably easy to implement any of the above-
+/// mentioned kinds of filter.
+///
+/// Subclasses implement their filter logic as an iterator, <tt>Process()</tt>,
+/// that must <tt>yield</tt> execution at certain times and use a small "API" of
+/// methods to consume, produce, and dispose of items.
+///
+/// This base class will execute the <tt>Process()</tt> iterator on-demand as
+/// items become available upstream or are requested from downstream.
 // =============================================================================
 
 public abstract class
@@ -54,8 +67,9 @@ FilterBase()
 {
     this.process = Process();
     this.Tick();
-    if( this.process.Current == true ) throw new LocalisedException(
-        _S("Process() says it has produced an item before having consumed any") );
+    if( this.process.Current == true )
+        throw new LocalisedException(
+            _S("Process() says it has produced an item before having consumed any") );
 }
 
 
@@ -96,31 +110,20 @@ haveoutitem = false;
 
 /// Processing kernel
 ///
-/// The simplest filters are 1-to-1 filters where one input item always yields
-/// one output item.
+/// To consume an item:
+/// - <tt>yield return false<tt>
+/// - <tt>this.GetItem()</tt>
 ///
-/// In addition, some scenarios call for one-to-many and many-to-one filters,
-/// where a single input item yields multiple output items or vice-versa.*
-/// These kinds of filters are more difficult to implement because the
-/// processing routine must be interruptible mid-execution to process
-/// additional input (or output) items.
+/// To dispose of an item:
+/// - <tt>this.DisposeItem()</tt>
 ///
-/// * Note that in many cases, one-to-many or many-to-one filters can be
-///   reduced to simpler 1-to-1 filters by designing them to process blocks of
-///   items as individual collections and relying on external
-///   blocking/deblocking filters.  This can be applicable especially if the
-///   blocks are fixed-size or separated by easy-to-recognise delimiters.
+/// To produce an item:
+/// - <tt>this.PutItem()</tt>
+/// - <tt>yield return true</tt>
 ///
-/// TODO Detailed Process() API documentation
-/// - Consume an item...
-///   <tt>yield return false<tt> then <tt>this.GetItem()</tt>
-/// - Dispose an item...
-///   <tt>this.DisposeItem()</tt>
-/// - Produce an item...
-///   <tt>this.PutItem()</tt> then <tt>yield return true</tt>
-/// - Finish processing and close the filter, allowing no more items through
-///   ever again...
-///   Exit the iterator
+/// To finish processing permanently, so that all subsequent attempt to push
+/// items through the filter will fail:
+/// - Exit the iterator
 ///
 protected abstract
 IEnumerator< bool >
