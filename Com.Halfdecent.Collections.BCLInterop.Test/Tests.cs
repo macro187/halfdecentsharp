@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Linq;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Testing;
@@ -33,7 +34,7 @@ Com.Halfdecent.Streams.BCLInterop.Test
 // =============================================================================
 /// Test program for <tt>Com.Halfdecent.Collections.BCLInterop</tt>
 // =============================================================================
-//
+
 public class
 Tests
     : TestBase
@@ -53,17 +54,48 @@ public static
 void
 Test_ReadOnlyBagFromSCGCollectionAdapter()
 {
-    int[]                                       from = new int[] { 1, 2, 3 };
-    ReadOnlyBagFromSCGCollectionAdapter< int >  bag = from.AsReadOnlyBag();
+    ReadOnlyBagFromSCGCollectionAdapter< int >  bag;
     SCG.List< int >                             to = new SCG.List< int >();
 
-    Print( "Check .Count" );
-    Assert( bag.Count.ToDecimal() == 3 );
+    Print( "Empty bag" );
+    bag = new int[] {}.AsReadOnlyBag();
 
-    Print( "Check items via Stream()" );
+    Print( ".Count" );
+    AssertEqual( bag.Count.ToDecimal(), 0 );
+
+    Print( ".IsEmpty" );
+    Assert( bag.IsEmpty );
+
+    Print( ".Stream()" );
     foreach( int i in bag.Stream().AsEnumerable() ) to.Add( i );
     to.Sort();  // Bags are unordered
-    Assert( to.SequenceEqual( from ) );
+    Assert( to.SequenceEqual( new int[] {} ) );
+
+    Print( ".Contains()" );
+    Assert( !bag.Contains( 1 ) );
+    Assert( !bag.Contains( 2 ) );
+    Assert( !bag.Contains( 3 ) );
+    Assert( !bag.Contains( 4 ) );
+
+    Print( "Non-empty bag" );
+    bag = new int[] { 1, 2, 3 }.AsReadOnlyBag();
+
+    Print( ".Count" );
+    AssertEqual( bag.Count.ToDecimal(), 3 );
+
+    Print( ".IsEmpty" );
+    Assert( !bag.IsEmpty );
+
+    Print( ".Stream()" );
+    foreach( int i in bag.Stream().AsEnumerable() ) to.Add( i );
+    to.Sort();  // Bags are unordered
+    Assert( to.SequenceEqual( new int[] { 1, 2, 3 } ) );
+
+    Print( ".Contains()" );
+    Assert( bag.Contains( 1 ) );
+    Assert( bag.Contains( 2 ) );
+    Assert( bag.Contains( 3 ) );
+    Assert( !bag.Contains( 4 ) );
 }
 
 
@@ -77,26 +109,80 @@ Test_BagFromSCGCollectionAdapter()
     BagFromSCGCollectionAdapter< int >  bag = list.AsBag();
     SCG.List< int >                     to = new SCG.List< int >();
 
-    Print( "Check initial .Count" );
-    Assert( bag.Count.ToDecimal() == 0 );
+    Print( ".Count" );
+    AssertEqual( bag.Count.ToDecimal(), 0 );
 
-    Print( "Add items" );
+    Print( ".IsEmpty" );
+    Assert( bag.IsEmpty );
+
+    Print( ".Contains()" );
+    Assert( !bag.Contains( 1 ) );
+    Assert( !bag.Contains( 2 ) );
+    Assert( !bag.Contains( 3 ) );
+    Assert( !bag.Contains( 4 ) );
+
+    Print( ".Stream()" );
+    to.Clear();
+    foreach( int i in bag.Stream().AsEnumerable() ) to.Add( i );
+    to.Sort();  // Bags are unordered
+    Assert( to.SequenceEqual( new int[] {} ) );
+
+    Print( ".Push() some items" );
     foreach( int i in from ) bag.Push( i );
 
-    Print( "Check .Count" );
-    Assert( bag.Count.ToDecimal() == 3 );
+    Print( ".Count" );
+    AssertEqual( bag.Count.ToDecimal(), 3 );
 
-    Print( "Check items via Stream()" );
+    Print( ".IsEmpty" );
+    Assert( !bag.IsEmpty );
+
+    Print( ".Contains()" );
+    Assert( bag.Contains( 1 ) );
+    Assert( bag.Contains( 2 ) );
+    Assert( bag.Contains( 3 ) );
+    Assert( !bag.Contains( 4 ) );
+
+    Print( ".Stream()" );
     to.Clear();
     foreach( int i in bag.Stream().AsEnumerable() ) to.Add( i );
     to.Sort();  // Bags are unordered
     Assert( to.SequenceEqual( from ) );
 
-    Print( "Clear() out all items" );
+    Print( ".Remove() an item" );
+    bag.Remove( 2 );
+
+    Print( ".Count" );
+    AssertEqual( bag.Count.ToDecimal(), 2 );
+
+    Print( ".IsEmpty" );
+    Assert( !bag.IsEmpty );
+
+    Print( ".Contains()" );
+    Assert( bag.Contains( 1 ) );
+    Assert( !bag.Contains( 2 ) );
+    Assert( bag.Contains( 3 ) );
+    Assert( !bag.Contains( 4 ) );
+
+    Print( ".Stream()" );
+    to.Clear();
+    foreach( int i in bag.Stream().AsEnumerable() ) to.Add( i );
+    to.Sort();  // Bags are unordered
+    Assert( to.SequenceEqual( new int[] { 1, 3 } ) );
+
+    Print( ".Clear() out all items" );
     bag.Clear();
 
-    Print( "Check .Count" );
+    Print( ".Count" );
     AssertEqual( bag.Count.ToDecimal(), 0 );
+
+    Print( ".IsEmpty" );
+    Assert( bag.IsEmpty );
+
+    Print( ".Contains()" );
+    Assert( !bag.Contains( 1 ) );
+    Assert( !bag.Contains( 2 ) );
+    Assert( !bag.Contains( 3 ) );
+    Assert( !bag.Contains( 4 ) );
 }
 
 
@@ -105,43 +191,150 @@ public static
 void
 Test_BagToSCGCollectionAdapter()
 {
-    BagFromSCGCollectionAdapter< int > bag =
-        new BagFromSCGCollectionAdapter< int >( new SCG.List< int >() );
-    SCG.ICollection< int > col = bag.AsSCGCollection();
 
-    SCG.List< int > list = new SCG.List< int >();
+    // TODO Check all variations of bag (shrinkable, growable, both, etc.)
 
-    Print( "Add 3 items" );
+    SCG.ICollection< int >  col;
+    SCG.List< int >         list = new SCG.List< int >();
+
+    Print( "Empty read-only collection" );
+    col = new int[]{}.AsReadOnlyBag().AsSCGCollection();
+
+    Print( ".IsReadOnly" );
+    Assert( col.IsReadOnly );
+
+    Print( ".Count" );
+    AssertEqual( col.Count, 0 );
+
+    Print( ".Contains()" );
+    Assert( !col.Contains( 1 ) );
+    Assert( !col.Contains( 2 ) );
+    Assert( !col.Contains( 3 ) );
+    Assert( !col.Contains( 4 ) );
+
+    Print( ".GetEnumerator() to check items" );
+    list.Clear();
+    foreach( int i in col ) list.Add( i );
+    list.Sort();
+    Assert( list.SequenceEqual( new int[] {} ) );
+
+    Print( ".Add() throws NotSupportedException" );
+    Expect< NotSupportedException >( () => col.Add( 1 ) );
+
+    Print( ".Clear() throws NotSupportedException" );
+    Expect< NotSupportedException >( () => col.Clear() );
+
+    Print( ".Remove() throws NotSupportedException" );
+    Expect< NotSupportedException >( () => col.Remove( 1 ) );
+
+
+    Print( "Non-empty read-only collection" );
+    col = new int[]{ 1, 2, 3 }.AsReadOnlyBag().AsSCGCollection();
+
+    Print( ".IsReadOnly" );
+    Assert( col.IsReadOnly );
+
+    Print( ".Count" );
+    AssertEqual( col.Count, 3 );
+
+    Print( ".Contains()" );
+    Assert( col.Contains( 1 ) );
+    Assert( col.Contains( 2 ) );
+    Assert( col.Contains( 3 ) );
+    Assert( !col.Contains( 4 ) );
+
+    Print( ".GetEnumerator() to check items" );
+    list.Clear();
+    foreach( int i in col ) list.Add( i );
+    list.Sort();
+    Assert( list.SequenceEqual( new int[] { 1, 2, 3 } ) );
+
+    Print( ".Add() throws NotSupportedException" );
+    Expect< NotSupportedException >( () => col.Add( 1 ) );
+
+    Print( ".Clear() throws NotSupportedException" );
+    Expect< NotSupportedException >( () => col.Clear() );
+
+    Print( ".Remove() throws NotSupportedException" );
+    Expect< NotSupportedException >( () => col.Remove( 1 ) );
+
+
+    Print( "Writable collection" );
+    col = new SCG.List< int >().AsBag().AsSCGCollection();
+
+    Print( ".IsReadOnly" );
+    Assert( !col.IsReadOnly );
+
+    Print( ".Count" );
+    AssertEqual( col.Count, 0 );
+
+    Print( ".Contains()" );
+    Assert( !col.Contains( 1 ) );
+    Assert( !col.Contains( 2 ) );
+    Assert( !col.Contains( 3 ) );
+    Assert( !col.Contains( 4 ) );
+
+    Print( ".GetEnumerator() to check items" );
+    list.Clear();
+    foreach( int i in col ) list.Add( i );
+    list.Sort();
+    Assert( list.SequenceEqual( new int[] {} ) );
+
+    Print( ".Add()" );
     col.Add( 1 );
     col.Add( 2 );
     col.Add( 3 );
 
-    Print( "Check .Count" );
+    Print( ".Count" );
     AssertEqual( col.Count, 3 );
 
-    Print( "Check items" );
+    Print( ".Contains()" );
+    Assert( col.Contains( 1 ) );
+    Assert( col.Contains( 2 ) );
+    Assert( col.Contains( 3 ) );
+    Assert( !col.Contains( 4 ) );
+
+    Print( ".GetEnumerator() to check items" );
     list.Clear();
-    col.AsBag().Stream().EmptyTo( list.AsBag() );
+    foreach( int i in col ) list.Add( i );
     list.Sort();
     Assert( list.SequenceEqual( new int[] { 1, 2, 3 } ) );
 
-    Print( "Check for existence of a particular item" );
-    Assert( col.Contains( 2 ) );
-
-    Print( "Remove it" );
+    Print( ".Remove()" );
     col.Remove( 2 );
 
-    Print( "Check new .Count" );
+    Print( ".Count" );
     AssertEqual( col.Count, 2 );
 
-    Print( "Check new items" );
+    Print( ".Contains()" );
+    Assert( col.Contains( 1 ) );
+    Assert( !col.Contains( 2 ) );
+    Assert( col.Contains( 3 ) );
+    Assert( !col.Contains( 4 ) );
+
+    Print( ".GetEnumerator() to check items" );
     list.Clear();
-    col.AsBag().Stream().EmptyTo( list.AsBag() );
+    foreach( int i in col ) list.Add( i );
     list.Sort();
     Assert( list.SequenceEqual( new int[] { 1, 3 } ) );
 
-    Print( "Check that item doesn't exist anymore" );
+    Print( ".Clear()" );
+    col.Clear();
+
+    Print( ".Count" );
+    AssertEqual( col.Count, 0 );
+
+    Print( ".Contains()" );
+    Assert( !col.Contains( 1 ) );
     Assert( !col.Contains( 2 ) );
+    Assert( !col.Contains( 3 ) );
+    Assert( !col.Contains( 4 ) );
+
+    Print( ".GetEnumerator() to check items" );
+    list.Clear();
+    foreach( int i in col ) list.Add( i );
+    list.Sort();
+    Assert( list.SequenceEqual( new int[] {} ) );
 }
 
 
