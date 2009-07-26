@@ -68,7 +68,9 @@ IStream< T >
 Stream();
 
 
-/// Indicate whether the collection contains an item equal to a given one
+/// Indicate whether the collection contains an item equal to a specified
+/// item
+///
 //  TODO Clarify what "equal to" means here
 ///
 bool

@@ -48,7 +48,7 @@ IsEmptyViaCount<
 )
 {
     NonNull.Check( bag, new Parameter( "bag" ) );
-    return bag.Count == Integer.From( 0 );
+    return bag.Count.Equals( Integer.From( 0 ) );
 }
 
 
