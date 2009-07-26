@@ -27,11 +27,9 @@ Com.Halfdecent.Streams.BCLInterop
 
 
 // =============================================================================
-/// Base class for implementing non-resettable
-/// <tt>System.Collections.Generic.IEnumerable< T ></tt> (and, as a corollary,
-/// <tt>System.Collections.IEnumerable</tt>)
+/// Base class for implementing non-resettable enumerators
 // =============================================================================
-//
+
 public abstract class
 EnumeratorBase<
     T

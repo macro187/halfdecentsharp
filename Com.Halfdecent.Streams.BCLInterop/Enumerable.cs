@@ -41,6 +41,8 @@ Enumerable
 // Extension Methods
 // -----------------------------------------------------------------------------
 
+/// Present the enumerable as a stream
+///
 public static
 IStream< T >
 AsStream<

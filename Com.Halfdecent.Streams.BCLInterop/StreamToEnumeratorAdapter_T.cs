@@ -28,9 +28,9 @@ Com.Halfdecent.Streams.BCLInterop
 
 
 // =============================================================================
-/// Presents an <tt>IStream< T ></tt> as an <tt>IEnumerator< T ></tt>
+/// Presents a stream as an enumerator
 // =============================================================================
-//
+
 public class
 StreamToEnumeratorAdapter<
     T
@@ -50,7 +50,7 @@ StreamToEnumeratorAdapter(
 )
 {
     NonNull.Check( stream, new Parameter( "stream" ) );
-    this.stream = stream;
+    this.Stream = stream;
 }
 
 
@@ -63,12 +63,9 @@ public
 IStream< T >
 Stream
 {
-    get { return this.stream; }
+    get;
+    private set;
 }
-
-private
-IStream< T >
-stream;
 
 
 
@@ -82,7 +79,7 @@ MoveNext(
     out T nextItem
 )
 {
-    return this.stream.TryPull( out nextItem );
+    return this.Stream.TryPull( out nextItem );
 }
 
 

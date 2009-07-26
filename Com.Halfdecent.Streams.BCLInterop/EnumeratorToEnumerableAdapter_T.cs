@@ -28,8 +28,7 @@ Com.Halfdecent.Streams.BCLInterop
 
 
 // =============================================================================
-/// An <tt>IEnumerable< T ></tt> that always returns a given
-/// <tt>IEnumerator< T ></tt>
+/// An enumerable that always yields a given enumerator
 // =============================================================================
 //
 public class

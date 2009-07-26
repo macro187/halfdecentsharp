@@ -28,9 +28,9 @@ Com.Halfdecent.Streams.BCLInterop
 
 
 // =============================================================================
-/// Presents an <tt>IEnumerator< T ></tt> as an <tt>IStream< T ></tt>
+/// Presents an enumerator as a stream
 // =============================================================================
-//
+
 public class
 StreamFromEnumeratorAdapter<
     T

@@ -41,6 +41,8 @@ Stream
 // Extension Methods
 // -----------------------------------------------------------------------------
 
+/// Present the stream as an enumerable
+///
 public static
 SCG.IEnumerable< T >
 AsEnumerable<
