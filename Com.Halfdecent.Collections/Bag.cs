@@ -36,7 +36,7 @@ Bag
 
 /// <tt>IsEmpty</tt> via <tt>Count</tt>
 ///
-/// @para Complexity
+/// @par Complexity
 /// Depends on <tt>Count</tt>
 ///
 public static

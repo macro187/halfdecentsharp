@@ -26,7 +26,7 @@ Com.Halfdecent.Streams
 ///
 /// See <tt>http://en.wikipedia.org/wiki/Sink_(computing)</tt>
 ///
-/// @para Item Lifetime
+/// @par Item Lifetime
 /// When given an item, a sink accepts responsiblity for destroying it
 /// if and when appropriate.  This would generally be when the item is no
 /// longer needed, is not being stored, and will not be further passed along or
