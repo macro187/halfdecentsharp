@@ -22,6 +22,7 @@ MODULES_use += dotnet.csharp
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Testing)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Filters)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Collections)
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Collections.SystemInterop)
 
 
 include $(MAKERY)/makery.mk
