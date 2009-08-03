@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2008, 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,9 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Meta;
 using Com.Halfdecent.Streams;
 
 
@@ -27,44 +26,59 @@ Com.Halfdecent.Collections
 {
 
 
-public static class
-GrowableBag
+// =============================================================================
+/// Presents a growable bag as a sink
+// =============================================================================
+
+public class
+GrowableBagToSinkAdapter<
+    T
+>
+    : ISink< T >
 {
 
 
 
-/// Add an item to the bag
-///
-/// @exception FullException
-/// The bag did not have capacity for the item
-///
-public static
-void
-Add<
-    T
->(
-    this IGrowableBag< T >  bag,
-    T                       item
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+public
+GrowableBagToSinkAdapter(
+    IGrowableBag< T > bag
 )
 {
     NonNull.Check( bag, new Parameter( "bag" ) );
-    if( !bag.TryAdd( item ) )
-        throw new FullException( new Parameter( "bag" ) );
+    this.Bag = bag;
 }
 
 
-/// Present the growable bag as a sink
-///
-public static
-ISink< T >
-AsSink<
-    T
->(
-    this IGrowableBag< T > bag
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+IGrowableBag< T >
+Bag
+{
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// ISink< T >
+// -----------------------------------------------------------------------------
+
+public
+bool
+TryPush(
+    T item
 )
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
-    return new GrowableBagToSinkAdapter< T >( bag );
+    return this.Bag.TryAdd( item );
 }
 
 
