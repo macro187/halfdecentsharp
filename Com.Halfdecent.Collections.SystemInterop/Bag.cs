@@ -16,23 +16,44 @@
 // -----------------------------------------------------------------------------
 
 
-// =============================================================================
-/// <tt>System.Collections</tt> and <tt>System.Collections.Generic</tt>
-/// interoperability
-///
-/// @par System.Collections.ICollection<T>.IsReadOnly
-/// In the base class library, the single <tt>ICollection<T></tt> type underlies
-/// all collections, with writability indicated in the boolean
-/// <tt>IsReadOnly</tt> property.  Besides preventing the compiler from helping
-/// to enforce writability, this design is inadequate because the single boolean
-/// <tt>false</tt> value is insufficent to represent the various shades of
-/// writability: changeable, growable, and shrinkable.  As a result of this lack
-/// of precision, ambiguities can arise when mapping between Halfdecent
-/// collections and base class library collections.
-// =============================================================================
+using SCG = System.Collections.Generic;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Streams;
+using Com.Halfdecent.Collections;
+
 
 namespace
-Com.Halfdecent.Collections.BCLInterop
+Com.Halfdecent.Collections.SystemInterop
 {
+
+
+public static class
+Bag
+{
+
+
+
+/// Present a bag as a <tt>System.Collections.Generic</tt> collection
+///
+public static
+SCG.ICollection< T >
+AsSystemCollection<
+    T
+>(
+    this IBag< T > bag
+)
+{
+    NonNull.Check( bag, new Parameter( "bag" ) );
+    return new BagToSystemCollectionAdapter< T >( bag );
 }
+
+
+
+
+//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+
+} // type
+} // namespace
 

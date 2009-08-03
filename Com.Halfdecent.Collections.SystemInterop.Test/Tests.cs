@@ -21,18 +21,18 @@ using System.Linq;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Collections;
-using Com.Halfdecent.Collections.BCLInterop;
+using Com.Halfdecent.Collections.SystemInterop;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.BCLInterop;
+using Com.Halfdecent.Streams.SystemInterop;
 
 
 namespace
-Com.Halfdecent.Streams.BCLInterop.Test
+Com.Halfdecent.Streams.SystemInterop.Test
 {
 
 
 // =============================================================================
-/// Test program for <tt>Com.Halfdecent.Collections.BCLInterop</tt>
+/// Test program for <tt>Com.Halfdecent.Collections.SystemInterop</tt>
 // =============================================================================
 
 public class
@@ -49,13 +49,13 @@ Main()
 }
 
 
-[Test( "ReadOnlyBagFromSCGCollectionAdapter< T >" )]
+[Test( "ReadOnlyBagFromSystemCollectionAdapter< T >" )]
 public static
 void
-Test_ReadOnlyBagFromSCGCollectionAdapter()
+Test_ReadOnlyBagFromSystemCollectionAdapter()
 {
-    ReadOnlyBagFromSCGCollectionAdapter< int >  bag;
-    SCG.List< int >                             to = new SCG.List< int >();
+    ReadOnlyBagFromSystemCollectionAdapter< int > bag;
+    SCG.List< int > to = new SCG.List< int >();
 
     Print( "Empty bag" );
     bag = new int[] {}.AsReadOnlyBag();
@@ -99,15 +99,15 @@ Test_ReadOnlyBagFromSCGCollectionAdapter()
 }
 
 
-[Test( "BagFromSCGCollectionAdapter< T >" )]
+[Test( "BagFromSystemCollectionAdapter< T >" )]
 public static
 void
-Test_BagFromSCGCollectionAdapter()
+Test_BagFromSystemCollectionAdapter()
 {
-    int[]                               from = new int[] { 1, 2, 3 };
-    SCG.List< int >                     list = new SCG.List< int >();
-    BagFromSCGCollectionAdapter< int >  bag = list.AsBag();
-    SCG.List< int >                     to = new SCG.List< int >();
+    int[]                                   from = new int[] { 1, 2, 3 };
+    SCG.List< int >                         list = new SCG.List< int >();
+    BagFromSystemCollectionAdapter< int >   bag = list.AsBag();
+    SCG.List< int >                         to = new SCG.List< int >();
 
     Print( ".Count" );
     AssertEqual( bag.Count.ToDecimal(), 0 );
@@ -127,8 +127,8 @@ Test_BagFromSCGCollectionAdapter()
     to.Sort();  // Bags are unordered
     Assert( to.SequenceEqual( new int[] {} ) );
 
-    Print( ".Push() some items" );
-    foreach( int i in from ) bag.Push( i );
+    Print( ".Add() some items" );
+    foreach( int i in from ) bag.Add( i );
 
     Print( ".Count" );
     AssertEqual( bag.Count.ToDecimal(), 3 );
@@ -170,7 +170,7 @@ Test_BagFromSCGCollectionAdapter()
     Assert( to.SequenceEqual( new int[] { 1, 3 } ) );
 
     Print( ".Clear() out all items" );
-    bag.Clear();
+    bag.RemoveAll();
 
     Print( ".Count" );
     AssertEqual( bag.Count.ToDecimal(), 0 );
@@ -186,10 +186,10 @@ Test_BagFromSCGCollectionAdapter()
 }
 
 
-[Test( "BagToSCGCollectionAdapter" )]
+[Test( "BagToSystemCollectionAdapter" )]
 public static
 void
-Test_BagToSCGCollectionAdapter()
+Test_BagToSystemCollectionAdapter()
 {
 
     // TODO Check all variations of bag (shrinkable, growable, both, etc.)
@@ -198,7 +198,7 @@ Test_BagToSCGCollectionAdapter()
     SCG.List< int >         list = new SCG.List< int >();
 
     Print( "Empty read-only collection" );
-    col = new int[]{}.AsReadOnlyBag().AsSCGCollection();
+    col = new int[]{}.AsReadOnlyBag().AsSystemCollection();
 
     Print( ".IsReadOnly" );
     Assert( col.IsReadOnly );
@@ -229,7 +229,7 @@ Test_BagToSCGCollectionAdapter()
 
 
     Print( "Non-empty read-only collection" );
-    col = new int[]{ 1, 2, 3 }.AsReadOnlyBag().AsSCGCollection();
+    col = new int[]{ 1, 2, 3 }.AsReadOnlyBag().AsSystemCollection();
 
     Print( ".IsReadOnly" );
     Assert( col.IsReadOnly );
@@ -260,7 +260,7 @@ Test_BagToSCGCollectionAdapter()
 
 
     Print( "Writable collection" );
-    col = new SCG.List< int >().AsBag().AsSCGCollection();
+    col = new SCG.List< int >().AsBag().AsSystemCollection();
 
     Print( ".IsReadOnly" );
     Assert( !col.IsReadOnly );

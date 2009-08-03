@@ -16,19 +16,12 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet.lib.project
+MODULES_use += dotnet.exe.project
 MODULES_use += dotnet.csharp
-MODULES_use += testable
 
-
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Globalisation)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Exceptions)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Meta)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.RTypes)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Numerics)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Streams)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Streams.BCLInterop)
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Testing)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Collections)
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Collections.SystemInterop)
 
 
 include $(MAKERY)/makery.mk

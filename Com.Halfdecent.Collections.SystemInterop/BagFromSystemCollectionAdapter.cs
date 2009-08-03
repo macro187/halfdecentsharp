@@ -22,25 +22,38 @@ using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.BCLInterop;
+using Com.Halfdecent.Streams.SystemInterop;
 using Com.Halfdecent.Collections;
 
 
 namespace
-Com.Halfdecent.Collections.BCLInterop
+Com.Halfdecent.Collections.SystemInterop
 {
 
 
 // =============================================================================
-/// Present a <tt>System.Collections.Generic.Collection< T ></tt> as a
-/// read-only <tt>IBag< T ></tt>
+/// Present a non-read-only <tt>System.Collections.Generic.Collection< T ></tt>
+/// as an <tt>IBag< T ></tt>
+///
+/// @par .IsReadOnly
+/// Refer to the namespace-wide <tt>Com.Halfdecent.Collections</tt>
+/// documentation for a discussion of important issues surrounding the
+/// readability / writability of collections in the base class library.
+///
+/// @par Undefined TryAdd() failure
+/// Because <tt>ICollection< T >.Add()</tt> doesn't define how to fail when the
+/// collection is full, neither can this class.  So, <tt>TryAdd()</tt> will
+/// either succeed, returning <tt>true</tt>, or fail in whatever undefined way
+/// the underlying collection's <tt>Add()</tt> fails.
 // =============================================================================
 
 public class
-ReadOnlyBagFromSCGCollectionAdapter<
+BagFromSystemCollectionAdapter<
     T
 >
-    : IBag< T >
+    : ReadOnlyBagFromSystemCollectionAdapter< T >
+    , IGrowableBag< T >
+    , IShrinkableBag< T >
 {
 
 
@@ -50,71 +63,60 @@ ReadOnlyBagFromSCGCollectionAdapter<
 // -----------------------------------------------------------------------------
 
 public
-ReadOnlyBagFromSCGCollectionAdapter(
+BagFromSystemCollectionAdapter(
     SCG.ICollection< T > collection
 )
+    : base( collection )
 {
-    NonNull.Check( collection, new Parameter( "collection" ) );
-    this.Collection = collection;
+    if( collection.IsReadOnly )
+        throw new ValueException(
+            new Parameter( "collection" ),
+            _S("{0} is read-only, use ReadOnlyBagFromSystemCollectionAdapter") );
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-protected
-SCG.ICollection< T >
-Collection
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IBag< T >
+// IShrinkableBag< T >
 // -----------------------------------------------------------------------------
 
 public
 bool
-IsEmpty
+TryRemove(
+    T sought
+)
 {
-    get { return this.IsEmptyViaCount(); }
+    return this.Collection.Remove( sought );
 }
 
 
 public
-IInteger
-Count
+void
+RemoveAll()
 {
-    get { return Integer.From( this.Collection.Count ); }
+    this.Collection.Clear();
 }
 
 
-public
-IStream< T >
-Stream()
-{
-    return this.Collection.AsStream();
-}
 
+// -----------------------------------------------------------------------------
+// IGrowableBag< T >
+// -----------------------------------------------------------------------------
 
 public
 bool
-Contains(
+TryAdd(
     T item
 )
 {
-    return this.Collection.Contains( item );
+    this.Collection.Add( item );
+    return true;
 }
 
 
 
 
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

@@ -23,13 +23,13 @@ using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.BCLInterop;
+using Com.Halfdecent.Streams.SystemInterop;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Collections;
 
 
 namespace
-Com.Halfdecent.Collections.BCLInterop
+Com.Halfdecent.Collections.SystemInterop
 {
 
 
@@ -43,11 +43,11 @@ Com.Halfdecent.Collections.BCLInterop
 ///
 /// @par <tt>IsReadOnly</tt>
 /// The collection <tt>IsReadOnly</tt> if the underlying bag is neither an
-/// <tt>ISink< T ></tt> nor an <tt>IShrinkableBag< T ></tt>.
+/// <tt>IGrowableBag< T ></tt> nor an <tt>IShrinkableBag< T ></tt>.
 // =============================================================================
 
 public class
-BagToSCGCollectionAdapter<
+BagToSystemCollectionAdapter<
     T
 >
     : SCG.ICollection< T >
@@ -60,13 +60,13 @@ BagToSCGCollectionAdapter<
 // -----------------------------------------------------------------------------
 
 public
-BagToSCGCollectionAdapter(
+BagToSystemCollectionAdapter(
     IBag< T > bag
 )
 {
     NonNull.Check( bag, new Parameter( "bag" ) );
     this.Bag = bag;
-    this.Sink = bag as ISink< T >;
+    this.GrowableBag = bag as IGrowableBag< T >;
     this.ShrinkableBag = bag as IShrinkableBag< T >;
 }
 
@@ -86,8 +86,8 @@ Bag
 
 
 protected
-ISink< T >
-Sink
+IGrowableBag< T >
+GrowableBag
 {
     get;
     private set;
@@ -128,7 +128,7 @@ IsReadOnly
 {
     get
     {
-        return this.Sink == null && this.ShrinkableBag == null;
+        return this.GrowableBag == null && this.ShrinkableBag == null;
     }
 }
 
@@ -139,8 +139,8 @@ Add(
     T item
 )
 {
-    if( this.Sink == null ) throw new NotSupportedException();
-    this.Sink.Push( item );
+    if( this.GrowableBag == null ) throw new NotSupportedException();
+    this.GrowableBag.Add( item );
 }
 
 
@@ -149,7 +149,7 @@ void
 Clear()
 {
     if( this.ShrinkableBag == null ) throw new NotSupportedException();
-    this.ShrinkableBag.Clear();
+    this.ShrinkableBag.RemoveAll();
 }
 
 
@@ -196,9 +196,7 @@ Remove(
 )
 {
     if( this.ShrinkableBag == null ) throw new NotSupportedException();
-    bool r = this.Bag.Contains( item );
-    this.ShrinkableBag.Remove( item );
-    return r;
+    return this.ShrinkableBag.TryRemove( item );
 }
 
 
