@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2008, 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,26 +16,26 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections;
-using System.Collections.Generic;
+using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Streams.BCLInterop
+Com.Halfdecent.Streams.SystemInterop
 {
 
 
 // =============================================================================
-/// An enumerable that always yields a given enumerator
+/// Presents a stream as an enumerator
 // =============================================================================
-//
+
 public class
-EnumeratorToEnumerableAdapter<
+StreamToEnumeratorAdapter<
     T
 >
-    : IEnumerable< T >
+    : EnumeratorBase< T >
 {
 
 
@@ -45,47 +45,41 @@ EnumeratorToEnumerableAdapter<
 // -----------------------------------------------------------------------------
 
 public
-EnumeratorToEnumerableAdapter(
-    IEnumerator< T > enumerator
+StreamToEnumeratorAdapter(
+    IStream< T > stream
 )
 {
-    NonNull.Check( enumerator, new Parameter( "enumerator" ) );
-    this.enumerator = enumerator;
+    NonNull.Check( stream, new Parameter( "stream" ) );
+    this.Stream = stream;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Private
-// -----------------------------------------------------------------------------
-
-private
-IEnumerator< T >
-enumerator;
-
-
-
-// -----------------------------------------------------------------------------
-// IEnumerable< T >
+// Properties
 // -----------------------------------------------------------------------------
 
 public
-IEnumerator< T >
-GetEnumerator()
+IStream< T >
+Stream
 {
-    return this.enumerator;
+    get;
+    private set;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IEnumerable
+// EnumeratorBase< T >
 // -----------------------------------------------------------------------------
 
-IEnumerator
-IEnumerable.GetEnumerator()
+protected override
+bool
+MoveNext(
+    out T nextItem
+)
 {
-    return this.enumerator;
+    return this.Stream.TryPull( out nextItem );
 }
 
 

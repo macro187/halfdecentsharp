@@ -22,7 +22,7 @@ using Com.Halfdecent.Exceptions;
 
 
 namespace
-Com.Halfdecent.Streams.BCLInterop
+Com.Halfdecent.Streams.SystemInterop
 {
 
 

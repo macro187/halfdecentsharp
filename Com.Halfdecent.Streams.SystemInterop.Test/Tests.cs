@@ -22,17 +22,17 @@ using System.Linq;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.BCLInterop;
+using Com.Halfdecent.Streams.SystemInterop;
 using Com.Halfdecent.Testing;
 
 
 namespace
-Com.Halfdecent.Streams.BCLInterop.Test
+Com.Halfdecent.Streams.SystemInterop.Test
 {
 
 
 // =============================================================================
-/// Test program for <tt>Com.Halfdecent.Streams.BCLInterop</tt>
+/// Test program for <tt>Com.Halfdecent.Streams.SystemInterop</tt>
 // =============================================================================
 //
 public class

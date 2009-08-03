@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2008, 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,48 +16,78 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
-using Com.Halfdecent.Meta;
+using System.Collections;
+using System.Collections.Generic;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
+using Com.Halfdecent.Meta;
 
 
 namespace
-Com.Halfdecent.Streams.BCLInterop
+Com.Halfdecent.Streams.SystemInterop
 {
 
 
 // =============================================================================
-/// <tt>IEnumerable< T ></tt> Library
+/// Presents an enumerator as a stream
 // =============================================================================
 
-public static class
-Enumerable
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Extension Methods
-// -----------------------------------------------------------------------------
-
-/// Present the enumerable as a stream
-///
-public static
-IStream< T >
-AsStream<
+public class
+StreamFromEnumeratorAdapter<
     T
->(
-    this SCG.IEnumerable< T > enumerable
+>
+    : IStream< T >
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+public
+StreamFromEnumeratorAdapter(
+    IEnumerator< T > enumerator
 )
 {
-    NonNull.Check( enumerable, new Parameter( "enumerable" ) );
-    return new StreamFromEnumeratorAdapter< T >(
-        enumerable.GetEnumerator() );
+    NonNull.Check( enumerator, new Parameter( "enumerator" ) );
+    this.enumerator = enumerator;
 }
 
 
 
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private
+IEnumerator< T >
+enumerator;
+
+
+
+// -----------------------------------------------------------------------------
+// IStream< T >
+// -----------------------------------------------------------------------------
+
+public
+bool
+TryPull(
+    out T item
+)
+{
+    if( this.enumerator.MoveNext() ) {
+        item = this.enumerator.Current;
+        return true;
+    } else {
+        item = default( T );
+        return false;
+    }
+}
+
+
+
+
+//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

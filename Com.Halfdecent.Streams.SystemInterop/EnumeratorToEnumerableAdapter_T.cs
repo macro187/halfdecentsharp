@@ -16,49 +16,82 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System.Collections;
+using System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Streams.BCLInterop
+Com.Halfdecent.Streams.SystemInterop
 {
 
 
 // =============================================================================
-/// <tt>IStream< T ></tt> Library
+/// An enumerable that always yields a given enumerator
 // =============================================================================
-
-public static class
-Stream
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Extension Methods
-// -----------------------------------------------------------------------------
-
-/// Present the stream as an enumerable
-///
-public static
-SCG.IEnumerable< T >
-AsEnumerable<
+//
+public class
+EnumeratorToEnumerableAdapter<
     T
->(
-    this IStream< T > stream
+>
+    : IEnumerable< T >
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+public
+EnumeratorToEnumerableAdapter(
+    IEnumerator< T > enumerator
 )
 {
-    NonNull.Check( stream, new Parameter( "stream" ) );
-    return new EnumeratorToEnumerableAdapter< T >(
-        new StreamToEnumeratorAdapter< T >(
-            stream ) );
+    NonNull.Check( enumerator, new Parameter( "enumerator" ) );
+    this.enumerator = enumerator;
 }
 
 
 
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private
+IEnumerator< T >
+enumerator;
+
+
+
+// -----------------------------------------------------------------------------
+// IEnumerable< T >
+// -----------------------------------------------------------------------------
+
+public
+IEnumerator< T >
+GetEnumerator()
+{
+    return this.enumerator;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEnumerable
+// -----------------------------------------------------------------------------
+
+IEnumerator
+IEnumerable.GetEnumerator()
+{
+    return this.enumerator;
+}
+
+
+
+
+//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

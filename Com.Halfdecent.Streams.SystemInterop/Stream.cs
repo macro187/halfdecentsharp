@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,12 +16,50 @@
 // -----------------------------------------------------------------------------
 
 
-// =============================================================================
-/// Streams interoperability with <tt>System.Collections.Generic</tt>
-// =============================================================================
+using SCG = System.Collections.Generic;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Streams;
+
 
 namespace
-Com.Halfdecent.Streams.BCLInterop
+Com.Halfdecent.Streams.SystemInterop
 {
+
+
+// =============================================================================
+/// <tt>IStream< T ></tt> Library
+// =============================================================================
+
+public static class
+Stream
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+/// Present the stream as an enumerable
+///
+public static
+SCG.IEnumerable< T >
+AsEnumerable<
+    T
+>(
+    this IStream< T > stream
+)
+{
+    NonNull.Check( stream, new Parameter( "stream" ) );
+    return new EnumeratorToEnumerableAdapter< T >(
+        new StreamToEnumeratorAdapter< T >(
+            stream ) );
 }
+
+
+
+
+} // type
+} // namespace
 
