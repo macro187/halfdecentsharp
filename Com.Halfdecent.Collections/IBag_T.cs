@@ -29,6 +29,11 @@ Com.Halfdecent.Collections
 /// A finite, unordered collection of non-unique items
 ///
 /// See <tt>http://en.wikipedia.org/wiki/Multiset</tt>
+//
+//  TODO Is it worth breaking out an IReadableBag<T>?  If so, have to be
+//       careful that it isn't accedentially exposed by other interfaces
+//       eg. IReadableBag.Contains() can be determined via
+//       IShrinkableBag.TryRemove()
 // =============================================================================
 
 public interface
@@ -72,7 +77,7 @@ Stream();
 /// item
 ///
 //  TODO Clarify what "equal to" means here
-///
+//
 bool
 Contains(
     T item

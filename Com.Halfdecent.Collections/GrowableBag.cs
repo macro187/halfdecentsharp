@@ -20,7 +20,6 @@ using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.SystemInterop;
 
 
 namespace
@@ -29,47 +28,28 @@ Com.Halfdecent.Collections
 
 
 public static class
-Bag
+GrowableBag
 {
 
 
 
-/// <tt>.IsEmpty</tt> via <tt>.Count</tt>
+/// Add an item to the bag
 ///
-/// @par Complexity
-/// Depends on <tt>Count</tt>
+/// @exception FullException
+/// The bag did not have capacity for the item
 ///
 public static
-bool
-IsEmptyViaCount<
+void
+Add<
     T
 >(
-    IBag< T > bag
+    this IGrowableBag< T >  bag,
+    T                       item
 )
 {
     NonNull.Check( bag, new Parameter( "bag" ) );
-    return bag.Count.Equals( Integer.From( 0 ) );
-}
-
-
-/// <tt>.Contains()</tt> via <tt>.Stream()</tt>
-///
-/// @par Complexity
-/// Linear
-///
-public static
-bool
-ContainsViaStream<
-    T
->(
-    IBag< T >   bag,
-    T           sought
-)
-{
-    NonNull.Check( bag, new Parameter( "bag" ) );
-    foreach( T item in bag.Stream().AsEnumerable() )
-        if( item.Equals( sought ) ) return true;
-    return false;
+    if( !bag.TryAdd( item ) )
+        throw new FullException( new Parameter( "bag" ) );
 }
 
 

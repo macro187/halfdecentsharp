@@ -20,7 +20,6 @@ using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.SystemInterop;
 
 
 namespace
@@ -29,47 +28,28 @@ Com.Halfdecent.Collections
 
 
 public static class
-Bag
+ShrinkableBag
 {
 
 
 
-/// <tt>.IsEmpty</tt> via <tt>.Count</tt>
+/// Remove (an occurrence of) an item from the bag that is equal to the
+/// specified item (if the bag contains such an item)
 ///
-/// @par Complexity
-/// Depends on <tt>Count</tt>
+/// Unlike <tt>IShrinkableBag< T >.TryRemove()</tt>, this method does not
+/// indicate whether the specifed item was actually found / removed.
 ///
 public static
-bool
-IsEmptyViaCount<
+void
+Remove<
     T
 >(
-    IBag< T > bag
+    IShrinkableBag< T > bag,
+    T                   item
 )
 {
     NonNull.Check( bag, new Parameter( "bag" ) );
-    return bag.Count.Equals( Integer.From( 0 ) );
-}
-
-
-/// <tt>.Contains()</tt> via <tt>.Stream()</tt>
-///
-/// @par Complexity
-/// Linear
-///
-public static
-bool
-ContainsViaStream<
-    T
->(
-    IBag< T >   bag,
-    T           sought
-)
-{
-    NonNull.Check( bag, new Parameter( "bag" ) );
-    foreach( T item in bag.Stream().AsEnumerable() )
-        if( item.Equals( sought ) ) return true;
-    return false;
+    bag.TryRemove( item );
 }
 
 

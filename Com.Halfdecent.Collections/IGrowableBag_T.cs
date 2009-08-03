@@ -16,66 +16,48 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.SystemInterop;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
-public static class
-Bag
-{
-
-
-
-/// <tt>.IsEmpty</tt> via <tt>.Count</tt>
+// =============================================================================
+/// A bag to which items can be added
 ///
-/// @par Complexity
-/// Depends on <tt>Count</tt>
-///
-public static
-bool
-IsEmptyViaCount<
+/// @par Capacity
+/// Bags <em>may</em> have a non-exceptional, clearly-definable definition of
+/// "capacity", in which case operations that grow the bag may be capable of
+/// signalling a "full" condition via a return value.
+/// <tt>false</tt> will never be returned.  Regardless, all other failures will
+/// be signalled with appropriate exceptions.
+// =============================================================================
+
+public interface
+IGrowableBag<
     T
->(
-    IBag< T > bag
-)
+>
+    : IBag< T >
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
-    return bag.Count.Equals( Integer.From( 0 ) );
-}
 
 
-/// <tt>.Contains()</tt> via <tt>.Stream()</tt>
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Try adding an item to the bag
 ///
-/// @par Complexity
-/// Linear
-///
-public static
 bool
-ContainsViaStream<
-    T
->(
-    IBag< T >   bag,
-    T           sought
-)
-{
-    NonNull.Check( bag, new Parameter( "bag" ) );
-    foreach( T item in bag.Stream().AsEnumerable() )
-        if( item.Equals( sought ) ) return true;
-    return false;
-}
+/// @returns
+/// <tt>true</tt> if there was capacity for the item and it was added
+/// - OR -
+/// <tt>false</tt> otherwise
+TryAdd(
+    T item
+);
 
 
 
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

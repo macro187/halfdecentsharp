@@ -39,23 +39,28 @@ IShrinkableBag<
 // -----------------------------------------------------------------------------
 
 /// Remove (an occurrence of) an item from the bag that is equal to the
-/// specified item
+/// specified item (if the bag contains such an item)
 ///
 //  TODO Clarify what "equal to" means here
-///
-/// If the bag contains more than one occurrence of the specified item, only
-/// one occurrence is removed
-///
-void
-Remove(
-    T item
+//       == operator ?
+//       item.Equals( sought ) ?
+//       sought.Equals( item ) ?
+//
+bool
+/// @returns
+/// <tt>true</tt> if the bag contained an item equal to the specified item and
+/// it was removed
+/// - OR -
+/// <tt>false</tt> otherwise
+TryRemove(
+    T sought
 );
 
 
 /// Remove all items from the bag
 ///
 void
-Clear();
+RemoveAll();
 
 
 
