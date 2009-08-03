@@ -44,8 +44,8 @@ void
 Remove<
     T
 >(
-    IShrinkableBag< T > bag,
-    T                   item
+    this IShrinkableBag< T >    bag,
+    T                           item
 )
 {
     NonNull.Check( bag, new Parameter( "bag" ) );
