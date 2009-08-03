@@ -33,6 +33,13 @@ Com.Halfdecent.Streams
 /// otherwise made available.  Specifically, this means (in .NET) that the sink
 /// will <tt>Dispose()</tt> the item (if applicable) and release all references
 /// so as not to prevent it's being garbage-collected.
+///
+/// @par Capacity
+/// Sinks <em>may</em> have a non-exceptional, clearly-definable definition of
+/// "capacity", in which case operations that grow the bag may be capable of
+/// signalling a "full" condition via a return value.
+/// <tt>false</tt> will never be returned.  Regardless, all other failures will
+/// be signalled with appropriate exceptions.
 // =============================================================================
 
 // TODO Common external disposal routine used by all sinks that can be used
