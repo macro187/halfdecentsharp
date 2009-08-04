@@ -26,40 +26,17 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// A finite, unordered collection of items
+/// A finite, ordered collection of items
 ///
-/// See <tt>http://en.wikipedia.org/wiki/Multiset</tt>
-//
-//  TODO Is it worth breaking out an IReadableBag<T>?  If so, have to be
-//       careful that it isn't accedentially exposed by other interfaces
-//       eg. IReadableBag.Contains() can be determined via
-//       IShrinkableBag.TryRemove()
+/// See <tt>http://en.wikipedia.org/wiki/List_(computing)</tt>
 // =============================================================================
 
 public interface
-IBag<
+IList<
     T
 >
+    : IBag< T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-IInteger
-Count
-{
-    get;
-}
-
-
-bool
-IsEmpty
-{
-    get;
-}
 
 
 
@@ -67,20 +44,13 @@ IsEmpty
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Produce a stream of the items in the bag
+/// Retrieve the item at the specified zero-based ordinal position
 ///
-IStream< T >
-Stream();
-
-
-/// Indicate whether the collection contains an item equal to a specified
-/// item
-///
-//  TODO Clarify what "equal to" means here
-//
-bool
-Contains(
-    T item
+T
+GetAt(
+    IInteger index
+    ///< Position of the item to retrieve
+    ///  - IndexOfExistingItemInList
 );
 
 
