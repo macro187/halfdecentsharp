@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,65 +15,33 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
+
 
 // =============================================================================
 /// An integer
 ///
 /// <tt>http://en.wikipedia.org/wiki/Integer</tt>
 // =============================================================================
-//
+
 public interface
 IInteger
     : IReal
+    , IComparable< IInteger >
+    , IEquatable< IInteger >
 {
-
 
 
 
 // -----------------------------------------------------------------------------
 // Methods
 // -----------------------------------------------------------------------------
-
-/// Determine whether this integer is greater than another
-///
-bool
-GT(
-    IInteger x
-);
-
-
-
-/// Determine whether this integer is greater than or equal to another
-///
-bool
-GTE(
-    IInteger x
-);
-
-
-
-/// Determine whether this integer is less than another
-///
-bool
-LT(
-    IInteger x
-);
-
-
-
-/// Determine whether this integer is less than or equal to another
-///
-bool
-LTE(
-    IInteger x
-);
-
-
 
 /// Compute this integer plus another
 ///
@@ -82,14 +51,12 @@ Plus(
 );
 
 
-
 /// Compute this integer minus another
 ///
 IInteger
 Minus(
     IInteger x
 );
-
 
 
 /// Compute this integer times another
@@ -107,7 +74,6 @@ IInteger
 RemainderWhenDividedBy(
     IInteger x
 );
-
 
 
 // TODO Integer Div (?)

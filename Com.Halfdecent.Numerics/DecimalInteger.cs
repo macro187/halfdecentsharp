@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,24 +15,26 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 // =============================================================================
 /// <tt>IInteger</tt> implementation using <tt>System.Decimal</tt>
 // =============================================================================
-//
+
 internal class
 DecimalInteger
     : DecimalReal
     , IInteger
 {
-
 
 
 
@@ -57,32 +60,73 @@ DecimalInteger(
 // IInteger
 // -----------------------------------------------------------------------------
 
-public bool GT( IInteger i ) { return base.GT( i ); }
-
-public bool GTE( IInteger i ) { return base.GTE( i ); }
-
-public bool LT( IInteger i ) { return base.LT( i ); }
-
-public bool LTE( IInteger i ) { return base.LTE( i ); }
-
-public IInteger Plus( IInteger i )
+public
+IInteger
+Plus(
+    IInteger i
+)
 {
     return new DecimalInteger( base.Plus( i ) );
 }
 
-public IInteger Minus( IInteger i )
+
+public
+IInteger
+Minus(
+    IInteger i
+)
 {
     return new DecimalInteger( base.Minus( i ) );
 }
 
-public IInteger Times( IInteger i )
+
+public
+IInteger
+Times(
+    IInteger i
+)
 {
     return new DecimalInteger( base.Times( i ) );
 }
 
-public IInteger RemainderWhenDividedBy( IInteger i )
+
+public
+IInteger
+RemainderWhenDividedBy(
+    IInteger i
+)
 {
     return new DecimalInteger( base.RemainderWhenDividedBy( i ) );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.IComparable< IInteger >
+// -----------------------------------------------------------------------------
+
+public
+int
+CompareTo(
+    IInteger i
+)
+{
+    return this.CompareTo( (IReal)i );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.IEquatable< IInteger >
+// -----------------------------------------------------------------------------
+
+public
+bool
+Equals(
+    IInteger i
+)
+{
+    return this.Equals( (IReal)i );
 }
 
 
