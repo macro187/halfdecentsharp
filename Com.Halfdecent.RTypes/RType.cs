@@ -38,8 +38,6 @@ RType
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Generate a natural language statement stating that an item "is" this RType
-///
 public static
 IRType< TTo >
 Contravary< TFrom, TTo >(
