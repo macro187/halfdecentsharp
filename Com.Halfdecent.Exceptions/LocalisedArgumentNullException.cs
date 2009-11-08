@@ -26,7 +26,7 @@ Com.Halfdecent.Exceptions
 
 
 // =============================================================================
-/// <tt>System.ArgumentNullException</tt> that implements
+/// A <tt>System.ArgumentNullException</tt> that is also an
 /// <tt>ILocalisedException</tt>
 // =============================================================================
 
@@ -84,26 +84,13 @@ LocalisedArgumentNullException(
     Localised< string > message,
     Exception           innerException
 )
+    // Have to use this constructor and override ParamName because there's no
+    // base constructor that takes all 3 parameters (!)
     : base( message, innerException )
 {
-    this.message = message;
     this.paramname = paramName;
+    this.message = message;
 }
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public override
-string
-ParamName
-{ get { return this.paramname; } }
-
-private
-string
-paramname;
 
 
 
@@ -123,12 +110,32 @@ Localised< string >
 message;
 
 
+
+// -----------------------------------------------------------------------------
+// ArgumentNullExceptionShim
+// -----------------------------------------------------------------------------
+
 protected override
 string
 ShimMessage
 {
     get { return this.Message; }
 }
+
+
+
+// -----------------------------------------------------------------------------
+// ArgumentNullException
+// -----------------------------------------------------------------------------
+
+public override
+string
+ParamName
+{ get { return this.paramname; } }
+
+private
+string
+paramname;
 
 
 

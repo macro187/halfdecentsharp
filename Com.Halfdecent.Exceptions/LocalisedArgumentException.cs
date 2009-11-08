@@ -26,7 +26,7 @@ Com.Halfdecent.Exceptions
 
 
 // =============================================================================
-/// <tt>System.ArgumentException</tt> that implements
+/// A <tt>System.ArgumentException</tt> that is also an
 /// <tt>ILocalisedException</tt>
 // =============================================================================
 
@@ -63,7 +63,7 @@ LocalisedArgumentException(
     Localised< string > message,
     Exception           innerException
 )
-    : base( message, null, innerException )
+    : this( message, null, innerException )
 {
 }
 
@@ -73,7 +73,7 @@ LocalisedArgumentException(
     Localised< string > message,
     string              paramName
 )
-    : base( message, paramName, null )
+    : this( message, paramName, null )
 {
 }
 
@@ -106,6 +106,11 @@ private
 Localised< string >
 message;
 
+
+
+// -----------------------------------------------------------------------------
+// ArgumentExceptionShim
+// -----------------------------------------------------------------------------
 
 protected override
 string

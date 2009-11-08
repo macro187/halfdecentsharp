@@ -26,7 +26,7 @@ Com.Halfdecent.Exceptions
 
 
 // =============================================================================
-/// <tt>System.ArgumentOutOfRangeException</tt> that implements
+/// A <tt>System.ArgumentOutOfRangeException</tt> that is also an
 /// <tt>ILocalisedException</tt>
 // =============================================================================
 
@@ -96,37 +96,14 @@ LocalisedArgumentOutOfRangeException(
     Localised< string > message,
     Exception           innerException
 )
+    // Have to use this constructor and override ParamName and ActualValue
+    // because there's no base constructor that takes all 4 parameters (!)
     : base( message, innerException )
 {
     this.message = message;
     this.paramname = paramName;
     this.actualvalue = actualValue;
 }
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public override
-string
-ParamName
-{ get { return this.paramname; } }
-
-private
-string
-paramname;
-
-
-public override
-object
-ActualValue
-{ get { return this.actualvalue; } }
-
-private
-object
-actualvalue;
 
 
 
@@ -146,12 +123,47 @@ Localised< string >
 message;
 
 
+
+// -----------------------------------------------------------------------------
+// ArgumentOutOfRangeExceptionShim
+// -----------------------------------------------------------------------------
+
 protected override
 string
 ShimMessage
 {
     get { return this.Message; }
 }
+
+
+
+// -----------------------------------------------------------------------------
+// ArgumentOutOfRangeException
+// -----------------------------------------------------------------------------
+
+public override
+object
+ActualValue
+{ get { return this.actualvalue; } }
+
+private
+object
+actualvalue;
+
+
+
+// -----------------------------------------------------------------------------
+// ArgumentException
+// -----------------------------------------------------------------------------
+
+public override
+string
+ParamName
+{ get { return this.paramname; } }
+
+private
+string
+paramname;
 
 
 
