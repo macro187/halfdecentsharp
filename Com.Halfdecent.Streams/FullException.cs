@@ -47,7 +47,7 @@ public
 FullException(
     IValue  sinkReference
 )
-    :this( sinkReference, null )
+    : this( sinkReference, null )
 {
 }
 
@@ -57,7 +57,7 @@ FullException(
     IValue      sinkReference,
     Exception   innerException
 )
-    :base(
+    : base(
         sinkReference,
         _S("There is no room for any more items in {0}"),
         innerException )

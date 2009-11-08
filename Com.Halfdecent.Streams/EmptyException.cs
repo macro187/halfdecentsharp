@@ -47,7 +47,7 @@ public
 EmptyException(
     IValue  streamReference
 )
-    :this( streamReference, null )
+    : this( streamReference, null )
 {
 }
 
@@ -57,7 +57,7 @@ EmptyException(
     IValue      streamReference,
     Exception   innerException
 )
-    :base(
+    : base(
         streamReference,
         _S("{0} contains no more items"),
         innerException )
