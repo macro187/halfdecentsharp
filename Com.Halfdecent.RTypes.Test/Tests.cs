@@ -17,6 +17,9 @@
 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Com.Halfdecent.SystemUtils;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Meta;
@@ -235,6 +238,90 @@ Test_Contravariance()
     AssertEqual(
         u.Equals( v ),
         u.Equals( y ) );
+}
+
+
+private class
+T
+    : SimpleTextRTypeBase< int >
+{
+    public T() : base( "", "", "" ) {}
+    public override IEnumerable< IRType< int > > Components
+    {
+        get {
+            return base.Components
+            .Append( new NEQ( "T1" ).Contravary< object, int >() )
+            .Append( new NEQ( "T2" ).Contravary< object, int >() );
+        }
+    }
+}
+
+private class
+U
+    : SimpleTextRTypeBase< int >
+{
+    public U() : base( "", "", "" ) {}
+    public override IEnumerable< IRType< int > > Components
+    {
+        get {
+            return base.Components
+            .Append( new T() )
+            .Append( new NEQ( "U2" ).Contravary< object, int >() );
+        }
+    }
+}
+
+
+[Test( "AllComponentsDepthFirst()" )]
+public static
+void
+Test_AllComponentsDepthFirst()
+{
+    Print( "No components" );
+    Assert(
+        new NEQ(4).AllComponentsDepthFirst()
+        .SequenceEqual(
+            Enumerable.Empty< IRType< object > >() ) );
+
+    Print( "Flat components" );
+    Assert(
+        new T().AllComponentsDepthFirst()
+        .SequenceEqual(
+            Enumerable.Empty< IRType< int > >()
+            .Append( new NEQ( "T1" ).Contravary< object, int >() )
+            .Append( new NEQ( "T2" ).Contravary< object, int >() ) ) );
+
+    Print( "Nested components" );
+    Assert(
+        new U().AllComponentsDepthFirst()
+        .SequenceEqual(
+            Enumerable.Empty< IRType< int > >()
+            .Append( new T() )
+            .Append( new NEQ( "T1" ).Contravary< object, int >() )
+            .Append( new NEQ( "T2" ).Contravary< object, int >() )
+            .Append( new NEQ( "U2" ).Contravary< object, int >() ) ) );
+}
+
+
+[Test( "IsEqualToOrMoreSpecificThan" )]
+public static
+void
+Test_IsEqualToOrMoreSpecificThan()
+{
+    Print( "NonNull <= NonNull" );
+    Assert(
+        new NonNull().IsEqualToOrMoreSpecificThan(
+            new NonNull() ) );
+
+    Print( "NonNull <= NEQ( null )" );
+    Assert(
+        new NonNull().IsEqualToOrMoreSpecificThan(
+            new NEQ( null ) ) );
+
+    Print( "NonBlankString !<= EQ( \"foo\" )" );
+    Assert( !(
+        new NonBlankString().IsEqualToOrMoreSpecificThan(
+            new EQ( "foo" ) ) ) );
 }
 
 

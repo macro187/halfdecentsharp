@@ -16,6 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System.Collections.Generic;
+using System.Linq;
+using Com.Halfdecent.SystemUtils;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
@@ -77,7 +80,50 @@ Check<
 }
 
 
-/// Turn the RType into an RType checking a more specific kind of item
+/// Determine whether this RType is the same or more specific than another
+///
+public static
+bool
+IsEqualToOrMoreSpecificThan<
+    T
+>(
+    this IRType< T >    t,
+    IRType              u
+)
+{
+    if( t == null )
+        throw new ValueArgumentNullException( new Parameter( "t" ) );
+    if( u == null )
+        throw new ValueArgumentNullException( new Parameter( "u" ) );
+    return
+        t.AsSingleItemEnumerable()
+        .Concat( t.AllComponentsDepthFirst() )
+        .Covary< IRType< T >, IRType >()
+        .Contains( u );
+}
+
+
+/// Recursively list all components of this RType, depth first
+///
+public static
+IEnumerable< IRType< T > >
+AllComponentsDepthFirst<
+    T
+>(
+    this IRType< T >    t
+)
+{
+    if( t == null )
+        throw new ValueArgumentNullException( new Parameter( "t" ) );
+    return
+        t.Components
+        .SelectMany( c =>
+            c.AsSingleItemEnumerable()
+            .Concat( c.AllComponentsDepthFirst() ) );
+}
+
+
+/// Contravary the RType into one of a more specific type of item
 ///
 public static
 IRType< TTo >
