@@ -25,7 +25,7 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// An exception having to do with a particular value
+/// An exception caused by a particular value
 // =============================================================================
 
 public interface
@@ -38,13 +38,13 @@ IValueException
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Generate a natural language description of the problem, referring to the
-/// problematic value using the given natural language word or phrase
+/// Generate natural language describing the problem, using specified
+/// natural language to refer to the problematic value
 ///
 Localised< string >
 SayMessage(
     Localised< string > reference
-    ///< What to refer to the value as, in natural language
+    ///< Natural language referring to the value
 );
 
 
@@ -53,6 +53,8 @@ SayMessage(
 // Properties
 // -----------------------------------------------------------------------------
 
+/// A reference to the problematic value
+///
 IValue
 ValueReference
 {
