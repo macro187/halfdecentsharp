@@ -17,7 +17,6 @@
 
 
 using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -29,6 +28,9 @@ Com.Halfdecent.Collections
 /// A finite, ordered collection of items
 ///
 /// See <tt>http://en.wikipedia.org/wiki/List_(computing)</tt>
+///
+/// Ordinal positions of items in lists (sometimes known as indexes) are
+/// zero-based.
 // =============================================================================
 
 public interface
@@ -44,13 +46,13 @@ IList<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Retrieve the item at the specified zero-based ordinal position
+/// Retrieve the item at the specified position
 ///
 T
 GetAt(
-    IInteger index
+    IInteger position
     ///< Position of the item to retrieve
-    ///  - IndexOfExistingItemInList
+    ///  - PositionOfExistingItemInList
 );
 
 

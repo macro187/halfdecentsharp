@@ -29,7 +29,7 @@ Com.Halfdecent.Collections
 
 
 public class
-IndexOfExistingItemInList<
+PositionOfExistingItemInList<
     T
     ///< Type of items in the list
 >
@@ -43,13 +43,13 @@ IndexOfExistingItemInList<
 // -----------------------------------------------------------------------------
 
 public
-IndexOfExistingItemInList(
+PositionOfExistingItemInList(
     IList< T > list
 )
     : base(
-        _S("{0} is the index of an existing item"),
-        _S("{0} is not the index of an existing item"),
-        _S("{0} must be the index of an existing item")
+        _S("{0} is the position of an existing item"),
+        _S("{0} is not the position of an existing item"),
+        _S("{0} must be the position of an existing item")
     )
 {
     NonNull.Check( list, new Parameter( "list" ) );
@@ -81,12 +81,12 @@ components;
 
 private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
-} // IndexOfExistingItemInList< T >
+} // PositionOfExistingItemInList< T >
 
 
 
 public static class
-IndexOfExistingItemInList
+PositionOfExistingItemInList
 {
 
 public static
@@ -99,10 +99,10 @@ Check<
     IValue      itemReference
 )
 {
-    new IndexOfExistingItemInList< T >( list ).Check( item, itemReference );
+    new PositionOfExistingItemInList< T >( list ).Check( item, itemReference );
 }
 
-} // IndexOfExistingItemInList
+} // PositionOfExistingItemInList
 
 
 
