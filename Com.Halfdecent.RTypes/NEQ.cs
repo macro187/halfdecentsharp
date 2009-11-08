@@ -28,7 +28,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// Not equal to a particular value
+/// RType: Not equal to a particular value
 ///
 /// According to <tt>System.Object.Equals()</tt>
 // =============================================================================
