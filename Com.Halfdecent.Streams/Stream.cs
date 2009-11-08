@@ -52,7 +52,7 @@ Pull<
     this IStream< T > stream
 )
 {
-    NonNull.Check( stream, new Parameter( "stream" ) );
+    new NonNull().Check( stream, new Parameter( "stream" ) );
     T r;
     if( !stream.TryPull( out r ) )
         throw new EmptyException( new This() );
@@ -76,8 +76,8 @@ EmptyTo<
     ISink< T >          sink
 )
 {
-    NonNull.Check( stream, new Parameter( "stream" ) );
-    NonNull.Check( sink, new Parameter( "sink" ) );
+    new NonNull().Check( stream, new Parameter( "stream" ) );
+    new NonNull().Check( sink, new Parameter( "sink" ) );
     T item;
     while( stream.TryPull( out item ) )
         sink.Push( item );

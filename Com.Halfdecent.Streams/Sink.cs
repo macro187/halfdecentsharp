@@ -53,7 +53,7 @@ Push<
     T               item
 )
 {
-    NonNull.Check( sink, new Parameter( "sink" ) );
+    new NonNull().Check( sink, new Parameter( "sink" ) );
     if( !sink.TryPush( item ) )
         throw new FullException( new This() );
 }
