@@ -33,6 +33,7 @@ IGrowableList<
     T
 >
     : IList< T >
+    , IGrowableBag< T >
 {
 
 
