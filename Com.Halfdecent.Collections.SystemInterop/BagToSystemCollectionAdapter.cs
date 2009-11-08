@@ -177,6 +177,7 @@ CopyTo(
             "arrayIndex",
             arrayIndex,
             _S("arrayIndex is less than 0") );
+    // XXX Doesn't the T[] parameter type preclude this?
     if( array.Rank > 1 )
         throw new LocalisedArgumentException(
             _S("array is multidimensional"),
@@ -184,8 +185,9 @@ CopyTo(
     if( this.Bag.Count.GT( Integer.From( array.Length - arrayIndex ) ) )
         throw new LocalisedArgumentException(
             _S("The number of elements in this collection is greater than the available space from arrayIndex to the end of array") );
-    // TODO
-    throw new NotImplementedException();
+    int i = arrayIndex;
+    foreach( T item in this )
+        array[ i++ ] = item;
 }
 
 

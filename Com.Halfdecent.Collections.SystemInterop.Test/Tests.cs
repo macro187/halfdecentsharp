@@ -191,11 +191,9 @@ public static
 void
 Test_BagToSystemCollectionAdapter()
 {
-
-    // TODO Check all variations of bag (shrinkable, growable, both, etc.)
-
     SCG.ICollection< int >  col;
     SCG.List< int >         list = new SCG.List< int >();
+    int[]                   a;
 
     Print( "Empty read-only collection" );
     col = new int[]{}.AsReadOnlyBag().AsSystemCollection();
@@ -211,6 +209,17 @@ Test_BagToSystemCollectionAdapter()
     Assert( !col.Contains( 2 ) );
     Assert( !col.Contains( 3 ) );
     Assert( !col.Contains( 4 ) );
+
+    Print( "Null array to .CopyTo() throws ArgumentNullException" );
+    Expect< ArgumentNullException >( () => col.CopyTo( null, 0 ) );
+
+    Print( "Negative index to .CopyTo() throws ArgumentOutOfRangeException" );
+    Expect<
+        ArgumentOutOfRangeException >(
+        () => col.CopyTo( new int[]{}, -1 ) );
+
+    Print( "Empty array to .CopyTo() allowed if collection is empty" );
+    col.CopyTo( new int[]{}, 0 );
 
     Print( ".GetEnumerator() to check items" );
     list.Clear();
@@ -242,6 +251,16 @@ Test_BagToSystemCollectionAdapter()
     Assert( col.Contains( 2 ) );
     Assert( col.Contains( 3 ) );
     Assert( !col.Contains( 4 ) );
+
+    Print( "Array without enough space to .CopyTo() throws ArgumentException" );
+    Expect<
+        ArgumentException >(
+        () => col.CopyTo( new int[]{ 0 }, 0 ) );
+
+    Print( ".CopyTo() to check items" );
+    a = new int[]{ 0, 0, 0, 0 };
+    col.CopyTo( a, 1 );
+    Assert( a.SequenceEqual( new int[] { 0, 1, 2, 3 } ) );
 
     Print( ".GetEnumerator() to check items" );
     list.Clear();
