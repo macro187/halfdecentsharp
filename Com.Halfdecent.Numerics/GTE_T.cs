@@ -103,5 +103,30 @@ MyCheck(
 private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
+
+
+
+public static class
+GTE
+{
+
+public static
+void
+Check<
+    T
+>(
+    T       item,
+    IValue  itemReference,
+    T       compareAgainst
+)
+    where T : IComparable< T >
+{
+    new GTE< T >( compareAgainst ).Check( item, itemReference );
+}
+
+}
+
+
+
 } // namespace
 
