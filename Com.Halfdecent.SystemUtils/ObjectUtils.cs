@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,58 +17,35 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Com.Halfdecent.Testing;
-using Com.Halfdecent.SystemUtils;
 
 
 namespace
-Com.Halfdecent.SystemUtils.Test
+Com.Halfdecent.SystemUtils
 {
 
 
 // =============================================================================
-/// Test program for <tt>Com.Halfdecent.SystemUtils</tt>
+/// <tt>System.Object</tt> Library
 // =============================================================================
-//
-public class
-Tests
-    : TestBase
+
+public static class
+ObjectUtils
 {
 
 
 
+/// Generate a string representation of the object
+///
+/// Also handles <tt>null</tt>
+///
 public static
-int
-Main()
+string
+ToString(
+    object obj
+)
 {
-    return TestProgram.RunTests();
-}
-
-
-
-[Test( "EnumerableUtils" )]
-public static
-void
-Test_EnumerableUtils()
-{
-    Print( "IEnumerable<T>.Append()" );
-    Assert(
-        new int[]{ 1, 2, 3 }
-        .Append( 4 )
-        .SequenceEqual( new int[]{ 1, 2, 3, 4 } ) );
-}
-
-
-[Test( "ObjectUtils" )]
-public static
-void
-Test_ObjectUtils()
-{
-    Print( "ObjectUtils.ToString()" );
-    AssertEqual( ObjectUtils.ToString( null ), "null" );
-    AssertEqual( ObjectUtils.ToString( "notnull" ), "notnull" );
+    if( obj == null ) return "null";
+    return obj.ToString();
 }
 
 
