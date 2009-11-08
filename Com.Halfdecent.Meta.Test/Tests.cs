@@ -18,8 +18,9 @@
 
 using System;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Testing;
+using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
+using Com.Halfdecent.Testing;
 
 
 namespace
@@ -99,6 +100,239 @@ Test_ValueException()
             e.ValueReference.ToString() ) );
     Print( "Check .InnerException" );
     AssertEqual( e.InnerException, innerException );
+}
+
+
+[Test( "ValueArgumentException" )]
+public static
+void
+Test_ValueArgumentException()
+{
+    ValueArgumentException  vae;
+    IValueException         ve;
+    ILocalisedException     le;
+    ArgumentException       ae;
+
+    Parameter param = new Parameter( "param" );
+    string format = "Test Format {0}";
+    Exception inner = new Exception();
+
+    Print( "ValueArgumentException( Parameter )" );
+    vae = new ValueArgumentException( param );
+    ve = vae; le = vae; ae = vae;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "ArgumentException.ParamName" );
+    AssertEqual( ae.ParamName, param.Name );
+
+    Print( "ValueArgumentException( Parameter, Localised<string> )" );
+    vae = new ValueArgumentException( param, format );
+    ve = vae; le = vae; ae = vae;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "IValueException.SayMessage" );
+    AssertEqual< string >(
+        ve.SayMessage( "ref" ),
+        string.Format( format, "ref" ) );
+    Print( "ILocalisedException.Message" );
+    AssertEqual< string >(
+        le.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentException.ParamName" );
+    AssertEqual( ae.ParamName, param.Name );
+    Print( "ArgumentException.Message" );
+    AssertEqual(
+        ae.Message,
+        string.Format( format, param.ToString() ) );
+
+    Print( "ValueArgumentException( Parameter, Localised<string>, Exception )" );
+    vae = new ValueArgumentException( param, format, inner );
+    ve = vae; le = vae; ae = vae;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "IValueException.SayMessage" );
+    AssertEqual< string >(
+        ve.SayMessage( "ref" ),
+        string.Format( format, "ref" ) );
+    Print( "ILocalisedException.Message" );
+    AssertEqual< string >(
+        le.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentException.ParamName" );
+    AssertEqual( ae.ParamName, param.Name );
+    Print( "ArgumentException.Message" );
+    AssertEqual(
+        ae.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentException.InnerException" );
+    AssertEqual(
+        ae.InnerException,
+        inner );
+}
+
+
+[Test( "ValueArgumentNullException" )]
+public static
+void
+Test_ValueArgumentNullException()
+{
+    ValueArgumentNullException  vane;
+    IValueException             ve;
+    ILocalisedException         le;
+    ArgumentNullException       ane;
+
+    Parameter param = new Parameter( "param" );
+    string format = "Test Format {0}";
+    Exception inner = new Exception();
+
+    Print( "ValueArgumentNullException( Parameter )" );
+    vane = new ValueArgumentNullException( param );
+    ve = vane; le = vane; ane = vane;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "ArgumentNullException.ParamName" );
+    AssertEqual( ane.ParamName, param.Name );
+
+    Print( "ValueArgumentNullException( Parameter, Localised<string> )" );
+    vane = new ValueArgumentNullException( param, format );
+    ve = vane; le = vane; ane = vane;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "IValueException.SayMessage" );
+    AssertEqual< string >(
+        ve.SayMessage( "ref" ),
+        string.Format( format, "ref" ) );
+    Print( "ILocalisedException.Message" );
+    AssertEqual< string >(
+        le.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentNullException.ParamName" );
+    AssertEqual( ane.ParamName, param.Name );
+    Print( "ArgumentNullException.Message" );
+    AssertEqual(
+        ane.Message,
+        string.Format( format, param.ToString() ) );
+
+    Print( "ValueArgumentNullException( Parameter, Localised<string>, Exception )" );
+    vane = new ValueArgumentNullException( param, format, inner );
+    ve = vane; le = vane; ane = vane;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "IValueException.SayMessage" );
+    AssertEqual< string >(
+        ve.SayMessage( "ref" ),
+        string.Format( format, "ref" ) );
+    Print( "ILocalisedException.Message" );
+    AssertEqual< string >(
+        le.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentNullException.ParamName" );
+    AssertEqual( ane.ParamName, param.Name );
+    Print( "ArgumentNullException.Message" );
+    AssertEqual(
+        ane.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentNullException.InnerException" );
+    AssertEqual(
+        ane.InnerException,
+        inner );
+}
+
+
+[Test( "ValueArgumentOutOfRangeException" )]
+public static
+void
+Test_ValueArgumentOutOfRangeException()
+{
+    ValueArgumentOutOfRangeException    vaoore;
+    IValueException                     ve;
+    ILocalisedException                 le;
+    ArgumentOutOfRangeException         aoore;
+
+    Parameter param = new Parameter( "param" );
+    string format = "Test Format {0}";
+    string actual = "badvalue";
+    Exception inner = new Exception();
+
+    Print( "ValueArgumentOutOfRangeException( Parameter )" );
+    vaoore = new ValueArgumentOutOfRangeException( param );
+    ve = vaoore; le = vaoore; aoore = vaoore;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "ArgumentOutOfRangeException.ParamName" );
+    AssertEqual( aoore.ParamName, param.Name );
+
+    Print( "ValueArgumentOutOfRangeException( Parameter, Localised<string> )" );
+    vaoore = new ValueArgumentOutOfRangeException( param, format );
+    ve = vaoore; le = vaoore; aoore = vaoore;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "IValueException.SayMessage" );
+    AssertEqual< string >(
+        ve.SayMessage( "ref" ),
+        string.Format( format, "ref" ) );
+    Print( "ILocalisedException.Message" );
+    AssertEqual< string >(
+        le.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentOutOfRangeException.ParamName" );
+    AssertEqual( aoore.ParamName, param.Name );
+    Print( "ArgumentOutOfRangeException.Message" );
+    AssertEqual(
+        aoore.Message,
+        string.Format( format, param.ToString() ) );
+
+    Print( "ValueArgumentOutOfRangeException( Parameter, Localised<string>, object )" );
+    vaoore = new ValueArgumentOutOfRangeException( param, format, actual );
+    ve = vaoore; le = vaoore; aoore = vaoore;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "IValueException.SayMessage" );
+    AssertEqual< string >(
+        ve.SayMessage( "ref" ),
+        string.Format( format, "ref" ) );
+    Print( "ILocalisedException.Message" );
+    AssertEqual< string >(
+        le.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentOutOfRangeException.ParamName" );
+    AssertEqual( aoore.ParamName, param.Name );
+    Print( "ArgumentOutOfRangeException.Message" );
+    AssertEqual(
+        aoore.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentOutOfRangeException.ActualValue" );
+    AssertEqual(
+        aoore.ActualValue,
+        actual );
+
+    Print( "ValueArgumentOutOfRangeException( Parameter, Localised<string>, object, Exception )" );
+    vaoore = new ValueArgumentOutOfRangeException( param, format, actual, inner );
+    ve = vaoore; le = vaoore; aoore = vaoore;
+    Print( "IValueException.ValueReference" );
+    AssertEqual( ve.ValueReference, param );
+    Print( "IValueException.SayMessage" );
+    AssertEqual< string >(
+        ve.SayMessage( "ref" ),
+        string.Format( format, "ref" ) );
+    Print( "ILocalisedException.Message" );
+    AssertEqual< string >(
+        le.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentOutOfRangeException.ParamName" );
+    AssertEqual( aoore.ParamName, param.Name );
+    Print( "ArgumentOutOfRangeException.Message" );
+    AssertEqual(
+        aoore.Message,
+        string.Format( format, param.ToString() ) );
+    Print( "ArgumentOutOfRangeException.ActualValue" );
+    AssertEqual(
+        aoore.ActualValue,
+        actual );
+    Print( "ArgumentOutOfRangeException.InnerException" );
+    AssertEqual(
+        aoore.InnerException,
+        inner );
 }
 
 
