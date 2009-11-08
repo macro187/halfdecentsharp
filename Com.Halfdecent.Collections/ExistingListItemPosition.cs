@@ -17,6 +17,7 @@
 
 
 using SCG = System.Collections.Generic;
+using Com.Halfdecent.SystemUtils;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
@@ -29,11 +30,11 @@ Com.Halfdecent.Collections
 
 
 public class
-PositionOfExistingItemInList<
+ExistingListItemPosition<
     T
     ///< Type of items in the list
 >
-    : SimpleRTypeBase< IInteger >
+    : SimpleTextRTypeBase< IInteger >
 {
 
 
@@ -43,7 +44,7 @@ PositionOfExistingItemInList<
 // -----------------------------------------------------------------------------
 
 public
-PositionOfExistingItemInList(
+ExistingListItemPosition(
     IList< T > list
 )
     : base(
@@ -52,60 +53,78 @@ PositionOfExistingItemInList(
         _S("{0} must be the position of an existing item")
     )
 {
-    NonNull.Check( list, new Parameter( "list" ) );
-    this.components = new IRType< IInteger >[] {
-        new NonNegative().Contravary< IReal, IInteger >(),
-        new LT< IInteger >( list.Count )
-    };
+    new NonNull().Check( list, new Parameter( "list" ) );
+    this.List = list;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+IList< T >
+List
+{
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// RTypeBase< Integer >
+// -----------------------------------------------------------------------------
+
+protected override
+bool
+Equals(
+    IRType t
+)
+{
+    return ((ExistingListItemPosition< T >)t).List.Equals( this.List );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRType< IInteger >
 // -----------------------------------------------------------------------------
 
 public override
 SCG.IEnumerable< IRType< IInteger > >
 Components
 {
-    get { return this.components; }
+    get
+    {
+        return
+            base.Components
+            .Append( new NonNegative()
+                .Contravary< IReal, IInteger >() )
+            .Append( new LT( this.List.Count )
+                .Contravary< object, IInteger >() );
+    }
 }
 
-private
-SCG.IEnumerable< IRType< IInteger > >
-components;
+
+
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
+
+public override
+int
+GetHashCode()
+{
+    return base.GetHashCode() ^ this.List.GetHashCode();
+}
 
 
 
 
 private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
-} // PositionOfExistingItemInList< T >
-
-
-
-public static class
-PositionOfExistingItemInList
-{
-
-public static
-void
-Check<
-    T
->(
-    IList< T >  list,
-    IInteger    item,
-    IValue      itemReference
-)
-{
-    new PositionOfExistingItemInList< T >( list ).Check( item, itemReference );
-}
-
-} // PositionOfExistingItemInList
-
-
-
-
+} // type
 } // namespace
 

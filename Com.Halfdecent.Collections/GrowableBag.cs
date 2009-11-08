@@ -47,7 +47,7 @@ Add<
     T                       item
 )
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
+    new NonNull().Check( bag, new Parameter( "bag" ) );
     if( !bag.TryAdd( item ) )
         throw new FullException( new Parameter( "bag" ) );
 }
@@ -63,7 +63,7 @@ AsSink<
     this IGrowableBag< T > bag
 )
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
+    new NonNull().Check( bag, new Parameter( "bag" ) );
     return new GrowableBagToSinkAdapter< T >( bag );
 }
 

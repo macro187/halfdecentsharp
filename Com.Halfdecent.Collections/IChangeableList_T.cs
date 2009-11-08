@@ -47,7 +47,7 @@ void
 ReplaceAt(
     IInteger    position,
     ///< Position of an existing item
-    ///  - PositionOfExistingItemInList
+    ///  - ExistingListItemPosition
     T           item
     ///< Item to replace it with
 );

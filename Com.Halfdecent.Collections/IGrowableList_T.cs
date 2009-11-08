@@ -48,7 +48,7 @@ void
 InsertAt(
     IInteger    position,
     ///< Position to insert the item at
-    ///  - PositionOfExistingOrNextItemInList
+    ///  - ExistingOrNextListItemPosition
     T           item
     ///< Item to insert
 );

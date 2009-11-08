@@ -47,7 +47,7 @@ IsEmptyViaCount<
     IBag< T > bag
 )
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
+    new NonNull().Check( bag, new Parameter( "bag" ) );
     return bag.Count.Equals( Integer.From( 0 ) );
 }
 
@@ -66,7 +66,7 @@ ContainsViaStream<
     T           sought
 )
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
+    new NonNull().Check( bag, new Parameter( "bag" ) );
     foreach( T item in bag.Stream().AsEnumerable() )
         if( item.Equals( sought ) ) return true;
     return false;

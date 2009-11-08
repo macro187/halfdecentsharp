@@ -52,7 +52,7 @@ T
 GetAt(
     IInteger position
     ///< Position of the item to retrieve
-    ///  - PositionOfExistingItemInList
+    ///  - ExistingListItemPosition
 );
 
 

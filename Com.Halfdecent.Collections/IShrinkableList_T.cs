@@ -47,7 +47,7 @@ void
 RemoveAt(
     IInteger position
     ///< Position of item to remove
-    ///  - PositionOfExistingItemInList
+    ///  - ExistingListItemPosition
 );
 
 
