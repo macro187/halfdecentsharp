@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -16,6 +17,8 @@
 
 
 using System;
+using System.Collections.Generic;
+using Com.Halfdecent.SystemUtils;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
@@ -27,19 +30,15 @@ Com.Halfdecent.Numerics
 
 
 // =============================================================================
-/// RType: A value that is greater than or equal to some other constant value
+/// RType: Greater than a particular value
 ///
-/// According to <tt>IComparable< T >.CompareTo()</tt>
+/// According to <tt>IComparable.CompareTo()</tt>
 // =============================================================================
-//
-public class
-GTE<
-    T
->
-    : SimpleRTypeBase< T >
-    where T : IComparable< T >
-{
 
+public class
+GT
+    : SimpleTextRTypeBase< object >
+{
 
 
 
@@ -48,19 +47,18 @@ GTE<
 // -----------------------------------------------------------------------------
 
 public
-GTE(
-    T compareAgainst
+GT(
+    IComparable compareTo
+    ///< The value to compare to
 )
     : base(
-        _S( "{{0}} is {0} or greater", compareAgainst ),
-        _S( "{{0}} is less than {0}", compareAgainst ),
-        _S( "{{0}} must be {0} or greater", compareAgainst )
+        _S( "{{0}} is greater than {0}", compareTo ),
+        _S( "{{0}} is less than or equal to {0}", compareTo ),
+        _S( "{{0}} must be greater than {0}", compareTo )
     )
 {
-    NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
-    this.compareagainst = compareAgainst;
+    this.CompareTo = compareTo;
 }
-
 
 
 
@@ -68,33 +66,62 @@ GTE(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// The value to compare against
+/// The value to compare to
+///
 public
-T
-CompareAgainst
+IComparable
+CompareTo
 {
-    get { return this.compareagainst; }
+    get;
+    private set;
 }
-
-private
-T
-compareagainst;
-
 
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// RTypeBase< object >
 // -----------------------------------------------------------------------------
 
 protected override
 bool
-MyCheck(
-    T item
+Equals(
+    IRType t
 )
 {
-    if( item == null ) return true;
-    return item.CompareTo( this.CompareAgainst ) >= 0;
+    return ((GTE)t).CompareTo.Equals( this.CompareTo );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRType< object >
+// -----------------------------------------------------------------------------
+
+public override
+IEnumerable< IRType< object > >
+Components
+{
+    get
+    {
+        return
+            base.Components
+            .Append( new GTE( this.CompareTo ) )
+            .Append( new NEQ( this.CompareTo ) );
+    }
+}
+
+
+
+// -----------------------------------------------------------------------------
+// object
+// -----------------------------------------------------------------------------
+
+public override
+int
+GetHashCode()
+{
+    if( this.CompareTo == null ) return base.GetHashCode();
+    return base.GetHashCode() ^ this.CompareTo.GetHashCode();
 }
 
 
@@ -103,30 +130,5 @@ MyCheck(
 private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
-
-
-
-public static class
-GTE
-{
-
-public static
-void
-Check<
-    T
->(
-    T       item,
-    IValue  itemReference,
-    T       compareAgainst
-)
-    where T : IComparable< T >
-{
-    new GTE< T >( compareAgainst ).Check( item, itemReference );
-}
-
-}
-
-
-
 } // namespace
 

@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -27,17 +28,18 @@ Com.Halfdecent.Numerics
 
 
 // =============================================================================
-/// RType: A value that is less than or equal to some other constant value
+/// RType: Greater than or equal to a particular value
 ///
-/// According to <tt>IComparable< T >.CompareTo()</tt>
+/// According to <tt>IComparable.CompareTo()</tt>
+///
+/// When <tt>.CompareTo</tt> is <tt>null</tt>, <tt>System.IComparable</tt>
+/// semantics are used (ie. <tt>null</tt>s are equal and <tt>null</tt> is
+/// greater than non-null.)  Otherwise, <tt>null</tt> values always pass.
 // =============================================================================
-//
+
 public class
-LTE<
-    T
->
-    : SimpleRTypeBase< T >
-    where T : IComparable< T >
+GTE
+    : SimpleTextRTypeBase< object >
 {
 
 
@@ -48,17 +50,17 @@ LTE<
 // -----------------------------------------------------------------------------
 
 public
-LTE(
-    T compareAgainst
+GTE(
+    IComparable compareTo
+    ///< The value to compare to
 )
     : base(
-        _S( "{{0}} is {0} or less", compareAgainst ),
-        _S( "{{0}} is greater than {0}", compareAgainst ),
-        _S( "{{0}} must be {0} or less", compareAgainst )
+        _S( "{{0}} is {0} or greater", compareTo ),
+        _S( "{{0}} is less than {0}", compareTo ),
+        _S( "{{0}} must be {0} or greater", compareTo )
     )
 {
-    NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
-    this.compareagainst = compareAgainst;
+    this.CompareTo = compareTo;
 }
 
 
@@ -68,33 +70,64 @@ LTE(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// The value to compare against
+/// The value to compare to
+///
 public
-T
-CompareAgainst
+IComparable
+CompareTo
 {
-    get { return this.compareagainst; }
+    get;
+    private set;
 }
-
-private
-T
-compareagainst;
-
 
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// RTypeBase< object >
 // -----------------------------------------------------------------------------
 
 protected override
 bool
-MyCheck(
-    T item
+Equals(
+    IRType t
 )
 {
+    return ((GTE)t).CompareTo.Equals( this.CompareTo );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRType< object >
+// -----------------------------------------------------------------------------
+
+public override
+bool
+Predicate(
+    object item
+)
+{
+    // When comparing against null, null == null
+    if( this.CompareTo == null && item == null ) return true;
+    // When comparing against null, null > non-null
+    if( this.CompareTo == null && item != null ) return false;
+    // When not comparing against null, null always passes
     if( item == null ) return true;
-    return item.CompareTo( this.CompareAgainst ) <= 0;
+    return ( this.CompareTo.CompareTo( item ) <= 0 );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// object
+// -----------------------------------------------------------------------------
+
+public override
+int
+GetHashCode()
+{
+    if( this.CompareTo == null ) return base.GetHashCode();
+    return base.GetHashCode() ^ this.CompareTo.GetHashCode();
 }
 
 

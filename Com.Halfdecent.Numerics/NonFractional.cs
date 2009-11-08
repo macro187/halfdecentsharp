@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -24,9 +25,13 @@ Com.Halfdecent.Numerics
 {
 
 
+// =============================================================================
+/// RType: Real with no fractional amount
+// =============================================================================
+
 public class
 NonFractional
-    : SimpleRTypeBase< IReal >
+    : SimpleTextRTypeBase< IReal >
 {
 
 
@@ -48,12 +53,12 @@ NonFractional()
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// IRType< IReal >
 // -----------------------------------------------------------------------------
 
-protected override
+public override
 bool
-MyCheck(
+Predicate(
     IReal item
 )
 {

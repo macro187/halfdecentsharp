@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,29 +15,30 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
+using System.Collections.Generic;
+using Com.Halfdecent.SystemUtils;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
 
-// =============================================================================
-/// RType: A value that is greater than some other constant value
-///
-/// According to <tt>IComparable< T >.CompareTo()</tt>
-// =============================================================================
-//
-public class
-GT<
-    T
->
-    : SimpleRTypeBase< T >
-    where T : IComparable< T >
-{
 
+// =============================================================================
+/// RType: Less than a particular value
+///
+/// According to <tt>IComparable.CompareTo()</tt>
+// =============================================================================
+
+public class
+LT
+    : SimpleTextRTypeBase< object >
+{
 
 
 
@@ -45,19 +47,18 @@ GT<
 // -----------------------------------------------------------------------------
 
 public
-GT(
-    T compareAgainst
+LT(
+    IComparable compareTo
+    ///< The value to compare to
 )
     : base(
-        _S( "{{0}} is greater than {0}", compareAgainst ),
-        _S( "{{0}} isn't greater than {0}", compareAgainst ),
-        _S( "{{0}} must be greater than {0}", compareAgainst )
+        _S( "{{0}} is less than {0}", compareTo ),
+        _S( "{{0}} isn't less than {0}", compareTo ),
+        _S( "{{0}} must be less than {0}", compareTo )
     )
 {
-    NonNull.Check( compareAgainst, new Parameter( "compareAgainst" ) );
-    this.compareagainst = compareAgainst;
+    this.CompareTo = compareTo;
 }
-
 
 
 
@@ -65,33 +66,62 @@ GT(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// The value to compare against
+/// The value to compare to
+///
 public
-T
-CompareAgainst
+IComparable
+CompareTo
 {
-    get { return this.compareagainst; }
+    get;
+    private set;
 }
-
-private
-T
-compareagainst;
-
 
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// RTypeBase< object >
 // -----------------------------------------------------------------------------
 
 protected override
 bool
-MyCheck(
-    T item
+Equals(
+    IRType t
 )
 {
-    if( item == null ) return true;
-    return item.CompareTo( this.CompareAgainst ) > 0;
+    return ((LTE)t).CompareTo.Equals( this.CompareTo );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRType< object >
+// -----------------------------------------------------------------------------
+
+public override
+IEnumerable< IRType< object > >
+Components
+{
+    get
+    {
+        return
+            base.Components
+            .Append( new LTE( this.CompareTo ) )
+            .Append( new NEQ( this.CompareTo ) );
+    }
+}
+
+
+
+// -----------------------------------------------------------------------------
+// object
+// -----------------------------------------------------------------------------
+
+public override
+int
+GetHashCode()
+{
+    if( this.CompareTo == null ) return base.GetHashCode();
+    return base.GetHashCode() ^ this.CompareTo.GetHashCode();
 }
 
 

@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,23 +15,26 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
-using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 // =============================================================================
 /// <tt>IReal</tt> implementation using <tt>System.Decimal</tt>
 // =============================================================================
-//
+
 internal class
 DecimalReal
     : IReal
 {
-
 
 
 
@@ -45,10 +49,9 @@ DecimalReal(
     IReal r
 )
 {
-    NonNull.Check( r, new Parameter( "r" ) );
-    this.value = r.ToDecimal();
+    new NonNull().Check( r, new Parameter( "r" ) );
+    this.Value = r.ToDecimal();
 }
-
 
 
 /// Initialize a new <tt>DecimalReal</tt> with a <tt>System.Decimal</tt> value
@@ -58,9 +61,8 @@ DecimalReal(
     decimal value
 )
 {
-    this.value = value;
+    this.Value = value;
 }
-
 
 
 
@@ -70,8 +72,11 @@ DecimalReal(
 
 private
 decimal
-value;
-
+Value
+{
+    get;
+    set;
+}
 
 
 
@@ -79,7 +84,7 @@ value;
 // IReal
 // -----------------------------------------------------------------------------
 
-public decimal ToDecimal() { return this.value; }
+public decimal ToDecimal() { return this.Value; }
 
 public bool GT( IReal r) { return ( this.CompareTo( r ) > 0 ); }
 
@@ -91,68 +96,53 @@ public bool LTE( IReal r ) { return ( this.CompareTo( r ) <= 0 ); }
 
 public IReal Plus( IReal r )
 {
-    return new DecimalReal( this.value + r.ToDecimal() );
+    return new DecimalReal( this.Value + r.ToDecimal() );
 }
 
 public IReal Minus( IReal r )
 {
-    return new DecimalReal( this.value - r.ToDecimal() );
+    return new DecimalReal( this.Value - r.ToDecimal() );
 }
 
 public IReal Times( IReal r )
 {
-    return new DecimalReal( this.value * r.ToDecimal() );
+    return new DecimalReal( this.Value * r.ToDecimal() );
 }
 
 public IReal DividedBy( IReal r )
 {
     new NonZero().Check( r, new Parameter( "r" ) );
-    return new DecimalReal( this.value / r.ToDecimal() );
+    return new DecimalReal( this.Value / r.ToDecimal() );
 }
 
 public IReal RemainderWhenDividedBy( IReal r )
 {
     new NonZero().Check( r, new Parameter( "r" ) );
-    return new DecimalReal( Decimal.Remainder( this.value, r.ToDecimal() ) );
+    return new DecimalReal( Decimal.Remainder( this.Value, r.ToDecimal() ) );
 }
 
 public IReal Truncate()
 {
-    return new DecimalReal( Decimal.Truncate( this.value ) );
+    return new DecimalReal( Decimal.Truncate( this.Value ) );
 }
 
 
 
-
 // -----------------------------------------------------------------------------
-// System.IComparable< IReal >
+// System.IComparable
 // -----------------------------------------------------------------------------
 
 public
 int
 CompareTo(
-    IReal r
+    object obj
 )
 {
-    return this.value.CompareTo( r.ToDecimal() );
+    if( obj == null ) return 1;
+    if( !( obj is IReal ) )
+        throw new LocalisedArgumentException( "obj", _S("Is not an IReal") );
+    return this.Value.CompareTo( ((IReal)obj).ToDecimal() );
 }
-
-
-
-
-// -----------------------------------------------------------------------------
-// System.IEquatable< IReal >
-// -----------------------------------------------------------------------------
-
-public
-bool
-Equals(
-    IReal r
-)
-{
-    return ( this.value == r.ToDecimal() );
-}
-
 
 
 
@@ -166,34 +156,31 @@ Equals(
     object obj
 )
 {
-    bool result = false;
-    IReal r = obj as IReal;
-    if( r != null ) {
-        result = this.Equals( r );
-    }
-    return result;
+    if( obj == null ) return false;
+    if( !( obj is IReal ) ) return false;
+    return ( this.Value == ((IReal)obj).ToDecimal() );
 }
-
 
 
 public override
 string
 ToString()
 {
-    return this.value.ToString();
+    return this.Value.ToString();
 }
-
 
 
 public override
 int
 GetHashCode()
 {
-    return this.value.GetHashCode();
+    return this.Value.GetHashCode();
 }
 
 
 
+
+private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -17,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using Com.Halfdecent.SystemUtils;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
 
@@ -26,11 +28,14 @@ Com.Halfdecent.Numerics
 {
 
 
+// =============================================================================
+/// RType: In range of <tt>System.Int64</tt>
+// =============================================================================
+
 public class
 InInt64Range
-    : SimpleRTypeBase< IReal >
+    : SimpleTextRTypeBase< IReal >
 {
-
 
 
 
@@ -50,9 +55,8 @@ InInt64Range()
 
 
 
-
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// IRType< IReal >
 // -----------------------------------------------------------------------------
 
 public override
@@ -61,11 +65,12 @@ Components
 {
     get
     {
-        yield return
-            new InInterval< IReal >(
+        return
+            base.Components
+            .Append( new InInterval< IReal >(
                 new Interval< IReal >(
                     Real.From( Int64.MinValue ), true,
-                    Real.From( Int64.MaxValue ), true ) );
+                    Real.From( Int64.MaxValue ), true ) ) );
     }
 }
 

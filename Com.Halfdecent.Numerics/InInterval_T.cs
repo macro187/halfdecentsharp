@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -32,9 +33,8 @@ InInterval<
     T
 >
     : RTypeBase< T >
-    where T : IComparable< T >
+    where T : IComparable
 {
-
 
 
 
@@ -47,10 +47,9 @@ InInterval(
     IInterval< T > interval
 )
 {
-    NonNull.Check( interval, new Parameter( "interval" ) );
-    this.interval = interval;
+    new NonNull().Check( interval, new Parameter( "interval" ) );
+    this.Interval = interval;
 }
-
 
 
 
@@ -62,18 +61,29 @@ public
 IInterval< T >
 Interval
 {
-    get { return this.interval; }
+    get;
+    private set;
 }
-
-private
-IInterval< T >
-interval;
-
 
 
 
 // -----------------------------------------------------------------------------
-// RType1Base
+// RTypeBase< T >
+// -----------------------------------------------------------------------------
+
+protected override
+bool
+Equals(
+    IRType t
+)
+{
+    return ((InInterval< T >)t).Interval.Equals( this.Interval );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRType< T >
 // -----------------------------------------------------------------------------
 
 public override
@@ -82,23 +92,30 @@ Components
 {
     get
     {
-        if( this.interval.FromInclusive )
-            yield return new GTE< T >( this.interval.From );
+        if( this.Interval.FromInclusive )
+            yield return
+                new GTE( this.Interval.From )
+                .Contravary< object, T >();
         else
-            yield return new GT< T >( this.interval.From );
+            yield return
+                new GT( this.Interval.From )
+                .Contravary< object, T >();
 
-        if( this.interval.ToInclusive )
-            yield return new LTE< T >( this.interval.To );
+        if( this.Interval.ToInclusive )
+            yield return
+                new LTE( this.Interval.To )
+                .Contravary< object, T >();
         else
-            yield return new LT< T >( this.interval.To );
+            yield return
+                new LT( this.Interval.To )
+                .Contravary< object, T >();
     }
 }
 
 
 
-
 // -----------------------------------------------------------------------------
-// IRType1
+// IRType
 // -----------------------------------------------------------------------------
 
 public override
@@ -107,29 +124,28 @@ SayIs(
     Localised< string > reference
 )
 {
-    new NonNull< string >().Check( reference, new Parameter( "reference" ) );
-    if( this.interval.FromInclusive && this.interval.ToInclusive )
+    new NonNull().Check( reference, new Parameter( "reference" ) );
+    if( this.Interval.FromInclusive && this.Interval.ToInclusive )
         return _S( "{0} is between {1} and {2}, inclusive",
             reference,
-            this.interval.From.ToString(),
-            this.interval.To.ToString() );
-    else if( !this.interval.FromInclusive && !this.interval.ToInclusive )
+            this.Interval.From.ToString(),
+            this.Interval.To.ToString() );
+    else if( !this.Interval.FromInclusive && !this.Interval.ToInclusive )
         return _S( "{0} is between {1} and {2}, exclusive",
             reference,
-            this.interval.From,
-            this.interval.To );
-    else if( this.interval.FromInclusive )
+            this.Interval.From,
+            this.Interval.To );
+    else if( this.Interval.FromInclusive )
         return _S( "{0} is {1} or greater and less than {2}",
             reference,
-            this.interval.From,
-            this.interval.To );
-    else // if( this.interval.ToInclusive )
+            this.Interval.From,
+            this.Interval.To );
+    else // if( this.Interval.ToInclusive )
         return _S( "{0} is greater than {1} and {2} or less",
             reference,
-            this.interval.From,
-            this.interval.To );
+            this.Interval.From,
+            this.Interval.To );
 }
-
 
 
 public override
@@ -138,29 +154,28 @@ SayIsNot(
     Localised< string > reference
 )
 {
-    new NonNull< string >().Check( reference, new Parameter( "reference" ) );
-    if( this.interval.FromInclusive && this.interval.ToInclusive )
+    new NonNull().Check( reference, new Parameter( "reference" ) );
+    if( this.Interval.FromInclusive && this.Interval.ToInclusive )
         return _S( "{0} is not between {1} and {2}, inclusive",
             reference,
-            this.interval.From.ToString(),
-            this.interval.To.ToString() );
-    else if( !this.interval.FromInclusive && !this.interval.ToInclusive )
+            this.Interval.From.ToString(),
+            this.Interval.To.ToString() );
+    else if( !this.Interval.FromInclusive && !this.Interval.ToInclusive )
         return _S( "{0} is not between {1} and {2}, exclusive",
             reference,
-            this.interval.From,
-            this.interval.To );
-    else if( this.interval.FromInclusive )
+            this.Interval.From,
+            this.Interval.To );
+    else if( this.Interval.FromInclusive )
         return _S( "{0} is less than {1}, or is {2} or greater",
             reference,
-            this.interval.From,
-            this.interval.To );
-    else // if( this.interval.ToInclusive )
+            this.Interval.From,
+            this.Interval.To );
+    else // if( this.Interval.ToInclusive )
         return _S( "{0} {1} or less, or is greater than {2}",
             reference,
-            this.interval.From,
-            this.interval.To );
+            this.Interval.From,
+            this.Interval.To );
 }
-
 
 
 public override
@@ -169,27 +184,40 @@ SayMustBe(
     Localised< string > reference
 )
 {
-    new NonNull< string >().Check( reference, new Parameter( "reference" ) );
-    if( this.interval.FromInclusive && this.interval.ToInclusive )
+    new NonNull().Check( reference, new Parameter( "reference" ) );
+    if( this.Interval.FromInclusive && this.Interval.ToInclusive )
         return _S( "{0} must be between {1} and {2}, inclusive",
             reference,
-            this.interval.From.ToString(),
-            this.interval.To.ToString() );
-    else if( !this.interval.FromInclusive && !this.interval.ToInclusive )
+            this.Interval.From.ToString(),
+            this.Interval.To.ToString() );
+    else if( !this.Interval.FromInclusive && !this.Interval.ToInclusive )
         return _S( "{0} must be between {1} and {2}, exclusive",
             reference,
-            this.interval.From,
-            this.interval.To );
-    else if( this.interval.FromInclusive )
+            this.Interval.From,
+            this.Interval.To );
+    else if( this.Interval.FromInclusive )
         return _S( "{0} must be {1} or greater and less than {2}",
             reference,
-            this.interval.From,
-            this.interval.To );
-    else // if( this.interval.ToInclusive )
+            this.Interval.From,
+            this.Interval.To );
+    else // if( this.Interval.ToInclusive )
         return _S( "{0} must be greater than {1} and {2} or less",
             reference,
-            this.interval.From,
-            this.interval.To );
+            this.Interval.From,
+            this.Interval.To );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
+
+public override
+int
+GetHashCode()
+{
+    return base.GetHashCode() ^ this.Interval.GetHashCode();
 }
 
 

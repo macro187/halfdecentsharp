@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2008, 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,8 +17,6 @@
 
 
 using System;
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
 
 
 namespace
@@ -27,31 +25,46 @@ Com.Halfdecent.Numerics
 
 
 // =============================================================================
-/// <tt>IInterval</tt> covariant type adapter
+/// An interval
+///
+/// TODO Wikipedia link
 // =============================================================================
 
-public class
-IntervalTypeAdapter<
-    TFrom,
-    TTo
->
-    : Interval< TTo >
-    where TFrom : TTo
+public interface
+IInterval
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Properties
 // -----------------------------------------------------------------------------
 
-public
-IntervalTypeAdapter(
-    IInterval< TFrom > from
-)
-    :base( from.From, from.FromInclusive, from.To, from.ToInclusive )
+IComparable
+From
 {
-    NonNull.Check( from, new Parameter( "from" ) );
+    get;
+}
+
+
+bool
+FromInclusive
+{
+    get;
+}
+
+
+IComparable
+To
+{
+    get;
+}
+
+
+bool
+ToInclusive
+{
+    get;
 }
 
 

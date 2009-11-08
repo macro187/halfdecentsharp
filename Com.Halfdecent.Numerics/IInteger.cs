@@ -33,8 +33,6 @@ Com.Halfdecent.Numerics
 public interface
 IInteger
     : IReal
-    , IComparable< IInteger >
-    , IEquatable< IInteger >
 {
 
 
@@ -65,7 +63,6 @@ IInteger
 Times(
     IInteger x
 );
-
 
 
 /// Compute the remainder when this integer is divided by another

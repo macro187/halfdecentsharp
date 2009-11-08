@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,11 +15,14 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
+
 
 // =============================================================================
 /// A real number
@@ -26,13 +30,11 @@ Com.Halfdecent.Numerics
 /// TODO: The term "real" is used loosely here.  The idea is to (eventually)
 ///       have a more rigorous numeric tower of types.
 // =============================================================================
-//
+
 public interface
 IReal
-    : IComparable< IReal >
-    , IEquatable< IReal >
+    : IComparable
 {
-
 
 
 
@@ -51,14 +53,12 @@ decimal
 ToDecimal();
 
 
-
 /// Determine whether this real is greater than another
 ///
 bool
 GT(
     IReal x
 );
-
 
 
 /// Determine whether this real is greater than or equal to another
@@ -69,14 +69,12 @@ GTE(
 );
 
 
-
 /// Determine whether this real is less than another
 ///
 bool
 LT(
     IReal x
 );
-
 
 
 /// Determine whether this real is less than or equal to another
@@ -87,14 +85,12 @@ LTE(
 );
 
 
-
 /// Compute this real plus another
 ///
 IReal
 Plus(
     IReal x
 );
-
 
 
 /// Compute this real minus another
@@ -105,14 +101,12 @@ Minus(
 );
 
 
-
 /// Compute this real times another
 ///
 IReal
 Times(
     IReal x
 );
-
 
 
 /// Compute this real divided by another
@@ -123,7 +117,6 @@ DividedBy(
     ///< The other real
     ///  - NonZero
 );
-
 
 
 /// Generate the value of this real with the fractional part of it's value

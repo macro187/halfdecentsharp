@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,22 +15,26 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 // =============================================================================
-/// An interval
+/// A strongly-typed interval
 // =============================================================================
-//
+
 public interface
 IInterval<
     T
 >
+    : IInterval
+    where T : IComparable
 {
-
 
 
 
@@ -37,6 +42,7 @@ IInterval<
 // Properties
 // -----------------------------------------------------------------------------
 
+new
 T
 From
 {
@@ -44,40 +50,12 @@ From
 }
 
 
-
-bool
-FromInclusive
-{
-    get;
-}
-
-
-
+new
 T
 To
 {
     get;
 }
-
-
-
-bool
-ToInclusive
-{
-    get;
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-bool
-Contains(
-    IComparable< T > value
-);
 
 
 

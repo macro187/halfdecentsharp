@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,25 +15,28 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
+
 
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 // =============================================================================
 /// <tt>IInterval</tt> implementation
 // =============================================================================
-//
+
 public class
 Interval<
     T
 >
     : IInterval< T >
+    where T : IComparable
 {
-
 
 
 
@@ -40,6 +44,8 @@ Interval<
 // Constructors
 // -----------------------------------------------------------------------------
 
+/// Create an interval between one value to another, inclusive
+///
 public
 Interval(
     T from,
@@ -50,7 +56,9 @@ Interval(
 }
 
 
-
+/// Create an interval between one value to another, specifying whether each
+/// is inclusive
+///
 public
 Interval(
     T       from,
@@ -59,14 +67,13 @@ Interval(
     bool    toInclusive
 )
 {
-    NonNull.Check( from, new Parameter( "from" ) );
-    NonNull.Check( to, new Parameter( "to" ) );
-    this.from = from;
-    this.frominclusive = fromInclusive;
-    this.to = to;
-    this.toinclusive = toInclusive;
+    new NonNull().Check( from, new Parameter( "from" ) );
+    new NonNull().Check( to, new Parameter( "to" ) );
+    this.From = from;
+    this.FromInclusive = fromInclusive;
+    this.To = to;
+    this.ToInclusive = toInclusive;
 }
-
 
 
 
@@ -78,74 +85,54 @@ public
 T
 From
 {
-    get { return this.from; }
+    get;
+    private set;
 }
-
-private
-T
-from;
-
 
 
 public
 bool
 FromInclusive
 {
-    get { return this.frominclusive; }
+    get;
+    private set;
 }
-
-private
-bool
-frominclusive;
-
 
 
 public
 T
 To
 {
-    get { return this.to; }
+    get;
+    private set;
 }
-
-private
-T
-to;
-
 
 
 public
 bool
 ToInclusive
 {
-    get { return this.toinclusive; }
+    get;
+    private set;
 }
 
-private
-bool
-toinclusive;
 
 
+// -----------------------------------------------------------------------------
+// IInterval< T >
+// -----------------------------------------------------------------------------
 
-// XXX This logic is duplicated in InInterval< T >, not sure if there's any
-//     way around that
-public
-bool
-Contains(
-    IComparable< T > value
-)
+IComparable
+IInterval.From
 {
-    new NonNull< IComparable< T > >().Check( value, new Parameter( "value" ) );
-    return
-        ( this.FromInclusive
-            ? value.CompareTo( this.From ) >= 0
-            : value.CompareTo( this.From ) > 0
-        )
-        && ( this.ToInclusive
-            ? value.CompareTo( this.To ) <= 0
-            : value.CompareTo( this.To ) < 0
-        );
+    get { return this.From; }
 }
 
+IComparable
+IInterval.To
+{
+    get { return this.To; }
+}
 
 
 
@@ -157,12 +144,27 @@ public override
 string
 ToString()
 {
-    return string.Format(
-        "{0} {1} x {2} {3}",
-        this.From,
-        this.FromInclusive ? "<=" : "<",
-        this.ToInclusive ? "<=" : "<",
-        this.To );
+    return Interval.ToString( this );
+}
+
+
+public override
+bool
+Equals(
+    object obj
+)
+{
+    if( obj == null ) return false;
+    if( !( obj is IInterval ) ) return false;
+    return Interval.Equals( this, (IInterval)obj );
+}
+
+
+public override
+int
+GetHashCode()
+{
+    return Interval.GetHashCode( this );
 }
 
 

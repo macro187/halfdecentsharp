@@ -25,11 +25,14 @@ Com.Halfdecent.Numerics
 {
 
 
+// =============================================================================
+/// RType: Not zero
+// =============================================================================
+
 public class
 NonZero
-    : SimpleRTypeBase< IReal >
+    : SimpleTextRTypeBase< IReal >
 {
-
 
 
 
@@ -49,9 +52,8 @@ NonZero()
 
 
 
-
 // -----------------------------------------------------------------------------
-// RType1Base
+// IRType< IReal >
 // -----------------------------------------------------------------------------
 
 public override
@@ -60,7 +62,9 @@ Components
 {
     get
     {
-        yield return new NEQ< IReal >( Real.From( 0m ) );
+        yield return
+            new NEQ( Real.From( 0m ) )
+            .Contravary< object, IReal >();
     }
 }
 

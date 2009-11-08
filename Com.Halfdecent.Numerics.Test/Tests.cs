@@ -15,25 +15,27 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
 using System;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Meta;
 
+
 namespace
 Com.Halfdecent.Numerics.Test
 {
 
+
 // =============================================================================
 /// Test program for <tt>Com.Halfdecent.Numerics</tt>
 // =============================================================================
-//
+
 public class
 Tests
     : TestBase
 {
-
 
 
 
@@ -43,7 +45,6 @@ Main()
 {
     return TestProgram.RunTests();
 }
-
 
 
 [Test( "DecimalReal" )]
@@ -99,7 +100,6 @@ Test_DecimalReal()
 }
 
 
-
 [Test( "DecimalInteger" )]
 public static void
 Test_DecimalInteger()
@@ -146,7 +146,6 @@ Test_DecimalInteger()
 }
 
 
-
 [Test( "Interval" )]
 public static void
 Test_Interval()
@@ -161,6 +160,8 @@ Test_Interval()
     IInterval< int > exc = new Interval< int >( 5, false, 10, false );
     IInterval< int > frominc = new Interval< int >( 5, true, 10, false );
     IInterval< int > toinc = new Interval< int >( 5, false, 10, true );
+
+    IInterval< int > anotherinc = new Interval< int >( 5, 10 );
 
     Print( "Both Inclusive" );
     AssertEqual( inc.Contains( smaller ), false );
@@ -195,8 +196,14 @@ Test_Interval()
     Print( exc.ToString() );
     Print( frominc.ToString() );
     Print( toinc.ToString() );
-}
 
+    Print( ".Equals()" );
+    AssertEqual( inc, anotherinc );
+    Assert( !( inc.Equals( exc ) ) );
+
+    Print( ".GetHashCode()" );
+    AssertEqual( inc.GetHashCode(), anotherinc.GetHashCode() );
+}
 
 
 [Test( "Interval covariance" )]
@@ -229,6 +236,11 @@ Test_Interval_Covariance()
             Integer.From( 10 ), true )
         .Covary< IInteger, IReal >();
 
+    IInterval< IInteger > i1 =
+        new Interval< IInteger >( Integer.From( 1 ), Integer.From( 10 ) );
+    IInterval< IReal > i2 =
+        i1.Covary< IInteger, IReal >();
+
     Print( "Both Inclusive" );
     AssertEqual( inc.Contains( smaller ), false );
     AssertEqual( inc.Contains( from ), true );
@@ -262,8 +274,13 @@ Test_Interval_Covariance()
     Print( exc.ToString() );
     Print( frominc.ToString() );
     Print( toinc.ToString() );
-}
 
+    Print( ".Equals()" );
+    AssertEqual( i1, i2 );
+
+    Print( ".GetHashCode()" );
+    AssertEqual( i1.GetHashCode(), i2.GetHashCode() );
+}
 
 
 [Test( "Comparison RTypes" )]
@@ -273,11 +290,32 @@ Test_ComparisonRTypes()
     int val = 5;
     int ltval = 0;
     int gtval = 10;
-    IRType< int > gt        = new GT < int >( val );
-    IRType< int > gte       = new GTE< int >( val );
-    IRType< int > lt        = new LT < int >( val );
-    IRType< int > lte       = new LTE< int >( val );
-    IRType< int > equals    = new EQ < int >( val );
+    GTE gte = new GTE( val );
+    LTE lte = new LTE( val );
+    GT gt   = new GT( val );
+    LT lt   = new LT( val );
+
+    Print( "GTE: Less than fails" );
+    Expect< RTypeException >( delegate() {
+        gte.Check( ltval, new Local( "ltval" ) );
+    } );
+    Print( "GTE: Equal passes" );
+    gte.Check( val, new Local( "val" ) );
+    Print( "GTE: Greater than passes" );
+    gte.Check( gtval, new Local( "gtval" ) );
+    Print( "GTE: Null passes" );
+    gte.Check< object, object >( null, new Literal() );
+
+    Print( "LTE: Less than passes" );
+    lte.Check( ltval, new Local( "ltval" ) );
+    Print( "LTE: Equal passes" );
+    lte.Check( val, new Local( "val" ) );
+    Print( "LTE: Greater than fails" );
+    Expect< RTypeException >( delegate() {
+        lte.Check( gtval, new Local( "gtval" ) );
+    } );
+    Print( "LTE: Null passes" );
+    lte.Check< object, object >( null, new Literal() );
 
     Print( "GT: Less than fails" );
     Expect< RTypeException >( delegate() {
@@ -289,15 +327,8 @@ Test_ComparisonRTypes()
     } );
     Print( "GT: Greater than passes" );
     gt.Check( gtval, new Local( "gtval" ) );
-
-    Print( "GTE: Less than fails" );
-    Expect< RTypeException >( delegate() {
-        gte.Check( ltval, new Local( "ltval" ) );
-    } );
-    Print( "GTE: Equal passes" );
-    gte.Check( val, new Local( "val" ) );
-    Print( "GTE: Greater than passes" );
-    gte.Check( gtval, new Local( "gtval" ) );
+    Print( "GT: Null passes" );
+    gt.Check< object, object >( null, new Literal() );
 
     Print( "LT: Less than passes" );
     lt.Check( ltval, new Local( "ltval" ) );
@@ -309,28 +340,9 @@ Test_ComparisonRTypes()
     Expect< RTypeException >( delegate() {
         lt.Check( gtval, new Local( "gtval" ) );
     } );
-
-    Print( "LTE: Less than passes" );
-    lte.Check( ltval, new Local( "ltval" ) );
-    Print( "LTE: Equal passes" );
-    lte.Check( val, new Local( "val" ) );
-    Print( "LTE: Greater than fails" );
-    Expect< RTypeException >( delegate() {
-        lte.Check( gtval, new Local( "gtval" ) );
-    } );
-
-    Print( "EQ: Less than fails" );
-    Expect< RTypeException >( delegate() {
-        equals.Check( ltval, new Local( "ltval" ) );
-    } );
-    Print( "EQ: Equal passes" );
-    equals.Check( val, new Local( "val" ) );
-    Print( "EQ: Greater than fails" );
-    Expect< RTypeException >( delegate() {
-        equals.Check( gtval, new Local( "gtval" ) );
-    } );
+    Print( "LT: Null passes" );
+    lt.Check< object, object >( null, new Literal() );
 }
-
 
 
 [Test( "InInterval" )]
@@ -432,8 +444,15 @@ Test_InInterval()
     Expect< RTypeException >( delegate() {
         rt.Check( gt, _gt );
     } );
-}
 
+    Print( ".Equals() and .GetHashCode()" );
+    IRType< int > t1 = new InInterval< int >( new Interval< int >( 1, 10 ) );
+    IRType< int > t2 = new InInterval< int >( new Interval< int >( 1, 10 ) );
+    IRType< int > t3 = new InInterval< int >( new Interval< int >( 1, 20 ) );
+    Assert( t1.Equals( t2 ) );
+    Assert( !( t1.Equals( t3 ) ) );
+    AssertEqual( t1.GetHashCode(), t2.GetHashCode() );
+}
 
 
 [Test( "InInt64Range" )]
@@ -443,7 +462,7 @@ Test_InInt64Range()
     IRType< IReal > rt = new InInt64Range();
 
     Print( "null passes" );
-    rt.Check( null, new Literal() );
+    rt.Check< IReal, IReal >( null, new Literal() );
 
     Print( "Less than min fails" );
     Expect< RTypeException >( delegate() {
@@ -466,7 +485,6 @@ Test_InInt64Range()
 }
 
 
-
 [Test( "InUInt64Range" )]
 public static void
 Test_InUInt64Range()
@@ -474,7 +492,7 @@ Test_InUInt64Range()
     IRType< IReal > rt = new InUInt64Range();
 
     Print( "null passes" );
-    rt.Check( null, new Literal() );
+    rt.Check< IReal, IReal >( null, new Literal() );
 
     Print( "Less than min fails" );
     Expect< RTypeException >( delegate() {
@@ -497,7 +515,6 @@ Test_InUInt64Range()
 }
 
 
-
 [Test( "InInt32Range" )]
 public static void
 Test_InInt32Range()
@@ -505,7 +522,7 @@ Test_InInt32Range()
     IRType< IReal > rt = new InInt32Range();
 
     Print( "null passes" );
-    rt.Check( null, new Literal() );
+    rt.Check< IReal, IReal >( null, new Literal() );
 
     Print( "Less than min fails" );
     Expect< RTypeException >( delegate() {
@@ -528,7 +545,6 @@ Test_InInt32Range()
 }
 
 
-
 [Test( "InUInt32Range" )]
 public static void
 Test_InUInt32Range()
@@ -536,7 +552,7 @@ Test_InUInt32Range()
     IRType< IReal > rt = new InUInt32Range();
 
     Print( "null passes" );
-    rt.Check( null, new Literal() );
+    rt.Check< IReal, IReal >( null, new Literal() );
 
     Print( "Less than min fails" );
     Expect< RTypeException >( delegate() {
@@ -559,7 +575,6 @@ Test_InUInt32Range()
 }
 
 
-
 [Test( "InInt16Range" )]
 public static void
 Test_InInt16Range()
@@ -567,7 +582,7 @@ Test_InInt16Range()
     IRType< IReal > rt = new InInt16Range();
 
     Print( "null passes" );
-    rt.Check( null, new Literal() );
+    rt.Check< IReal, IReal >( null, new Literal() );
 
     Print( "Less than min fails" );
     Expect< RTypeException >( delegate() {
@@ -590,7 +605,6 @@ Test_InInt16Range()
 }
 
 
-
 [Test( "InUInt16Range" )]
 public static void
 Test_InUInt16Range()
@@ -598,7 +612,7 @@ Test_InUInt16Range()
     IRType< IReal > rt = new InUInt16Range();
 
     Print( "null passes" );
-    rt.Check( null, new Literal() );
+    rt.Check< IReal, IReal >( null, new Literal() );
 
     Print( "Less than min fails" );
     Expect< RTypeException >( delegate() {
@@ -621,7 +635,6 @@ Test_InUInt16Range()
 }
 
 
-
 [Test( "InByteRange" )]
 public static void
 Test_InByteRange()
@@ -629,7 +642,7 @@ Test_InByteRange()
     IRType< IReal > rt = new InByteRange();
 
     Print( "null passes" );
-    rt.Check( null, new Literal() );
+    rt.Check< IReal, IReal >( null, new Literal() );
 
     Print( "Less than min fails" );
     Expect< RTypeException >( delegate() {
@@ -652,77 +665,92 @@ Test_InByteRange()
 }
 
 
-
 [Test( "NonFractional" )]
 public static void
 Test_NonFractional()
 {
-    IRType< IReal > rt = new NonFractional();
+    NonFractional t = new NonFractional();
+    NonFractional u = new NonFractional();
+
+    Print( ".Equals() and GetHashCode()" );
+    AssertEqual( t, t );
+    AssertEqual( t, u );
+    AssertEqual( t.GetHashCode(), u.GetHashCode() );
 
     Print( "Null passes" );
-    rt.Check( null, new Literal() );
+    t.Check< IReal, IReal >( null, new Literal() );
 
     Print( "Not fractional passes" );
-    rt.Check( Real.From( 5m ), new Literal() );
+    t.Check( Real.From( 5m ), new Literal() );
 
     Print( "Fractional fails" );
     Expect< RTypeException >( delegate() {
-        rt.Check( Real.From( 5.5m ), new Literal() );
+        t.Check( Real.From( 5.5m ), new Literal() );
     } );
 
     Print( "Negative not fractional passes" );
-    rt.Check( Real.From( -5m ), new Literal() );
+    t.Check( Real.From( -5m ), new Literal() );
 
     Print( "Negative fractional fails" );
     Expect< RTypeException >( delegate() {
-        rt.Check( Real.From( -5.5m ), new Literal() );
+        t.Check( Real.From( -5.5m ), new Literal() );
     } );
 }
-
 
 
 [Test( "NonZero" )]
 public static void
 Test_NonZero()
 {
-    IRType< IReal > rt = new NonZero();
+    NonZero t = new NonZero();
+    NonZero u = new NonZero();
+
+    Print( ".Equals() and GetHashCode()" );
+    AssertEqual( t, t );
+    AssertEqual( t, u );
+    AssertEqual( t.GetHashCode(), u.GetHashCode() );
 
     Print( "Null passes" );
-    rt.Check( null, new Literal() );
+    t.Check< IReal, IReal >( null, new Literal() );
 
     Print( "Negative passes" );
-    rt.Check( Real.From( -5m ), new Literal() );
+    t.Check( Real.From( -5m ), new Literal() );
 
     Print( "Positive passes" );
-    rt.Check( Real.From( 5m ), new Literal() );
+    t.Check( Real.From( 5m ), new Literal() );
 
     Print( "Zero fails" );
     Expect< RTypeException >( delegate() {
-        rt.Check( Real.From( 0m ), new Literal() );
+        t.Check( Real.From( 0m ), new Literal() );
     } );
 }
-
 
 
 [Test( "NonNegative" )]
 public static void
 Test_NonNegative()
 {
-    IRType< IReal > rt = new NonNegative();
+    NonNegative t = new NonNegative();
+    NonNegative u = new NonNegative();
+
+    Print( ".Equals() and GetHashCode()" );
+    AssertEqual( t, t );
+    AssertEqual( t, u );
+    AssertEqual( t.GetHashCode(), u.GetHashCode() );
 
     Print( "Null passes" );
-    rt.Check( null, new Literal() );
+    t.Check< IReal, IReal>( null, new Literal() );
 
     Print( "Negative fails" );
     Expect< RTypeException >( delegate() {
-        rt.Check( Real.From( -5m ), new Literal() );
+        t.Check( Real.From( -5m ), new Literal() );
     } );
 
     Print( "Zero passes" );
-    rt.Check( Real.From( 0m ), new Literal() );
+    t.Check( Real.From( 0m ), new Literal() );
 
     Print( "Positive passes" );
-    rt.Check( Real.From( 5m ), new Literal() );
+    t.Check( Real.From( 5m ), new Literal() );
 }
 
 

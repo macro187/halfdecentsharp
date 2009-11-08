@@ -17,6 +17,7 @@
 
 
 using System.Collections.Generic;
+using Com.Halfdecent.SystemUtils;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
 
@@ -28,7 +29,7 @@ Com.Halfdecent.Numerics
 
 public class
 NonNegative
-    : SimpleRTypeBase< IReal >
+    : SimpleTextRTypeBase< IReal >
 {
 
 
@@ -40,7 +41,7 @@ NonNegative
 public
 NonNegative()
     : base(
-        _S("{0} is zero or greater"),
+        _S("{0} is not negative"),
         _S("{0} is negative"),
         _S("{0} must not be negative")
     )
@@ -50,7 +51,7 @@ NonNegative()
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// IRType< IReal >
 // -----------------------------------------------------------------------------
 
 public override
@@ -59,7 +60,9 @@ Components
 {
     get
     {
-        yield return new GTE< IReal >( Real.From( 0m ) );
+        return
+            base.Components
+            .Append( new GTE( Real.From( 0m ) ).Contravary< object, IReal >() );
     }
 }
 
