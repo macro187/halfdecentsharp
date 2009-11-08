@@ -74,6 +74,27 @@ Test_EnumerableUtils()
 }
 
 
+[Test( "ExceptionUtils" )]
+public static
+void
+Test_ExceptionUtils()
+{
+    Exception e = new Exception();
+    Exception f = new Exception( "", e );
+    Exception g = new Exception( "", f );
+    Exception h = new Exception( "", g );
+    Print( ".Chain()" );
+    Assert(
+        h.Chain()
+        .SequenceEqual(
+            Enumerable.Empty< Exception >()
+            .Append( h )
+            .Append( g )
+            .Append( f )
+            .Append( e ) ) );
+}
+
+
 [Test( "ObjectUtils" )]
 public static
 void
