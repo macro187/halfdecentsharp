@@ -48,14 +48,16 @@ RType
 public static
 void
 Check<
-    T
+    T,
+    U
 >(
     this IRType< T >    t,
-    T                   item,
+    U                   item,
     ///< Item to check
     IValue              itemReference
     ///< What the caller refers to <tt>item</tt> as
 )
+    where U : T
 {
     if( t == null )
         throw new LocalisedArgumentNullException( "t" );

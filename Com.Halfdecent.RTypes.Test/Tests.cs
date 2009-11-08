@@ -76,7 +76,7 @@ Test_EQ()
     t = new EQ( 1 );
 
     Print( "Null passes" );
-    t.Check( null, new Literal() );
+    t.Check< object, object >( null, new Literal() );
 
     Print( "Equal passes" );
     t.Check( 1, new Literal() );
@@ -88,7 +88,7 @@ Test_EQ()
     t = new EQ( null );
 
     Print( "With null CompareTo, null passes" );
-    t.Check( null, new Literal() );
+    t.Check< object, object >( null, new Literal() );
 
     Print( "With null CompareTo, non-null fails" );
     Expect< RTypeException >(
@@ -126,7 +126,7 @@ Test_NEQ()
     t = new NEQ( 1 );
 
     Print( "Null passes" );
-    t.Check( null, new Literal() );
+    t.Check< object, object >( null, new Literal() );
 
     Print( "Inequal passes" );
     t.Check( 2, new Literal() );
@@ -142,7 +142,7 @@ Test_NEQ()
 
     Print( "With null CompareTo, null fails" );
     Expect< RTypeException >(
-        () => t.Check( null, new Literal() ) );
+        () => t.Check< object, object >( null, new Literal() ) );
 }
 
 
@@ -167,7 +167,7 @@ Test_NonNull()
 
     Print( "Null fails" );
     Expect< RTypeException >(
-        () => new NonNull().Check( null, new Literal() ) );
+        () => new NonNull().Check< object, object >( null, new Literal() ) );
 }
 
 
@@ -188,7 +188,7 @@ Test_NonBlankString()
         .Equals( new EQ( 1 ) ) ) );
 
     Print( "Null passes" );
-    new NonBlankString().Check( null, new Literal() );
+    new NonBlankString().Check< string, string >( null, new Literal() );
 
     Print( "Non-blank string passes" );
     new NonBlankString().Check( "Not blank", new Literal() );
