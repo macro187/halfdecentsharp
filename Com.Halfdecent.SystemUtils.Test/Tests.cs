@@ -53,11 +53,24 @@ public static
 void
 Test_EnumerableUtils()
 {
-    Print( "IEnumerable<T>.Append()" );
+    Print( ".Append()" );
     Assert(
         new int[]{ 1, 2, 3 }
         .Append( 4 )
         .SequenceEqual( new int[]{ 1, 2, 3, 4 } ) );
+
+    Print( ".Covary< TTo >()" );
+    Assert(
+        new int[]{ 1, 2, 3 }
+        .Covary< int, object >()
+        .SequenceEqual(
+            new object[]{ 1, 2, 3 } ) );
+
+    Print( ".AsSingleItemEnumerable()" );
+    Assert(
+        1.AsSingleItemEnumerable()
+        .SequenceEqual(
+            new int[]{ 1 } ) );
 }
 
 
@@ -66,7 +79,7 @@ public static
 void
 Test_ObjectUtils()
 {
-    Print( "ObjectUtils.ToString()" );
+    Print( ".ToString()" );
     AssertEqual( ObjectUtils.ToString( null ), "null" );
     AssertEqual( ObjectUtils.ToString( "notnull" ), "notnull" );
 }

@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace
@@ -39,8 +40,22 @@ EnumerableUtils
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Generate a new enumerable consisting of all items in this enumerable plus
-/// an additional item
+/// Generate an enumerable that yields a single instance of this item
+///
+public static
+IEnumerable< T >
+AsSingleItemEnumerable<
+    T
+>(
+    this T item
+)
+{
+    yield return item;
+}
+
+
+/// Generate an enumerable yielding all items in this one plus the specified
+/// item
 ///
 public static
 IEnumerable< T >
@@ -57,7 +72,24 @@ Append<
 }
 
 
+/// Covary the enumerable to one of items of a less-specific type
+///
+public static
+IEnumerable< TTo >
+Covary<
+    TFrom,
+    TTo
+>(
+    this IEnumerable< TFrom > e
+)
+    where TFrom : TTo
+{
+    return e.Select< TFrom, TTo >( i => i );
+}
+
+
 
 
 } // type
 } // namespace
+
