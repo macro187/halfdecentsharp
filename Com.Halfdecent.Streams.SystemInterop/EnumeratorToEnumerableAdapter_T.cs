@@ -30,7 +30,7 @@ Com.Halfdecent.Streams.SystemInterop
 // =============================================================================
 /// An enumerable that always yields a given enumerator
 // =============================================================================
-//
+
 public class
 EnumeratorToEnumerableAdapter<
     T
@@ -49,7 +49,7 @@ EnumeratorToEnumerableAdapter(
     IEnumerator< T > enumerator
 )
 {
-    NonNull.Check( enumerator, new Parameter( "enumerator" ) );
+    new NonNull().Check( enumerator, new Parameter( "enumerator" ) );
     this.enumerator = enumerator;
 }
 

@@ -51,7 +51,7 @@ AsEnumerable<
     this IStream< T > stream
 )
 {
-    NonNull.Check( stream, new Parameter( "stream" ) );
+    new NonNull().Check( stream, new Parameter( "stream" ) );
     return new EnumeratorToEnumerableAdapter< T >(
         new StreamToEnumeratorAdapter< T >(
             stream ) );

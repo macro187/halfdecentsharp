@@ -40,7 +40,7 @@ EnumeratorBase<
 
 
 // -----------------------------------------------------------------------------
-// Private
+// Properties
 // -----------------------------------------------------------------------------
 
 private
@@ -51,6 +51,11 @@ started;
 private
 bool
 finished;
+
+
+private
+T
+current;
 
 
 
@@ -98,10 +103,6 @@ Current
         return this.current;
     }
 }
-
-private
-T
-current;
 
 
 
@@ -151,6 +152,7 @@ Reset()
 /// The default implementation does nothing.  Override if appropriate.  Note
 /// that enumerators are unconditionally <tt>Dispose()</tt>d after being
 /// iterated by the C# <tt>foreach</tt> statement.
+///
 public virtual
 void
 Dispose()

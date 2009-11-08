@@ -51,7 +51,7 @@ AsStream<
     this SCG.IEnumerable< T > enumerable
 )
 {
-    NonNull.Check( enumerable, new Parameter( "enumerable" ) );
+    new NonNull().Check( enumerable, new Parameter( "enumerable" ) );
     return new StreamFromEnumeratorAdapter< T >(
         enumerable.GetEnumerator() );
 }

@@ -49,7 +49,7 @@ StreamFromEnumeratorAdapter(
     IEnumerator< T > enumerator
 )
 {
-    NonNull.Check( enumerator, new Parameter( "enumerator" ) );
+    new NonNull().Check( enumerator, new Parameter( "enumerator" ) );
     this.enumerator = enumerator;
 }
 
