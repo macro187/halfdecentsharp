@@ -62,9 +62,10 @@ RTypeException(
     : base( valueReference, null, innerException )
 {
     if( valueReference == null )
-        throw new LocalisedArgumentNullException( "valueReference" );
+        throw new ValueArgumentNullException(
+            new Parameter( "valueReference" ) );
     if( rType == null )
-        throw new LocalisedArgumentNullException( "rType" );
+        throw new ValueArgumentNullException( new Parameter( "rType" ) );
     this.RType = rType;
 }
 
@@ -95,7 +96,7 @@ SayMessage(
 )
 {
     if( reference == null )
-        throw new LocalisedArgumentNullException( "reference" );
+        throw new ValueArgumentNullException( new Parameter( "reference" ) );
     return this.RType.SayIsNot( reference );
 }
 

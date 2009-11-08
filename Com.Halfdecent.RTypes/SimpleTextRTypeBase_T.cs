@@ -59,11 +59,11 @@ SimpleTextRTypeBase(
 )
 {
     if( isFormat == null )
-        throw new LocalisedArgumentNullException( "isFormat" );
+        throw new ValueArgumentNullException( new Parameter( "isFormat" ) );
     if( isNotFormat == null )
-        throw new LocalisedArgumentNullException( "isNotFormat" );
+        throw new ValueArgumentNullException( new Parameter( "isNotFormat" ) );
     if( mustBeFormat == null )
-        throw new LocalisedArgumentNullException( "mustBeFormat" );
+        throw new ValueArgumentNullException( new Parameter( "mustBeFormat" ) );
     this.IsFormat = isFormat;
     this.IsNotFormat = isNotFormat;
     this.MustBeFormat = mustBeFormat;
@@ -114,7 +114,7 @@ SayIs(
 )
 {
     if( reference == null )
-        throw new LocalisedArgumentNullException( "reference" );
+        throw new ValueArgumentNullException( new Parameter( "reference" ) );
     return LocalisedString.Format( this.IsFormat, reference );
 }
 
@@ -126,7 +126,7 @@ SayIsNot(
 )
 {
     if( reference == null )
-        throw new LocalisedArgumentNullException( "reference" );
+        throw new ValueArgumentNullException( new Parameter( "reference" ) );
     return LocalisedString.Format( this.IsNotFormat, reference );
 }
 
@@ -138,7 +138,7 @@ SayMustBe(
 )
 {
     if( reference == null )
-        throw new LocalisedArgumentNullException( "reference" );
+        throw new ValueArgumentNullException( new Parameter( "reference" ) );
     return LocalisedString.Format( this.MustBeFormat, reference );
 }
 

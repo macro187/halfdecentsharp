@@ -60,9 +60,11 @@ Check<
     where U : T
 {
     if( t == null )
-        throw new LocalisedArgumentNullException( "t" );
+        throw new ValueArgumentNullException(
+            new Parameter( "t" ) );
     if( itemReference == null )
-        throw new LocalisedArgumentNullException( "itemReference" );
+        throw new ValueArgumentNullException(
+            new Parameter( "itemReference" ) );
     foreach( IRType< T > c in t.Components ) {
         try {
             c.Check( item, itemReference );

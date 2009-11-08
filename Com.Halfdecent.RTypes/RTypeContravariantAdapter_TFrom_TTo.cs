@@ -54,7 +54,8 @@ RTypeContravariantAdapter(
     IRType< TFrom > from
 )
 {
-    if( from == null ) throw new LocalisedArgumentNullException( "from" );
+    if( from == null )
+        throw new ValueArgumentNullException( new Parameter( "from" ) );
     this.From = from;
 }
 
