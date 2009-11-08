@@ -45,7 +45,7 @@ AsSystemCollection<
     this IBag< T > bag
 )
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
+    new NonNull().Check( bag, new Parameter( "bag" ) );
     return new BagToSystemCollectionAdapter< T >( bag );
 }
 

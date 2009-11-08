@@ -64,7 +64,7 @@ BagToSystemCollectionAdapter(
     IBag< T > bag
 )
 {
-    NonNull.Check( bag, new Parameter( "bag" ) );
+    new NonNull().Check( bag, new Parameter( "bag" ) );
     this.Bag = bag;
     this.GrowableBag = bag as IGrowableBag< T >;
     this.ShrinkableBag = bag as IShrinkableBag< T >;
@@ -171,20 +171,26 @@ CopyTo(
 )
 {
     if( array == null )
-        throw new LocalisedArgumentNullException( "array" );
+        throw new ValueArgumentNullException( new Parameter( "array" ) );
     if( arrayIndex < 0 )
-        throw new LocalisedArgumentOutOfRangeException(
-            "arrayIndex",
-            arrayIndex,
-            _S("arrayIndex is less than 0") );
+        throw new ValueArgumentOutOfRangeException(
+            new Parameter( "arrayIndex" ),
+            _S("{0} is less than 0"),
+            arrayIndex );
     // XXX Doesn't the T[] parameter type preclude this?
     if( array.Rank > 1 )
-        throw new LocalisedArgumentException(
-            _S("array is multidimensional"),
-            "array" );
+        throw new ValueArgumentException(
+            new Parameter( "array" ),
+            _S("{0} is multidimensional") );
+    if( this.Bag.Count.GT( Integer.From( 0 ) ) && arrayIndex >= array.Length )
+        throw new ValueArgumentOutOfRangeException(
+            new Parameter( "arrayIndex" ),
+            _S("{0} is greater than or equal to the array length"),
+            arrayIndex );
     if( this.Bag.Count.GT( Integer.From( array.Length - arrayIndex ) ) )
-        throw new LocalisedArgumentException(
-            _S("The number of elements in this collection is greater than the available space from arrayIndex to the end of array") );
+        throw new ValueArgumentException(
+            new Parameter( "array" ),
+            _S("The number of elements in this collection is greater than the available space from arrayIndex to the end of {0}") );
     int i = arrayIndex;
     foreach( T item in this )
         array[ i++ ] = item;

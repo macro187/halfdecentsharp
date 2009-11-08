@@ -54,7 +54,7 @@ BagFromSystemCollectionAdapter(
     SCG.ICollection< T > collection
 )
 {
-    NonNull.Check( collection, new Parameter( "collection" ) );
+    new NonNull().Check( collection, new Parameter( "collection" ) );
     this.Collection = collection;
 }
 
