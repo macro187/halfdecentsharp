@@ -16,6 +16,7 @@
 
 
 using System.Collections.Generic;
+using Com.Halfdecent.SystemUtils;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
@@ -25,12 +26,13 @@ Com.Halfdecent.RTypes
 {
 
 
+// =============================================================================
+/// Not <tt>null</tt>
+// =============================================================================
+
 public class
-IsA<
-    T,
-    U
->
-    : SimpleRTypeBase< T >
+NonNull
+    : SimpleTextRTypeBase< object >
 {
 
 
@@ -40,17 +42,11 @@ IsA<
 // -----------------------------------------------------------------------------
 
 public
-IsA()
+NonNull()
     : base(
-        LocalisedString.Format(
-            _S("{{0}} is a {0}"),
-            typeof( U ).FullName ),
-        LocalisedString.Format(
-            _S("{{0}} is not a {0}"),
-            typeof( U ).FullName ),
-        LocalisedString.Format(
-            _S("{{0}} must be a {0}"),
-            typeof( U ).FullName )
+        _S("{0} is non-null"),
+        _S("{0} is null"),
+        _S("{0} must not be null")
     )
 {
 }
@@ -58,16 +54,19 @@ IsA()
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// IRType< object >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-MyCheck(
-    T item
-)
+public override
+IEnumerable< IRType< object > >
+Components
 {
-    return item == null ? true : ( item is U );
+    get
+    {
+        return
+            base.Components
+            .Append( new NEQ( null ) );
+    }
 }
 
 
@@ -75,32 +74,6 @@ MyCheck(
 
 private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
-} // IsA< T >
-
-
-
-
-public static class
-IsA
-{
-
-public static
-void
-Check<
-    T,
-    U
->(
-    T       item,
-    IValue  itemReference
-)
-{
-    new IsA< T, U >().Check( item, itemReference );
-}
-
-} // IsA
-
-
-
-
+} // type
 } // namespace
 

@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -17,7 +18,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 
 
@@ -31,11 +34,12 @@ Com.Halfdecent.RTypes
 // =============================================================================
 
 public class
-RTypeTypeAdapter<
+RTypeContravariantAdapter<
     TFrom,
     TTo
 >
     : IRType< TTo >
+    , IRTypeContravariantAdapter
     where TTo : TFrom
 {
 
@@ -46,23 +50,39 @@ RTypeTypeAdapter<
 // -----------------------------------------------------------------------------
 
 public
-RTypeTypeAdapter(
+RTypeContravariantAdapter(
     IRType< TFrom > from
 )
 {
-    NonNull.Check( from, new Parameter( "from" ) );
-    this.from = from;
+    if( from == null ) throw new LocalisedArgumentNullException( "from" );
+    this.From = from;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Private
+// Properties
 // -----------------------------------------------------------------------------
 
-private
+public
 IRType< TFrom >
-from;
+From
+{
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRTypeContravariantAdapter
+// -----------------------------------------------------------------------------
+
+IRType
+IRTypeContravariantAdapter.From
+{
+    get { return this.From; }
+}
 
 
 
@@ -71,39 +91,31 @@ from;
 // -----------------------------------------------------------------------------
 
 public
-void
-Check(
-    TTo     item,
-    IValue  itemReference
-)
-{
-    this.from.Check( item, itemReference );
-}
-
-
-public
-IEnumerable< IRType< TTo > >
-Supers
-{
-    get
-    {
-        foreach( IRType< TFrom > s in from.Supers )
-            yield return new RTypeTypeAdapter< TFrom, TTo >( s );
-    }
-}
-
-
-public
 IEnumerable< IRType< TTo > >
 Components
 {
     get
     {
-        foreach( IRType< TFrom > c in from.Components )
-            yield return new RTypeTypeAdapter< TFrom, TTo >( c );
+        return this.From.Components
+            .Select( c => c.Contravary< TFrom, TTo >() );
     }
 }
 
+
+public
+bool
+Predicate(
+    TTo item
+)
+{
+    return this.From.Predicate( item );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRType
+// -----------------------------------------------------------------------------
 
 public
 Localised< string >
@@ -111,7 +123,7 @@ SayIs(
     Localised< string > reference
 )
 {
-    return from.SayIs( reference );
+    return this.From.SayIs( reference );
 }
 
 
@@ -121,7 +133,7 @@ SayIsNot(
     Localised< string > reference
 )
 {
-    return from.SayIsNot( reference );
+    return this.From.SayIsNot( reference );
 }
 
 
@@ -131,7 +143,30 @@ SayMustBe(
     Localised< string > reference
 )
 {
-    return from.SayMustBe( reference );
+    return this.From.SayMustBe( reference );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// object
+// -----------------------------------------------------------------------------
+
+public override
+bool
+Equals(
+    object obj
+)
+{
+    return this.From.Equals( obj );
+}
+
+
+public override
+int
+GetHashCode()
+{
+    return this.From.GetHashCode();
 }
 
 

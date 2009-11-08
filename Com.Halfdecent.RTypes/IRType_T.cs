@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -17,7 +18,6 @@
 
 using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Meta;
 
 
 namespace
@@ -26,12 +26,14 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// An RType
+/// Composable value check
 // =============================================================================
 
 public interface
 IRType<
     T
+    ///< .NET type of items this RType applies to
+    ///  (contravariant)
 >
     : IRType
 {
@@ -42,13 +44,8 @@ IRType<
 // Properties
 // -----------------------------------------------------------------------------
 
-IEnumerable< IRType< T > >
-Supers
-{
-    get;
-}
-
-
+/// RTypes that this one is composed of
+///
 IEnumerable< IRType< T > >
 Components
 {
@@ -61,15 +58,15 @@ Components
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Check that an item is of this RType
+/// Logic (in addition to that of any <tt>.Components</tt>) determining whether
+/// an item "is of" this RType
 ///
-/// @exception RTypeException
-/// The item is not of this RType
+/// Generally returns <tt>true</tt> for <tt>null</tt> items unless the RType
+/// explicitly disallows <tt>null</tt>s
 ///
-void
-Check(
-    T       item,
-    IValue  itemReference
+bool
+Predicate(
+    T item
 );
 
 

@@ -101,22 +101,6 @@ SayMessage(
 
 
 
-// -----------------------------------------------------------------------------
-// LocalisedException
-// -----------------------------------------------------------------------------
-
-override public
-Localised< string >
-Message
-{
-    get
-    {
-        return this.SayMessage( this.ValueReference.ToString() );
-    }
-}
-
-
-
 
 //private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 

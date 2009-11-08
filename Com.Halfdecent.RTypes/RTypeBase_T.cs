@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -17,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using Com.Halfdecent.SystemUtils;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
@@ -28,7 +30,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// Base class for implementing RTypes
+/// Abstract base class for implementing RTypes
 // =============================================================================
 
 public abstract class
@@ -44,13 +46,18 @@ RTypeBase<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Return <tt>true</tt> if <tt>null</tt> unless this RType explicitly
-/// disallows <tt>null</tt>s
+/// Overridable equality checker
+///
+/// Subtypes with value parameters should take them into account by overriding
+/// this.
 ///
 protected virtual
 bool
-MyCheck(
-    T item
+Equals(
+    IRType t
+    ///< RType to compare against
+    ///  - Will never be <tt>null</tt>
+    ///  - Will always be the exact same run-time .NET type as <tt>this</tt>
 )
 {
     return true;
@@ -62,50 +69,28 @@ MyCheck(
 // IRType< T >
 // -----------------------------------------------------------------------------
 
-public
-void
-Check(
-    T       item,
-    IValue  itemReference
-)
-{
-    if( itemReference == null )
-        throw new LocalisedArgumentNullException( "itemReference" );
-
-    foreach( IRType< T > st in this.Supers )
-        st.Check( item, itemReference );
-
-    foreach( IRType< T > c in this.Components )
-        foreach( IRType< T > cst in c.Supers )
-            cst.Check( item, itemReference );
-
-    foreach( IRType< T > c in this.Components )
-        try {
-            c.Check( item, itemReference );
-        } catch( RTypeException rte ) {
-            throw new RTypeException( itemReference, this, rte );
-        }
-
-    if( !this.MyCheck( item ) )
-        throw new RTypeException( itemReference, this );
-}
-
-
-public virtual
-IEnumerable< IRType< T > >
-Supers
-{
-    get { return new IRType< T >[]{}; }
-}
-
-
 public virtual
 IEnumerable< IRType< T > >
 Components
 {
-    get { return new IRType< T >[]{}; }
+    get { yield break; }
 }
 
+
+public virtual
+bool
+Predicate(
+    T item
+)
+{
+    return true;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRType
+// -----------------------------------------------------------------------------
 
 public abstract
 Localised< string >
@@ -129,6 +114,46 @@ SayMustBe(
 
 
 
+// -----------------------------------------------------------------------------
+// Object
+// -----------------------------------------------------------------------------
+
+/// <tt>.Equals( object )</tt>
+///
+/// Subtypes with value parameters should take them into account by overriding
+/// <tt>.Equals( IRType )</tt>, not this.
+///
+public sealed override
+bool
+Equals(
+    object obj
+)
+{
+    if( obj is IRTypeContravariantAdapter )
+        obj = ((IRTypeContravariantAdapter)obj).From;
+    if( base.Equals( obj ) ) return true;
+    if( obj == null ) return false;
+    if( this.GetType() != obj.GetType() ) return false;
+    return this.Equals( (IRType)obj );
+}
+
+
+/// <tt>.GetHashCode()</tt>
+///
+/// Subtypes with value parameters should take them into account by overriding
+/// this.
+///
+public override
+int
+GetHashCode()
+{
+    return this.GetType().GetHashCode();
+}
+
+
+
+
+//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

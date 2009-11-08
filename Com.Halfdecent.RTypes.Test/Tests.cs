@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Meta;
@@ -45,99 +46,53 @@ Main()
 }
 
 
-[Test( "NonNull" )]
-public static
-void
-Test_NonNull()
-{
-    IRType< object > rt = new NonNull< object >();
-    object obj;
-    IValue obj_ = new Local( "obj" );
-
-    Print( "Non-null object passes" );
-    obj = new object();
-    rt.Check( obj, obj_ );
-
-    Print( "Null throws RTypeException" );
-    obj = null;
-    Expect< RTypeException >( delegate() {
-        rt.Check( obj, obj_ );
-    } );
-}
-
-
-[Test( "IsA" )]
-public static
-void
-Test_IsA()
-{
-    IRType< object > rt = new IsA< object, A >();
-    object obj;
-    IValue obj_ = new Local( "obj" );
-
-    Print( "Same type passes" );
-    obj = new A();
-    rt.Check( obj, obj_ );
-
-    Print( "Subtype passes" );
-    obj = new B();
-    rt.Check( obj, obj_ );
-
-    Print( "Unrelated type throws RTypeException" );
-    obj = new object();
-    Expect< RTypeException >( delegate() {
-        rt.Check( obj, obj_ );
-    } );
-}
-
-
-public class A { }
-
-
-public class B : A { }
-
-
-[Test( "NonBlankString" )]
-public static
-void
-Test_NonBlankString()
-{
-    IRType< string > rt = new NonBlankString();
-    string s;
-    IValue s_ = new Local( "s" );
-
-    Print( "Non-blank passes" );
-    s = "hi";
-    rt.Check( s, s_ );
-
-    Print( "Blank throws RTypeException" );
-    s = "";
-    Expect< RTypeException >( delegate() {
-        rt.Check( s, s_ );
-    } );
-}
-
-
 [Test( "EQ" )]
 public static
 void
 Test_EQ()
 {
-    int i = 1;
-    int eq = 1;
-    int neq = 2;
+    EQ t;
 
-    IRType< int > rt = new EQ< int >( i );
+    Print( ".Equals() and .GetHashCode()" );
+    Assert(
+        new EQ( 1 )
+        .Equals( new EQ( 1 ) ) );
+    Assert(
+        new EQ( 1 ).GetHashCode() ==
+        new EQ( 1 ).GetHashCode() );
+    Assert( !(
+        new EQ( 1 )
+        .Equals( new EQ( 2 ) ) ) );
+    Assert(
+        new EQ( null )
+        .Equals( new EQ( null ) ) );
+    Assert(
+        new EQ( null ).GetHashCode() ==
+        new EQ( null ).GetHashCode() );
+    Assert( !(
+        new EQ( 1 )
+        .Equals( new EQ( null ) ) ) );
 
-    // TODO null doesn't pass
+    t = new EQ( 1 );
+
+    Print( "Null passes" );
+    t.Check( null, new Literal() );
 
     Print( "Equal passes" );
-    rt.Check( eq, new Local( "eq" ) );
+    t.Check( 1, new Literal() );
 
     Print( "Inequal fails" );
-    Expect< RTypeException >( delegate() {
-        rt.Check( neq, new Local( "neq" ) );
-    } );
+    Expect< RTypeException >(
+        () => t.Check( 2, new Literal() ) );
+
+    t = new EQ( null );
+
+    Print( "With null CompareTo, null passes" );
+    t.Check( null, new Literal() );
+
+    Print( "With null CompareTo, non-null fails" );
+    Expect< RTypeException >(
+        () => t.Check( new object(), new Literal() ) );
 }
 
 
@@ -146,35 +101,140 @@ public static
 void
 Test_NEQ()
 {
-    int i = 1;
-    int eq = 1;
-    int neq = 2;
+    NEQ t;
 
-    IRType< int > rt = new NEQ< int >( i );
+    Print( ".Equals() and .GetHashCode()" );
+    Assert(
+        new NEQ( 1 )
+        .Equals( new NEQ( 1 ) ) );
+    Assert(
+        new NEQ( 1 ).GetHashCode() ==
+        new NEQ( 1 ).GetHashCode() );
+    Assert( !(
+        new NEQ( 1 )
+        .Equals( new NEQ( 2 ) ) ) );
+    Assert(
+        new NEQ( null )
+        .Equals( new NEQ( null ) ) );
+    Assert(
+        new NEQ( null ).GetHashCode() ==
+        new NEQ( null ).GetHashCode() );
+    Assert( !(
+        new NEQ( 1 )
+        .Equals( new NEQ( null ) ) ) );
 
-    // TODO null doesn't pass
+    t = new NEQ( 1 );
+
+    Print( "Null passes" );
+    t.Check( null, new Literal() );
 
     Print( "Inequal passes" );
-    rt.Check( neq, new Local( "neq" ) );
+    t.Check( 2, new Literal() );
 
     Print( "Equal fails" );
-    Expect< RTypeException >( delegate() {
-        rt.Check( eq, new Local( "eq" ) );
-    } );
+    Expect< RTypeException >(
+        () => t.Check( 1, new Literal() ) );
+
+    t = new NEQ( null );
+
+    Print( "With null CompareTo, non-null passes" );
+    t.Check( new object(), new Literal() );
+
+    Print( "With null CompareTo, null fails" );
+    Expect< RTypeException >(
+        () => t.Check( null, new Literal() ) );
 }
 
 
-[Test( "IRType.Contravary()" )]
+[Test( "NonNull" )]
 public static
 void
-Test_IRType_Contravary()
+Test_NonNull()
 {
-    IRType< string > rt =
-        new NonNull< object >()
-            .Contravary< object, string >();
+    Print( ".Equals() and .GetHashCode()" );
+    Assert(
+        new NonNull()
+        .Equals( new NonNull() ) );
+    Assert(
+        new NonNull().GetHashCode() ==
+        new NonNull().GetHashCode() );
+    Assert( !(
+        new NonNull()
+        .Equals( new EQ( 1 ) ) ) );
 
-    Print( "Use an RType< object > to check a string" );
-    rt.Check( "I'm not null", new Literal() );
+    Print( "Non-null passes" );
+    new NonNull().Check( new object(), new Literal() );
+
+    Print( "Null fails" );
+    Expect< RTypeException >(
+        () => new NonNull().Check( null, new Literal() ) );
+}
+
+
+[Test( "NonBlankString" )]
+public static
+void
+Test_NonBlankString()
+{
+    Print( ".Equals() and .GetHashCode()" );
+    Assert(
+        new NonBlankString()
+        .Equals( new NonBlankString() ) );
+    Assert(
+        new NonBlankString().GetHashCode() ==
+        new NonBlankString().GetHashCode() );
+    Assert( !(
+        new NonBlankString()
+        .Equals( new EQ( 1 ) ) ) );
+
+    Print( "Null passes" );
+    new NonBlankString().Check( null, new Literal() );
+
+    Print( "Non-blank string passes" );
+    new NonBlankString().Check( "Not blank", new Literal() );
+
+    Print( "Blank string fails" );
+    Expect< RTypeException >(
+        () => new NonBlankString().Check( "", new Literal() ) );
+}
+
+
+[Test( "Contravariance" )]
+public static
+void
+Test_Contravariance()
+{
+    IRType< object > t = new EQ( "apple" );
+    IRType< object > u = new EQ( "apple" );
+    IRType< object > v = new EQ( "orange" );
+    IRType< string > w = t.Contravary< object, string >();
+    IRType< string > x = u.Contravary< object, string >();
+    IRType< string > y = v.Contravary< object, string >();
+
+    Print( "Contravariant provides same Check() results as original" );
+    w.Check( "apple", new Literal() );
+    Expect< RTypeException >(
+        () => w.Check( "orange", new Literal() ) );
+
+    Print( "Contravariant .Equals() original and vice-versa" );
+    Assert( t.Equals( w ) );
+    Assert( w.Equals( t ) );
+
+    Print( "Same .Equals() results among contravariants as among originals" );
+    AssertEqual(
+        t.Equals( u ),
+        w.Equals( x ) );
+    AssertEqual(
+        u.Equals( v ),
+        x.Equals( y ) );
+
+    Print( "Same .Equals() results among mixed original/contravariants as among originals" );
+    AssertEqual(
+        t.Equals( u ),
+        t.Equals( x ) );
+    AssertEqual(
+        u.Equals( v ),
+        u.Equals( y ) );
 }
 
 

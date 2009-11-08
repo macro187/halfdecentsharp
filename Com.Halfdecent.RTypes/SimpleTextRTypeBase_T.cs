@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -27,11 +28,12 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// Base class for RTypes with simple IsA, IsNotA, and MustBe text
+/// Abstract base class for implementing RTypes with simple IsA, IsNotA, and
+/// MustBe text
 // =============================================================================
 
 public abstract class
-SimpleRTypeBase<
+SimpleTextRTypeBase<
     T
 >
     : RTypeBase< T >
@@ -44,27 +46,65 @@ SimpleRTypeBase<
 // -----------------------------------------------------------------------------
 
 protected
-SimpleRTypeBase(
-    Localised< string > isText,
-    Localised< string > isNotText,
-    Localised< string > mustBeText
+SimpleTextRTypeBase(
+    Localised< string > isFormat,
+    ///< Format string to use for <tt>SayIs()</tt>
+    ///  - {0} Reference to the item
+    Localised< string > isNotFormat,
+    ///< Format string to use for <tt>SayIsNot()</tt>
+    ///  - {0} Reference to the item
+    Localised< string > mustBeFormat
+    ///< Format string to use for <tt>SayMustBe()</tt>
+    ///  - {0} Reference to the item
 )
 {
-    if( isText == null )
-        throw new LocalisedArgumentNullException( "isText" );
-    if( isNotText == null )
-        throw new LocalisedArgumentNullException( "isNotText" );
-    if( mustBeText == null )
-        throw new LocalisedArgumentNullException( "mustBeText" );
-    this.istext = isText;
-    this.isnottext = isNotText;
-    this.mustbetext = mustBeText;
+    if( isFormat == null )
+        throw new LocalisedArgumentNullException( "isFormat" );
+    if( isNotFormat == null )
+        throw new LocalisedArgumentNullException( "isNotFormat" );
+    if( mustBeFormat == null )
+        throw new LocalisedArgumentNullException( "mustBeFormat" );
+    this.IsFormat = isFormat;
+    this.IsNotFormat = isNotFormat;
+    this.MustBeFormat = mustBeFormat;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// Properties
+// -----------------------------------------------------------------------------
+
+private
+Localised< string >
+IsFormat
+{
+    get;
+    set;
+}
+
+
+private
+Localised< string >
+IsNotFormat
+{
+    get;
+    set;
+}
+
+
+private
+Localised< string >
+MustBeFormat
+{
+    get;
+    set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRType
 // -----------------------------------------------------------------------------
 
 public override
@@ -73,16 +113,10 @@ SayIs(
     Localised< string > reference
 )
 {
-    NonNull.Check( reference, SAYIS_REFERENCE );
-    return LocalisedString.Format( this.istext, reference );
+    if( reference == null )
+        throw new LocalisedArgumentNullException( "reference" );
+    return LocalisedString.Format( this.IsFormat, reference );
 }
-
-private static readonly Parameter
-SAYIS_REFERENCE = new Parameter( "reference" );
-
-private
-Localised< string >
-istext;
 
 
 public override
@@ -91,16 +125,10 @@ SayIsNot(
     Localised< string > reference
 )
 {
-    NonNull.Check( reference, SAYISNOT_REFERENCE );
-    return LocalisedString.Format( this.isnottext, reference );
+    if( reference == null )
+        throw new LocalisedArgumentNullException( "reference" );
+    return LocalisedString.Format( this.IsNotFormat, reference );
 }
-
-private static readonly Parameter
-SAYISNOT_REFERENCE = new Parameter( "reference" );
-
-private
-Localised< string >
-isnottext;
 
 
 public override
@@ -109,16 +137,10 @@ SayMustBe(
     Localised< string > reference
 )
 {
-    NonNull.Check( reference, SAYMUSTBE_REFERENCE );
-    return LocalisedString.Format( this.mustbetext, reference );
+    if( reference == null )
+        throw new LocalisedArgumentNullException( "reference" );
+    return LocalisedString.Format( this.MustBeFormat, reference );
 }
-
-private static readonly Parameter
-SAYMUSTBE_REFERENCE = new Parameter( "reference" );
-
-private
-Localised< string >
-mustbetext;
 
 
 

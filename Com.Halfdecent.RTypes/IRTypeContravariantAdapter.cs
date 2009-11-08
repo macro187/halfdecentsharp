@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -15,84 +16,30 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
-using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Meta;
-
-
 namespace
 Com.Halfdecent.RTypes
 {
 
 
-public class
-NonNull<
-    T
->
-    : SimpleRTypeBase< T >
+internal interface
+IRTypeContravariantAdapter
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Properties
 // -----------------------------------------------------------------------------
 
-public
-NonNull()
-    : base(
-        _S("{0} is present"),
-        _S("{0} is not present"),
-        _S("{0} is required")
-    )
+IRType
+From
 {
-}
-
-
-
-// -----------------------------------------------------------------------------
-// RTypeBase< T >
-// -----------------------------------------------------------------------------
-
-protected override
-bool
-MyCheck(
-    T item
-)
-{
-    return ( (object)item != null );
+    get;
 }
 
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
-
-} // NonNull< T >
-
-
-
-
-public static class
-NonNull
-{
-
-public static
-void
-Check<
-    T
->(
-    T       item,
-    IValue  itemReference
-)
-{
-    new NonNull< T >().Check( item, itemReference );
-}
-
-} // NonNull
-
-
-
-
+} // type
 } // namespace
 

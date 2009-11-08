@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -15,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 
 
@@ -24,7 +26,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-// An RType
+/// Composable value check
 // =============================================================================
 
 public interface
@@ -37,17 +39,15 @@ IRType
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Generate a natural language statement stating that an item "is" this RType
-///
+/// Generate natural language stating that an item <em>is</em> of this RType
 Localised< string >
 SayIs(
     Localised< string > reference
-    ///< What to refer to the item as, in natural language
+    ///< Natural language reference to the item
 );
 
 
-/// Generate a natural language statement that an item "is not" this RType
-///
+/// Generate natural language stating that an item <em>is not</em> of this RType
 Localised< string >
 SayIsNot(
     Localised< string > reference
@@ -55,8 +55,8 @@ SayIsNot(
 );
 
 
-/// Generate a natural language statement requiring an item to be this RType
-///
+/// Generate natural language stating that and item <em>is required to be</em>
+/// of this RType
 Localised< string >
 SayMustBe(
     Localised< string > reference

@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -25,10 +26,13 @@ Com.Halfdecent.RTypes
 {
 
 
+// =============================================================================
+/// A non-blank string
+// =============================================================================
+
 public class
 NonBlankString
-    : SimpleRTypeBase< string >
-    , IRType< string >
+    : SimpleTextRTypeBase< string >
 {
 
 
@@ -50,30 +54,17 @@ NonBlankString()
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// IRType< string >
 // -----------------------------------------------------------------------------
 
-protected override
+public override
 bool
-MyCheck(
+Predicate(
     string item
 )
 {
-    return item == null ? true : ( item != string.Empty );
-}
-
-
-// Note that instance Check() can no longer be called without casting to a
-// parent type
-new public static
-void
-Check(
-    string  item,
-    IValue  itemReference
-)
-{
-    IRType< string > rt = new NonBlankString();
-    rt.Check( item, itemReference );
+    if( item == null ) return true;
+    return ( item != string.Empty );
 }
 
 

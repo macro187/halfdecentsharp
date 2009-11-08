@@ -17,6 +17,8 @@
 
 
 using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Exceptions;
+using Com.Halfdecent.Meta;
 
 
 namespace
@@ -25,7 +27,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-// IRType< T > library
+/// RType Library
 // =============================================================================
 
 public static class
@@ -38,14 +40,52 @@ RType
 // Extension Methods
 // -----------------------------------------------------------------------------
 
+/// Ensure that an item is of the RType
+///
+/// @exception RTypeException
+/// <tt>item</tt> was found not to be of the RType
+///
+public static
+void
+Check<
+    T
+>(
+    this IRType< T >    t,
+    T                   item,
+    ///< Item to check
+    IValue              itemReference
+    ///< What the caller refers to <tt>item</tt> as
+)
+{
+    if( t == null )
+        throw new LocalisedArgumentNullException( "t" );
+    if( itemReference == null )
+        throw new LocalisedArgumentNullException( "itemReference" );
+    foreach( IRType< T > c in t.Components ) {
+        try {
+            c.Check( item, itemReference );
+        } catch( RTypeException e ) {
+            throw new RTypeException( itemReference, t, e );
+        }
+    }
+    if( !t.Predicate( item ) )
+        throw new RTypeException( itemReference, t );
+}
+
+
+/// Turn the RType into an RType checking a more specific kind of item
+///
 public static
 IRType< TTo >
-Contravary< TFrom, TTo >(
-    this IRType< TFrom > from
+Contravary<
+    TFrom,
+    TTo
+>(
+    this IRType< TFrom > t
 )
     where TTo : TFrom
 {
-    return new RTypeTypeAdapter< TFrom, TTo >( from );
+    return new RTypeContravariantAdapter< TFrom, TTo >( t );
 }
 
 

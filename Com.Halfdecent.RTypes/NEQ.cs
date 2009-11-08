@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -27,17 +28,14 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// Does not equal some constant value
+/// Not equal to a particular value
 ///
-/// According to <tt>IEquatable< T >.Equals()</tt>
+/// According to <tt>System.Object.Equals()</tt>
 // =============================================================================
 
 public class
-NEQ<
-    T
->
-    : SimpleRTypeBase< T >
-    where T : IEquatable< T >
+NEQ
+    : SimpleTextRTypeBase< object >
 {
 
 
@@ -48,15 +46,14 @@ NEQ<
 
 public
 NEQ(
-    T compareTo
+    object compareTo
 )
     : base(
-        _S( "{{0}} is not equal to {0}", compareTo ),
-        _S( "{{0}} is equal to {0}", compareTo ),
-        _S( "{{0}} must not be equal to {0}", compareTo )
+        _S( "{{0}} is not equal to {0}", compareTo ?? "null" ),
+        _S( "{{0}} is equal to {0}", compareTo ?? "null" ),
+        _S( "{{0}} must not be equal to {0}", compareTo ?? "null" )
     )
 {
-    NonNull.Check( compareTo, new Parameter( "compareTo" ) );
     this.CompareTo = compareTo;
 }
 
@@ -67,8 +64,9 @@ NEQ(
 // -----------------------------------------------------------------------------
 
 /// The value to compare to
+///
 public
-T
+object
 CompareTo
 {
     get;
@@ -78,17 +76,51 @@ CompareTo
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// RTypeBase< object >
 // -----------------------------------------------------------------------------
 
 protected override
 bool
-MyCheck(
-    T item
+Equals(
+    IRType t
 )
 {
+    return object.Equals(
+        this.CompareTo,
+        ((NEQ)t).CompareTo );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IRType< object >
+// -----------------------------------------------------------------------------
+
+public override
+bool
+Predicate(
+    object item
+)
+{
+    if( this.CompareTo == null ) return ( item != null );
     if( item == null ) return true;
-    return !item.Equals( this.CompareTo );
+    return !this.CompareTo.Equals( item );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Object
+// -----------------------------------------------------------------------------
+
+public override
+int
+GetHashCode()
+{
+    return
+        this.CompareTo == null ?
+        base.GetHashCode() :
+        base.GetHashCode() ^ this.CompareTo.GetHashCode();
 }
 
 
