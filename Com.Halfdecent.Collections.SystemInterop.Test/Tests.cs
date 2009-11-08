@@ -49,16 +49,16 @@ Main()
 }
 
 
-[Test( "ReadOnlyBagFromSystemCollectionAdapter< T >" )]
+[Test( "BagFromSystemCollectionAdapter< T >" )]
 public static
 void
-Test_ReadOnlyBagFromSystemCollectionAdapter()
+Test_BagFromSystemCollectionAdapter()
 {
-    ReadOnlyBagFromSystemCollectionAdapter< int > bag;
+    BagFromSystemCollectionAdapter< int > bag;
     SCG.List< int > to = new SCG.List< int >();
 
     Print( "Empty bag" );
-    bag = new int[] {}.AsReadOnlyBag();
+    bag = new int[] {}.AsBag();
 
     Print( ".Count" );
     AssertEqual( bag.Count.ToDecimal(), 0 );
@@ -78,7 +78,7 @@ Test_ReadOnlyBagFromSystemCollectionAdapter()
     Assert( !bag.Contains( 4 ) );
 
     Print( "Non-empty bag" );
-    bag = new int[] { 1, 2, 3 }.AsReadOnlyBag();
+    bag = new int[] { 1, 2, 3 }.AsBag();
 
     Print( ".Count" );
     AssertEqual( bag.Count.ToDecimal(), 3 );
@@ -99,15 +99,16 @@ Test_ReadOnlyBagFromSystemCollectionAdapter()
 }
 
 
-[Test( "BagFromSystemCollectionAdapter< T >" )]
+[Test( "GrowableShrinkableBagFromSystemCollectionAdapter< T >" )]
 public static
 void
-Test_BagFromSystemCollectionAdapter()
+Test_GrowableShrinkableBagFromSystemCollectionAdapter()
 {
-    int[]                                   from = new int[] { 1, 2, 3 };
-    SCG.List< int >                         list = new SCG.List< int >();
-    BagFromSystemCollectionAdapter< int >   bag = list.AsBag();
-    SCG.List< int >                         to = new SCG.List< int >();
+    int[]           from = new int[] { 1, 2, 3 };
+    SCG.List< int > list = new SCG.List< int >();
+    GrowableShrinkableBagFromSystemCollectionAdapter< int >
+                    bag = list.AsGrowableShrinkableBag();
+    SCG.List< int > to = new SCG.List< int >();
 
     Print( ".Count" );
     AssertEqual( bag.Count.ToDecimal(), 0 );
@@ -196,7 +197,7 @@ Test_BagToSystemCollectionAdapter()
     int[]                   a;
 
     Print( "Empty read-only collection" );
-    col = new int[]{}.AsReadOnlyBag().AsSystemCollection();
+    col = new int[]{}.AsBag().AsSystemCollection();
 
     Print( ".IsReadOnly" );
     Assert( col.IsReadOnly );
@@ -238,7 +239,7 @@ Test_BagToSystemCollectionAdapter()
 
 
     Print( "Non-empty read-only collection" );
-    col = new int[]{ 1, 2, 3 }.AsReadOnlyBag().AsSystemCollection();
+    col = new int[]{ 1, 2, 3 }.AsBag().AsSystemCollection();
 
     Print( ".IsReadOnly" );
     Assert( col.IsReadOnly );
@@ -279,7 +280,7 @@ Test_BagToSystemCollectionAdapter()
 
 
     Print( "Writable collection" );
-    col = new SCG.List< int >().AsBag().AsSystemCollection();
+    col = new SCG.List< int >().AsGrowableShrinkableBag().AsSystemCollection();
 
     Print( ".IsReadOnly" );
     Assert( !col.IsReadOnly );

@@ -43,18 +43,6 @@ SystemCollection
 // -----------------------------------------------------------------------------
 
 public static
-ReadOnlyBagFromSystemCollectionAdapter< T >
-AsReadOnlyBag<
-    T
->(
-    this SCG.ICollection< T > collection
-)
-{
-    return new ReadOnlyBagFromSystemCollectionAdapter< T >( collection );
-}
-
-
-public static
 BagFromSystemCollectionAdapter< T >
 AsBag<
     T
@@ -63,6 +51,19 @@ AsBag<
 )
 {
     return new BagFromSystemCollectionAdapter< T >( collection );
+}
+
+
+public static
+GrowableShrinkableBagFromSystemCollectionAdapter< T >
+AsGrowableShrinkableBag<
+    T
+>(
+    this SCG.ICollection< T > collection
+)
+{
+    return new GrowableShrinkableBagFromSystemCollectionAdapter< T >(
+        collection );
 }
 
 
