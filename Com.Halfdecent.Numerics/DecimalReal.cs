@@ -140,7 +140,9 @@ CompareTo(
 {
     if( obj == null ) return 1;
     if( !( obj is IReal ) )
-        throw new LocalisedArgumentException( "obj", _S("Is not an IReal") );
+        throw new ValueArgumentException(
+            new Parameter( "obj" ),
+            _S("{0} is not an IReal") );
     return this.Value.CompareTo( ((IReal)obj).ToDecimal() );
 }
 
