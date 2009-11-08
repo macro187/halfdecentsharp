@@ -96,8 +96,8 @@ TryDefault(
 protected virtual
 bool
 TryFor(
-    out T       value,
-    CultureInfo culture
+    CultureInfo culture,
+    out T       value
 )
 {
     value = default( T );
@@ -128,12 +128,12 @@ ForCulture(
 {
     T r;
 
-    if( this.TryFor( out r, culture ) ) return r;
+    if( this.TryFor( culture, out r ) ) return r;
 
     foreach( CultureInfo fb in this.FallbacksFor( culture ) ) {
         // TODO BugException
         if( fb == null ) throw new Exception( "null fallback culture" );
-        if( this.TryFor( out r, fb ) ) return r;
+        if( this.TryFor( fb, out r ) ) return r;
     }
 
     if( this.TryDefault( out r ) ) return r;

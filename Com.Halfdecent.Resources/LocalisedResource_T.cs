@@ -136,8 +136,8 @@ InternalResourceManager
 protected override
 bool
 TryFor(
-    out T       value,
-    CultureInfo culture
+    CultureInfo culture,
+    out T       value
 )
 {
     value = default( T );
