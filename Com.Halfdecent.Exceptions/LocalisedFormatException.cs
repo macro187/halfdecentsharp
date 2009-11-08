@@ -26,7 +26,7 @@ Com.Halfdecent.Exceptions
 
 
 // =============================================================================
-/// <tt>System.ArgumentNullException</tt> that implements
+/// <tt>System.FormatException</tt> that implements
 /// <tt>ILocalisedException</tt>
 // =============================================================================
 

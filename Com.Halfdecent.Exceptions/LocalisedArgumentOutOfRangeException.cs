@@ -26,7 +26,7 @@ Com.Halfdecent.Exceptions
 
 
 // =============================================================================
-/// <tt>System.ArgumentException</tt> that implements
+/// <tt>System.ArgumentOutOfRangeException</tt> that implements
 /// <tt>ILocalisedException</tt>
 // =============================================================================
 
