@@ -102,6 +102,45 @@ Test_ValueException()
 }
 
 
+[Test( "IValue Equality" )]
+public static
+void
+Test_IValueEquality()
+{
+    Print( "Literals are not equal" );
+    Assert( !(
+        new Literal()
+        .Equals( new Literal() ) ) );
+
+    Print( "IVariables with same type and same name are equal" );
+    Assert(
+        new This()
+        .Equals( new This() ) );
+    Assert(
+        new Parameter( "apple" )
+        .Equals( new Parameter( "apple" ) ) );
+    Assert(
+        new Local( "apple" )
+        .Equals( new Local( "apple" ) ) );
+
+    Print( "IVariables with different type are not equal" );
+    Assert( !(
+        new This()
+        .Equals( new Parameter( "this" ) ) ) );
+    Assert( !(
+        new Parameter( "apple" )
+        .Equals( new Local( "apple" ) ) ) );
+
+    Print( "IVariables with different name are not equal" );
+    Assert( !(
+        new Parameter( "apple" )
+        .Equals( new Parameter( "orange" ) ) ) );
+    Assert( !(
+        new Local( "apple" )
+        .Equals( new Local( "orange" ) ) ) );
+}
+
+
 
 
 } // type

@@ -62,6 +62,34 @@ Name
 
 
 
+// -----------------------------------------------------------------------------
+// Object
+// -----------------------------------------------------------------------------
+
+public override
+bool
+Equals(
+    object item
+)
+{
+    return
+        item != null &&
+        this.GetType() == item.GetType() &&
+        this.Name == ((IVariable)item).Name;
+}
+
+
+public override
+int
+GetHashCode()
+{
+    return
+        this.GetType().GetHashCode() ^
+        this.Name.GetHashCode();
+}
+
+
+
 
 } // type
 } // namespace
