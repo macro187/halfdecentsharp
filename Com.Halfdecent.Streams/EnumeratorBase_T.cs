@@ -22,7 +22,7 @@ using Com.Halfdecent.Exceptions;
 
 
 namespace
-Com.Halfdecent.Streams.SystemInterop
+Com.Halfdecent.Streams
 {
 
 
@@ -30,7 +30,7 @@ Com.Halfdecent.Streams.SystemInterop
 /// Base class for implementing non-resettable enumerators
 // =============================================================================
 
-public abstract class
+internal abstract class
 EnumeratorBase<
     T
 >
@@ -163,7 +163,7 @@ Dispose()
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

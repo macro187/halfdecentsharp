@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,70 +16,42 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Exceptions;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Streams.SystemInterop
+Com.Halfdecent.Streams
 {
 
 
 // =============================================================================
-/// Presents a stream as an enumerator
+/// <tt>IEnumerable< T ></tt> Library
 // =============================================================================
 
-public class
-StreamToEnumeratorAdapter<
+public static class
+Enumerable
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+/// Present the enumerable as a stream
+///
+public static
+    IStream< T >
+AsStream<
     T
->
-    : EnumeratorBase< T >
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-StreamToEnumeratorAdapter(
-    IStream< T > stream
+>(
+    this SCG.IEnumerable< T > dis
 )
 {
-    new NonNull().Require( stream, new Parameter( "stream" ) );
-    this.Stream = stream;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-IStream< T >
-Stream
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// EnumeratorBase< T >
-// -----------------------------------------------------------------------------
-
-protected override
-    bool
-MoveNext(
-    out T nextItem
-)
-{
-    return this.Stream.TryPull( out nextItem );
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    return new Stream< T >( dis );
 }
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2008, 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,45 +16,68 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Streams.SystemInterop
+Com.Halfdecent.Streams
 {
 
 
 // =============================================================================
-/// <tt>IStream< T ></tt> Library
+/// Presents a stream as an enumerator
 // =============================================================================
 
-public static class
-Stream
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Extension Methods
-// -----------------------------------------------------------------------------
-
-/// Present the stream as an enumerable
-///
-public static
-    SCG.IEnumerable< T >
-AsEnumerable<
+internal class
+StreamToEnumeratorAdapter<
     T
->(
-    this IStream< T > stream
+>
+    : EnumeratorBase< T >
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+public
+StreamToEnumeratorAdapter(
+    IStream< T > stream
 )
 {
     new NonNull().Require( stream, new Parameter( "stream" ) );
-    return new EnumeratorToEnumerableAdapter< T >(
-        new StreamToEnumeratorAdapter< T >(
-            stream ) );
+    this.Stream = stream;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+IStream< T >
+Stream
+{
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// EnumeratorBase< T >
+// -----------------------------------------------------------------------------
+
+protected override
+    bool
+MoveNext(
+    out T nextItem
+)
+{
+    return this.Stream.TryPull( out nextItem );
 }
 
 

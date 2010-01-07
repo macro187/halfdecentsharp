@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -81,6 +82,23 @@ EmptyTo<
     T item;
     while( stream.TryPull( out item ) )
         sink.Push( item );
+}
+
+
+/// Present the stream as an enumerable
+///
+public static
+    SCG.IEnumerable< T >
+AsEnumerable<
+    T
+>(
+    this IStream< T > dis
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    return
+        new EnumerableFromEnumeratorAdapter< T >(
+            new StreamToEnumeratorAdapter< T >( dis ) );
 }
 
 

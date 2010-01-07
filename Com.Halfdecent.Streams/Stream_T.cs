@@ -16,27 +16,43 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections;
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
 namespace
-Com.Halfdecent.Streams.SystemInterop
+Com.Halfdecent.Streams
 {
 
 
 // =============================================================================
-/// An enumerable that always yields a given enumerator
+/// A stream yielding a specified sequence of items
 // =============================================================================
 
 public class
-EnumeratorToEnumerableAdapter<
+Stream<
     T
 >
-    : IEnumerable< T >
+    : IStream< T >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Static Properties
+// -----------------------------------------------------------------------------
+
+public static
+IStream< T >
+Empty
+{
+    get { return empty; }
+}
+
+private static
+IStream< T >
+empty = new Stream< T >();
 
 
 
@@ -44,48 +60,75 @@ EnumeratorToEnumerableAdapter<
 // Constructors
 // -----------------------------------------------------------------------------
 
+/// Initialise a new stream that yields a specified series of items, or no
+/// items at all
+///
 public
-EnumeratorToEnumerableAdapter(
-    IEnumerator< T > enumerator
+Stream(
+    params T[] items
+)
+    : this( (SCG.IEnumerable<T>)items )
+{
+}
+
+
+/// Initialise a new stream that yields the items in a specified enumerable
+///
+public
+Stream(
+    SCG.IEnumerable< T > enumerable
+)
+{
+    new NonNull().Require( enumerable, new Parameter( "enumerable" ) );
+    this.Enumerator = enumerable.GetEnumerator();
+}
+
+
+/// Initialise a new stream that yields the items remaining in a specified
+/// enumerator
+///
+public
+Stream(
+    SCG.IEnumerator< T > enumerator
 )
 {
     new NonNull().Require( enumerator, new Parameter( "enumerator" ) );
-    this.enumerator = enumerator;
+    this.Enumerator = enumerator;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Private
+// Properties
 // -----------------------------------------------------------------------------
 
 private
-IEnumerator< T >
-enumerator;
-
-
-
-// -----------------------------------------------------------------------------
-// IEnumerable< T >
-// -----------------------------------------------------------------------------
-
-public
-    IEnumerator< T >
-GetEnumerator()
+SCG.IEnumerator< T >
+Enumerator
 {
-    return this.enumerator;
+    get;
+    set;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IEnumerable
+// IStream< T >
 // -----------------------------------------------------------------------------
 
-    IEnumerator
-IEnumerable.GetEnumerator()
+public
+    bool
+TryPull(
+    out T item
+)
 {
-    return this.enumerator;
+    if( this.Enumerator.MoveNext() ) {
+        item = this.Enumerator.Current;
+        return true;
+    } else {
+        item = default( T );
+        return false;
+    }
 }
 
 

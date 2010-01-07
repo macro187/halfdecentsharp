@@ -50,51 +50,12 @@ Main()
 
 
 
-// Test stream
-//
-private class
-TestStream
-    : IStream< int >
-{
-    private
-    int[]
-    items = new int[] { 1, 2, 3 };
-
-    private
-    int
-    i = 0;
-
-    public
-    IEnumerable< int >
-    Items
-    {
-        get { return this.items; }
-    }
-
-    public
-    bool
-    TryPull(
-        out int item
-    )
-    {
-        if( this.i >= this.items.Length ) {
-            item = default( int );
-            return false;
-        }
-        item = this.items[ i ];
-        i++;
-        return true;
-    }
-}
-
-
-
-[Test( "IStreamBase< T >" )]
+[Test( "Stream< T >" )]
 public static
 void
-Test_IStreamBase_T()
+Test_Stream_T()
 {
-    IStream< int > s = new TestStream();
+    IStream< int > s = new Stream< int >( 1, 2, 3 );
 
     int i;
     bool b;
@@ -126,7 +87,7 @@ public static
 void
 Test_Stream_Pull()
 {
-    IStream< int > s = new TestStream();
+    IStream< int > s = new Stream< int >( 1, 2, 3 );
 
     int i;
 
@@ -143,9 +104,8 @@ Test_Stream_Pull()
     Assert( i == 3 );
 
     Print( "EmptyException" );
-    Expect< EmptyException >( delegate() {
-        i = s.Pull();
-    } );
+    Expect< EmptyException >( () =>
+        i = s.Pull() );
 }
 
 
@@ -153,7 +113,7 @@ Test_Stream_Pull()
 // A test ISink<T> implementation that holds 3 ints
 private class
 TestSink
-    :ISink< int >
+    : ISink< int >
 {
     public
     int[]
@@ -178,7 +138,7 @@ TestSink
 
 
 
-[Test( "Sink.Push()" )]
+[Test( "Sink.Push( this ISink )" )]
 public static
 void
 Test_Sink_Push()
@@ -194,9 +154,8 @@ Test_Sink_Push()
     Assert( ts.Items[1] == 1 );
     Assert( ts.Items[2] == 2 );
     Print( "FullException if we try to push another" );
-    Expect< FullException >( delegate() {
-        s.Push( 3 );
-    } );
+    Expect< FullException >( () =>
+        s.Push( 3 ) );
 }
 
 
@@ -206,12 +165,46 @@ public static
 void
 Test_Stream_EmptyTo()
 {
-    TestStream from = new TestStream();
-    TestSink to = new TestSink();
+    int[] items = new int[] { 1, 2, 3 };
     Print( "EmptyTo() a sink" );
-    from.EmptyTo( to );
+    TestSink sink = new TestSink();
+    new Stream< int >( items ).EmptyTo( sink );
     Print( "Check items" );
-    Assert( to.Items.SequenceEqual( from.Items ) );
+    Assert( sink.Items.SequenceEqual( items ) );
+}
+
+
+[Test( "Stream<T>.Empty" )]
+public static
+void
+Test_Stream_T_Empty()
+{
+    IStream< int > s = Stream< int >.Empty;
+    int i;
+    Assert( !s.TryPull( out i ) );
+}
+
+
+[Test( "Stream.AsEnumerable( this IStream )" )]
+public static
+void
+Test_Stream_AsEnumerable()
+{
+    int[] items = new int[] { 1, 2, 3 };
+    Print( "Items in enumerable accurately reflect stream" );
+    Assert( new Stream< int >( items ).AsEnumerable().SequenceEqual( items ) );
+}
+
+
+
+[Test( "Enumerable.AsStream()" )]
+public static
+void
+Test_Enumerable_AsStream()
+{
+    int[] items = new int[] { 1, 2, 3 };
+    Print( "Items in stream accurately reflect enumerable" );
+    Assert( items.AsStream().AsEnumerable().SequenceEqual( items ) );
 }
 
 
