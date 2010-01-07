@@ -59,24 +59,13 @@ FilterBase<
 
 
 // -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-FilterBase()
-{
-    this.process = Process();
-    this.Tick();
-    if( this.process.Current == true )
-        throw new LocalisedException(
-            _S("Process() says it has produced an item before having consumed any") );
-}
-
-
-
-// -----------------------------------------------------------------------------
 // Private
 // -----------------------------------------------------------------------------
+
+private
+bool
+started = false;
+
 
 private
 IEnumerator< bool >
@@ -177,6 +166,20 @@ DisposeItem(
 {
     IDisposable d = item as IDisposable;
     if( d != null ) d.Dispose();
+}
+
+
+private
+void
+StartIfNotStarted()
+{
+    if( this.started ) return;
+    this.process = Process();
+    this.Tick();
+    if( this.process.Current == true )
+        throw new LocalisedException(
+            _S("Process() says it has produced an item before having consumed any") );
+    this.started = true;
 }
 
 
@@ -293,6 +296,8 @@ TryPush(
         throw new LocalisedInvalidOperationException(
             _S("this.To must be set before items can be pushed") );
 
+    this.StartIfNotStarted();
+
     bool itemgiven = false;
     for( ;; ) {
 
@@ -326,6 +331,8 @@ TryPull(
     if( this.From == null )
         throw new LocalisedInvalidOperationException(
             _S("this.From must be set before items can be pulled") );
+
+    this.StartIfNotStarted();
 
     item = default( TOut );
     for( ;; ) {
