@@ -19,12 +19,8 @@
 using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent.Testing;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Filters;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.SystemInterop;
-using Com.Halfdecent.Collections;
-using Com.Halfdecent.Collections.SystemInterop;
 
 
 namespace
@@ -123,7 +119,6 @@ AddPairs
 }
 
 
-
 [Test( "FilterBase.Push()" )]
 public static
 void
@@ -136,25 +131,25 @@ Test_FilterBase_Push()
 
     Print( "1-to-1 filter" );
     to.Clear();
-    f = new PassThrough { To = to.AsGrowableShrinkableBag().AsSink() };
+    f = new PassThrough { To = to.AsSink() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( from ) );
 
     Print( "1-to-many filter" );
     to.Clear();
-    f = new DoubleUp { To = to.AsGrowableShrinkableBag().AsSink() };
+    f = new DoubleUp { To = to.AsSink() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
 
     Print( "Many-to-1 filter" );
     to.Clear();
-    f = new AddPairs { To = to.AsGrowableShrinkableBag().AsSink() };
+    f = new AddPairs { To = to.AsSink() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
 
     Print( "Closing filter" );
     to.Clear();
-    f = new PassOne { To = to.AsGrowableShrinkableBag().AsSink() };
+    f = new PassOne { To = to.AsSink() };
     f.Push( 1 );
     Assert( !f.TryPush( 2 ) );
     Assert( to.SequenceEqual( new int[] { 1 } ) );
@@ -164,10 +159,10 @@ Test_FilterBase_Push()
     too.Clear();
     f = new DoubleUp { To =
         new PassOne { To =
-        to.AsGrowableShrinkableBag().AsSink() } };
+        to.AsSink() } };
     f.Push( 1 );
     Assert( to.SequenceEqual( new int[] { 1 } ) );
-    f.To = too.AsGrowableShrinkableBag().AsSink();
+    f.To = too.AsSink();
     // (filter immediately flushes pending item to new sink)
     Assert( too.SequenceEqual( new int[] { 1 } ) );
 }
@@ -179,52 +174,41 @@ public static
 void
 Test_FilterBase_Pull()
 {
-    IBag< int > from =
-        new int[] { 1, 2, 3, 4 }.AsBag();
-    IBag< int > from1 =
-        new int[] { 1 }.AsBag();
-    IBag< int > from2 =
-        new int[] { 2 }.AsBag();
     IFilter< int, int > f;
-    GrowableShrinkableBagFromSystemCollectionAdapter< int > to =
-        new SCG.List< int >().AsGrowableShrinkableBag();
+    SCG.List< int > to = new SCG.List< int >();
 
     Print( "1-to-1 filter" );
-    f = new PassThrough { From = from.Stream() };
-    to.RemoveAll();
+    f = new PassThrough { From = new Stream< int >( 1, 2, 3, 4 ) };
+    to.Clear();
     f.EmptyTo( to.AsSink() );
-    Assert( to.Stream().AsEnumerable().SequenceEqual(
-        from.Stream().AsEnumerable() ) );
+    Assert( to.SequenceEqual( new int[] { 1, 2, 3, 4 } ) );
 
     Print( "1-to-many filter" );
-    f = new DoubleUp { From = from.Stream() };
-    to.RemoveAll();
+    f = new DoubleUp { From = new Stream< int >( 1, 2, 3, 4 ) };
+    to.Clear();
     f.EmptyTo( to.AsSink() );
-    Assert( to.Stream().AsEnumerable().SequenceEqual(
-        new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
+    Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
 
     Print( "Many-to-1 filter" );
-    f = new AddPairs { From = from.Stream() };
-    to.RemoveAll();
+    f = new AddPairs { From = new Stream< int >( 1, 2, 3, 4 ) };
+    to.Clear();
     f.EmptyTo( to.AsSink() );
-    Assert( to.Stream().AsEnumerable().SequenceEqual(
-        new int[] { 3, 7 } ) );
+    Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
 
     Print( "Closing filter" );
-    f = new PassOne { From = from.Stream() };
-    to.RemoveAll();
+    f = new PassOne { From = new Stream< int >( 1, 2, 3, 4 ) };
+    to.Clear();
     f.EmptyTo( to.AsSink() );
-    Assert( to.Stream().AsEnumerable().SequenceEqual(
-        new int[] { 1 } ) );
+    Assert( to.SequenceEqual( new int[] { 1 } ) );
 
     Print( "Many-to-1 filter, switch .From mid-block" );
-    f = new AddPairs { From = from1.Stream() };
-    to.RemoveAll();
+    f = new AddPairs { From = new Stream< int >( 1 ) };
+    to.Clear();
     f.EmptyTo( to.AsSink() );
-    Assert( to.Count.Equals( Integer.From( 0 ) ) );
-    f.From = from2.Stream();
+    Assert( to.Count == 0 );
+    f.From = new Stream< int >( 2 );
     f.EmptyTo( to.AsSink() );
-    Assert( to.Stream().AsEnumerable().SequenceEqual( new int[] { 3 } ) );
+    Assert( to.SequenceEqual( new int[] { 3 } ) );
 }
 
 

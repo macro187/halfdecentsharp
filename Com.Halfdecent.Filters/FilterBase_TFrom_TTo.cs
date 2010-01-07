@@ -18,8 +18,8 @@
 
 using System;
 using System.Collections.Generic;
-using Com.Halfdecent.Streams;
 using Com.Halfdecent.Exceptions;
+using Com.Halfdecent.Streams;
 
 
 namespace

@@ -26,7 +26,6 @@ DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Exceptions)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Meta)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.RTypes)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Streams)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Streams.SystemInterop)
 
 
 include $(MAKERY)/makery.mk
