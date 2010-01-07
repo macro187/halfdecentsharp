@@ -63,6 +63,8 @@ GetHashCode(
     T item
 )
 {
+    if( item == null )
+        throw new System.ArgumentNullException( "item" );
     return item.GetHashCode();
 }
 
