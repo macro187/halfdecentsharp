@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,28 +16,81 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.SystemUtils;
+using Com.Halfdecent.Exceptions;
+
+
 namespace
 Com.Halfdecent.Meta
 {
 
 
 // =============================================================================
-/// A parameter
+/// An item accessed through an indexer
 // =============================================================================
 
 public class
-Parameter
-    : VariableBase
+Indexer
+    : MemberBase
 {
 
 
+
+internal
+Indexer(
+    IValue parent,
+    object index
+)
+    : base( parent )
+{
+    this.Index = index;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
 
 public
-Parameter(
-    string name
-)
-    : base( name )
+object
+Index
 {
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// MemberBase
+// -----------------------------------------------------------------------------
+
+
+protected override
+string
+ComponentToString()
+{
+    return string.Concat( "[", Value.FormatLiteral( this.Index ), "]" );
+}
+
+
+protected override
+bool
+ComponentEquals(
+    IMember item
+)
+{
+    return object.Equals( ((Indexer)item).Index, this.Index );
+}
+
+
+protected override
+int
+ComponentGetHashCode()
+{
+    if( this.Index == null ) return 0;
+    return this.Index.GetHashCode();
 }
 
 

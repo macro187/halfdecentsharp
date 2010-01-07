@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,28 +16,81 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Exceptions;
+
+
 namespace
 Com.Halfdecent.Meta
 {
 
 
 // =============================================================================
-/// A parameter
+/// A property
 // =============================================================================
 
 public class
-Parameter
-    : VariableBase
+Property
+    : MemberBase
 {
 
 
 
-public
-Parameter(
+internal
+Property(
+    IValue parent,
     string name
 )
-    : base( name )
+    : base( parent )
 {
+    if( name == null ) throw new LocalisedArgumentNullException( "name" );
+    if( name == "" ) throw new LocalisedArgumentException( "Is blank", "name" );
+    this.Name = name;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+string
+Name
+{
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// MemberBase
+// -----------------------------------------------------------------------------
+
+
+protected override
+string
+ComponentToString()
+{
+    return string.Concat( ".", this.Name );
+}
+
+
+protected override
+bool
+ComponentEquals(
+    IMember item
+)
+{
+    return ((Property)item).Name == this.Name;
+}
+
+
+protected override
+int
+ComponentGetHashCode()
+{
+    return this.Name.GetHashCode();
 }
 
 

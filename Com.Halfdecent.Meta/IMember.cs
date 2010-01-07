@@ -1,6 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
-// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2009 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -22,22 +21,22 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// A parameter
+/// A reference to a member (of struct, class, etc.)
 // =============================================================================
 
-public class
-Parameter
-    : VariableBase
+public interface
+IMember
+    : IValue
 {
 
 
 
-public
-Parameter(
-    string name
-)
-    : base( name )
+/// Value that this is a member of
+///
+IValue
+Parent
 {
+    get;
 }
 
 

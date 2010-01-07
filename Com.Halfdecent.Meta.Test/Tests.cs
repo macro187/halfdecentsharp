@@ -336,42 +336,138 @@ Test_ValueArgumentOutOfRangeException()
 }
 
 
-[Test( "IValue Equality" )]
+[Test( "Literal" )]
 public static
 void
-Test_IValueEquality()
+Test_Literal()
 {
-    Print( "Literals are not equal" );
+    Print( ".ToString()" );
+    Print( new Literal().ToString() );
+    Print( ".Equals()" );
     Assert( !(
-        new Literal()
-        .Equals( new Literal() ) ) );
+        new Literal().Equals(
+        new Literal() ) ) );
+}
 
-    Print( "IVariables with same type and same name are equal" );
-    Assert(
-        new This()
-        .Equals( new This() ) );
-    Assert(
-        new Parameter( "apple" )
-        .Equals( new Parameter( "apple" ) ) );
-    Assert(
-        new Local( "apple" )
-        .Equals( new Local( "apple" ) ) );
 
-    Print( "IVariables with different type are not equal" );
+[Test( "Local" )]
+public static
+void
+Test_Local()
+{
+    Print( ".ToString()" );
+    Print( new Local( "apple" ).ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new Local( "apple" ).Equals(
+        new Local( "apple" ) ) );
     Assert( !(
-        new This()
-        .Equals( new Parameter( "this" ) ) ) );
-    Assert( !(
-        new Parameter( "apple" )
-        .Equals( new Local( "apple" ) ) ) );
+        new Local( "apple" ).Equals(
+        new Local( "orange" ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new Local( "apple" ).GetHashCode().Equals(
+        new Local( "apple" ).GetHashCode() ) );
+}
 
-    Print( "IVariables with different name are not equal" );
+
+[Test( "Parameter" )]
+public static
+void
+Test_Parameter()
+{
+    Print( ".ToString()" );
+    Print( new Parameter( "apple" ).ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new Parameter( "apple" ).Equals(
+        new Parameter( "apple" ) ) );
     Assert( !(
-        new Parameter( "apple" )
-        .Equals( new Parameter( "orange" ) ) ) );
+        new Parameter( "apple" ).Equals(
+        new Local( "apple" ) ) ) );
     Assert( !(
-        new Local( "apple" )
-        .Equals( new Local( "orange" ) ) ) );
+        new Parameter( "apple" ).Equals(
+        new Parameter( "orange" ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new Parameter( "apple" ).GetHashCode().Equals(
+        new Parameter( "apple" ).GetHashCode() ) );
+}
+
+
+[Test( "Property" )]
+public static
+void
+Test_Property()
+{
+    Print( ".ToString()" );
+    Print( new Local( "foo" ).Property( "Apple" ).ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new Local( "foo" ).Property( "Apple" ).Equals(
+        new Local( "foo" ).Property( "Apple" ) ) );
+    Assert( !(
+        new Local( "foo" ).Property( "Apple" ).Equals(
+        new Local( "foo" ).Property( "Orange" ) ) ) );
+    Assert( !(
+        new Local( "foo" ).Property( "Apple" ).Equals(
+        new Local( "bar" ).Property( "Apple" ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new Local( "foo" ).Property( "Apple" ).GetHashCode().Equals(
+        new Local( "foo" ).Property( "Apple" ).GetHashCode() ) );
+}
+
+
+[Test( "Indexer" )]
+public static
+void
+Test_Indexer()
+{
+    Print( ".ToString()" );
+    Print( new Local( "foo" ).Indexer( 0 ).ToString() );
+    Print( new Local( "foo" ).Indexer( "stringindex" ).ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new Local( "foo" ).Indexer( 0 ).Equals(
+        new Local( "foo" ).Indexer( 0 ) ) );
+    Assert(
+        new Local( "foo" ).Indexer( "apple" ).Equals(
+        new Local( "foo" ).Indexer( "apple" ) ) );
+    Assert( !(
+        new Local( "foo" ).Indexer( 0 ).Equals(
+        new Local( "foo" ).Indexer( 1 ) ) ) );
+    Assert( !(
+        new Local( "foo" ).Indexer( "apple" ).Equals(
+        new Local( "foo" ).Indexer( "orange" ) ) ) );
+    Assert( !(
+        new Local( "foo" ).Indexer( 0 ).Equals(
+        new Local( "bar" ).Indexer( 0 ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new Local( "foo" ).Indexer( 0 ).GetHashCode().Equals(
+        new Local( "foo" ).Indexer( 0 ).GetHashCode() ) );
+}
+
+
+[Test( "This" )]
+public static
+void
+Test_This()
+{
+    Print( ".ToString()" );
+    Print( new This().ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new This().Equals(
+        new This() ) );
+    Assert( !(
+        new This().Equals(
+        new Parameter( "this" ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new This().GetHashCode().Equals(
+        new This().GetHashCode() ) );
 }
 
 

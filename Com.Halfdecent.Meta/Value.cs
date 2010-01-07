@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,28 +16,68 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Exceptions;
+
+
 namespace
 Com.Halfdecent.Meta
 {
 
 
 // =============================================================================
-/// A parameter
+/// IValue library
 // =============================================================================
 
-public class
-Parameter
-    : VariableBase
+public static class
+Value
 {
 
 
 
-public
-Parameter(
-    string name
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Format an object like a source code literal
+///
+public static
+string
+FormatLiteral(
+    object value
 )
-    : base( name )
 {
+    if( value == null ) return "null";
+    if( value is string )
+        return string.Concat( "\"", (string)value, "\"" );
+    return value.ToString();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+public static
+Property
+Property(
+    this IValue value,
+    string      name
+)
+{
+    if( value == null ) throw new LocalisedArgumentNullException( "value" );
+    return new Property( value, name );
+}
+
+
+public static
+Indexer
+Indexer(
+    this IValue value,
+    object      index
+)
+{
+    return new Indexer( value, index );
 }
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -26,35 +26,56 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Base class for implementing IVariable
+/// Base class for implementing member variables
 // =============================================================================
 
 public abstract class
-VariableBase
-    : IVariable
+MemberBase
+    : IMember
 {
 
 
 
 protected
-VariableBase(
-    string name
+MemberBase(
+    IValue parent
 )
 {
-    if( name == null ) throw new LocalisedArgumentNullException( "name" );
-    if( name == "" ) throw new LocalisedArgumentException( "Is blank", "name" );
-    this.Name = name;
+    if( parent == null ) throw new LocalisedArgumentNullException( "parent" );
+    this.Parent = parent;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IVariable
+// Methods
+// -----------------------------------------------------------------------------
+
+protected abstract
+string
+ComponentToString();
+
+
+protected abstract
+bool
+ComponentEquals(
+    IMember item
+);
+
+
+protected abstract
+int
+ComponentGetHashCode();
+
+
+
+// -----------------------------------------------------------------------------
+// IMember
 // -----------------------------------------------------------------------------
 
 public
-string
-Name
+IValue
+Parent
 {
     get;
     private set;
@@ -70,7 +91,10 @@ public override sealed
 string
 ToString()
 {
-    return this.Name;
+    return
+        string.Concat(
+            this.Parent.ToString(),
+            this.ComponentToString() );
 }
 
 
@@ -83,7 +107,8 @@ Equals(
     return
         item != null &&
         this.GetType() == item.GetType() &&
-        this.Name == ((IVariable)item).Name;
+        this.ComponentEquals( (IMember)item ) &&
+        this.Parent.Equals( ((IMember)item).Parent );
 }
 
 
@@ -93,7 +118,8 @@ GetHashCode()
 {
     return
         this.GetType().GetHashCode() ^
-        this.Name.GetHashCode();
+        this.ComponentGetHashCode() ^
+        this.Parent.GetHashCode();
 }
 
 
