@@ -108,10 +108,10 @@ Test_ObjectUtils()
 public interface A : Halfdecent.IEquatable< A > {}
 public interface B : Halfdecent.IEquatable< B > {}
 public class C : A, B {
-    bool Halfdecent.IEquatable<A>.Equals( A that ) {
+    public bool Equals( A that ) {
         return Equatable.Equals( this, that );
     }
-    bool Halfdecent.IEquatable<A>.DirectionalEquals(
+    public bool DirectionalEquals(
         A that
     ) {
         return true;
@@ -119,10 +119,10 @@ public class C : A, B {
     int Halfdecent.IEquatable<A>.GetHashCode() {
         return 0xCA;
     }
-    bool Halfdecent.IEquatable<B>.Equals( B that ) {
+    public bool Equals( B that ) {
         return Equatable.Equals( this, that );
     }
-    bool Halfdecent.IEquatable<B>.DirectionalEquals(
+    public bool DirectionalEquals(
         B that
     ) {
         return true;
@@ -134,10 +134,10 @@ public class C : A, B {
     public override int GetHashCode() { throw new Exception(); }
 }
 public class D : A, B {
-    bool Halfdecent.IEquatable<A>.Equals( A that ) {
+    public bool Equals( A that ) {
         return Equatable.Equals( this, that );
     }
-    bool Halfdecent.IEquatable<A>.DirectionalEquals(
+    public bool DirectionalEquals(
         A that
     ) {
         return false;
@@ -145,10 +145,10 @@ public class D : A, B {
     int Halfdecent.IEquatable<A>.GetHashCode() {
         return 0xDA;
     }
-    bool Halfdecent.IEquatable<B>.Equals( B that ) {
+    public bool Equals( B that ) {
         return Equatable.Equals( this, that );
     }
-    bool Halfdecent.IEquatable<B>.DirectionalEquals(
+    public bool DirectionalEquals(
         B that
     ) {
         return true;
