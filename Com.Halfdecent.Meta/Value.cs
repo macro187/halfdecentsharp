@@ -27,6 +27,7 @@ Com.Halfdecent.Meta
 
 public abstract class
 Value
+    : Halfdecent.IEquatable< Value >
 {
 
 
@@ -78,8 +79,11 @@ string
 ToString();
 
 
-/// Determine whether this <tt>Value</tt> represents the same value as another
-///
+
+// -----------------------------------------------------------------------------
+// IEquatable< Value >
+// -----------------------------------------------------------------------------
+
 public virtual
 bool
 Equals(
@@ -89,6 +93,24 @@ Equals(
     return
         that != null &&
         that.GetType() == this.GetType();
+}
+
+
+public
+bool
+DirectionalEquals(
+    Value that
+)
+{
+    return this.Equals( that );
+}
+
+
+public override
+int
+GetHashCode()
+{
+    return this.GetType().GetHashCode();
 }
 
 
@@ -107,14 +129,6 @@ Equals(
         that != null &&
         that is Value &&
         this.Equals( (Value)that );
-}
-
-
-public override
-int
-GetHashCode()
-{
-    return this.GetType().GetHashCode();
 }
 
 
