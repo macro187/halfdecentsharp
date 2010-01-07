@@ -43,6 +43,8 @@ Stream<
 // Static Properties
 // -----------------------------------------------------------------------------
 
+/// A stream that yields no items
+///
 public static
 IStream< T >
 Empty
@@ -60,8 +62,8 @@ empty = new Stream< T >();
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new stream that yields a specified series of items, or no
-/// items at all
+/// Initialise a new stream that yields a specified series of items, or none
+/// at all
 ///
 public
 Stream(
