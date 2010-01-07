@@ -45,10 +45,10 @@ LocalisedBase<
 /// Parent culture fallback algorithm
 ///
 public static
-IEnumerable< CultureInfo >
-/// @returns
-/// - Must be <tt>NonNull</tt>
-/// - Yielded items must be <tt>NonNull</tt>
+    IEnumerable< CultureInfo >
+    /// @returns
+    /// - Must not be <tt>null</tt>
+    /// - Yielded items must not be <tt>null</tt>
 ParentFallbacksFor(
     CultureInfo culture
 )
@@ -64,11 +64,12 @@ ParentFallbacksFor(
 
 // TODO Fallback algorithm which also checks other regions with the same
 //      language in some prioritised order eg:
-//        en-AU => en, en-US, en-GB, en-CA, ..., (invariant)
-//        fr-CA => fr, fr-FR, ..., (invariant)
+//
+//          en-AU => en, en-US, en-GB, en-CA, ..., (invariant)
+//          fr-CA => fr, fr-FR, ..., (invariant)
 //
 //public static
-//IEnumerable< CultureInfo >
+//    IEnumerable< CultureInfo >
 //PrioritisedRegionFallbacksFor(
 //    CultureInfo culture
 //)
@@ -83,7 +84,7 @@ ParentFallbacksFor(
 // -----------------------------------------------------------------------------
 
 protected virtual
-bool
+    bool
 TryDefault(
     out T value
 )
@@ -94,7 +95,7 @@ TryDefault(
 
 
 protected virtual
-bool
+    bool
 TryFor(
     CultureInfo culture,
     out T       value
@@ -106,7 +107,7 @@ TryFor(
 
 
 protected virtual
-IEnumerable< CultureInfo >
+    IEnumerable< CultureInfo >
 FallbacksFor(
     CultureInfo culture
 )
@@ -121,7 +122,7 @@ FallbacksFor(
 // -----------------------------------------------------------------------------
 
 protected override
-T
+    T
 ForCulture(
     CultureInfo culture
 )

@@ -39,7 +39,7 @@ ObjectUtils
 /// Also handles <tt>null</tt>
 ///
 public static
-string
+    string
 ToString(
     object obj
 )

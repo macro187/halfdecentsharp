@@ -55,7 +55,9 @@ Localised<
 /// Retrieve the most applicable variation for a specified culture
 ///
 /// If a variation is not available for the exact culture specified, the
-/// "closest" available variant will be provided.
+/// "closest" available variant will be provided.  A useful value for some
+/// culture or another will always be available;  This indexer never returns
+/// <tt>null</tt>.
 ///
 /// @exception ArgumentNullException
 /// The specified <tt>culture</tt> is <tt>null</tt>
@@ -66,10 +68,6 @@ Localised<
 ///
 public
 T
-/// @returns The most applicable variation for the specified culture.
-/// A useful value for some culture or another will always be available;  This
-/// method never returns <tt>null</tt>.
-///
 this[
     CultureInfo culture
 ]
@@ -93,15 +91,14 @@ this[
 /// Variation retrieval implementation
 ///
 protected abstract
-T
-/// @returns A variation for the specified <tt>culture</tt>
-///
-/// Implementations must never return <tt>null</tt>
+    T
+    /// @returns
+    /// A variation for the specified <tt>culture</tt>
+    /// - Must never be <tt>null</tt>
 ForCulture(
     CultureInfo culture
     ///< The culture for which a variation is desired
-    ///
-    ///  Implementations are guaranteed this will never be <tt>null</tt>
+    ///  - Will never be <tt>null</tt>
 );
 
 
@@ -113,7 +110,7 @@ ForCulture(
 /// Generate a string representation of this object
 ///
 public override
-string
+    string
 ToString()
 {
     return this[ CultureInfo.CurrentCulture ].ToString();

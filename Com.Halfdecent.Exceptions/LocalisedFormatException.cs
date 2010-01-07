@@ -26,7 +26,7 @@ Com.Halfdecent.Exceptions
 
 
 // =============================================================================
-/// <tt>System.FormatException</tt> that implements
+/// A <tt>System.FormatException</tt> that is also a
 /// <tt>ILocalisedException</tt>
 // =============================================================================
 

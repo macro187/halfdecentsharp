@@ -26,7 +26,7 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// Localised< T > widening type adapter
+/// Localised< T > covariant type adapter
 // =============================================================================
 
 public class
@@ -34,7 +34,7 @@ LocalisedTypeAdapter<
     TFrom,
     TTo
 >
-    :Localised< TTo >
+    : Localised< TTo >
     where TFrom : TTo
 {
 
@@ -74,7 +74,7 @@ From
 // -----------------------------------------------------------------------------
 
 protected override
-TTo
+    TTo
 ForCulture(
     CultureInfo culture
 )

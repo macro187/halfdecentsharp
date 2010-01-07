@@ -50,7 +50,7 @@ Value()
 /// Produce a reference to the value of a particular property of this value
 ///
 public
-Property
+    Property
 Property(
     string name
 )
@@ -63,7 +63,7 @@ Property(
 /// given a particular index
 ///
 public
-Indexer
+    Indexer
 Indexer(
     object index
 )
@@ -75,7 +75,7 @@ Indexer(
 /// Produce a pseudo source code representation of this value reference
 ///
 public abstract override
-string
+    string
 ToString();
 
 
@@ -85,7 +85,7 @@ ToString();
 // -----------------------------------------------------------------------------
 
 public virtual
-bool
+    bool
 Equals(
     Value that
 )
@@ -97,7 +97,7 @@ Equals(
 
 
 public
-bool
+    bool
 DirectionalEquals(
     Value that
 )
@@ -107,7 +107,7 @@ DirectionalEquals(
 
 
 public override
-int
+    int
 GetHashCode()
 {
     return this.GetType().GetHashCode();
@@ -120,7 +120,7 @@ GetHashCode()
 // -----------------------------------------------------------------------------
 
 public override sealed
-bool
+    bool
 Equals(
     object that
 )
@@ -140,7 +140,7 @@ Equals(
 /// Format an object like a source code literal
 ///
 public static
-string
+    string
 FormatLiteral(
     object value
 )

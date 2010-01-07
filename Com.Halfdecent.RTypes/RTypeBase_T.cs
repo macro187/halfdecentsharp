@@ -112,7 +112,7 @@ Predicate(
 // -----------------------------------------------------------------------------
 
 public virtual
-IRType
+    IRType
 GetUnderlying()
 {
     return this;

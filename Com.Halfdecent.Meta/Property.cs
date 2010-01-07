@@ -74,7 +74,7 @@ Name
 // -----------------------------------------------------------------------------
 
 protected override
-string
+    string
 ComponentToString()
 {
     return string.Concat( ".", this.Name );
@@ -82,7 +82,7 @@ ComponentToString()
 
 
 protected override
-bool
+    bool
 ComponentEquals(
     Member item
 )
@@ -97,7 +97,7 @@ ComponentEquals(
 // -----------------------------------------------------------------------------
 
 public override
-int
+    int
 GetHashCode()
 {
     return

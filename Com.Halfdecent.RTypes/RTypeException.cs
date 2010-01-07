@@ -90,7 +90,7 @@ RType
 // -----------------------------------------------------------------------------
 
 public override
-Localised< string >
+    Localised< string >
 SayMessage(
     Localised< string > reference
 )

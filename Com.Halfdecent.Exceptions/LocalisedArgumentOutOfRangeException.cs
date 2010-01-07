@@ -144,7 +144,9 @@ ShimMessage
 public override
 object
 ActualValue
-{ get { return this.actualvalue; } }
+{
+    get { return this.actualvalue; }
+}
 
 private
 object
@@ -159,7 +161,9 @@ actualvalue;
 public override
 string
 ParamName
-{ get { return this.paramname; } }
+{
+    get { return this.paramname; }
+}
 
 private
 string

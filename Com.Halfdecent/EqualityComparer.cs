@@ -36,7 +36,7 @@ EqualityComparer
 // -----------------------------------------------------------------------------
 
 public static
-IEqualityComparer< T >
+    IEqualityComparer< T >
 Contravary<
     TFrom,
     T

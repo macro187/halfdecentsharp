@@ -43,7 +43,7 @@ EnumerableUtils
 /// Generate an enumerable that yields a single instance of this item
 ///
 public static
-IEnumerable< T >
+    IEnumerable< T >
 AsSingleItemEnumerable<
     T
 >(
@@ -58,7 +58,7 @@ AsSingleItemEnumerable<
 /// item
 ///
 public static
-IEnumerable< T >
+    IEnumerable< T >
 Append<
     T
 >(
@@ -75,7 +75,7 @@ Append<
 /// Covary the enumerable to one of items of a less-specific type
 ///
 public static
-IEnumerable< TTo >
+    IEnumerable< TTo >
 Covary<
     TFrom,
     TTo

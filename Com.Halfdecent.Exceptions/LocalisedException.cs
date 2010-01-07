@@ -26,8 +26,7 @@ Com.Halfdecent.Exceptions
 
 
 // =============================================================================
-/// <tt>System.Exception</tt> subclass that implements
-/// <tt>ILocalisedException</tt>
+/// A <tt>System.Exception</tt> that is also an <tt>ILocalisedException</tt>
 // =============================================================================
 
 public class

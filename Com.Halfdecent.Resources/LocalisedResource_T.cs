@@ -29,13 +29,13 @@ Com.Halfdecent.Resources
 
 
 // =============================================================================
-/// A <tt>Localised< T ></tt> representing embedded resources of a particular
+/// A <tt>Localised<T></tt> representing embedded resources of a particular
 /// name belonging to a particular type
 ///
 /// This uses a parent culture fallback algorithm, so if no resource is
 /// available for the exact culture specified, that culture's neutral culture
 /// will be tried, followed by the invariant culture.  See
-/// <tt>LocalisedBase< T >.ParentFallbacksFor()</tt>.
+/// <tt>LocalisedBase<T>.ParentFallbacksFor()</tt>.
 // =============================================================================
 
 public class
@@ -104,7 +104,7 @@ InternalResourceManager
     sourcetype;
 
     protected override
-    ResourceSet
+        ResourceSet
     InternalGetResourceSet(
         CultureInfo culture,
         bool        Createifnotexists,
@@ -134,7 +134,7 @@ InternalResourceManager
 // -----------------------------------------------------------------------------
 
 protected override
-bool
+    bool
 TryFor(
     CultureInfo culture,
     out T       value
@@ -186,7 +186,7 @@ TryFor(
 
 
 protected override
-IEnumerable< CultureInfo >
+    IEnumerable< CultureInfo >
 FallbacksFor(
     CultureInfo culture
 )

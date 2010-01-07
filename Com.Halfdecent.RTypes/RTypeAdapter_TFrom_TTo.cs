@@ -113,7 +113,7 @@ Predicate(
 // -----------------------------------------------------------------------------
 
 public virtual
-IRType
+    IRType
 GetUnderlying()
 {
     return this.From.GetUnderlying();

@@ -72,12 +72,12 @@ Parent
 // -----------------------------------------------------------------------------
 
 protected abstract
-string
+    string
 ComponentToString();
 
 
 protected abstract
-bool
+    bool
 ComponentEquals(
     Member that
 );
@@ -89,7 +89,7 @@ ComponentEquals(
 // -----------------------------------------------------------------------------
 
 public override
-string
+    string
 ToString()
 {
     return
@@ -100,7 +100,7 @@ ToString()
 
 
 public override
-bool
+    bool
 Equals(
     Value that
 )
@@ -118,7 +118,7 @@ Equals(
 // -----------------------------------------------------------------------------
 
 public override
-int
+    int
 GetHashCode()
 {
     return

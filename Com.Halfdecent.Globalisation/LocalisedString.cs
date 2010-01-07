@@ -46,10 +46,11 @@ LocalisedString
 /// <tt>System.String.Format()</tt> on-demand in a culture-sensitive fashion.
 ///
 public static
-Localised< string >
-/// @returns A <tt>Localised< string ></tt> subclass that performs the
-/// <tt>System.String.Format()</tt> operation on-demand in a culture-sensitive
-/// fashion
+    Localised< string >
+    /// @returns
+    /// A <tt>Localised< string ></tt> subclass that performs the
+    /// <tt>System.String.Format()</tt> operation on-demand in a
+    /// culture-sensitive fashion
 Format(
     Localised< string > format,
     ///< (see <tt>System.String</tt>)

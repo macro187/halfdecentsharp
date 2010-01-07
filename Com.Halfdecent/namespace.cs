@@ -162,9 +162,7 @@
 ///         <tt>GetHashCode()</tt>, and an <tt>Equals()</tt> that gives both
 ///         objects their say in whether they are equal or not.
 ///
-///         Abstract types may also wish to provide a
-///         <tt>System.Collections.Generic.IEqualityComparer<T></tt>
-///         implementation in terms of the above.
+///         TODO: Introduce <tt>IEqualityComparer<T></tt> and friends
 ///
 ///         TODO: What's the pattern for object.Equals() and
 ///         object.GetHashCode()?  Leave as default?  Always false?

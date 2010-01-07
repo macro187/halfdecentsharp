@@ -26,8 +26,8 @@ Com.Halfdecent.Resources
 
 
 // =============================================================================
-/// A <tt>Localised< string ></tt> that represents a (possibly)
-/// localised string
+/// A <tt>Localised< string ></tt> that represents a (possibly) localised
+/// string
 // =============================================================================
 
 public class
@@ -95,7 +95,7 @@ Untranslated
 // -----------------------------------------------------------------------------
 
 protected override
-bool
+    bool
 TryDefault(
     out string value
 )

@@ -32,7 +32,7 @@
 /// neutral culture's parent is the invariant culture.  For example,
 /// <tt>en-AU -> en -> invariant</tt>.
 // =============================================================================
-//
+
 namespace
 Com.Halfdecent.Globalisation
 {

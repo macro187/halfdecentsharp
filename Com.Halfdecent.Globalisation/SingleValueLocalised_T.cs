@@ -67,7 +67,7 @@ value;
 // -----------------------------------------------------------------------------
 
 protected override
-T
+    T
 ForCulture(
     CultureInfo culture
 )

@@ -83,7 +83,7 @@ Args
 // -----------------------------------------------------------------------------
 
 protected override
-string
+    string
 ForCulture(
     CultureInfo culture
 )

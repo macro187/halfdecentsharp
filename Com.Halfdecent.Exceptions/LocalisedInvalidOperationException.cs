@@ -26,7 +26,7 @@ Com.Halfdecent.Exceptions
 
 
 // =============================================================================
-/// <tt>System.InvalidOperationException</tt> that implements
+/// A <tt>System.InvalidOperationException</tt> that is also an
 /// <tt>ILocalisedException</tt>
 // =============================================================================
 

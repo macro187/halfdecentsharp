@@ -49,7 +49,7 @@ Resource
 // -----------------------------------------------------------------------------
 
 public static
-Localised< string >
+    Localised< string >
 _S(
     Type            type,
     string          untranslated,
@@ -86,9 +86,10 @@ _S(
 /// <tt>name</tt> is a blank string
 ///
 public static
-Localised< T >
-/// @returns A <tt>Localised< T ></tt> whose localised variations are embedded
-/// resources
+    Localised< T >
+    /// @returns
+    /// A <tt>Localised< T ></tt> whose localised variations are embedded
+    /// resources
 _R<
     T
     ///< Type of the resource(s)

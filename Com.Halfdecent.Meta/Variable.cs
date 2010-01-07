@@ -73,7 +73,7 @@ Name
 // -----------------------------------------------------------------------------
 
 public override
-string
+    string
 ToString()
 {
     return this.Name;
@@ -81,7 +81,7 @@ ToString()
 
 
 public override
-bool
+    bool
 Equals(
     Value that
 )
@@ -98,7 +98,7 @@ Equals(
 // -----------------------------------------------------------------------------
 
 public override
-int
+    int
 GetHashCode()
 {
     return

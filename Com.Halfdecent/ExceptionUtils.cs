@@ -38,7 +38,7 @@ ExceptionUtils
 /// Iterate from this exception down the <tt>.InnerException</tt> chain
 ///
 public static
-IEnumerable< Exception >
+    IEnumerable< Exception >
 Chain(
     this Exception e
 )

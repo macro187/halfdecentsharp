@@ -49,7 +49,7 @@ Literal()
 // -----------------------------------------------------------------------------
 
 public override
-string
+    string
 ToString()
 {
     return "a source code literal value";
@@ -57,7 +57,7 @@ ToString()
 
 
 public override
-bool
+    bool
 Equals(
     Value that
 )

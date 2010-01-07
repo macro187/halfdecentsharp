@@ -124,7 +124,7 @@ MessageFormat
 // -----------------------------------------------------------------------------
 
 public virtual
-Localised< string >
+    Localised< string >
 SayMessage(
     Localised< string > reference
 )
