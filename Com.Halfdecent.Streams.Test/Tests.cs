@@ -102,17 +102,17 @@ Test_IStreamBase_T()
     Print( "Item #1" );
     b = s.TryPull( out i );
     Assert( b );
-    AssertEqual( i, i );
+    Assert( i == 1 );
 
     Print( "Item #2" );
     b = s.TryPull( out i );
     Assert( b );
-    AssertEqual( i, 2 );
+    Assert( i == 2 );
 
     Print( "Item #3" );
     b = s.TryPull( out i );
     Assert( b );
-    AssertEqual( i, 3 );
+    Assert( i == 3 );
 
     Print( "End of stream" );
     b = s.TryPull( out i );
@@ -132,15 +132,15 @@ Test_Stream_Pull()
 
     Print( "Item #1" );
     i = s.Pull();
-    AssertEqual( i, i );
+    Assert( i == 1 );
 
     Print( "Item #2" );
     i = s.Pull();
-    AssertEqual( i, 2 );
+    Assert( i == 2 );
 
     Print( "Item #3" );
     i = s.Pull();
-    AssertEqual( i, 3 );
+    Assert( i == 3 );
 
     Print( "EmptyException" );
     Expect< EmptyException >( delegate() {
@@ -190,9 +190,9 @@ Test_Sink_Push()
     s.Push( 1 );
     s.Push( 2 );
     Print( "Check pushed items" );
-    AssertEqual( ts.Items[0], 0 );
-    AssertEqual( ts.Items[1], 1 );
-    AssertEqual( ts.Items[2], 2 );
+    Assert( ts.Items[0] == 0 );
+    Assert( ts.Items[1] == 1 );
+    Assert( ts.Items[2] == 2 );
     Print( "FullException if we try to push another" );
     Expect< FullException >( delegate() {
         s.Push( 3 );

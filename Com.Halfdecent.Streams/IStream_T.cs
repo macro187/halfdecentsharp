@@ -49,8 +49,9 @@ IStream<
 /// Once this method returns <tt>false</tt>, indicating the end of the stream
 /// has been reached, it will never produce items again.
 ///
-bool
-/// @returns Whether there was another item in the stream
+    bool
+    /// @returns
+    /// Whether there was another item in the stream
 TryPull(
     out T item
     ///< The next item in the stream

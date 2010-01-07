@@ -16,10 +16,10 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent.Testing;
+using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Filters;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Streams.SystemInterop;
@@ -57,7 +57,7 @@ PassOne
     : FilterBase< int, int >
 {
     protected override
-    IEnumerator< bool >
+    SCG.IEnumerator< bool >
     Process()
     {
         yield return false;
@@ -73,7 +73,7 @@ PassThrough
     : FilterBase< int, int >
 {
     protected override
-    IEnumerator< bool >
+    SCG.IEnumerator< bool >
     Process()
     {
         for( ;; ) {
@@ -91,7 +91,7 @@ DoubleUp
     : FilterBase< int, int >
 {
     protected override
-    IEnumerator< bool >
+    SCG.IEnumerator< bool >
     Process()
     {
         for( ;; ) {
@@ -110,7 +110,7 @@ AddPairs
     : FilterBase< int, int >
 {
     protected override
-    IEnumerator< bool >
+    SCG.IEnumerator< bool >
     Process()
     {
         for( ;; ) {
@@ -131,8 +131,8 @@ Test_FilterBase_Push()
 {
     int[]               from = new int[] { 1, 2, 3, 4 };
     IFilter< int, int > f;
-    List< int >         to = new List< int >();
-    List< int >         too = new List< int >();
+    SCG.List< int >     to = new SCG.List< int >();
+    SCG.List< int >     too = new SCG.List< int >();
 
     Print( "1-to-1 filter" );
     to.Clear();
@@ -156,7 +156,7 @@ Test_FilterBase_Push()
     to.Clear();
     f = new PassOne { To = to.AsGrowableShrinkableBag().AsSink() };
     f.Push( 1 );
-    AssertEqual( f.TryPush( 2 ), false );
+    Assert( !f.TryPush( 2 ) );
     Assert( to.SequenceEqual( new int[] { 1 } ) );
 
     Print( "1-to-many filter, switch .To mid-block" );
@@ -187,7 +187,7 @@ Test_FilterBase_Pull()
         new int[] { 2 }.AsBag();
     IFilter< int, int > f;
     GrowableShrinkableBagFromSystemCollectionAdapter< int > to =
-        new List< int >().AsGrowableShrinkableBag();
+        new SCG.List< int >().AsGrowableShrinkableBag();
 
     Print( "1-to-1 filter" );
     f = new PassThrough { From = from.Stream() };
@@ -221,7 +221,7 @@ Test_FilterBase_Pull()
     f = new AddPairs { From = from1.Stream() };
     to.RemoveAll();
     f.EmptyTo( to.AsSink() );
-    AssertEqual( to.Count.ToDecimal(), 0m );
+    Assert( to.Count.Equals( Integer.From( 0 ) ) );
     f.From = from2.Stream();
     f.EmptyTo( to.AsSink() );
     Assert( to.Stream().AsEnumerable().SequenceEqual( new int[] { 3 } ) );

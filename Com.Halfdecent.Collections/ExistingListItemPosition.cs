@@ -50,10 +50,9 @@ ExistingListItemPosition(
     : base(
         _S("{0} is the position of an existing item"),
         _S("{0} is not the position of an existing item"),
-        _S("{0} must be the position of an existing item")
-    )
+        _S("{0} must be the position of an existing item") )
 {
-    new NonNull().Check( list, new Parameter( "list" ) );
+    new NonNull().Require( list, new Parameter( "list" ) );
     this.List = list;
 }
 
@@ -77,47 +76,41 @@ List
 // RTypeBase< Integer >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-Equals(
-    IRType t
-)
-{
-    return ((ExistingListItemPosition< T >)t).List.Equals( this.List );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IRType< IInteger >
-// -----------------------------------------------------------------------------
-
 public override
 SCG.IEnumerable< IRType< IInteger > >
-Components
+GetComponents()
 {
-    get
-    {
-        return
-            base.Components
-            .Append( new NonNegative()
-                .Contravary< IReal, IInteger >() )
-            .Append( new LT( this.List.Count )
-                .Contravary< object, IInteger >() );
-    }
+    return
+        base.GetComponents()
+        .Append( new NonNegative()
+            .Contravary< IReal, IInteger >() )
+        .Append(
+            new LT< IReal >(
+                this.List.Count, new ComparableComparer< IReal >() )
+            .Contravary< IReal, IInteger >() );
 }
 
 
+public override
+    bool
+DirectionalEquals(
+    IRType that
+)
+{
+    return
+        base.DirectionalEquals( that ) &&
+        ((ExistingListItemPosition< T >)that.GetUnderlying()).List.Equals(
+            this.List );
+}
 
-// -----------------------------------------------------------------------------
-// System.Object
-// -----------------------------------------------------------------------------
 
 public override
-int
+    int
 GetHashCode()
 {
-    return base.GetHashCode() ^ this.List.GetHashCode();
+    return
+        base.GetHashCode() ^
+        this.List.GetHashCode();
 }
 
 

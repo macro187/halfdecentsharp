@@ -48,7 +48,7 @@ Remove<
     T                           item
 )
 {
-    new NonNull().Check( bag, new Parameter( "bag" ) );
+    new NonNull().Require( bag, new Parameter( "bag" ) );
     bag.TryRemove( item );
 }
 

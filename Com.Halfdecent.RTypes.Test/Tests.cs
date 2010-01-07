@@ -474,19 +474,19 @@ Test_Contravariance()
     Assert( w.Equals( t ) );
 
     Print( "Same .Equals() results among contravariants as among originals" );
-    AssertEqual(
-        t.Equals( u ),
+    Assert(
+        t.Equals( u ) ==
         w.Equals( x ) );
-    AssertEqual(
-        u.Equals( v ),
+    Assert(
+        u.Equals( v ) ==
         x.Equals( y ) );
 
     Print( "Same .Equals() results among mixed original/contravariants as among originals" );
-    AssertEqual(
-        t.Equals( u ),
+    Assert(
+        t.Equals( u ) ==
         t.Equals( x ) );
-    AssertEqual(
-        u.Equals( v ),
+    Assert(
+        u.Equals( v ) ==
         u.Equals( y ) );
 }
 
@@ -679,7 +679,7 @@ Test_InInterval_T()
     IRType< int > t3 = new InInterval< int >( new Interval< int >( 1, 20, c ) );
     Assert( t1.Equals( t2 ) );
     Assert( !( t1.Equals( t3 ) ) );
-    AssertEqual( t1.GetHashCode(), t2.GetHashCode() );
+    Assert( t1.GetHashCode() == t2.GetHashCode() );
 }
 
 

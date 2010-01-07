@@ -48,7 +48,7 @@ GrowableBagToSinkAdapter(
     IGrowableBag< T > bag
 )
 {
-    new NonNull().Check( bag, new Parameter( "bag" ) );
+    new NonNull().Require( bag, new Parameter( "bag" ) );
     this.Bag = bag;
 }
 

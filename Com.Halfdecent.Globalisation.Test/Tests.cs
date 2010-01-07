@@ -67,11 +67,11 @@ Test_Conversions()
     Localised<string> ls = new SingleValueLocalised<string>( "Hello" );
 
     Print( "Localised<string> can be passed to a function expecting a string" );
-    AssertEqual( WantString( ls ), "Hello" );
+    Assert( WantString( ls ) == "Hello" );
 
     Print(
         "A string can be passed to a function expecting a Localised<string>" );
-    AssertEqual( WantLocalised( "Hello" ), "Hello" );
+    Assert( WantLocalised( "Hello" ) == "Hello" );
 }
 
 
@@ -84,7 +84,7 @@ Test_LocalisedTypeAdapter()
     Localised< object > o = new LocalisedTypeAdapter< string, object >( s );
 
     Print( "Correct value comes through adapter" );
-    AssertEqual( o.ToString(), "hello" );
+    Assert( o.ToString() == "hello" );
 }
 
 
@@ -134,17 +134,17 @@ Test_AssignmentRetrieval()
 
         Print( "Correct value when exact culture is available" );
         Thread.CurrentThread.CurrentCulture = ja_JP;
-        AssertEqual<string>( ls, "Konnichiwa from Japan" );
+        Assert( ls == "Konnichiwa from Japan" );
 
 
         Print( "Correct value when only neutral is available" );
         Thread.CurrentThread.CurrentCulture = fr_CA;
-        AssertEqual<string>( ls, "Bonjour" );
+        Assert( ls == "Bonjour" );
 
 
         Print( "Correct value when only invariant is available" );
         Thread.CurrentThread.CurrentCulture = en_AU;
-        AssertEqual<string>( ls, "(invariant)" );
+        Assert( ls == "(invariant)" );
 
 
     } finally {
@@ -184,8 +184,8 @@ Test_LocalisedString_Format()
 
     Print( "Check that the resultant Localised<string> appears correctly in " +
         "different cultures" );
-    AssertEqual( both[en], "It's a(english) : b(english)" );
-    AssertEqual( both[fr], "C'est a(french) : b(french)" );
+    Assert( both[en] == "It's a(english) : b(english)" );
+    Assert( both[fr] == "C'est a(french) : b(french)" );
 }
 
 
@@ -202,17 +202,17 @@ Test_LocalisedExceptionBase()
 
     Print( "Message" );
     ILocalisedException le = te;
-    AssertEqual( le.Message[ en ], "Test Exception" );
-    AssertEqual( le.Message[ fr ], "Le Test Exception" );
+    Assert( le.Message[ en ] == "Test Exception" );
+    Assert( le.Message[ fr ] == "Le Test Exception" );
 
     Print( "Message (via Exception.Message)" );
     Exception e = te;
     current = Thread.CurrentThread.CurrentCulture;
     try {
         Thread.CurrentThread.CurrentCulture = en;
-        AssertEqual( e.Message, "Test Exception" );
+        Assert( e.Message == "Test Exception" );
         Thread.CurrentThread.CurrentCulture = fr;
-        AssertEqual( e.Message, "Le Test Exception" );
+        Assert( e.Message == "Le Test Exception" );
     } finally {
         Thread.CurrentThread.CurrentCulture = current;
     }
@@ -232,17 +232,17 @@ Test_SimpleLocalisedExceptionBase()
 
     Print( "Message" );
     ILocalisedException le = te;
-    AssertEqual( le.Message[ en ], "Simple Test Exception" );
-    AssertEqual( le.Message[ fr ], "Le Simple Test Exception" );
+    Assert( le.Message[ en ] == "Simple Test Exception" );
+    Assert( le.Message[ fr ] == "Le Simple Test Exception" );
 
     Print( "Message (via Exception.Message)" );
     Exception e = te;
     current = Thread.CurrentThread.CurrentCulture;
     try {
         Thread.CurrentThread.CurrentCulture = en;
-        AssertEqual( e.Message, "Simple Test Exception" );
+        Assert( e.Message == "Simple Test Exception" );
         Thread.CurrentThread.CurrentCulture = fr;
-        AssertEqual( e.Message, "Le Simple Test Exception" );
+        Assert( e.Message == "Le Simple Test Exception" );
     } finally {
         Thread.CurrentThread.CurrentCulture = current;
     }

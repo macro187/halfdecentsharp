@@ -61,47 +61,47 @@ Test_Resource_Get()
 
 
     Print( "Correct when exact version exists" );
-    AssertEqual(
+    Assert(
         Resource.Get<string>(
             typeof(TestRes),
             "teststring",
-            en_AU ),
+            en_AU ) ==
         "Hello (en-AU)" );
 
 
     Print( "Correct when only neutral version exists" );
-    AssertEqual(
+    Assert(
         Resource.Get<string>(
             typeof(TestRes),
             "teststring",
-            en_CA ),
+            en_CA ) ==
         "Hello (en)" );
 
 
     Print( "Correct when only invariant version exists" );
-    AssertEqual(
+    Assert(
         Resource.Get<string>(
             typeof(TestRes),
             "teststring",
-            fr_FR ),
+            fr_FR ) ==
         "Hello (invariant)" );
 
 
     Print( "Null when no version exists (but other resources exist in the assembly)" );
-    AssertEqual(
+    Assert(
         Resource.Get<string>(
             typeof(TestRes),
             "nonexistent",
-            en_US ),
+            en_US ) ==
         null );
 
 
     Print( "Null when no version exists (no resources in the assembly at all)" );
-    AssertEqual(
+    Assert(
         Resource.Get<string>(
             typeof(NoRes),
             "nonexistent",
-            en_US ),
+            en_US ) ==
         null );
 }
 */
@@ -122,7 +122,7 @@ Test_Resource__R()
     Assert( ls != null );
 
     Print( "...and it works" );
-    AssertEqual( ls[ en_AU ], "Hello (en-AU)" );
+    Assert( ls[ en_AU ] == "Hello (en-AU)" );
 
 
     Print( "ResourceMissingException if missing (other resources exist)" );
@@ -162,13 +162,13 @@ Test_Resource__S()
     Assert( ls != null );
 
     Print( "Exact culture variation is correct" );
-    AssertEqual( ls[ en_AU ], "Hello (en-AU)" );
+    Assert( ls[ en_AU ] == "Hello (en-AU)" );
 
     Print( "Neutral culture variation is correct" );
-    AssertEqual( ls[ en_CA ], "Hello (en)" );
+    Assert( ls[ en_CA ] == "Hello (en)" );
 
     Print( "Invariant culture variation is correct" );
-    AssertEqual( ls[ fr_FR ], "Hello (invariant)" );
+    Assert( ls[ fr_FR ] == "Hello (invariant)" );
 
     Print( "Can retrieve without resource translations" );
     ls = Resource._S( typeof( NoRes ), "Hello (code)" );
@@ -177,10 +177,10 @@ Test_Resource__S()
     Assert( ls != null );
 
     Print( "Value is always the original untranslated string" );
-    AssertEqual( ls[ en_AU ], "Hello (code)" );
-    AssertEqual( ls[ en_CA ], "Hello (code)" );
-    AssertEqual( ls[ fr_FR ], "Hello (code)" );
-    AssertEqual( ls[ ja_JP ], "Hello (code)" );
+    Assert( ls[ en_AU ] == "Hello (code)" );
+    Assert( ls[ en_CA ] == "Hello (code)" );
+    Assert( ls[ fr_FR ] == "Hello (code)" );
+    Assert( ls[ ja_JP ] == "Hello (code)" );
 
 
     Print( "NOTE: CAN'T AUTOMATICALLY CHECK THE FOLLOWING, PLEASE VERIFY" );

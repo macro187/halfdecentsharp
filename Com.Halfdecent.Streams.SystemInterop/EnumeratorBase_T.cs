@@ -68,8 +68,9 @@ current;
 /// Once this method returns <tt>false</tt>, it will never be called again.
 ///
 protected virtual
-bool
-/// @returns Whether there was another item
+    bool
+    /// @returns
+    /// Whether there was another item
 MoveNext(
     out T nextItem
     ///< The next item
@@ -118,7 +119,7 @@ IEnumerator.Current
 
 
 public
-bool
+    bool
 MoveNext()
 {
     if( this.finished ) return false;
@@ -129,12 +130,12 @@ MoveNext()
 }
 
 
-/// (see <tt>IEnumerable.Reset()</tt>
+/// (see <tt>System.Collections.IEnumerable.Reset()</tt>)
 ///
 /// @exception InvalidOperationException
 /// Always
 public
-void
+    void
 Reset()
 {
     throw new LocalisedInvalidOperationException(
@@ -147,14 +148,14 @@ Reset()
 // IDisposable
 // -----------------------------------------------------------------------------
 
-/// (see <tt>IDisposable.Dispose()</tt>)
+/// (see <tt>System.IDisposable.Dispose()</tt>)
 ///
 /// The default implementation does nothing.  Override if appropriate.  Note
 /// that enumerators are unconditionally <tt>Dispose()</tt>d after being
 /// iterated by the C# <tt>foreach</tt> statement.
 ///
 public virtual
-void
+    void
 Dispose()
 {
 }

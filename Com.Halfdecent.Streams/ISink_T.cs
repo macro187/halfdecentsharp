@@ -55,8 +55,9 @@ ISink<
 
 /// Try to push an item into the sink
 ///
-bool
-/// @returns Whether the sink had capacity and was able to accept the item
+    bool
+    /// @returns
+    /// Whether the sink had capacity and was able to accept the item
 TryPush(
     T item
 );

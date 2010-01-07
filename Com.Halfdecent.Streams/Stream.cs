@@ -45,14 +45,14 @@ Stream
 /// There were no more items available from <tt>stream</tt>
 ///
 public static
-T
+    T
 Pull<
     T
 >(
     this IStream< T > stream
 )
 {
-    new NonNull().Check( stream, new Parameter( "stream" ) );
+    new NonNull().Require( stream, new Parameter( "stream" ) );
     T r;
     if( !stream.TryPull( out r ) )
         throw new EmptyException( new This() );
@@ -68,7 +68,7 @@ Pull<
 /// (via <tt>Sink.Push()</tt>)
 ///
 public static
-void
+    void
 EmptyTo<
     T
 >(
@@ -76,8 +76,8 @@ EmptyTo<
     ISink< T >          sink
 )
 {
-    new NonNull().Check( stream, new Parameter( "stream" ) );
-    new NonNull().Check( sink, new Parameter( "sink" ) );
+    new NonNull().Require( stream, new Parameter( "stream" ) );
+    new NonNull().Require( sink, new Parameter( "sink" ) );
     T item;
     while( stream.TryPull( out item ) )
         sink.Push( item );

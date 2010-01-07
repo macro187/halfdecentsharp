@@ -49,7 +49,7 @@ EnumeratorToEnumerableAdapter(
     IEnumerator< T > enumerator
 )
 {
-    new NonNull().Check( enumerator, new Parameter( "enumerator" ) );
+    new NonNull().Require( enumerator, new Parameter( "enumerator" ) );
     this.enumerator = enumerator;
 }
 
@@ -70,7 +70,7 @@ enumerator;
 // -----------------------------------------------------------------------------
 
 public
-IEnumerator< T >
+    IEnumerator< T >
 GetEnumerator()
 {
     return this.enumerator;
@@ -82,7 +82,7 @@ GetEnumerator()
 // IEnumerable
 // -----------------------------------------------------------------------------
 
-IEnumerator
+    IEnumerator
 IEnumerable.GetEnumerator()
 {
     return this.enumerator;
@@ -90,8 +90,6 @@ IEnumerable.GetEnumerator()
 
 
 
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

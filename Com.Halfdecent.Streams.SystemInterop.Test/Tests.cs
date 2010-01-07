@@ -108,17 +108,17 @@ Test_StreamFromEnumeratorAdapter_T()
     Print( "Item #1" );
     b = s.TryPull( out i );
     Assert( b );
-    AssertEqual( i, i );
+    Assert( i == 1 );
 
     Print( "Item #2" );
     b = s.TryPull( out i );
     Assert( b );
-    AssertEqual( i, 2 );
+    Assert( i == 2 );
 
     Print( "Item #3" );
     b = s.TryPull( out i );
     Assert( b );
-    AssertEqual( i, 3 );
+    Assert( i == 3 );
 
     Print( "End of stream" );
     b = s.TryPull( out i );
@@ -141,17 +141,17 @@ Test_StreamToEnumeratorAdapter_T()
     Print( "Item #1" );
     b = e.MoveNext();
     Assert( b );
-    AssertEqual( e.Current, 1 );
+    Assert( e.Current == 1 );
 
     Print( "Item #2" );
     b = e.MoveNext();
     Assert( b );
-    AssertEqual( e.Current, 2 );
+    Assert( e.Current == 2 );
 
     Print( "Item #3" );
     b = e.MoveNext();
     Assert( b );
-    AssertEqual( e.Current, 3 );
+    Assert( e.Current == 3 );
 
     Print( "End of enumerator" );
     b = e.MoveNext();
@@ -177,17 +177,17 @@ Test_EnumeratorToEnumerableAdapter_T()
     Print( "Item #1" );
     b = e.MoveNext();
     Assert( b );
-    AssertEqual( e.Current, 1 );
+    Assert( e.Current == 1 );
 
     Print( "Item #2" );
     b = e.MoveNext();
     Assert( b );
-    AssertEqual( e.Current, 2 );
+    Assert( e.Current == 2 );
 
     Print( "Item #3" );
     b = e.MoveNext();
     Assert( b );
-    AssertEqual( e.Current, 3 );
+    Assert( e.Current == 3 );
 
     Print( "End of enumerator" );
     b = e.MoveNext();

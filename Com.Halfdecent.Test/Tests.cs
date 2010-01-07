@@ -100,8 +100,8 @@ void
 Test_ObjectUtils()
 {
     Print( ".ToString()" );
-    AssertEqual( ObjectUtils.ToString( null ), "null" );
-    AssertEqual( ObjectUtils.ToString( "notnull" ), "notnull" );
+    Assert( ObjectUtils.ToString( null ) == "null" );
+    Assert( ObjectUtils.ToString( "notnull" ) == "notnull" );
 }
 
 

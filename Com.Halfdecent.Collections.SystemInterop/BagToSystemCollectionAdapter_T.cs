@@ -117,7 +117,7 @@ Count
         if( this.Bag.Count.GT( Integer.From( Int32.MaxValue ) ) )
             throw new LocalisedInvalidOperationException(
                 _S("This collection's .Count is greater than Int32.MaxValue") );
-        return Decimal.ToInt32( this.Bag.Count.ToDecimal() );
+        return Decimal.ToInt32( this.Bag.Count.GetValue() );
     }
 }
 

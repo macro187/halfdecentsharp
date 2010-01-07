@@ -16,14 +16,14 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Linq;
 using SCG = System.Collections.Generic;
+using System.Linq;
 using Com.Halfdecent.Testing;
-using Com.Halfdecent.Collections;
-using Com.Halfdecent.Collections.SystemInterop;
+using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Streams.SystemInterop;
+using Com.Halfdecent.Collections;
+using Com.Halfdecent.Collections.SystemInterop;
 
 
 namespace
@@ -61,7 +61,7 @@ Test_BagFromSystemCollectionAdapter()
     bag = new int[] {}.AsBag();
 
     Print( ".Count" );
-    AssertEqual( bag.Count.ToDecimal(), 0 );
+    Assert( bag.Count.Equals( Integer.From( 0 ) ) );
 
     Print( ".IsEmpty" );
     Assert( bag.IsEmpty );
@@ -81,7 +81,7 @@ Test_BagFromSystemCollectionAdapter()
     bag = new int[] { 1, 2, 3 }.AsBag();
 
     Print( ".Count" );
-    AssertEqual( bag.Count.ToDecimal(), 3 );
+    Assert( bag.Count.Equals( Integer.From( 3 ) ) );
 
     Print( ".IsEmpty" );
     Assert( !bag.IsEmpty );
@@ -111,7 +111,7 @@ Test_GrowableShrinkableBagFromSystemCollectionAdapter()
     SCG.List< int > to = new SCG.List< int >();
 
     Print( ".Count" );
-    AssertEqual( bag.Count.ToDecimal(), 0 );
+    Assert( bag.Count.Equals( Integer.From( 0 ) ) );
 
     Print( ".IsEmpty" );
     Assert( bag.IsEmpty );
@@ -132,7 +132,7 @@ Test_GrowableShrinkableBagFromSystemCollectionAdapter()
     foreach( int i in from ) bag.Add( i );
 
     Print( ".Count" );
-    AssertEqual( bag.Count.ToDecimal(), 3 );
+    Assert( bag.Count.Equals( Integer.From( 3 ) ) );
 
     Print( ".IsEmpty" );
     Assert( !bag.IsEmpty );
@@ -153,7 +153,7 @@ Test_GrowableShrinkableBagFromSystemCollectionAdapter()
     bag.Remove( 2 );
 
     Print( ".Count" );
-    AssertEqual( bag.Count.ToDecimal(), 2 );
+    Assert( bag.Count.Equals( Integer.From( 2 ) ) );
 
     Print( ".IsEmpty" );
     Assert( !bag.IsEmpty );
@@ -174,7 +174,7 @@ Test_GrowableShrinkableBagFromSystemCollectionAdapter()
     bag.RemoveAll();
 
     Print( ".Count" );
-    AssertEqual( bag.Count.ToDecimal(), 0 );
+    Assert( bag.Count.Equals( Integer.From( 0 ) ) );
 
     Print( ".IsEmpty" );
     Assert( bag.IsEmpty );
@@ -203,7 +203,7 @@ Test_BagToSystemCollectionAdapter()
     Assert( col.IsReadOnly );
 
     Print( ".Count" );
-    AssertEqual( col.Count, 0 );
+    Assert( col.Count == 0 );
 
     Print( ".Contains()" );
     Assert( !col.Contains( 1 ) );
@@ -212,11 +212,11 @@ Test_BagToSystemCollectionAdapter()
     Assert( !col.Contains( 4 ) );
 
     Print( "Null array to .CopyTo() throws ArgumentNullException" );
-    Expect< ArgumentNullException >( () => col.CopyTo( null, 0 ) );
+    Expect< System.ArgumentNullException >( () => col.CopyTo( null, 0 ) );
 
     Print( "Negative index to .CopyTo() throws ArgumentOutOfRangeException" );
     Expect<
-        ArgumentOutOfRangeException >(
+        System.ArgumentOutOfRangeException >(
         () => col.CopyTo( new int[]{}, -1 ) );
 
     Print( "Empty array to .CopyTo() allowed if collection is empty" );
@@ -229,13 +229,13 @@ Test_BagToSystemCollectionAdapter()
     Assert( list.SequenceEqual( new int[] {} ) );
 
     Print( ".Add() throws NotSupportedException" );
-    Expect< NotSupportedException >( () => col.Add( 1 ) );
+    Expect< System.NotSupportedException >( () => col.Add( 1 ) );
 
     Print( ".Clear() throws NotSupportedException" );
-    Expect< NotSupportedException >( () => col.Clear() );
+    Expect< System.NotSupportedException >( () => col.Clear() );
 
     Print( ".Remove() throws NotSupportedException" );
-    Expect< NotSupportedException >( () => col.Remove( 1 ) );
+    Expect< System.NotSupportedException >( () => col.Remove( 1 ) );
 
 
     Print( "Non-empty read-only collection" );
@@ -245,7 +245,7 @@ Test_BagToSystemCollectionAdapter()
     Assert( col.IsReadOnly );
 
     Print( ".Count" );
-    AssertEqual( col.Count, 3 );
+    Assert( col.Count == 3 );
 
     Print( ".Contains()" );
     Assert( col.Contains( 1 ) );
@@ -255,7 +255,7 @@ Test_BagToSystemCollectionAdapter()
 
     Print( "Array without enough space to .CopyTo() throws ArgumentException" );
     Expect<
-        ArgumentException >(
+        System.ArgumentException >(
         () => col.CopyTo( new int[]{ 0 }, 0 ) );
 
     Print( ".CopyTo() to check items" );
@@ -270,13 +270,13 @@ Test_BagToSystemCollectionAdapter()
     Assert( list.SequenceEqual( new int[] { 1, 2, 3 } ) );
 
     Print( ".Add() throws NotSupportedException" );
-    Expect< NotSupportedException >( () => col.Add( 1 ) );
+    Expect< System.NotSupportedException >( () => col.Add( 1 ) );
 
     Print( ".Clear() throws NotSupportedException" );
-    Expect< NotSupportedException >( () => col.Clear() );
+    Expect< System.NotSupportedException >( () => col.Clear() );
 
     Print( ".Remove() throws NotSupportedException" );
-    Expect< NotSupportedException >( () => col.Remove( 1 ) );
+    Expect< System.NotSupportedException >( () => col.Remove( 1 ) );
 
 
     Print( "Writable collection" );
@@ -286,7 +286,7 @@ Test_BagToSystemCollectionAdapter()
     Assert( !col.IsReadOnly );
 
     Print( ".Count" );
-    AssertEqual( col.Count, 0 );
+    Assert( col.Count == 0 );
 
     Print( ".Contains()" );
     Assert( !col.Contains( 1 ) );
@@ -306,7 +306,7 @@ Test_BagToSystemCollectionAdapter()
     col.Add( 3 );
 
     Print( ".Count" );
-    AssertEqual( col.Count, 3 );
+    Assert( col.Count == 3 );
 
     Print( ".Contains()" );
     Assert( col.Contains( 1 ) );
@@ -324,7 +324,7 @@ Test_BagToSystemCollectionAdapter()
     col.Remove( 2 );
 
     Print( ".Count" );
-    AssertEqual( col.Count, 2 );
+    Assert( col.Count == 2 );
 
     Print( ".Contains()" );
     Assert( col.Contains( 1 ) );
@@ -342,7 +342,7 @@ Test_BagToSystemCollectionAdapter()
     col.Clear();
 
     Print( ".Count" );
-    AssertEqual( col.Count, 0 );
+    Assert( col.Count == 0 );
 
     Print( ".Contains()" );
     Assert( !col.Contains( 1 ) );

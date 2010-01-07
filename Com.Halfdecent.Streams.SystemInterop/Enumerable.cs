@@ -44,14 +44,14 @@ Enumerable
 /// Present the enumerable as a stream
 ///
 public static
-IStream< T >
+    IStream< T >
 AsStream<
     T
 >(
     this SCG.IEnumerable< T > enumerable
 )
 {
-    new NonNull().Check( enumerable, new Parameter( "enumerable" ) );
+    new NonNull().Require( enumerable, new Parameter( "enumerable" ) );
     return new StreamFromEnumeratorAdapter< T >(
         enumerable.GetEnumerator() );
 }

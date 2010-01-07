@@ -61,52 +61,52 @@ Test_LocalisedExceptions()
     try {
         throw new LocalisedException( m, ie );
     } catch( LocalisedException e ) {
-        AssertEqual( e.Message, m );
-        AssertEqual( e.InnerException, ie );
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
     }
 
     Print( "LocalisedArgumentException" );
     try {
         throw new LocalisedArgumentException( m, pn, ie );
     } catch( LocalisedArgumentException e ) {
-        AssertEqual( e.Message, m );
-        AssertEqual( e.ParamName, pn );
-        AssertEqual( e.InnerException, ie );
+        Assert( e.Message == m );
+        Assert( e.ParamName == pn );
+        Assert( e.InnerException == ie );
     }
 
     Print( "LocalisedArgumentNullException" );
     try {
         throw new LocalisedArgumentNullException( pn, m, ie );
     } catch( LocalisedArgumentNullException e ) {
-        AssertEqual( e.ParamName, pn );
-        AssertEqual( e.Message, m );
-        AssertEqual( e.InnerException, ie );
+        Assert( e.ParamName == pn );
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
     }
 
     Print( "LocalisedArgumentOutOfRangeException" );
     try {
         throw new LocalisedArgumentOutOfRangeException( pn, av, m, ie );
     } catch( LocalisedArgumentOutOfRangeException e ) {
-        AssertEqual( e.ParamName, pn );
-        AssertEqual( e.ActualValue, av );
-        AssertEqual( e.Message, m );
-        AssertEqual( e.InnerException, ie );
+        Assert( e.ParamName == pn );
+        Assert( e.ActualValue == av );
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
     }
 
     Print( "LocalisedFormatException" );
     try {
         throw new LocalisedFormatException( m, ie );
     } catch( LocalisedFormatException e ) {
-        AssertEqual( e.Message, m );
-        AssertEqual( e.InnerException, ie );
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
     }
 
     Print( "LocalisedInvalidOperationException" );
     try {
         throw new LocalisedInvalidOperationException( m, ie );
     } catch( LocalisedInvalidOperationException e ) {
-        AssertEqual( e.Message, m );
-        AssertEqual( e.InnerException, ie );
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
     }
 }
 

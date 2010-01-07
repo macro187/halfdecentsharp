@@ -50,10 +50,9 @@ ExistingOrNextListItemPosition(
     : base(
         _S("{0} is an existing or the next item position in the list"),
         _S("{0} is not an existing or the next item position in the list"),
-        _S("{0} must be an existing or the next item position in the list")
-    )
+        _S("{0} must be an existing or the next item position in the list") )
 {
-    new NonNull().Check( list, new Parameter( "list" ) );
+    new NonNull().Require( list, new Parameter( "list" ) );
     this.List = list;
 }
 
@@ -77,47 +76,42 @@ List
 // RTypeBase< IInteger >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-Equals(
-    IRType t
+public override
+    SCG.IEnumerable< IRType< IInteger > >
+GetComponents()
+{
+    return
+        base.GetComponents()
+        .Append(
+            new NonNegative()
+            .Contravary< IReal, IInteger >() )
+        .Append(
+            new LTE< IReal >(
+                this.List.Count, new ComparableComparer< IReal >() )
+            .Contravary< IReal, IInteger >() );
+}
+
+
+public override
+    bool
+DirectionalEquals(
+    IRType that
 )
 {
-    return ((ExistingOrNextListItemPosition< T >)t).List.Equals( this.List );
+    return
+        base.DirectionalEquals( that ) &&
+        ((ExistingOrNextListItemPosition< T >)that.GetUnderlying())
+        .List.Equals( this.List );
 }
 
 
-
-// -----------------------------------------------------------------------------
-// IRType< IInteger >
-// -----------------------------------------------------------------------------
-
 public override
-SCG.IEnumerable< IRType< IInteger > >
-Components
-{
-    get
-    {
-        return
-            base.Components
-            .Append( new NonNegative()
-                .Contravary< IReal, IInteger >() )
-            .Append( new LTE( this.List.Count )
-                .Contravary< object, IInteger >() );
-    }
-}
-
-
-
-// -----------------------------------------------------------------------------
-// System.Object
-// -----------------------------------------------------------------------------
-
-public override
-int
+    int
 GetHashCode()
 {
-    return base.GetHashCode() ^ this.List.GetHashCode();
+    return
+        base.GetHashCode() ^
+        this.List.GetHashCode();
 }
 
 

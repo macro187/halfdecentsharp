@@ -45,7 +45,7 @@ Sink
 /// The sink did not have capacity to accept the item
 ///
 public static
-void
+    void
 Push<
     T
 >(
@@ -53,7 +53,7 @@ Push<
     T               item
 )
 {
-    new NonNull().Check( sink, new Parameter( "sink" ) );
+    new NonNull().Require( sink, new Parameter( "sink" ) );
     if( !sink.TryPush( item ) )
         throw new FullException( new This() );
 }

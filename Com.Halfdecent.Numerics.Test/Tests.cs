@@ -437,9 +437,9 @@ Test_NonFractional()
     NonFractional u = new NonFractional();
 
     Print( ".Equals() and GetHashCode()" );
-    AssertEqual( t, t );
-    AssertEqual( t, u );
-    AssertEqual( t.GetHashCode(), u.GetHashCode() );
+    Assert( t.Equals( t ) );
+    Assert( t.Equals( u ) );
+    Assert( t.GetHashCode() == u.GetHashCode() );
 
     Print( "Null passes" );
     t.Require< IReal, IReal >( null, new Literal() );
@@ -470,9 +470,9 @@ Test_NonZero()
     NonZero u = new NonZero();
 
     Print( ".Equals() and GetHashCode()" );
-    AssertEqual( t, t );
-    AssertEqual( t, u );
-    AssertEqual( t.GetHashCode(), u.GetHashCode() );
+    Assert( t.Equals( t ) );
+    Assert( t.Equals( u ) );
+    Assert( t.GetHashCode() == u.GetHashCode() );
 
     Print( "Null passes" );
     t.Require< IReal, IReal >( null, new Literal() );
@@ -498,9 +498,9 @@ Test_NonNegative()
     NonNegative u = new NonNegative();
 
     Print( ".Equals() and GetHashCode()" );
-    AssertEqual( t, t );
-    AssertEqual( t, u );
-    AssertEqual( t.GetHashCode(), u.GetHashCode() );
+    Assert( t.Equals( t ) );
+    Assert( t.Equals( u ) );
+    Assert( t.GetHashCode() == u.GetHashCode() );
 
     Print( "Null passes" );
     t.Require< IReal, IReal >( null, new Literal() );
