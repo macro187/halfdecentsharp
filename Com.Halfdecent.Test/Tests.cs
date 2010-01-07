@@ -275,6 +275,8 @@ Test_ObjectComparer_T()
 
 
 public interface I : IComparable< I > {}
+public interface II : I {}
+public interface J : IComparable< J > {}
 public class AlwaysBigger : I {
     // IComparable< I >
     public int CompareTo( I that ) {
@@ -379,6 +381,73 @@ Test_IComparable()
         () => bigger.CompareTo( bigger ) );
     Expect< ComparisonDisagreementException >(
         () => smaller.CompareTo( smaller ) );
+}
+
+
+[Test( "Comparer< T >" )]
+public static
+void
+Test_Comparer_T()
+{
+    I bigger = new AlwaysBigger();
+    I equal = new AlwaysEqual();
+    I smaller = new AlwaysSmaller();
+
+    IComparer< I > c = new ComparableComparer< I >();
+    IComparer< J > d = new ComparableComparer< J >();
+
+    Print( "Calls underlying IComparable<T>s correctly" );
+    Assert( c.Compare( bigger, null ) > 0 );
+    Assert( c.Compare( equal, null ) > 0 );
+    Assert( c.Compare( smaller, null ) > 0 );
+    Assert( c.Compare( equal, equal ) == 0 );
+    Assert( c.Compare( bigger, smaller ) > 0 );
+    Assert( c.Compare( smaller, bigger ) < 0 );
+    Assert( c.Compare( bigger, equal ) > 0 );
+    Assert( c.Compare( smaller, equal ) < 0 );
+    Assert( c.Compare( equal, smaller ) > 0 );
+    Assert( c.Compare( equal, bigger ) < 0 );
+    Expect< ComparisonDisagreementException >(
+        () => c.Compare( bigger, bigger ) );
+    Expect< ComparisonDisagreementException >(
+        () => c.Compare( smaller, smaller ) );
+
+    Print( "Calls underlying IEquatable<T>s correctly" );
+    Assert( c.Equals( equal, equal ) );
+    Assert( !c.Equals( equal, bigger ) );
+    Assert( !c.Equals( bigger, bigger ) );
+    Assert( !c.Equals( bigger, smaller ) );
+    Assert( !c.Equals( equal, null ) );
+    Assert( !c.Equals( bigger, null ) );
+    Assert( c.GetHashCode( equal ) == 0  );
+    Assert( c.GetHashCode( bigger ) == 1  );
+
+    Print( "Implements IEquatable< IEqualityComparer > correctly" );
+    Assert( c.Equals( c ) );
+    Assert(
+        new ComparableComparer< I >().Equals(
+        new ComparableComparer< I >() ) );
+    Assert( !c.Equals( d ) );
+}
+
+
+[Test( "ComparerAdapter< T >" )]
+public static
+void
+Test_ComparerAdapter_T()
+{
+    IComparer< I >  icomparer = new ComparableComparer< I >();
+    IComparer< J >  jcomparer = new ComparableComparer< J >();
+    IComparer< II > iicomparer = icomparer.Contravary< I, II >();
+
+    Print( "Adapter Equals() underlying" );
+    Assert( iicomparer.Equals( icomparer ) );
+
+    Print( "Adapter has same hash code as underlying" );
+    Assert( iicomparer.GetHashCode() == icomparer.GetHashCode() );
+
+    Print( "Adapter !Equals() comparer for a different type" );
+    Assert( !iicomparer.Equals( jcomparer ) );
 }
 
 
