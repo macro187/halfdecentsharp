@@ -39,9 +39,10 @@ IEquatable<
 
 /// Determine whether this and another item are equal
 ///
-/// That is, each <tt>DirectionalEquals()</tt> the other.
+/// That is, <tt>this</tt> and <tt>that</tt> <tt>DirectionalEquals()</tt> each
+/// other.
 ///
-/// This method should be implemented with <tt>Equatable.Equals<T>()</tt>.
+/// This method should be implemented using <tt>Equatable.Equals<T>()</tt>.
 ///
 bool
 Equals(
