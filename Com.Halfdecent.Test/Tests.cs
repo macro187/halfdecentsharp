@@ -216,10 +216,10 @@ Test_EquatableComparer_T()
 }
 
 
-[Test( "EquatableComparerAdapter< T >" )]
+[Test( "EqualityComparerAdapter< T >" )]
 public static
 void
-Test_EquatableComparerAdapter_T()
+Test_EqualityComparerAdapter_T()
 {
     IEqualityComparer< A >  acomparer = new EquatableComparer< A >();
     IEqualityComparer< B >  bcomparer = new EquatableComparer< B >();
