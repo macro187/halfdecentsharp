@@ -236,6 +236,44 @@ Test_EqualityComparerAdapter_T()
 }
 
 
+[Test( "ObjectComparer" )]
+public static
+void
+Test_ObjectComparer_T()
+{
+    Print( "Equality" );
+    Assert(
+        new ObjectComparer().Equals(
+        new ObjectComparer() ) );
+    Assert(
+        new ObjectComparer().GetHashCode() ==
+        new ObjectComparer().GetHashCode() );
+    Assert( !(
+        new ObjectComparer().Equals(
+        new EquatableComparer< A >() ) ) );
+
+    IEqualityComparer<object> oc = new ObjectComparer();
+
+    object obja = new object();
+    object objb = new object();
+
+    Print( "Works properly on System.Object" );
+    Assert( oc.Equals( obja, obja ) );
+    Assert( !oc.Equals( obja, objb ) );
+
+    // Make an effort to prevent interning so we compare different
+    // string instances
+    string sa = new string( 'a', 1 );
+    string sb = new string( 'b', 1 );
+    string sa2 = new string( 'a', 1 );
+
+    Print( "Works properly on System.String" );
+    Assert( oc.Equals( sa, sa ) );
+    Assert( !oc.Equals( sa, sb ) );
+    Assert( oc.Equals( sa, sa2 ) );
+}
+
+
 
 
 } // type
