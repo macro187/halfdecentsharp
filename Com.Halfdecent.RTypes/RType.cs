@@ -44,6 +44,26 @@ RType
 /// Determine whether an item conforms to this RType
 ///
 public static
+    bool
+Is<
+    T,
+    U
+>(
+    this IRType< T >    dis,
+    U                   item
+)
+    where U : T
+{
+    if( dis == null )
+        throw new ValueArgumentNullException( new Parameter( "dis" ) );
+    return dis.Check( item, new Parameter( "item" ) ) == null;
+}
+
+
+/// Determine whether an item conforms to this RType, with details if it does
+/// not
+///
+public static
     RTypeException
     /// @returns
     /// <tt>null</tt>, if <tt>item</tt> conforms to this RType

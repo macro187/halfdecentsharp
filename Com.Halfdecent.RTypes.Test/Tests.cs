@@ -683,6 +683,18 @@ Test_InInterval_T()
 }
 
 
+[Test( "IRType<T>.Is()" )]
+public static
+void
+Test_IRType_Is()
+{
+    object obj = new object();
+    Assert( new NonNull().Is( obj ) );
+    obj = null;
+    Assert( !( new NonNull().Is( obj ) ) );
+}
+
+
 
 
 } // type
