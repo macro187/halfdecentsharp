@@ -16,15 +16,15 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
+using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
 namespace
-Com.Halfdecent.Numerics
+Com.Halfdecent.RTypes
 {
 
 
@@ -33,7 +33,6 @@ InInterval<
     T
 >
     : RTypeBase< T >
-    where T : IComparable
 {
 
 
@@ -47,7 +46,8 @@ InInterval(
     IInterval< T > interval
 )
 {
-    new NonNull().Check( interval, new Parameter( "interval" ) );
+    if( object.ReferenceEquals( interval, null ) )
+        throw new ValueArgumentNullException( new Parameter( "interval" ) );
     this.Interval = interval;
 }
 
@@ -71,60 +71,35 @@ Interval
 // RTypeBase< T >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-Equals(
-    IRType t
-)
+public override
+    SCG.IEnumerable< IRType< T > >
+GetComponents()
 {
-    return ((InInterval< T >)t).Interval.Equals( this.Interval );
+    return
+        base.GetComponents()
+        .Append(
+            this.Interval.FromInclusive ?
+                new GTE< T >( this.Interval.From, this.Interval.Comparer )
+                    as IRType< T > :
+                new GT< T >( this.Interval.From, this.Interval.Comparer )
+                    as IRType< T > )
+        .Append(
+            this.Interval.ToInclusive ?
+                new LTE< T >( this.Interval.To, this.Interval.Comparer )
+                    as IRType< T > :
+                new LT< T >( this.Interval.To, this.Interval.Comparer )
+                    as IRType< T > );
 }
 
 
-
-// -----------------------------------------------------------------------------
-// IRType< T >
-// -----------------------------------------------------------------------------
-
 public override
-IEnumerable< IRType< T > >
-Components
-{
-    get
-    {
-        if( this.Interval.FromInclusive )
-            yield return
-                new GTE( this.Interval.From )
-                .Contravary< object, T >();
-        else
-            yield return
-                new GT( this.Interval.From )
-                .Contravary< object, T >();
-
-        if( this.Interval.ToInclusive )
-            yield return
-                new LTE( this.Interval.To )
-                .Contravary< object, T >();
-        else
-            yield return
-                new LT( this.Interval.To )
-                .Contravary< object, T >();
-    }
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IRType
-// -----------------------------------------------------------------------------
-
-public override
-Localised< string >
+    Localised< string >
 SayIs(
     Localised< string > reference
 )
 {
-    new NonNull().Check( reference, new Parameter( "reference" ) );
+    if( object.ReferenceEquals( reference, null ) )
+        throw new ValueArgumentNullException( new Parameter( "reference" ) );
     if( this.Interval.FromInclusive && this.Interval.ToInclusive )
         return _S( "{0} is between {1} and {2}, inclusive",
             reference,
@@ -149,12 +124,13 @@ SayIs(
 
 
 public override
-Localised< string >
+    Localised< string >
 SayIsNot(
     Localised< string > reference
 )
 {
-    new NonNull().Check( reference, new Parameter( "reference" ) );
+    if( object.ReferenceEquals( reference, null ) )
+        throw new ValueArgumentNullException( new Parameter( "reference" ) );
     if( this.Interval.FromInclusive && this.Interval.ToInclusive )
         return _S( "{0} is not between {1} and {2}, inclusive",
             reference,
@@ -179,12 +155,13 @@ SayIsNot(
 
 
 public override
-Localised< string >
+    Localised< string >
 SayMustBe(
     Localised< string > reference
 )
 {
-    new NonNull().Check( reference, new Parameter( "reference" ) );
+    if( object.ReferenceEquals( reference, null ) )
+        throw new ValueArgumentNullException( new Parameter( "reference" ) );
     if( this.Interval.FromInclusive && this.Interval.ToInclusive )
         return _S( "{0} must be between {1} and {2}, inclusive",
             reference,
@@ -208,16 +185,25 @@ SayMustBe(
 }
 
 
+public override
+    bool
+DirectionalEquals(
+    IRType that
+)
+{
+    return
+        base.DirectionalEquals( that ) &&
+        ((InInterval<T>)that.GetUnderlying()).Interval.Equals( this.Interval );
+}
 
-// -----------------------------------------------------------------------------
-// System.Object
-// -----------------------------------------------------------------------------
 
 public override
-int
+    int
 GetHashCode()
 {
-    return base.GetHashCode() ^ this.Interval.GetHashCode();
+    return
+        base.GetHashCode() ^
+        this.Interval.GetHashCode();
 }
 
 

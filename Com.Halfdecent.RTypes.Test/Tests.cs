@@ -78,7 +78,7 @@ Test_EQ_T()
     t = new EQ<object>( 1, new ObjectComparer() );
 
     Print( "Null passes" );
-    t.Require( null, new Literal() );
+    t.Require< object, object >( null, new Literal() );
 
     Print( "Equal passes" );
     t.Require( 1, new Literal() );
@@ -90,7 +90,7 @@ Test_EQ_T()
     t = new EQ<object>( null, new ObjectComparer() );
 
     Print( "With null CompareTo, null passes" );
-    t.Require( null, new Literal() );
+    t.Require< object, object >( null, new Literal() );
 
     Print( "With null CompareTo, non-null fails" );
     Expect< RTypeException >(
@@ -128,7 +128,7 @@ Test_NEQ_T()
     t = new NEQ<object>( 1, new ObjectComparer() );
 
     Print( "Null passes" );
-    t.Require( null, new Literal() );
+    t.Require< object, object >( null, new Literal() );
 
     Print( "Inequal passes" );
     t.Require( 2, new Literal() );
@@ -144,7 +144,7 @@ Test_NEQ_T()
 
     Print( "With null CompareTo, null fails" );
     Expect< RTypeException >(
-        () => t.Require( null, new Literal() ) );
+        () => t.Require< object, object >( null, new Literal() ) );
 }
 
 
@@ -246,7 +246,7 @@ Test_NonNull()
 
     Print( "Null fails" );
     Expect< RTypeException >(
-        () => new NonNull().Require( null, new Literal() ) );
+        () => new NonNull().Require< object, object >( null, new Literal() ) );
 }
 
 
@@ -267,7 +267,7 @@ Test_NonBlankString()
         .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
 
     Print( "Null passes" );
-    new NonBlankString().Require( null, new Literal() );
+    new NonBlankString().Require< string, string >( null, new Literal() );
 
     Print( "Non-blank string passes" );
     new NonBlankString().Require( "Not blank", new Literal() );
@@ -307,7 +307,7 @@ Test_GT_T()
     IRType<I> t = new GT<I>( equal, new ComparableComparer<I>() );
 
     Print( "null passes" );
-    t.Require( null, new Literal() );
+    t.Require< I, I >( null, new Literal() );
 
     Print( "Bigger passes" );
     t.Require( bigger, new Local( "bigger" ) );
@@ -351,7 +351,7 @@ Test_GTE_T()
     IRType<I> t = new GTE<I>( equal, new ComparableComparer<I>() );
 
     Print( "null passes" );
-    t.Require( null, new Literal() );
+    t.Require< I, I >( null, new Literal() );
 
     Print( "Bigger passes" );
     t.Require( bigger, new Local( "bigger" ) );
@@ -394,7 +394,7 @@ Test_LT_T()
     IRType<I> t = new LT<I>( equal, new ComparableComparer<I>() );
 
     Print( "null passes" );
-    t.Require( null, new Literal() );
+    t.Require< I, I >( null, new Literal() );
 
     Print( "Bigger fails" );
     Expect< RTypeException >( () =>
@@ -438,7 +438,7 @@ Test_LTE_T()
     IRType<I> t = new LTE<I>( equal, new ComparableComparer<I>() );
 
     Print( "null passes" );
-    t.Require( null, new Literal() );
+    t.Require< I, I >( null, new Literal() );
 
     Print( "Bigger fails" );
     Expect< RTypeException >( () =>
@@ -578,6 +578,108 @@ Test_IsEqualToOrMoreSpecificThan()
     Assert( !(
         new NonBlankString().IsEqualToOrMoreSpecificThan(
             new EQ<object>( "foo", new ObjectComparer() ) ) ) );
+}
+
+
+[Test( "InInterval_T" )]
+public static void
+Test_InInterval_T()
+{
+    int lt          = 3;
+    int from        = 5;
+    int between     = 7;
+    int to          = 10;
+    int gt          = 12;
+
+    Value _lt       = new Local( "lt" );
+    Value _from     = new Local( "from" );
+    Value _between  = new Local( "between" );
+    Value _to       = new Local( "to" );
+    Value _gt       = new Local( "gt" );
+
+    IComparer< int > c = new Comparer< int >(
+        ( a, b ) => a.CompareTo( b ),
+        ( a ) => a.GetHashCode() );
+
+    IRType< int > rtinc =
+        new InInterval< int >(
+            new Interval< int >( from, true, to, true, c ) );
+    IRType< int > rtexc =
+        new InInterval< int >(
+            new Interval< int >( from, false, to, false, c ) );
+    IRType< int > rtfrominc =
+        new InInterval< int >(
+            new Interval< int >( from, true, to, false, c ) );
+    IRType< int > rttoinc =
+        new InInterval< int >(
+            new Interval< int >( from, false, to, true, c ) );
+
+    IRType< int > rt;
+    string id = "...";
+
+    Print( "Inclusive" );
+    rt = rtinc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect< RTypeException >( () =>
+        rt.Require( lt, _lt ) );
+    rt.Require( from, _from );
+    rt.Require( between, _between );
+    rt.Require( to, _to );
+    Expect< RTypeException >( () =>
+        rt.Require( gt, _gt ) );
+
+    Print( "Exclusive" );
+    rt = rtexc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect< RTypeException >( () =>
+        rt.Require( lt, _lt ) );
+    Expect< RTypeException >( () =>
+        rt.Require( from, _from ) );
+    rt.Require( between, _between );
+    Expect< RTypeException >( () =>
+        rt.Require( to, _to ) );
+    Expect< RTypeException >( () =>
+        rt.Require( gt, _gt ) );
+
+    Print( "From Inclusive" );
+    rt = rtfrominc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect< RTypeException >( () =>
+        rt.Require( lt, _lt ) );
+    rt.Require( from, _from );
+    rt.Require( between, _between );
+    Expect< RTypeException >( () =>
+        rt.Require( to, _to ) );
+    Expect< RTypeException >( () =>
+        rt.Require( gt, _gt ) );
+
+    Print( "To Inclusive" );
+    rt = rttoinc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect< RTypeException >( () =>
+        rt.Require( lt, _lt ) );
+    Expect< RTypeException >( () =>
+        rt.Require( from, _from ) );
+    rt.Require( between, _between );
+    rt.Require( to, _to );
+    Expect< RTypeException >( () =>
+        rt.Require( gt, _gt ) );
+
+    Print( ".Equals() and .GetHashCode()" );
+    IRType< int > t1 = new InInterval< int >( new Interval< int >( 1, 10, c ) );
+    IRType< int > t2 = new InInterval< int >( new Interval< int >( 1, 10, c ) );
+    IRType< int > t3 = new InInterval< int >( new Interval< int >( 1, 20, c ) );
+    Assert( t1.Equals( t2 ) );
+    Assert( !( t1.Equals( t3 ) ) );
+    AssertEqual( t1.GetHashCode(), t2.GetHashCode() );
 }
 
 
