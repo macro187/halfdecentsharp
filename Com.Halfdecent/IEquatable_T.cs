@@ -46,29 +46,49 @@ Com.Halfdecent
 ///     Example:
 ///     <code>
 ///     //
-///     // Com.Halfdecent.IEquatable<T> Example
+///     // Com.Halfdecent.IEquatable<T> Implementation Example
 ///     //
-///     public interface IFoo : Halfdecent.IEquatable<IFoo> {}
+///     public interface IFoo : Halfdecent.IEquatable<IFoo>
+///     {
+///         int Field1;
+///         int Field2;
+///     }
 ///
 ///     public class C : IFoo
 ///     {
 ///         public bool Equals( IFoo that )
 ///         {
+///             // Always use Equatable.Equals() to implement .Equals()
 ///             return Equatable.Equals( this, that );
 ///         }
 ///
 ///         public virtual bool DirectionalEquals( IFoo that )
 ///         {
-///             // (Your equality implementation in terms of IFoo)
+///             // Your equality implementation in terms of IFoo
+///             return
+///                 // Check for null
+///                 that != null &&
+///                 // Check members for equality
+///                 that.Field1.Equals( this.Field1 ) &&
+///                 that.Field2.Equals( this.Field2 );
 ///         }
 ///
+///         // Explicit interface implementation so this implementation
+///         // doesn't collide with that of <tt>System.Object</tt> or other
+///         // IComparable<T> interfaces.
 ///         int Halfdecent.IEquatable<IFoo>.GetHashCode() {
 ///             return this.IFooGetHashCode();
 ///         }
 ///
 ///         protected virtual int IFooGetHashCode() {
-///             // (Hash code implementation to match your DirectionalEquals()
-///             // implementation)
+///             // Your hash code implementation with the same semantics as
+///             // your DirectionalEquals() implementation above
+///             return
+///                 // Factor in the type
+///                 typeof( IFoo ).GetHashCode() ^
+///                 // Factor in members
+///                 this.Field1.GetHashCode() ^
+///                 this.Field2.GetHashCode();
 ///         }
 ///     }
 ///     </code>
