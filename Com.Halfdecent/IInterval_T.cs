@@ -16,24 +16,20 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-
-
 namespace
-Com.Halfdecent.Numerics
+Com.Halfdecent
 {
 
 
 // =============================================================================
-/// A strongly-typed interval
+/// An interval between two values
 // =============================================================================
 
 public interface
 IInterval<
     T
 >
-    : IInterval
-    where T : IComparable
+    : IEquatable< IInterval< T > >
 {
 
 
@@ -42,7 +38,20 @@ IInterval<
 // Properties
 // -----------------------------------------------------------------------------
 
-new
+
+/// The ordering in effect
+///
+IComparer< T >
+Comparer
+{
+    get;
+}
+
+
+/// Value at one end of the interval
+///
+/// - <tt>NonNull</tt>
+///
 T
 From
 {
@@ -50,9 +59,30 @@ From
 }
 
 
-new
+/// Whether the first value is inclusive
+///
+bool
+FromInclusive
+{
+    get;
+}
+
+
+/// Value at the other end of the interval
+///
+/// - <tt>NonNull</tt>
+///
 T
 To
+{
+    get;
+}
+
+
+/// Whether the second value is inclusive
+///
+bool
+ToInclusive
 {
     get;
 }

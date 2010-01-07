@@ -16,13 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
-
-
 namespace
-Com.Halfdecent.Numerics
+Com.Halfdecent
 {
 
 
@@ -30,12 +25,12 @@ Com.Halfdecent.Numerics
 /// <tt>IInterval</tt> implementation
 // =============================================================================
 
-public class
+// TODO: Could this be a struct?
+public sealed class
 Interval<
     T
 >
     : IInterval< T >
-    where T : IComparable
 {
 
 
@@ -44,35 +39,42 @@ Interval<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Create an interval between one value to another, inclusive
+/// Create an interval between one value and another, both inclusive
 ///
 public
 Interval(
-    T from,
-    T to
+    T               from,
+    T               to,
+    IComparer< T >  comparer
 )
-    : this( from, true, to, true )
+    : this( from, true, to, true, comparer )
 {
 }
 
 
-/// Create an interval between one value to another, specifying whether each
+/// Create an interval between one value and another, specifying whether each
 /// is inclusive
 ///
 public
 Interval(
-    T       from,
-    bool    fromInclusive,
-    T       to,
-    bool    toInclusive
+    T               from,
+    bool            fromInclusive,
+    T               to,
+    bool            toInclusive,
+    IComparer< T >  comparer
 )
 {
-    new NonNull().Check( from, new Parameter( "from" ) );
-    new NonNull().Check( to, new Parameter( "to" ) );
+    if( object.ReferenceEquals( from, null ) )
+        throw new System.ArgumentNullException( "from" );
+    if( object.ReferenceEquals( to, null ) )
+        throw new System.ArgumentNullException( "to" );
+    if( object.ReferenceEquals( comparer, null ) )
+        throw new System.ArgumentNullException( "comparer" );
     this.From = from;
     this.FromInclusive = fromInclusive;
     this.To = to;
     this.ToInclusive = toInclusive;
+    this.Comparer = comparer;
 }
 
 
@@ -80,6 +82,15 @@ Interval(
 // -----------------------------------------------------------------------------
 // IInterval< T >
 // -----------------------------------------------------------------------------
+
+public
+IComparer< T >
+Comparer
+{
+    get;
+    private set;
+}
+
 
 public
 T
@@ -119,19 +130,33 @@ ToInclusive
 
 
 // -----------------------------------------------------------------------------
-// IInterval< T >
+// IEquatable< IInterval< T > >
 // -----------------------------------------------------------------------------
 
-IComparable
-IInterval.From
+public
+    bool
+Equals(
+    IInterval< T > that
+)
 {
-    get { return this.From; }
+    return Equatable.Equals( this, that );
 }
 
-IComparable
-IInterval.To
+
+public
+    bool
+DirectionalEquals(
+    IInterval< T > that
+)
 {
-    get { return this.To; }
+    return Interval.DirectionalEquals( this, that );
+}
+
+
+    int
+IEquatable< IInterval< T > >.GetHashCode()
+{
+    return Interval.GetHashCode( this  );
 }
 
 
@@ -141,30 +166,31 @@ IInterval.To
 // -----------------------------------------------------------------------------
 
 public override
-string
+    bool
+Equals(
+    object that
+)
+{
+    return
+        that != null &&
+        that is IInterval< T > &&
+        this.Equals( (IInterval< T >)that );
+}
+
+
+public override
+    int
+GetHashCode()
+{
+    return ((IEquatable< IInterval< T > >)this).GetHashCode();
+}
+
+
+public override
+    string
 ToString()
 {
     return Interval.ToString( this );
-}
-
-
-public override
-bool
-Equals(
-    object obj
-)
-{
-    if( obj == null ) return false;
-    if( !( obj is IInterval ) ) return false;
-    return Interval.Equals( this, (IInterval)obj );
-}
-
-
-public override
-int
-GetHashCode()
-{
-    return Interval.GetHashCode( this );
 }
 
 

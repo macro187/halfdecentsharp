@@ -494,6 +494,75 @@ Test_ComparerAdapter_T()
 }
 
 
+[Test( "Interval" )]
+public static void
+Test_Interval()
+{
+    IComparer< int > c = new Comparer< int >(
+        ( a, b ) => a.CompareTo( b ),
+        ( a ) => a.GetHashCode() );
+
+    int smaller = 1;
+    int from = 5;
+    int between = 7;
+    int to = 10;
+    int bigger = 15;
+
+    IInterval< int > inc =
+        new Interval< int >( from, to, c );
+    IInterval< int > exc =
+        new Interval< int >( from, false, to, false, c );
+    IInterval< int > frominc =
+        new Interval< int >( from, true, to, false, c );
+    IInterval< int > toinc =
+        new Interval< int >( from, false, to, true, c );
+
+    IInterval< int > anotherinc =
+        new Interval< int >( from, to, c );
+
+    Print( "Both Inclusive" );
+    Assert( !inc.Contains( smaller ) );
+    Assert( inc.Contains( from ) );
+    Assert( inc.Contains( between ) );
+    Assert( inc.Contains( to ) );
+    Assert( !inc.Contains( bigger ) );
+
+    Print( "Both Exclusive" );
+    Assert( !exc.Contains( smaller ) );
+    Assert( !exc.Contains( from ) );
+    Assert( exc.Contains( between ) );
+    Assert( !exc.Contains( to ) );
+    Assert( !exc.Contains( bigger ) );
+
+    Print( "From Inclusive" );
+    Assert( !frominc.Contains( smaller ) );
+    Assert( frominc.Contains( from ) );
+    Assert( frominc.Contains( between ) );
+    Assert( !frominc.Contains( to ) );
+    Assert( !frominc.Contains( bigger ) );
+
+    Print( "To Inclusive" );
+    Assert( !toinc.Contains( smaller ) );
+    Assert( !toinc.Contains( from ) );
+    Assert( toinc.Contains( between ) );
+    Assert( toinc.Contains( to ) );
+    Assert( !toinc.Contains( bigger ) );
+
+    Print( "ToString()" );
+    Print( inc.ToString() );
+    Print( exc.ToString() );
+    Print( frominc.ToString() );
+    Print( toinc.ToString() );
+
+    Print( ".Equals()" );
+    Assert( inc.Equals( anotherinc ) );
+    Assert( !inc.Equals( exc ) );
+
+    Print( ".GetHashCode()" );
+    Assert( inc.GetHashCode() == anotherinc.GetHashCode() );
+}
+
+
 
 
 } // type
