@@ -16,9 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-
-
 namespace
 Com.Halfdecent
 {
@@ -37,17 +34,22 @@ Equatable
 /// <tt>IEquatable<T>.Equals()</tt> implementation
 ///
 public static
-bool
+    bool
 Equals<
     T
 >(
     T dis,
     T that
 )
-    where T : Halfdecent.IEquatable< T >
+    where T : IEquatable< T >
 {
-    if( dis == null ) throw new ArgumentNullException( "dis" );
-    if( (object)that == null ) return false;
+    // Handle nulls
+    if( object.ReferenceEquals( dis, null ) &&
+        object.ReferenceEquals( that, null ) ) return true;
+    if( object.ReferenceEquals( dis, null ) ||
+        object.ReferenceEquals( that, null ) ) return false;
+
+    // Both items have to agree they're equal, otherwise they're not
     return
         dis.DirectionalEquals( that ) &&
         that.DirectionalEquals( dis );
