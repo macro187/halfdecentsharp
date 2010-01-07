@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent.Testing;
@@ -209,6 +210,37 @@ Test_FilterBase_Pull()
     f.From = new Stream< int >( 2 );
     f.EmptyTo( to.AsSink() );
     Assert( to.SequenceEqual( new int[] { 3 } ) );
+}
+
+
+public static
+    SCG.IEnumerator< bool >
+OnlyEvens(
+    Func< int >         get,
+    Func< int, Void >   put,
+    Func< int, Void >   drop
+)
+{
+    for( ;; ) {
+        yield return false;
+        int i = get();
+        if( i % 2 != 0 ) continue;
+        put( i );
+        yield return true;
+    }
+}
+
+
+[Test( "Filter< TIn, TOut >" )]
+public static
+void
+Test_Filter_TIn_TOut()
+{
+    IFilter< int, int > f = new Filter< int, int >( OnlyEvens );
+    SCG.IList< int > results = new SCG.List< int >();
+    f.From = new int[] { 1, 2, 3, 4, 5, 6 }.AsStream();
+    f.EmptyTo( results.AsSink() );
+    Assert( results.SequenceEqual( new int[] { 2, 4, 6 } ) );
 }
 
 

@@ -42,7 +42,7 @@ Com.Halfdecent.Filters
 ///
 /// Subclasses implement their filter logic as an iterator, <tt>Process()</tt>,
 /// that must <tt>yield</tt> execution at certain times and use a small "API" of
-/// methods to consume, produce, and dispose of items.
+/// methods to consume, produce, and drop items.
 ///
 /// This base class will execute the <tt>Process()</tt> iterator on-demand as
 /// items become available upstream or are requested from downstream.
@@ -103,8 +103,8 @@ haveoutitem = false;
 /// - <tt>yield return false<tt>
 /// - <tt>this.GetItem()</tt>
 ///
-/// To dispose of an item:
-/// - <tt>this.DisposeItem()</tt>
+/// To drop an item:
+/// - <tt>this.DropItem()</tt>
 ///
 /// To produce an item:
 /// - <tt>this.PutItem()</tt>
@@ -153,14 +153,13 @@ PutItem(
 }
 
 
-/// <tt>Process()</tt> API: Dispose of an item as necessary
+/// <tt>Process()</tt> API: Drop an item
 ///
-/// This method MUST be called for all items not passing through the filter as
-/// output after use.
+/// All items not passing through the filter as output must be dropped.
 ///
 protected
 void
-DisposeItem(
+DropItem(
     TIn item
 )
 {
