@@ -234,6 +234,17 @@ Test_Stream_Concat()
 }
 
 
+[Test( "Collection.AsSink()" )]
+public static
+void
+Test_Collection_AsSink()
+{
+    ICollection< int > col = new List< int >();
+    new Stream< int >( 1, 2, 3 ).EmptyTo( col.AsSink() );
+    Assert( col.SequenceEqual( new int[] { 1, 2, 3 } ) );
+}
+
+
 
 
 } // type
