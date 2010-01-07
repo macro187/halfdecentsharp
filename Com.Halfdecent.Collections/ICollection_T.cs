@@ -16,47 +16,26 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using SCG = System.Collections.Generic;
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.SystemInterop;
-using Com.Halfdecent.Collections;
 
 
 namespace
-Com.Halfdecent.Collections.SystemInterop
+Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// Present a <tt>System.Collections.Generic.Collection< T ></tt> as an
-/// <tt>IBag< T ></tt>
+/// A finite, unordered collection of items
+///
+/// See <tt>http://en.wikipedia.org/wiki/Multiset</tt>
 // =============================================================================
 
-public class
-BagFromSystemCollectionAdapter<
+public interface
+ICollection<
     T
 >
-    : IBag< T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-BagFromSystemCollectionAdapter(
-    SCG.ICollection< T > collection
-)
-{
-    new NonNull().Check( collection, new Parameter( "collection" ) );
-    this.Collection = collection;
-}
 
 
 
@@ -64,57 +43,27 @@ BagFromSystemCollectionAdapter(
 // Properties
 // -----------------------------------------------------------------------------
 
-protected
-SCG.ICollection< T >
-Collection
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IBag< T >
-// -----------------------------------------------------------------------------
-
-public
+/// The number of items in the collection
+///
 IInteger
 Count
 {
-    get { return Integer.From( this.Collection.Count ); }
-}
-
-
-public
-bool
-IsEmpty
-{
-    get { return Com.Halfdecent.Collections.Bag.IsEmptyViaCount( this ); }
-}
-
-
-public
-IStream< T >
-Stream()
-{
-    return this.Collection.AsStream();
-}
-
-
-public
-bool
-Contains(
-    T item
-)
-{
-    return this.Collection.Contains( item );
+    get;
 }
 
 
 
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
 
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+/// Produce a stream of all items in no particular order
+///
+    IStream< T >
+Stream();
+
+
+
 
 } // type
 } // namespace

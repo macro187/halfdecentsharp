@@ -16,61 +16,26 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
-public static class
-GrowableBag
-{
+// =============================================================================
+/// TODO
+// =============================================================================
 
-
-
-/// Add an item to the bag
-///
-/// @exception FullException
-/// The bag did not have capacity for the item
-///
-public static
-void
-Add<
+public interface
+ICollectionSG<
     T
->(
-    this IGrowableBag< T >  bag,
-    T                       item
-)
+>
+    : ICollection< T >
+    , ICollectionS< T >
+    , ICollectionG< T >
 {
-    new NonNull().Require( bag, new Parameter( "bag" ) );
-    if( !bag.TryAdd( item ) )
-        throw new FullException( new Parameter( "bag" ) );
-}
-
-
-/// Present the growable bag as a sink
-///
-public static
-ISink< T >
-AsSink<
-    T
->(
-    this IGrowableBag< T > bag
-)
-{
-    new NonNull().Require( bag, new Parameter( "bag" ) );
-    return new GrowableBagToSinkAdapter< T >( bag );
-}
 
 
 
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

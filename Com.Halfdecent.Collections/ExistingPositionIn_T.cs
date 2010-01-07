@@ -18,7 +18,6 @@
 
 using SCG = System.Collections.Generic;
 using Com.Halfdecent;
-using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
@@ -29,10 +28,13 @@ Com.Halfdecent.Collections
 {
 
 
+// =============================================================================
+/// TODO
+// =============================================================================
+
 public class
-ExistingListItemPosition<
+ExistingPositionIn<
     T
-    ///< Type of items in the list
 >
     : SimpleTextRTypeBase< IInteger >
 {
@@ -44,16 +46,16 @@ ExistingListItemPosition<
 // -----------------------------------------------------------------------------
 
 public
-ExistingListItemPosition(
-    IList< T > list
+ExistingPositionIn(
+    ICollection< T > collection
 )
     : base(
-        _S("{0} is the position of an existing item"),
-        _S("{0} is not the position of an existing item"),
-        _S("{0} must be the position of an existing item") )
+        _S( "{0} is the position of an item in the collection" ),
+        _S( "{0} is not the position of an item in the collection" ),
+        _S( "{0} must be the position of an item in the collection" ) )
 {
-    new NonNull().Require( list, new Parameter( "list" ) );
-    this.List = list;
+    new NonNull().Require( collection, new Parameter( "collection" ) );
+    this.Collection = collection;
 }
 
 
@@ -63,8 +65,8 @@ ExistingListItemPosition(
 // -----------------------------------------------------------------------------
 
 public
-IList< T >
-List
+ICollection< T >
+Collection
 {
     get;
     private set;
@@ -73,23 +75,30 @@ List
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< Integer >
+// RTypeBase< T >
 // -----------------------------------------------------------------------------
 
 public override
-SCG.IEnumerable< IRType< IInteger > >
+    SCG.IEnumerable< IRType< IInteger > >
 GetComponents()
 {
     return
         base.GetComponents()
-        .Append( new NonNegative()
-            .Contravary< IReal, IInteger >() )
-        .Append(
-            new LT< IReal >(
-                this.List.Count, new ComparableComparer< IReal >() )
-            .Contravary< IReal, IInteger >() );
+        .Append( new GTE< IInteger >(
+            Integer.From( 0 ),
+            new ComparableComparer< IReal >()
+                .Contravary< IReal, IInteger >() ) )
+        .Append( new LT< IInteger >(
+            this.Collection.Count,
+            new ComparableComparer< IReal >()
+                .Contravary< IReal, IInteger >() ) );
 }
 
+
+
+// -----------------------------------------------------------------------------
+// IEquatable< IRType >
+// -----------------------------------------------------------------------------
 
 public override
     bool
@@ -97,10 +106,8 @@ DirectionalEquals(
     IRType that
 )
 {
-    return
-        base.DirectionalEquals( that ) &&
-        ((ExistingListItemPosition< T >)that.GetUnderlying()).List.Equals(
-            this.List );
+    // XXX
+    return false;
 }
 
 
@@ -108,9 +115,10 @@ public override
     int
 GetHashCode()
 {
+    // XXX
     return
         base.GetHashCode() ^
-        this.List.GetHashCode();
+        this.Collection.GetHashCode();
 }
 
 

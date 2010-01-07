@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Meta;
+using System;
 using Com.Halfdecent.Streams;
 
 
@@ -27,64 +26,28 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// Presents a growable bag as a sink
+/// TODO
 // =============================================================================
 
-public class
-GrowableBagToSinkAdapter<
+public interface
+ICollectionS<
     T
 >
-    : ISink< T >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Methods
 // -----------------------------------------------------------------------------
 
-public
-GrowableBagToSinkAdapter(
-    IGrowableBag< T > bag
-)
-{
-    new NonNull().Require( bag, new Parameter( "bag" ) );
-    this.Bag = bag;
-}
+    IStream< T >
+GetAndRemoveAll(
+    Func< T, bool > where
+);
 
 
 
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-IGrowableBag< T >
-Bag
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// ISink< T >
-// -----------------------------------------------------------------------------
-
-public
-bool
-TryPush(
-    T item
-)
-{
-    return this.Bag.TryAdd( item );
-}
-
-
-
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

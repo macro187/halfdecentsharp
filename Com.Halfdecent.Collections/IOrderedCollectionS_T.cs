@@ -16,11 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-using Com.Halfdecent.Streams.SystemInterop;
 
 
 namespace
@@ -28,54 +24,20 @@ Com.Halfdecent.Collections
 {
 
 
-public static class
-Bag
-{
+// =============================================================================
+/// TODO
+// =============================================================================
 
-
-
-/// <tt>.IsEmpty</tt> via <tt>.Count</tt>
-///
-/// @par Complexity
-/// Depends on <tt>Count</tt>
-///
-public static
-bool
-IsEmptyViaCount<
+public interface
+IOrderedCollectionS<
     T
->(
-    IBag< T > bag
-)
+>
+    : IUniqueKeyedCollectionS< IInteger, T >
+    , IOrderedCollection< T >
 {
-    new NonNull().Require( bag, new Parameter( "bag" ) );
-    return bag.Count.Equals( Integer.From( 0 ) );
-}
-
-
-/// <tt>.Contains()</tt> via <tt>.Stream()</tt>
-///
-/// @par Complexity
-/// Linear
-///
-public static
-bool
-ContainsViaStream<
-    T
->(
-    IBag< T >   bag,
-    T           sought
-)
-{
-    new NonNull().Require( bag, new Parameter( "bag" ) );
-    foreach( T item in bag.Stream().AsEnumerable() )
-        if( item.Equals( sought ) ) return true;
-    return false;
-}
 
 
 
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

@@ -16,55 +16,35 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
-using Com.Halfdecent.Collections;
+using System;
+using Com.Halfdecent.Filters;
 
 
 namespace
-Com.Halfdecent.Collections.SystemInterop
+Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// <tt>System.Collections.Generic.ICollection< T ></tt> interop library
+/// TODO
 // =============================================================================
 
-public static class
-SystemCollection
+public interface
+ICollectionC<
+    T
+>
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Extension Methods
+// Methods
 // -----------------------------------------------------------------------------
 
-public static
-BagFromSystemCollectionAdapter< T >
-AsBag<
-    T
->(
-    this SCG.ICollection< T > collection
-)
-{
-    return new BagFromSystemCollectionAdapter< T >( collection );
-}
-
-
-public static
-GrowableShrinkableBagFromSystemCollectionAdapter< T >
-AsGrowableShrinkableBag<
-    T
->(
-    this SCG.ICollection< T > collection
-)
-{
-    return new GrowableShrinkableBagFromSystemCollectionAdapter< T >(
-        collection );
-}
+    IFilter< T, T >
+GetAndReplaceAll(
+    Func< T, bool > where
+);
 
 
 

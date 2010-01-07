@@ -16,40 +16,43 @@
 // -----------------------------------------------------------------------------
 
 
-// =============================================================================
-/// Collections
-///
-/// TODO (introduction)
-///
-/// @section accessors Accessors
-///
-///     TODO
-///
-/// @section mutability Mutability
-///
-///     TODO
-///     - Readable
-///     - Changeable
-///     - Shrinkable
-///     - Growable
-///
-/// @section capacity Capacity
-///
-///     Collections <em>may</em> have non-exceptional, clearly-definable
-///     definitions of a "capacity", in which case operations attempting
-///     to add items to the collection may be able to signal "full"
-///     conditions via a return value.  <tt>false</tt> will never be
-///     returned.  Regardless, all other failures will be signalled with
-///     appropriate exceptions.
-///
-/// @section seealso See Also
-///
-///     - <tt>http://en.wikipedia.org/wiki/Collection_(computing)</tt>
-///
-// =============================================================================
+using Com.Halfdecent;
+using Com.Halfdecent.Streams;
+
 
 namespace
 Com.Halfdecent.Collections
 {
-}
+
+
+// =============================================================================
+/// TODO
+// =============================================================================
+
+public interface
+IKeyedCollectionS<
+    TKey,
+    T
+>
+    : ICollectionS< ITuple< TKey, T > >
+    , ICollectionS< T >
+    , IKeyedCollection< TKey, T >
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+    IStream< T >
+GetAndRemoveAll(
+    TKey key
+);
+
+
+
+
+} // type
+} // namespace
 

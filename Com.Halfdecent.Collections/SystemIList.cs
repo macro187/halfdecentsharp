@@ -16,40 +16,42 @@
 // -----------------------------------------------------------------------------
 
 
-// =============================================================================
-/// Collections
-///
-/// TODO (introduction)
-///
-/// @section accessors Accessors
-///
-///     TODO
-///
-/// @section mutability Mutability
-///
-///     TODO
-///     - Readable
-///     - Changeable
-///     - Shrinkable
-///     - Growable
-///
-/// @section capacity Capacity
-///
-///     Collections <em>may</em> have non-exceptional, clearly-definable
-///     definitions of a "capacity", in which case operations attempting
-///     to add items to the collection may be able to signal "full"
-///     conditions via a return value.  <tt>false</tt> will never be
-///     returned.  Regardless, all other failures will be signalled with
-///     appropriate exceptions.
-///
-/// @section seealso See Also
-///
-///     - <tt>http://en.wikipedia.org/wiki/Collection_(computing)</tt>
-///
-// =============================================================================
+using SCG = System.Collections.Generic;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
+
 
 namespace
 Com.Halfdecent.Collections
 {
+
+
+// =============================================================================
+/// <tt>System.Collections.Generic.IList<T></tt> library
+// =============================================================================
+
+public static class
+SystemIList
+{
+
+
+/// TODO
+///
+public static
+    CollectionFromSystemListAdapter< T >
+AsHalfdecentCollection<
+    T
+>(
+    this SCG.IList< T > dis
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    return new CollectionFromSystemListAdapter< T >( dis );
 }
+
+
+
+
+} // type
+} // namespace
 

@@ -16,46 +16,27 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
-public static class
-ShrinkableBag
-{
+// =============================================================================
+/// TODO
+// =============================================================================
 
-
-
-/// Remove (an occurrence of) an item from the bag that is equal to the
-/// specified item (if the bag contains such an item)
-///
-/// Unlike <tt>IShrinkableBag< T >.TryRemove()</tt>, this method does not
-/// indicate whether the specifed item was actually found / removed.
-///
-public static
-void
-Remove<
+public interface
+IKeyedCollectionSG<
+    TKey,
     T
->(
-    this IShrinkableBag< T >    bag,
-    T                           item
-)
+>
+    : IKeyedCollection< TKey, T >
+    , IKeyedCollectionS< TKey, T >
+    , IKeyedCollectionG< TKey, T >
 {
-    new NonNull().Require( bag, new Parameter( "bag" ) );
-    bag.TryRemove( item );
-}
 
 
 
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
+using System;
 using Com.Halfdecent.Streams;
 
 
@@ -26,40 +26,17 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// A finite, unordered collection of items
-///
-/// See <tt>http://en.wikipedia.org/wiki/Multiset</tt>
-//
-//  TODO Is it worth breaking out an IReadableBag<T>?  If so, have to be
-//       careful that it isn't accedentially exposed by other interfaces
-//       eg. IReadableBag.Contains() can be determined via
-//       IShrinkableBag.TryRemove()
+/// TODO
 // =============================================================================
 
 public interface
-IBag<
+IUniqueKeyedCollectionS<
+    TKey,
     T
 >
+    : IKeyedCollectionS< TKey, T >
+    , IUniqueKeyedCollection< TKey, T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-IInteger
-Count
-{
-    get;
-}
-
-
-bool
-IsEmpty
-{
-    get;
-}
 
 
 
@@ -67,20 +44,9 @@ IsEmpty
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Produce a stream of the items in the bag
-///
-IStream< T >
-Stream();
-
-
-/// Indicate whether the collection contains an item equal to a specified
-/// item
-///
-//  TODO Clarify what "equal to" means here
-//
-bool
-Contains(
-    T item
+    void
+Remove(
+    TKey key
 );
 
 

@@ -16,41 +16,25 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// A list whose items can be replaced
+/// TODO
 // =============================================================================
 
 public interface
-IChangeableList<
+IUniqueKeyedCollectionCSG<
+    TKey,
     T
 >
-    : IList< T >
+    : IUniqueKeyedCollection< TKey, T >
+    , IUniqueKeyedCollectionC< TKey, T >
+    , IUniqueKeyedCollectionS< TKey, T >
+    , IUniqueKeyedCollectionG< TKey, T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Replace the item at the specified position with another
-///
-void
-ReplaceAt(
-    IInteger    position,
-    ///< Position of an existing item
-    ///  - ExistingListItemPosition
-    T           item
-    ///< Item to replace it with
-);
 
 
 

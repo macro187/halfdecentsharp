@@ -16,45 +16,24 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Numerics;
+
+
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// A bag to which items can be added
-///
-/// @par Capacity
-/// Bags <em>may</em> have a non-exceptional, clearly-definable definition of
-/// "capacity", in which case operations that grow the bag may be capable of
-/// signalling a "full" condition via a return value.
-/// <tt>false</tt> will never be returned.  Regardless, all other failures will
-/// be signalled with appropriate exceptions.
+/// TODO
 // =============================================================================
 
 public interface
-IGrowableBag<
+IOrderedCollection<
     T
 >
-    : IBag< T >
+    : IUniqueKeyedCollection< IInteger, T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Try adding an item to the bag
-///
-bool
-/// @returns
-/// <tt>true</tt> if there was capacity for the item and it was added
-/// - OR -
-/// <tt>false</tt> otherwise
-TryAdd(
-    T item
-);
 
 
 

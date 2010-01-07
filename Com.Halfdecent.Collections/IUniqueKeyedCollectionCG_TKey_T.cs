@@ -22,45 +22,18 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// A bag from which items can be removed
+/// TODO
 // =============================================================================
 
 public interface
-IShrinkableBag<
+IUniqueKeyedCollectionCG<
+    TKey,
     T
 >
-    : IBag< T >
+    : IUniqueKeyedCollection< TKey, T >
+    , IUniqueKeyedCollectionC< TKey, T >
+    , IUniqueKeyedCollectionG< TKey, T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Remove (an occurrence of) an item from the bag that is equal to the
-/// specified item (if the bag contains such an item)
-///
-//  TODO Clarify what "equal to" means here
-//       == operator ?
-//       item.Equals( sought ) ?
-//       sought.Equals( item ) ?
-//
-bool
-/// @returns
-/// <tt>true</tt> if the bag contained an item equal to the specified item and
-/// it was removed
-/// - OR -
-/// <tt>false</tt> otherwise
-TryRemove(
-    T sought
-);
-
-
-/// Remove all items from the bag
-///
-void
-RemoveAll();
 
 
 

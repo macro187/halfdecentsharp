@@ -16,42 +16,23 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// A list that can grow
+/// TODO
 // =============================================================================
 
 public interface
-IGrowableList<
+IUniqueKeyedCollectionG<
+    TKey,
     T
 >
-    : IList< T >
-    , IGrowableBag< T >
+    : IKeyedCollectionG< TKey, T >
+    , IUniqueKeyedCollection< TKey, T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Insert an item at the specified position
-///
-void
-InsertAt(
-    IInteger    position,
-    ///< Position to insert the item at
-    ///  - ExistingOrNextListItemPosition
-    T           item
-    ///< Item to insert
-);
 
 
 

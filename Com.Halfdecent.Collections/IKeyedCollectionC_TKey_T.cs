@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
+using Com.Halfdecent;
+using Com.Halfdecent.Filters;
 
 
 namespace
@@ -25,14 +26,16 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// A list that can shrink
+/// TODO
 // =============================================================================
 
 public interface
-IShrinkableList<
+IKeyedCollectionC<
+    TKey,
     T
 >
-    : IList< T >
+    : ICollectionC< ITuple< TKey, T > >
+    , IKeyedCollection< TKey, T >
 {
 
 
@@ -41,13 +44,11 @@ IShrinkableList<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Remove the item at the specified position
+/// TODO
 ///
-void
-RemoveAt(
-    IInteger position
-    ///< Position of item to remove
-    ///  - ExistingListItemPosition
+    IFilter< T, T >
+GetAndReplaceAll(
+    TKey key
 );
 
 
