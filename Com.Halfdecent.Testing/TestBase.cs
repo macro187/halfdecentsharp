@@ -124,9 +124,14 @@ DumpException(
             s += "\n" + de.Key + ": " + de.Value;
     if( e.Source != null && e.Source != "" )
         s += "\nSource: " + e.Source;
-    s += "\nStack Trace:\n" + Indent( CleanStackTrace( e.StackTrace ) );
+    if( !string.IsNullOrEmpty( e.StackTrace ) )
+        s += "\nStack Trace:\n" + Indent( CleanStackTrace( e.StackTrace ) );
+    else
+        s += "\n(No stack trace)";
     if( e.InnerException != null )
         s += "\nInner Exception:\n" + Indent( DumpException( e.InnerException ) );
+    else
+        s += "\n(No inner exception)";
     return s;
 }
 
