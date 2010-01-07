@@ -47,13 +47,11 @@ EquatableComparer<
 public
     bool
 Equals(
-    T item,
-    T anotherItem
+    T dis,
+    T that
 )
 {
-    if( item == null && anotherItem == null ) return true;
-    if( item == null || anotherItem == null ) return false;
-    return item.Equals( anotherItem );
+    return Equatable.Equals( dis, that );
 }
 
 
