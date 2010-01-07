@@ -168,6 +168,15 @@
 ///         object.GetHashCode()?  Leave as default?  Always false?
 ///         InvalidOperationException (or similar)?
 ///
+///
+///     @subsection abstract_operations Abstract Operations
+///
+///         TODO:
+///         Explain why abstract operations should use constrained
+///         generic types instead of interface types directly.
+///         Constrained generic types use constrained virtcall which
+///         avoids boxing overhead if T is a value type.
+///
 // =============================================================================
 
 namespace
