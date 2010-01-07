@@ -16,28 +16,25 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
 using Com.Halfdecent;
-using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
 
 
 namespace
-Com.Halfdecent.Numerics
+Com.Halfdecent.RTypes
 {
 
 
 // =============================================================================
-/// RType: Less than a particular value
-///
-/// According to <tt>IComparable.CompareTo()</tt>
+/// RType: Less than or equal to a particular value, according to a
+/// particular ordering
 // =============================================================================
 
 public class
-LT
-    : SimpleTextRTypeBase< object >
+LTE<
+    T
+>
+    : SimpleTextRTypeBase< T >
 {
 
 
@@ -47,17 +44,26 @@ LT
 // -----------------------------------------------------------------------------
 
 public
-LT(
-    IComparable compareTo
+LTE(
+    T               compareTo,
     ///< The value to compare to
+    IComparer< T >  comparer
+    ///< The ordering to use
 )
     : base(
-        _S( "{{0}} is less than {0}", compareTo ),
-        _S( "{{0}} isn't less than {0}", compareTo ),
-        _S( "{{0}} must be less than {0}", compareTo )
-    )
+        _S( "{{0}} is less than or equal to {0}",
+            ObjectUtils.ToString( compareTo ) ),
+        _S( "{{0}} is greater than {0}",
+            ObjectUtils.ToString( compareTo ) ),
+        _S( "{{0}} must be less than or equal to {0}",
+            ObjectUtils.ToString( compareTo ) ) )
 {
+    if( compareTo == null )
+        throw new ValueArgumentNullException( new Parameter( "compareTo" ) );
+    if( comparer == null )
+        throw new ValueArgumentNullException( new Parameter( "comparer" ) );
     this.CompareTo = compareTo;
+    this.Comparer = comparer;
 }
 
 
@@ -69,8 +75,19 @@ LT(
 /// The value to compare to
 ///
 public
-IComparable
+T
 CompareTo
+{
+    get;
+    private set;
+}
+
+
+/// The ordering to use to make the comparison
+///
+public
+IComparer< T >
+Comparer
 {
     get;
     private set;
@@ -79,49 +96,47 @@ CompareTo
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< object >
+// RTypeBase< T >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-Equals(
-    IRType t
+public override
+    bool
+Predicate(
+    T item
 )
 {
-    return ((LTE)t).CompareTo.Equals( this.CompareTo );
+    if( object.ReferenceEquals( item, null ) ) return true;
+    return this.Comparer.Compare( item, this.CompareTo ) <= 0;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IRType< object >
+// IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< object > >
-Components
+    bool
+DirectionalEquals(
+    IRType that
+)
 {
-    get
-    {
-        return
-            base.Components
-            .Append( new LTE( this.CompareTo ) )
-            .Append( new NEQ( this.CompareTo ) );
-    }
+    if( !base.DirectionalEquals( that ) ) return false;
+    LTE<T> gt = (LTE<T>)( that.GetUnderlying() );
+    return
+        gt.Comparer.Equals( this.Comparer ) &&
+        this.Comparer.Equals( gt.CompareTo, this.CompareTo );
 }
 
 
-
-// -----------------------------------------------------------------------------
-// object
-// -----------------------------------------------------------------------------
-
 public override
-int
+    int
 GetHashCode()
 {
-    if( this.CompareTo == null ) return base.GetHashCode();
-    return base.GetHashCode() ^ this.CompareTo.GetHashCode();
+    return
+        base.GetHashCode() ^
+        this.Comparer.GetHashCode() ^
+        this.Comparer.GetHashCode( this.CompareTo );
 }
 
 

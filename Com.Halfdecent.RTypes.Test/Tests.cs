@@ -148,6 +148,83 @@ Test_NEQ_T()
 }
 
 
+public interface I : IComparable< I > {}
+public interface II : I {}
+public interface J : IComparable< J > {}
+public class AlwaysBigger : I {
+    // IComparable< I >
+    public int CompareTo( I that ) {
+        return Comparable.CompareTo( this, that );
+    }
+    public int DirectionalCompareTo( I that ) {
+        return 1;
+    }
+    // IEquatable< I >
+    public bool Equals( I that ) {
+        return Equatable.Equals( this, that );
+    }
+    public bool DirectionalEquals(
+        I that
+    ) {
+        return false;
+    }
+    int IEquatable<I>.GetHashCode() {
+        return 1;
+    }
+    // System.Object
+    public override bool Equals( object that ) { throw new System.Exception(); }
+    public override int GetHashCode() { throw new System.Exception(); }
+}
+public class AlwaysEqual : I {
+    // IComparable< I >
+    public int CompareTo( I that ) {
+        return Comparable.CompareTo( this, that );
+    }
+    public int DirectionalCompareTo( I that ) {
+        return 0;
+    }
+    // IEquatable< I >
+    public bool Equals( I that ) {
+        return Equatable.Equals( this, that );
+    }
+    public bool DirectionalEquals(
+        I that
+    ) {
+        return true;
+    }
+    int IEquatable<I>.GetHashCode() {
+        return 0;
+    }
+    // System.Object
+    public override bool Equals( object that ) { throw new System.Exception(); }
+    public override int GetHashCode() { throw new System.Exception(); }
+}
+public class AlwaysSmaller : I {
+    // IComparable< I >
+    public int CompareTo( I that ) {
+        return Comparable.CompareTo( this, that );
+    }
+    public int DirectionalCompareTo( I that ) {
+        return -1;
+    }
+    // IEquatable< I >
+    public bool Equals( I that ) {
+        return Equatable.Equals( this, that );
+    }
+    public bool DirectionalEquals(
+        I that
+    ) {
+        return false;
+    }
+    int IEquatable<I>.GetHashCode() {
+        return 0;
+    }
+    // System.Object
+    public override bool Equals( object that ) { throw new System.Exception(); }
+    public override int GetHashCode() { throw new System.Exception(); }
+}
+
+
 [Test( "NonNull" )]
 public static
 void
@@ -198,6 +275,180 @@ Test_NonBlankString()
     Print( "Blank string fails" );
     Expect< RTypeException >(
         () => new NonBlankString().Require( "", new Literal() ) );
+}
+
+
+[Test( "GT<T>" )]
+public static
+void
+Test_GT_T()
+{
+    I bigger = new AlwaysBigger();
+    I equal = new AlwaysEqual();
+    I smaller = new AlwaysSmaller();
+
+    Print( "Equality" );
+    Assert(
+        new GT<I>( equal, new ComparableComparer<I>() ).Equals(
+        new GT<I>( equal, new ComparableComparer<I>() ) ) );
+    Assert(
+        new GT<I>( equal, new ComparableComparer<I>() ).GetHashCode() ==
+        new GT<I>( equal, new ComparableComparer<I>() ).GetHashCode() );
+    Assert( !
+        new GT<I>( bigger, new ComparableComparer<I>() ).Equals(
+        new GT<I>( smaller, new ComparableComparer<I>() ) ) );
+
+    Print( "Null arguments to constructor throw ArgumentNullException" );
+    Expect< System.ArgumentNullException >( () =>
+        new GT<I>( null, new ComparableComparer<I>() ) );
+    Expect< System.ArgumentNullException >( () =>
+        new GT<I>( bigger, null ) );
+
+    IRType<I> t = new GT<I>( equal, new ComparableComparer<I>() );
+
+    Print( "null passes" );
+    t.Require( null, new Literal() );
+
+    Print( "Bigger passes" );
+    t.Require( bigger, new Local( "bigger" ) );
+
+    Print( "Equal fails" );
+    Expect< RTypeException >( () =>
+        t.Require( equal, new Local( "equal" ) ) );
+
+    Print( "Smaller fails" );
+    Expect< RTypeException >( () =>
+        t.Require( smaller, new Local( "smaller" ) ) );
+}
+
+
+[Test( "GTE<T>" )]
+public static
+void
+Test_GTE_T()
+{
+    I bigger = new AlwaysBigger();
+    I equal = new AlwaysEqual();
+    I smaller = new AlwaysSmaller();
+
+    Print( "Equality" );
+    Assert(
+        new GTE<I>( equal, new ComparableComparer<I>() ).Equals(
+        new GTE<I>( equal, new ComparableComparer<I>() ) ) );
+    Assert(
+        new GTE<I>( equal, new ComparableComparer<I>() ).GetHashCode() ==
+        new GTE<I>( equal, new ComparableComparer<I>() ).GetHashCode() );
+    Assert( !
+        new GTE<I>( bigger, new ComparableComparer<I>() ).Equals(
+        new GTE<I>( smaller, new ComparableComparer<I>() ) ) );
+
+    Print( "Null arguments to constructor throw ArgumentNullException" );
+    Expect< System.ArgumentNullException >( () =>
+        new GTE<I>( null, new ComparableComparer<I>() ) );
+    Expect< System.ArgumentNullException >( () =>
+        new GTE<I>( bigger, null ) );
+
+    IRType<I> t = new GTE<I>( equal, new ComparableComparer<I>() );
+
+    Print( "null passes" );
+    t.Require( null, new Literal() );
+
+    Print( "Bigger passes" );
+    t.Require( bigger, new Local( "bigger" ) );
+
+    Print( "Equal passes" );
+    t.Require( equal, new Local( "equal" ) );
+
+    Print( "Smaller fails" );
+    Expect< RTypeException >( () =>
+        t.Require( smaller, new Local( "smaller" ) ) );
+}
+
+
+[Test( "LT<T>" )]
+public static
+void
+Test_LT_T()
+{
+    I bigger = new AlwaysBigger();
+    I equal = new AlwaysEqual();
+    I smaller = new AlwaysSmaller();
+
+    Print( "Equality" );
+    Assert(
+        new LT<I>( equal, new ComparableComparer<I>() ).Equals(
+        new LT<I>( equal, new ComparableComparer<I>() ) ) );
+    Assert(
+        new LT<I>( equal, new ComparableComparer<I>() ).GetHashCode() ==
+        new LT<I>( equal, new ComparableComparer<I>() ).GetHashCode() );
+    Assert( !
+        new LT<I>( bigger, new ComparableComparer<I>() ).Equals(
+        new LT<I>( smaller, new ComparableComparer<I>() ) ) );
+
+    Print( "Null arguments to constructor throw ArgumentNullException" );
+    Expect< System.ArgumentNullException >( () =>
+        new LT<I>( null, new ComparableComparer<I>() ) );
+    Expect< System.ArgumentNullException >( () =>
+        new LT<I>( bigger, null ) );
+
+    IRType<I> t = new LT<I>( equal, new ComparableComparer<I>() );
+
+    Print( "null passes" );
+    t.Require( null, new Literal() );
+
+    Print( "Bigger fails" );
+    Expect< RTypeException >( () =>
+        t.Require( bigger, new Local( "bigger" ) ) );
+
+    Print( "Equal fails" );
+    Expect< RTypeException >( () =>
+        t.Require( equal, new Local( "equal" ) ) );
+
+    Print( "Smaller passes" );
+    t.Require( smaller, new Local( "smaller" ) );
+}
+
+
+[Test( "LTE<T>" )]
+public static
+void
+Test_LTE_T()
+{
+    I bigger = new AlwaysBigger();
+    I equal = new AlwaysEqual();
+    I smaller = new AlwaysSmaller();
+
+    Print( "Equality" );
+    Assert(
+        new LTE<I>( equal, new ComparableComparer<I>() ).Equals(
+        new LTE<I>( equal, new ComparableComparer<I>() ) ) );
+    Assert(
+        new LTE<I>( equal, new ComparableComparer<I>() ).GetHashCode() ==
+        new LTE<I>( equal, new ComparableComparer<I>() ).GetHashCode() );
+    Assert( !
+        new LTE<I>( bigger, new ComparableComparer<I>() ).Equals(
+        new LTE<I>( smaller, new ComparableComparer<I>() ) ) );
+
+    Print( "Null arguments to constructor throw ArgumentNullException" );
+    Expect< System.ArgumentNullException >( () =>
+        new LTE<I>( null, new ComparableComparer<I>() ) );
+    Expect< System.ArgumentNullException >( () =>
+        new LTE<I>( bigger, null ) );
+
+    IRType<I> t = new LTE<I>( equal, new ComparableComparer<I>() );
+
+    Print( "null passes" );
+    t.Require( null, new Literal() );
+
+    Print( "Bigger fails" );
+    Expect< RTypeException >( () =>
+        t.Require( bigger, new Local( "bigger" ) ) );
+
+    Print( "Equal passes" );
+    t.Require( equal, new Local( "equal" ) );
+
+    Print( "Smaller passes" );
+    t.Require( smaller, new Local( "smaller" ) );
 }
 
 

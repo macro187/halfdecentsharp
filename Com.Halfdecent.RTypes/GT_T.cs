@@ -16,32 +16,26 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using Com.Halfdecent.Globalisation;
+using SCG = System.Collections.Generic;
+using Com.Halfdecent;
 using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
 
 
 namespace
-Com.Halfdecent.Numerics
+Com.Halfdecent.RTypes
 {
 
 
 // =============================================================================
-/// RType: Greater than or equal to a particular value
-///
-/// According to <tt>IComparable.CompareTo()</tt>
-///
-/// When <tt>.CompareTo</tt> is <tt>null</tt>, <tt>System.IComparable</tt>
-/// semantics are used (ie. <tt>null</tt>s are equal and <tt>null</tt> is
-/// greater than non-null.)  Otherwise, <tt>null</tt> values always pass.
+/// RType: Greater than a particular value, according to a particular ordering
 // =============================================================================
 
 public class
-GTE
-    : SimpleTextRTypeBase< object >
+GT<
+    T
+>
+    : SimpleTextRTypeBase< T >
 {
-
 
 
 
@@ -50,19 +44,27 @@ GTE
 // -----------------------------------------------------------------------------
 
 public
-GTE(
-    IComparable compareTo
+GT(
+    T               compareTo,
     ///< The value to compare to
+    IComparer< T >  comparer
+    ///< The ordering to use
 )
     : base(
-        _S( "{{0}} is {0} or greater", compareTo ),
-        _S( "{{0}} is less than {0}", compareTo ),
-        _S( "{{0}} must be {0} or greater", compareTo )
-    )
+        _S( "{{0}} is greater than {0}",
+            ObjectUtils.ToString( compareTo ) ),
+        _S( "{{0}} is less than or equal to {0}",
+            ObjectUtils.ToString( compareTo ) ),
+        _S( "{{0}} must be greater than {0}",
+            ObjectUtils.ToString( compareTo ) ) )
 {
+    if( compareTo == null )
+        throw new ValueArgumentNullException( new Parameter( "compareTo" ) );
+    if( comparer == null )
+        throw new ValueArgumentNullException( new Parameter( "comparer" ) );
     this.CompareTo = compareTo;
+    this.Comparer = comparer;
 }
-
 
 
 
@@ -73,8 +75,19 @@ GTE(
 /// The value to compare to
 ///
 public
-IComparable
+T
 CompareTo
+{
+    get;
+    private set;
+}
+
+
+/// The ordering to use to make the comparison
+///
+public
+IComparer< T >
+Comparer
 {
     get;
     private set;
@@ -83,51 +96,48 @@ CompareTo
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< object >
+// RTypeBase< T >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-Equals(
-    IRType t
-)
+public override
+    SCG.IEnumerable< IRType< T > >
+GetComponents()
 {
-    return ((GTE)t).CompareTo.Equals( this.CompareTo );
+    return
+        base.GetComponents()
+        .Append( new GTE<T>( this.CompareTo, this.Comparer ) )
+        .Append( new NEQ<T>( this.CompareTo, this.Comparer ) );
 }
 
 
 
+
 // -----------------------------------------------------------------------------
-// IRType< object >
+// IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
-bool
-Predicate(
-    object item
+    bool
+DirectionalEquals(
+    IRType that
 )
 {
-    // When comparing against null, null == null
-    if( this.CompareTo == null && item == null ) return true;
-    // When comparing against null, null > non-null
-    if( this.CompareTo == null && item != null ) return false;
-    // When not comparing against null, null always passes
-    if( item == null ) return true;
-    return ( this.CompareTo.CompareTo( item ) <= 0 );
+    if( !base.DirectionalEquals( that ) ) return false;
+    GT<T> gt = (GT<T>)( that.GetUnderlying() );
+    return
+        gt.Comparer.Equals( this.Comparer ) &&
+        this.Comparer.Equals( gt.CompareTo, this.CompareTo );
 }
 
 
-
-// -----------------------------------------------------------------------------
-// object
-// -----------------------------------------------------------------------------
-
 public override
-int
+    int
 GetHashCode()
 {
-    if( this.CompareTo == null ) return base.GetHashCode();
-    return base.GetHashCode() ^ this.CompareTo.GetHashCode();
+    return
+        base.GetHashCode() ^
+        this.Comparer.GetHashCode() ^
+        this.Comparer.GetHashCode( this.CompareTo );
 }
 
 

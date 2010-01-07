@@ -283,68 +283,6 @@ Test_Interval_Covariance()
 }
 
 
-[Test( "Comparison RTypes" )]
-public static void
-Test_ComparisonRTypes()
-{
-    int val = 5;
-    int ltval = 0;
-    int gtval = 10;
-    GTE gte = new GTE( val );
-    LTE lte = new LTE( val );
-    GT gt   = new GT( val );
-    LT lt   = new LT( val );
-
-    Print( "GTE: Less than fails" );
-    Expect< RTypeException >( delegate() {
-        gte.Check( ltval, new Local( "ltval" ) );
-    } );
-    Print( "GTE: Equal passes" );
-    gte.Check( val, new Local( "val" ) );
-    Print( "GTE: Greater than passes" );
-    gte.Check( gtval, new Local( "gtval" ) );
-    Print( "GTE: Null passes" );
-    gte.Check< object, object >( null, new Literal() );
-
-    Print( "LTE: Less than passes" );
-    lte.Check( ltval, new Local( "ltval" ) );
-    Print( "LTE: Equal passes" );
-    lte.Check( val, new Local( "val" ) );
-    Print( "LTE: Greater than fails" );
-    Expect< RTypeException >( delegate() {
-        lte.Check( gtval, new Local( "gtval" ) );
-    } );
-    Print( "LTE: Null passes" );
-    lte.Check< object, object >( null, new Literal() );
-
-    Print( "GT: Less than fails" );
-    Expect< RTypeException >( delegate() {
-        gt.Check( ltval, new Local( "ltval" ) );
-    } );
-    Print( "GT: Equal fails" );
-    Expect< RTypeException >( delegate() {
-        gt.Check( val, new Local( "val" ) );
-    } );
-    Print( "GT: Greater than passes" );
-    gt.Check( gtval, new Local( "gtval" ) );
-    Print( "GT: Null passes" );
-    gt.Check< object, object >( null, new Literal() );
-
-    Print( "LT: Less than passes" );
-    lt.Check( ltval, new Local( "ltval" ) );
-    Print( "LT: Equal fails" );
-    Expect< RTypeException >( delegate() {
-        lt.Check( val, new Local( "val" ) );
-    } );
-    Print( "LT: Greater than fails" );
-    Expect< RTypeException >( delegate() {
-        lt.Check( gtval, new Local( "gtval" ) );
-    } );
-    Print( "LT: Null passes" );
-    lt.Check< object, object >( null, new Literal() );
-}
-
-
 [Test( "InInterval" )]
 public static void
 Test_InInterval()
