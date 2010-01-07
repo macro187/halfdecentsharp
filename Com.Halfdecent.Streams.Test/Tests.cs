@@ -208,6 +208,32 @@ Test_Enumerable_AsStream()
 }
 
 
+[Test( "Stream.Append()" )]
+public static
+void
+Test_Stream_Append()
+{
+    Assert(
+        new Stream< int >( 1, 2, 3 )
+        .Append( 4 )
+        .AsEnumerable()
+        .SequenceEqual( new int[] { 1, 2, 3, 4 } ) );
+}
+
+
+[Test( "Stream.Concat()" )]
+public static
+void
+Test_Stream_Concat()
+{
+    Assert(
+        new Stream< int >( 1, 2, 3 )
+        .Concat( new Stream< int >( 4, 5, 6 ) )
+        .AsEnumerable()
+        .SequenceEqual( new int[] { 1, 2, 3, 4, 5, 6 } ) );
+}
+
+
 
 
 } // type

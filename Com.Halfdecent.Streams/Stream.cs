@@ -17,6 +17,7 @@
 
 
 using SCG = System.Collections.Generic;
+using System.Linq;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -39,6 +40,43 @@ Stream
 // -----------------------------------------------------------------------------
 // Extension Methods
 // -----------------------------------------------------------------------------
+
+/// Produce a new stream that yields the contents of the stream followed by
+/// an additional specified item
+///
+public static
+    IStream< T >
+Append<
+    T
+>(
+    this IStream< T >   dis,
+    T                   item
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    return dis.Concat( new Stream< T >( item ) );
+}
+
+
+/// Produce a new stream that yields the contents of the stream followed by
+/// the contents of another specified stream
+///
+public static
+    IStream< T >
+Concat<
+    T
+>(
+    this IStream< T >   dis,
+    IStream< T >        stream
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    return
+        dis.AsEnumerable().Concat(
+            stream.AsEnumerable() )
+        .AsStream();
+}
+
 
 /// Pull the next item from the stream, expecting one to be available
 ///
