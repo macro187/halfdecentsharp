@@ -77,7 +77,7 @@ GetHashCode(
     T item
 )
 {
-    if( item == null )
+    if( object.ReferenceEquals( item, null ) )
         throw new System.ArgumentNullException( "item" );
     return item.GetHashCode();
 }

@@ -37,7 +37,7 @@ ObjectComparer
 
 
 // -----------------------------------------------------------------------------
-// System.Collections.Generic.IEqualityComparer< T >
+// System.Collections.Generic.IEqualityComparer< object >
 // -----------------------------------------------------------------------------
 
 public new

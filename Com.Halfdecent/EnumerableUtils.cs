@@ -66,7 +66,8 @@ Append<
     T                       newItem
 )
 {
-    if( enumerable == null ) throw new ArgumentNullException( "enumerable" );
+    if( object.ReferenceEquals( enumerable, null ) )
+        throw new ArgumentNullException( "enumerable" );
     foreach( T item in enumerable ) yield return item;
     yield return newItem;
 }

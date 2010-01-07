@@ -49,7 +49,7 @@ EqualityComparerAdapter(
     IEqualityComparer< TFrom > from
 )
 {
-    if( from == null )
+    if( object.ReferenceEquals( from, null ) )
         throw new System.ArgumentNullException( "from" );
     this.From = from;
 }

@@ -43,7 +43,8 @@ Chain(
     this Exception e
 )
 {
-    if( e == null ) throw new ArgumentNullException( "e" );
+    if( object.ReferenceEquals( e, null ) )
+        throw new ArgumentNullException( "e" );
     while( e != null ) {
         yield return e;
         e = e.InnerException;
