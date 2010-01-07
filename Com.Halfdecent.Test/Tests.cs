@@ -404,10 +404,10 @@ Test_IComparable()
 }
 
 
-[Test( "Comparer< T >" )]
+[Test( "ComparableComparer< T >" )]
 public static
 void
-Test_Comparer_T()
+Test_ComparableComparer_T()
 {
     I bigger = new AlwaysBigger();
     I equal = new AlwaysEqual();
@@ -448,6 +448,29 @@ Test_Comparer_T()
         new ComparableComparer< I >().Equals(
         new ComparableComparer< I >() ) );
     Assert( !c.Equals( d ) );
+}
+
+
+[Test( "Comparer< T >" )]
+public static
+void
+Test_Comparer_T()
+{
+    IComparer< int > c = new Comparer< int >(
+        ( a, b ) => a.CompareTo( b ),
+        ( a ) => a.GetHashCode() );
+
+    Print( "Compare()" );
+    Assert( c.Compare( 5, 5 ) == 0 );
+    Assert( c.Compare( 0, 5 ) < 0 );
+    Assert( c.Compare( 10, 5 ) > 0 );
+
+    Print( "Equals()" );
+    Assert( c.Equals( 5, 5 ) );
+    Assert( !c.Equals( 5, 10 ) );
+
+    Print( "GetHashCode()" );
+    Assert( c.GetHashCode( 5 ) == c.GetHashCode( 5 ) );
 }
 
 
