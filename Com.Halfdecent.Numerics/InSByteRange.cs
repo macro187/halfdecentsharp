@@ -28,11 +28,11 @@ Com.Halfdecent.Numerics
 
 
 // =============================================================================
-/// RType: In range of <tt>System.Decimal</tt>
+/// RType: In range of <tt>System.SByte</tt>
 // =============================================================================
 
 public class
-InDecimalRange
+InSByteRange
     : SimpleTextRTypeBase< IReal >
 {
 
@@ -43,11 +43,11 @@ InDecimalRange
 // -----------------------------------------------------------------------------
 
 public
-InDecimalRange()
+InSByteRange()
     : base(
-        _S("{0} is in range of System.Decimal"),
-        _S("{0} is not in range of System.Decimal"),
-        _S("{0} must be in range of System.Decimal") )
+        _S("{0} is in range of System.SByte"),
+        _S("{0} is not in range of System.SByte"),
+        _S("{0} must be in range of System.SByte") )
 {
 }
 
@@ -66,8 +66,8 @@ GetComponents()
         .Append(
             new InInterval< IReal >(
                 new Interval< IReal >(
-                    Real.From( System.Decimal.MinValue ),
-                    Real.From( System.Decimal.MaxValue ),
+                    Real.From( System.SByte.MinValue ),
+                    Real.From( System.SByte.MaxValue ),
                     new ComparableComparer< IReal >() ) ) );
 }
 

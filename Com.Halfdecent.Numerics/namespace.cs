@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -15,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-
 // =============================================================================
 /// Numbers and arithmetic
 ///
@@ -24,32 +24,27 @@
 /// - <tt>IReal</tt>
 /// - <tt>IInteger</tt>
 ///
-/// Numeric implementations using <tt>System.Decimal</tt>
+/// Implementations using <tt>System.Decimal</tt>
 /// - <tt>DecimalReal</tt>
 /// - <tt>DecimalInteger</tt>
 ///
-/// Intervals
-/// - <tt>IInterval< T ></tt>
-/// - <tt>Interval< T ></tt>
-///
-/// RTypes for <tt>IEquatable< T ></tt> values
-/// - <tt>EQ< T ></tt>
-/// - <tt>NEQ< T ></tt>
-///
-/// RTypes for <tt>IComparable< T ></tt> values
-/// - <tt>GT< T ></tt>
-/// - <tt>GTE< T ></tt>
-/// - <tt>LT< T ></tt>
-/// - <tt>LTE< T ></tt>
-/// - <tt>InInterval< T ></tt>
-///
-/// RTypes for numeric values
+/// RTypes
 /// - <tt>NonZero</tt>
+/// - <tt>NonNegative</tt>
 /// - <tt>NonFractional</tt>
+///
+/// Base class library numeric type range RTypes
 /// - <tt>InDecimalRange</tt>
+/// - <tt>InUInt64Range</tt>
+/// - <tt>InInt64Range</tt>
+/// - <tt>InUInt32Range</tt>
 /// - <tt>InInt32Range</tt>
+/// - <tt>InUInt16Range</tt>
+/// - <tt>InInt16Range</tt>
+/// - <tt>InByteRange</tt>
+/// - <tt>InSByteRange</tt>
 // =============================================================================
-//
+
 namespace
 Com.Halfdecent.Numerics
 {

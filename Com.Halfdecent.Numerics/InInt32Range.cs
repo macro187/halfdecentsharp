@@ -16,8 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
@@ -48,30 +47,28 @@ InInt32Range()
     : base(
         _S("{0} is in range of System.Int32"),
         _S("{0} is not in range of System.Int32"),
-        _S("{0} must be in range of System.Int32")
-    )
+        _S("{0} must be in range of System.Int32") )
 {
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IRType< T >
+// RTypeBase< IReal >
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< IReal > >
-Components
+SCG.IEnumerable< IRType< IReal > >
+GetComponents()
 {
-    get
-    {
-        return
-            base.Components
-            .Append( new InInterval< IReal >(
+    return
+        base.GetComponents()
+        .Append(
+            new InInterval< IReal >(
                 new Interval< IReal >(
-                    Real.From( Int32.MinValue ), true,
-                    Real.From( Int32.MaxValue ), true ) ) );
-    }
+                    Real.From( System.Int32.MinValue ),
+                    Real.From( System.Int32.MaxValue ),
+                    new ComparableComparer< IReal >() ) ) );
 }
 
 

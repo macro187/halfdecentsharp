@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -42,60 +41,13 @@ DecimalInteger
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Narrowing conversion from <tt>IReal</tt>
-///
-public
+internal
 DecimalInteger(
-    IReal value
+    decimal value
+    /// - Must be <tt>NonFractional</tt>
 )
     : base( value )
 {
-    new NonFractional().Check( value, new Parameter( "value" ) );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IInteger
-// -----------------------------------------------------------------------------
-
-public
-IInteger
-Plus(
-    IInteger i
-)
-{
-    return new DecimalInteger( base.Plus( i ) );
-}
-
-
-public
-IInteger
-Minus(
-    IInteger i
-)
-{
-    return new DecimalInteger( base.Minus( i ) );
-}
-
-
-public
-IInteger
-Times(
-    IInteger i
-)
-{
-    return new DecimalInteger( base.Times( i ) );
-}
-
-
-public
-IInteger
-RemainderWhenDividedBy(
-    IInteger i
-)
-{
-    return new DecimalInteger( base.RemainderWhenDividedBy( i ) );
 }
 
 

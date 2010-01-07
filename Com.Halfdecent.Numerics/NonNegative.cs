@@ -16,9 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent;
-using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
 
 
@@ -43,27 +42,26 @@ NonNegative()
     : base(
         _S("{0} is not negative"),
         _S("{0} is negative"),
-        _S("{0} must not be negative")
-    )
+        _S("{0} must not be negative") )
 {
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IRType< IReal >
+// RTypeBase< IReal >
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< IReal > >
-Components
+    SCG.IEnumerable< IRType< IReal > >
+GetComponents()
 {
-    get
-    {
-        return
-            base.Components
-            .Append( new GTE( Real.From( 0m ) ).Contravary< object, IReal >() );
-    }
+    return
+        base.GetComponents()
+        .Append(
+            new GTE< IReal >(
+                Real.From( 0m ),
+                new ComparableComparer< IReal >() ) );
 }
 
 

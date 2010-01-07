@@ -16,9 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-
-
 namespace
 Com.Halfdecent.Numerics
 {
@@ -34,46 +31,6 @@ public interface
 IInteger
     : IReal
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Compute this integer plus another
-///
-IInteger
-Plus(
-    IInteger x
-);
-
-
-/// Compute this integer minus another
-///
-IInteger
-Minus(
-    IInteger x
-);
-
-
-/// Compute this integer times another
-///
-IInteger
-Times(
-    IInteger x
-);
-
-
-/// Compute the remainder when this integer is divided by another
-///
-IInteger
-RemainderWhenDividedBy(
-    IInteger x
-);
-
-
-// TODO Integer Div (?)
 
 
 

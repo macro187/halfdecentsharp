@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
+using Com.Halfdecent;
 using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
@@ -42,26 +42,14 @@ DecimalReal
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Copy constructor
+/// Initialize a new <tt>DecimalReal</tt> from a <tt>System.Decimal</tt> value
 ///
-public
-DecimalReal(
-    IReal r
-)
-{
-    new NonNull().Check( r, new Parameter( "r" ) );
-    this.Value = r.ToDecimal();
-}
-
-
-/// Initialize a new <tt>DecimalReal</tt> with a <tt>System.Decimal</tt> value
-///
-public
+internal
 DecimalReal(
     decimal value
 )
 {
-    this.Value = value;
+    this.value = value;
 }
 
 
@@ -72,11 +60,7 @@ DecimalReal(
 
 private
 decimal
-Value
-{
-    get;
-    set;
-}
+value;
 
 
 
@@ -84,66 +68,68 @@ Value
 // IReal
 // -----------------------------------------------------------------------------
 
-public decimal ToDecimal() { return this.Value; }
-
-public bool GT( IReal r) { return ( this.CompareTo( r ) > 0 ); }
-
-public bool GTE( IReal r ) { return ( this.CompareTo( r ) >= 0 ); }
-
-public bool LT( IReal r ) { return ( this.CompareTo( r ) < 0 ); }
-
-public bool LTE( IReal r ) { return ( this.CompareTo( r ) <= 0 ); }
-
-public IReal Plus( IReal r )
+public
+    decimal
+GetValue()
 {
-    return new DecimalReal( this.Value + r.ToDecimal() );
-}
-
-public IReal Minus( IReal r )
-{
-    return new DecimalReal( this.Value - r.ToDecimal() );
-}
-
-public IReal Times( IReal r )
-{
-    return new DecimalReal( this.Value * r.ToDecimal() );
-}
-
-public IReal DividedBy( IReal r )
-{
-    new NonZero().Check( r, new Parameter( "r" ) );
-    return new DecimalReal( this.Value / r.ToDecimal() );
-}
-
-public IReal RemainderWhenDividedBy( IReal r )
-{
-    new NonZero().Check( r, new Parameter( "r" ) );
-    return new DecimalReal( Decimal.Remainder( this.Value, r.ToDecimal() ) );
-}
-
-public IReal Truncate()
-{
-    return new DecimalReal( Decimal.Truncate( this.Value ) );
+    return this.value;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// System.IComparable
+// IComparable< IReal >
 // -----------------------------------------------------------------------------
 
 public
-int
+    int
 CompareTo(
-    object obj
+    IReal that
 )
 {
-    if( obj == null ) return 1;
-    if( !( obj is IReal ) )
-        throw new ValueArgumentException(
-            new Parameter( "obj" ),
-            _S("{0} is not an IReal") );
-    return this.Value.CompareTo( ((IReal)obj).ToDecimal() );
+    return Comparable.CompareTo( this, that );
+}
+
+
+public
+    int
+DirectionalCompareTo(
+    IReal that
+)
+{
+    return Real.DirectionalCompareTo( this, that );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEquatable< IReal >
+// -----------------------------------------------------------------------------
+
+public
+    bool
+Equals(
+    IReal that
+)
+{
+    return Equatable.Equals( this, that );
+}
+
+
+public
+    bool
+DirectionalEquals(
+    IReal that
+)
+{
+    return Real.DirectionalEquals( this, that );
+}
+
+
+    int
+IEquatable<IReal>.GetHashCode()
+{
+    return Real.GetHashCode( this );
 }
 
 
@@ -153,36 +139,35 @@ CompareTo(
 // -----------------------------------------------------------------------------
 
 public override
-bool
+    bool
 Equals(
-    object obj
+    object that
 )
 {
-    if( obj == null ) return false;
-    if( !( obj is IReal ) ) return false;
-    return ( this.Value == ((IReal)obj).ToDecimal() );
+    return
+        that != null &&
+        that is IReal &&
+        this.Equals( (IReal)that );
 }
 
 
 public override
-string
-ToString()
-{
-    return this.Value.ToString();
-}
-
-
-public override
-int
+    int
 GetHashCode()
 {
-    return this.Value.GetHashCode();
+    return ((IEquatable<IReal>)this).GetHashCode();
+}
+
+
+public override
+    string
+ToString()
+{
+    return this.GetValue().ToString();
 }
 
 
 
-
-private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

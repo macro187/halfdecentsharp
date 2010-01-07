@@ -16,8 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
@@ -48,30 +47,28 @@ InByteRange()
     : base(
         _S("{0} is in range of System.Byte"),
         _S("{0} is not in range of System.Byte"),
-        _S("{0} must be in range of System.Byte")
-    )
+        _S("{0} must be in range of System.Byte") )
 {
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IRType< T >
+// RTypeBase< IReal >
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< IReal > >
-Components
+SCG.IEnumerable< IRType< IReal > >
+GetComponents()
 {
-    get
-    {
-        return
-            base.Components
-            .Append( new InInterval< IReal >(
+    return
+        base.GetComponents()
+        .Append(
+            new InInterval< IReal >(
                 new Interval< IReal >(
-                    Real.From( Byte.MinValue ), true,
-                    Real.From( Byte.MaxValue ), true ) ) );
-    }
+                    Real.From( System.Byte.MinValue ),
+                    Real.From( System.Byte.MaxValue ),
+                    new ComparableComparer< IReal >() ) ) );
 }
 
 

@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -15,8 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
-using Com.Halfdecent.Globalisation;
+using SCG = System.Collections.Generic;
+using Com.Halfdecent;
 using Com.Halfdecent.RTypes;
 
 
@@ -45,27 +46,26 @@ NonZero()
     : base(
         _S("{0} is not zero"),
         _S("{0} is zero"),
-        _S("{0} must not be zero")
-    )
+        _S("{0} must not be zero") )
 {
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IRType< IReal >
+// RTypeBase< IReal >
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< IReal > >
-Components
+    SCG.IEnumerable< IRType< IReal > >
+GetComponents()
 {
-    get
-    {
-        yield return
-            new NEQ( Real.From( 0m ) )
-            .Contravary< object, IReal >();
-    }
+    return
+        base.GetComponents()
+        .Append(
+            new NEQ< IReal >(
+                Real.From( 0m ),
+                new EquatableComparer< IReal >() ) );
 }
 
 

@@ -16,8 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
@@ -48,30 +47,28 @@ InInt64Range()
     : base(
         _S("{0} is in range of System.Int64"),
         _S("{0} is not in range of System.Int64"),
-        _S("{0} must be in range of System.Int64")
-    )
+        _S("{0} must be in range of System.Int64") )
 {
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IRType< IReal >
+// RTypeBase< IReal >
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< IReal > >
-Components
+SCG.IEnumerable< IRType< IReal > >
+GetComponents()
 {
-    get
-    {
-        return
-            base.Components
-            .Append( new InInterval< IReal >(
+    return
+        base.GetComponents()
+        .Append(
+            new InInterval< IReal >(
                 new Interval< IReal >(
-                    Real.From( Int64.MinValue ), true,
-                    Real.From( Int64.MaxValue ), true ) ) );
-    }
+                    Real.From( System.Int64.MinValue ),
+                    Real.From( System.Int64.MaxValue ),
+                    new ComparableComparer< IReal >() ) ) );
 }
 
 

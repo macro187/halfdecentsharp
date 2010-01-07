@@ -45,19 +45,18 @@ NonFractional()
     : base(
         _S("{0} is not fractional"),
         _S("{0} is fractional"),
-        _S("{0} must not be fractional")
-    )
+        _S("{0} must not be fractional") )
 {
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IRType< IReal >
+// RTypeBase< IReal >
 // -----------------------------------------------------------------------------
 
 public override
-bool
+    bool
 Predicate(
     IReal item
 )

@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -14,47 +15,102 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
+
+
 namespace
 Com.Halfdecent.Numerics
 {
 
+
 // =============================================================================
-/// <tt>IInteger</tt> Utilities
+/// <tt>IInteger</tt> Library
 // =============================================================================
-//
+
 public static class
 Integer
 {
 
 
 
-
 // -----------------------------------------------------------------------------
-// Methods
+// Static Methods
 // -----------------------------------------------------------------------------
 
-/// Produce an <tt>IInteger</tt> from an <tt>IReal</tt>
+/// Produce an <tt>IInteger</tt> from a <tt>System.Int32</tt>
 ///
 public static
-IInteger
+    IInteger
 From(
-    IReal value
+    int from
 )
 {
-    return new DecimalInteger( value );
+    return new DecimalInteger( from );
 }
 
 
 
-/// Produce an <tt>IInteger</tt> from a <tt>System.Decimal</tt>
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+/// Compute this integer plus another
 ///
 public static
-IInteger
-From(
-    decimal value
+    IInteger
+Plus(
+    this IInteger   dis,
+    IInteger        that
 )
 {
-    return Integer.From( Real.From( value ) );
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( that, new Parameter( "that" ) );
+    return ((IReal)dis).Plus( that ).Truncate();
+}
+
+
+/// Compute this integer minus another
+///
+public static
+    IInteger
+Minus(
+    this IInteger   dis,
+    IInteger        that
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( that, new Parameter( "that" ) );
+    return ((IReal)dis).Minus( that ).Truncate();
+}
+
+
+/// Compute this integer multiplied by another
+///
+public static
+    IInteger
+Times(
+    this IInteger   dis,
+    IInteger        that
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( that, new Parameter( "that" ) );
+    return ((IReal)dis).Times( that ).Truncate();
+}
+
+
+/// Compute the remainder when this integer is divided by another
+///
+public static
+    IInteger
+RemainderWhenDividedBy(
+    this IInteger   dis,
+    IInteger        that
+)
+{
+    throw new System.NotImplementedException();
 }
 
 

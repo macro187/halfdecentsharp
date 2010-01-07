@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
+using Com.Halfdecent;
 
 
 namespace
@@ -33,7 +33,7 @@ Com.Halfdecent.Numerics
 
 public interface
 IReal
-    : IComparable
+    : IComparable< IReal >
 {
 
 
@@ -42,88 +42,19 @@ IReal
 // Methods
 // -----------------------------------------------------------------------------
 
-/// "Narrowing" conversion to <tt>System.Decimal</tt>
+/// Conversion to <tt>System.Decimal</tt>
 ///
-/// TODO: Is this right?
-/// @exception InvalidOperationException
-/// If this Real's value is out of Decimal range
+/// @exception OverflowException
+/// This real's value is greater than <tt>System.Decimal.MaxValue</tt>
+/// - OR -
+/// This real's value is less than <tt>System.Decimal.MinValue</tt>
 ///
-decimal
-/// @returns A <tt>System.Decimal</tt> with the same value as this real
-ToDecimal();
-
-
-/// Determine whether this real is greater than another
-///
-bool
-GT(
-    IReal x
-);
-
-
-/// Determine whether this real is greater than or equal to another
-///
-bool
-GTE(
-    IReal x
-);
-
-
-/// Determine whether this real is less than another
-///
-bool
-LT(
-    IReal x
-);
-
-
-/// Determine whether this real is less than or equal to another
-///
-bool
-LTE(
-    IReal x
-);
-
-
-/// Compute this real plus another
-///
-IReal
-Plus(
-    IReal x
-);
-
-
-/// Compute this real minus another
-///
-IReal
-Minus(
-    IReal x
-);
-
-
-/// Compute this real times another
-///
-IReal
-Times(
-    IReal x
-);
-
-
-/// Compute this real divided by another
-///
-IReal
-DividedBy(
-    IReal x
-    ///< The other real
-    ///  - NonZero
-);
-
-
-/// Generate the value of this real with the fractional part of it's value
-/// discarded
-///
-IReal
-Truncate();
+//  XXX: Should use a proper bignum type for this
+//
+    decimal
+    /// @returns
+    /// A decimal with the same value as this real
+GetValue();
 
 
 
