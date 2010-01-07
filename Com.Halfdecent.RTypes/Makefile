@@ -20,7 +20,7 @@ MODULES_use += dotnet.csharp
 MODULES_use += testable
 
 
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.SystemUtils)
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Globalisation)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Exceptions)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Meta)

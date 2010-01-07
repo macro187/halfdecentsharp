@@ -17,37 +17,40 @@
 
 
 using System;
-using System.Collections.Generic;
 
 
 namespace
-Com.Halfdecent.SystemUtils
+Com.Halfdecent
 {
 
 
 // =============================================================================
-/// <tt>System.Exception</tt> Library
+/// <tt>IEquatable<T></tt> Library
 // =============================================================================
 
 public static class
-ExceptionUtils
+Equatable
 {
 
 
 
-/// Iterate from this exception down the <tt>.InnerException</tt> chain
+/// <tt>IEquatable<T>.Equals()</tt> implementation
 ///
 public static
-IEnumerable< Exception >
-Chain(
-    this Exception e
+bool
+Equals<
+    T
+>(
+    T dis,
+    T that
 )
+    where T : Halfdecent.IEquatable< T >
 {
-    if( e == null ) throw new ArgumentNullException( "e" );
-    while( e != null ) {
-        yield return e;
-        e = e.InnerException;
-    }
+    if( dis == null ) throw new ArgumentNullException( "dis" );
+    if( (object)that == null ) return false;
+    return
+        dis.ConsidersItselfEqualTo( that ) &&
+        that.ConsidersItselfEqualTo( dis );
 }
 
 

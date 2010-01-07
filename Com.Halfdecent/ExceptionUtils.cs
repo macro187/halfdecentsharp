@@ -16,12 +16,43 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+
+
+namespace
+Com.Halfdecent
+{
+
 
 // =============================================================================
-/// Base class library utilities
+/// <tt>System.Exception</tt> Library
 // =============================================================================
-//
-namespace
-Com.Halfdecent.SystemUtils
+
+public static class
+ExceptionUtils
 {
+
+
+
+/// Iterate from this exception down the <tt>.InnerException</tt> chain
+///
+public static
+IEnumerable< Exception >
+Chain(
+    this Exception e
+)
+{
+    if( e == null ) throw new ArgumentNullException( "e" );
+    while( e != null ) {
+        yield return e;
+        e = e.InnerException;
+    }
 }
+
+
+
+
+} // type
+} // namespace
+

@@ -17,74 +17,35 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 
 namespace
-Com.Halfdecent.SystemUtils
+Com.Halfdecent
 {
 
 
 // =============================================================================
-/// <tt>System.Collections.Generic.IEnumerable</tt> Library
+/// <tt>System.Object</tt> Library
 // =============================================================================
 
 public static class
-EnumerableUtils
+ObjectUtils
 {
 
 
 
-// -----------------------------------------------------------------------------
-// Extension Methods
-// -----------------------------------------------------------------------------
-
-/// Generate an enumerable that yields a single instance of this item
+/// Generate a string representation of the object
+///
+/// Also handles <tt>null</tt>
 ///
 public static
-IEnumerable< T >
-AsSingleItemEnumerable<
-    T
->(
-    this T item
+string
+ToString(
+    object obj
 )
 {
-    yield return item;
-}
-
-
-/// Generate an enumerable yielding all items in this one plus the specified
-/// item
-///
-public static
-IEnumerable< T >
-Append<
-    T
->(
-    this IEnumerable< T >   enumerable,
-    T                       newItem
-)
-{
-    if( enumerable == null ) throw new ArgumentNullException( "enumerable" );
-    foreach( T item in enumerable ) yield return item;
-    yield return newItem;
-}
-
-
-/// Covary the enumerable to one of items of a less-specific type
-///
-public static
-IEnumerable< TTo >
-Covary<
-    TFrom,
-    TTo
->(
-    this IEnumerable< TFrom > e
-)
-    where TFrom : TTo
-{
-    return e.Select< TFrom, TTo >( i => i );
+    if( obj == null ) return "null";
+    return obj.ToString();
 }
 
 

@@ -16,82 +16,56 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent;
-using Com.Halfdecent.Exceptions;
+using System;
 
 
 namespace
-Com.Halfdecent.Meta
+Com.Halfdecent
 {
 
 
 // =============================================================================
-/// An item accessed through an indexer
+/// A type that introduces a new definition of equality
 // =============================================================================
 
-public class
-Indexer
-    : MemberBase
+public interface
+IEquatable<
+    T
+    ///< The type
+>
 {
 
 
 
-internal
-Indexer(
-    IValue parent,
-    object index
-)
-    : base( parent )
-{
-    this.Index = index;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-object
-Index
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// MemberBase
-// -----------------------------------------------------------------------------
-
-
-protected override
-string
-ComponentToString()
-{
-    return string.Concat( "[", Value.FormatLiteral( this.Index ), "]" );
-}
-
-
-protected override
+/// Determine whether this and another item are equal
+///
+/// That is, each <tt>ConsidersItselfEqualTo()</tt> the other.
+///
+/// This method should be implemented with <tt>Equatable.Equals<T>()</tt>.
+///
 bool
-ComponentEquals(
-    IMember item
-)
-{
-    return object.Equals( ((Indexer)item).Index, this.Index );
-}
+Equals(
+    T that
+);
 
 
-protected override
+/// Determine whether this item considers itself equal to another
+///
+bool
+ConsidersItselfEqualTo(
+    T that
+);
+
+
+/// Generate a hash code for this item according to this definition of equality
+///
+/// Subject to the same requirements as <tt>System.Object.GetHashCode()</tt>,
+/// specifically:
+/// - If <tt>a.Equals( b )</tt> then <tt>a.GetHashCode()</tt> must equal
+///   <tt>b.GetHashCode()</tt>.
+///
 int
-ComponentGetHashCode()
-{
-    if( this.Index == null ) return 0;
-    return this.Index.GetHashCode();
-}
+GetHashCode();
 
 
 

@@ -20,16 +20,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent.Testing;
-using Com.Halfdecent.SystemUtils;
 
 
 namespace
-Com.Halfdecent.SystemUtils.Test
+Com.Halfdecent.Test
 {
 
 
 // =============================================================================
-/// Test program for <tt>Com.Halfdecent.SystemUtils</tt>
+/// Test program for <tt>Com.Halfdecent</tt>
 // =============================================================================
 //
 public class
@@ -103,6 +102,88 @@ Test_ObjectUtils()
     Print( ".ToString()" );
     AssertEqual( ObjectUtils.ToString( null ), "null" );
     AssertEqual( ObjectUtils.ToString( "notnull" ), "notnull" );
+}
+
+
+public interface A : Halfdecent.IEquatable< A > {}
+public interface B : Halfdecent.IEquatable< B > {}
+public class C : A, B {
+    bool Halfdecent.IEquatable<A>.Equals( A that ) {
+        return Equatable.Equals( this, that );
+    }
+    bool Halfdecent.IEquatable<A>.ConsidersItselfEqualTo(
+        A that
+    ) {
+        return true;
+    }
+    int Halfdecent.IEquatable<A>.GetHashCode() {
+        return 0xCA;
+    }
+    bool Halfdecent.IEquatable<B>.Equals( B that ) {
+        return Equatable.Equals( this, that );
+    }
+    bool Halfdecent.IEquatable<B>.ConsidersItselfEqualTo(
+        B that
+    ) {
+        return true;
+    }
+    int Halfdecent.IEquatable<B>.GetHashCode() {
+        return 0xCB;
+    }
+    public override bool Equals( object that ) { throw new Exception(); }
+    public override int GetHashCode() { throw new Exception(); }
+}
+public class D : A, B {
+    bool Halfdecent.IEquatable<A>.Equals( A that ) {
+        return Equatable.Equals( this, that );
+    }
+    bool Halfdecent.IEquatable<A>.ConsidersItselfEqualTo(
+        A that
+    ) {
+        return false;
+    }
+    int Halfdecent.IEquatable<A>.GetHashCode() {
+        return 0xDA;
+    }
+    bool Halfdecent.IEquatable<B>.Equals( B that ) {
+        return Equatable.Equals( this, that );
+    }
+    bool Halfdecent.IEquatable<B>.ConsidersItselfEqualTo(
+        B that
+    ) {
+        return true;
+    }
+    int Halfdecent.IEquatable<B>.GetHashCode() {
+        return 0xDB;
+    }
+    public override bool Equals( object that ) { throw new Exception(); }
+    public override int GetHashCode() { throw new Exception(); }
+}
+
+
+[Test( "IEquatable< T >" )]
+public static
+void
+Test_IEquatable_T()
+{
+    C c = new C();
+    D d = new D();
+    A ca = c;
+    B cb = c;
+    A da = d;
+    B db = d;
+
+    Print( "Per-interface .GetHashCode()" );
+    Assert( ca.GetHashCode() == 0xCA  );
+    Assert( cb.GetHashCode() == 0xCB  );
+
+    Print( "Per-interface .Equals()" );
+    Assert( ca.Equals( ca ) );
+    Assert( !( da.Equals( da ) ) );
+
+    Print( ".Equals() requires both items to agree" );
+    Assert( !( ca.Equals( da ) ) );
+    Assert( cb.Equals( db ) );
 }
 
 
