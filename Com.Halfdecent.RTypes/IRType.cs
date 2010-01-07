@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
+using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 
 
@@ -31,6 +31,7 @@ Com.Halfdecent.RTypes
 
 public interface
 IRType
+    : IEquatable< IRType >
 {
 
 
@@ -39,8 +40,19 @@ IRType
 // Methods
 // -----------------------------------------------------------------------------
 
+/// Get the underlying RType
+///
+    IRType
+    /// @returns
+    /// <tt>this</tt>
+    /// - OR -
+    /// The underlying RType, if <tt>this</tt> is an adapter
+GetUnderlying();
+
+
 /// Generate natural language stating that an item <em>is</em> of this RType
-Localised< string >
+///
+    Localised< string >
 SayIs(
     Localised< string > reference
     ///< Natural language reference to the item
@@ -48,19 +60,21 @@ SayIs(
 
 
 /// Generate natural language stating that an item <em>is not</em> of this RType
-Localised< string >
+///
+    Localised< string >
 SayIsNot(
     Localised< string > reference
-    ///< What to refer to the item as, in natural language
+    ///< Natural language reference to the item
 );
 
 
 /// Generate natural language stating that and item <em>is required to be</em>
 /// of this RType
-Localised< string >
+///
+    Localised< string >
 SayMustBe(
     Localised< string > reference
-    ///< What to refer to the item as, in natural language
+    ///< Natural language reference to the item
 );
 
 

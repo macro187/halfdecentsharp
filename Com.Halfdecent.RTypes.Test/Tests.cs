@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008
+// Copyright (c) 2008, 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Testing;
@@ -49,103 +48,103 @@ Main()
 }
 
 
-[Test( "EQ" )]
+[Test( "EQ<T>" )]
 public static
 void
-Test_EQ()
+Test_EQ_T()
 {
-    EQ t;
+    Print( "Equality" );
+    Assert(
+        new EQ<object>( 1, new ObjectComparer() ).Equals(
+        new EQ<object>( 1, new ObjectComparer() ) ) );
+    Assert(
+        new EQ<object>( 1, new ObjectComparer() ).GetHashCode() ==
+        new EQ<object>( 1, new ObjectComparer() ).GetHashCode() );
+    Assert( !
+        new EQ<object>( 1, new ObjectComparer() ).Equals(
+        new EQ<object>( 2, new ObjectComparer() ) ) );
+    Assert(
+        new EQ<object>( null, new ObjectComparer() ).Equals(
+        new EQ<object>( null, new ObjectComparer() ) ) );
+    Assert(
+        new EQ<object>( null, new ObjectComparer() ).GetHashCode() ==
+        new EQ<object>( null, new ObjectComparer() ).GetHashCode() );
+    Assert( !
+        new EQ<object>( 1, new ObjectComparer() ).Equals(
+        new EQ<object>( null, new ObjectComparer() ) ) );
 
-    Print( ".Equals() and .GetHashCode()" );
-    Assert(
-        new EQ( 1 )
-        .Equals( new EQ( 1 ) ) );
-    Assert(
-        new EQ( 1 ).GetHashCode() ==
-        new EQ( 1 ).GetHashCode() );
-    Assert( !(
-        new EQ( 1 )
-        .Equals( new EQ( 2 ) ) ) );
-    Assert(
-        new EQ( null )
-        .Equals( new EQ( null ) ) );
-    Assert(
-        new EQ( null ).GetHashCode() ==
-        new EQ( null ).GetHashCode() );
-    Assert( !(
-        new EQ( 1 )
-        .Equals( new EQ( null ) ) ) );
+    IRType<object> t;
 
-    t = new EQ( 1 );
+    t = new EQ<object>( 1, new ObjectComparer() );
 
     Print( "Null passes" );
-    t.Check< object, object >( null, new Literal() );
+    t.Require( null, new Literal() );
 
     Print( "Equal passes" );
-    t.Check( 1, new Literal() );
+    t.Require( 1, new Literal() );
 
     Print( "Inequal fails" );
     Expect< RTypeException >(
-        () => t.Check( 2, new Literal() ) );
+        () => t.Require( 2, new Literal() ) );
 
-    t = new EQ( null );
+    t = new EQ<object>( null, new ObjectComparer() );
 
     Print( "With null CompareTo, null passes" );
-    t.Check< object, object >( null, new Literal() );
+    t.Require( null, new Literal() );
 
     Print( "With null CompareTo, non-null fails" );
     Expect< RTypeException >(
-        () => t.Check( new object(), new Literal() ) );
+        () => t.Require( new object(), new Literal() ) );
 }
 
 
-[Test( "NEQ" )]
+[Test( "NEQ<T>" )]
 public static
 void
-Test_NEQ()
+Test_NEQ_T()
 {
-    NEQ t;
-
-    Print( ".Equals() and .GetHashCode()" );
+    Print( "Equality" );
     Assert(
-        new NEQ( 1 )
-        .Equals( new NEQ( 1 ) ) );
+        new NEQ<object>( 1, new ObjectComparer() ).Equals(
+        new NEQ<object>( 1, new ObjectComparer() ) ) );
     Assert(
-        new NEQ( 1 ).GetHashCode() ==
-        new NEQ( 1 ).GetHashCode() );
+        new NEQ<object>( 1, new ObjectComparer() ).GetHashCode() ==
+        new NEQ<object>( 1, new ObjectComparer() ).GetHashCode() );
     Assert( !(
-        new NEQ( 1 )
-        .Equals( new NEQ( 2 ) ) ) );
+        new NEQ<object>( 1, new ObjectComparer() ).GetHashCode() ==
+        new NEQ<object>( 2, new ObjectComparer() ).GetHashCode() ) );
     Assert(
-        new NEQ( null )
-        .Equals( new NEQ( null ) ) );
+        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() ==
+        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() );
     Assert(
-        new NEQ( null ).GetHashCode() ==
-        new NEQ( null ).GetHashCode() );
+        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() ==
+        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() );
     Assert( !(
-        new NEQ( 1 )
-        .Equals( new NEQ( null ) ) ) );
+        new NEQ<object>( 1, new ObjectComparer() ).GetHashCode() ==
+        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() ) );
 
-    t = new NEQ( 1 );
+    IRType<object> t;
+
+    t = new NEQ<object>( 1, new ObjectComparer() );
 
     Print( "Null passes" );
-    t.Check< object, object >( null, new Literal() );
+    t.Require( null, new Literal() );
 
     Print( "Inequal passes" );
-    t.Check( 2, new Literal() );
+    t.Require( 2, new Literal() );
 
     Print( "Equal fails" );
     Expect< RTypeException >(
-        () => t.Check( 1, new Literal() ) );
+        () => t.Require( 1, new Literal() ) );
 
-    t = new NEQ( null );
+    t = new NEQ<object>( null, new ObjectComparer() );
 
     Print( "With null CompareTo, non-null passes" );
-    t.Check( new object(), new Literal() );
+    t.Require( new object(), new Literal() );
 
     Print( "With null CompareTo, null fails" );
     Expect< RTypeException >(
-        () => t.Check< object, object >( null, new Literal() ) );
+        () => t.Require( null, new Literal() ) );
 }
 
 
@@ -163,14 +162,14 @@ Test_NonNull()
         new NonNull().GetHashCode() );
     Assert( !(
         new NonNull()
-        .Equals( new EQ( 1 ) ) ) );
+        .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
 
     Print( "Non-null passes" );
-    new NonNull().Check( new object(), new Literal() );
+    new NonNull().Require( new object(), new Literal() );
 
     Print( "Null fails" );
     Expect< RTypeException >(
-        () => new NonNull().Check< object, object >( null, new Literal() ) );
+        () => new NonNull().Require( null, new Literal() ) );
 }
 
 
@@ -188,17 +187,17 @@ Test_NonBlankString()
         new NonBlankString().GetHashCode() );
     Assert( !(
         new NonBlankString()
-        .Equals( new EQ( 1 ) ) ) );
+        .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
 
     Print( "Null passes" );
-    new NonBlankString().Check< string, string >( null, new Literal() );
+    new NonBlankString().Require( null, new Literal() );
 
     Print( "Non-blank string passes" );
-    new NonBlankString().Check( "Not blank", new Literal() );
+    new NonBlankString().Require( "Not blank", new Literal() );
 
     Print( "Blank string fails" );
     Expect< RTypeException >(
-        () => new NonBlankString().Check( "", new Literal() ) );
+        () => new NonBlankString().Require( "", new Literal() ) );
 }
 
 
@@ -207,17 +206,17 @@ public static
 void
 Test_Contravariance()
 {
-    IRType< object > t = new EQ( "apple" );
-    IRType< object > u = new EQ( "apple" );
-    IRType< object > v = new EQ( "orange" );
+    IRType< object > t = new EQ<object>( "apple", new ObjectComparer() );
+    IRType< object > u = new EQ<object>( "apple", new ObjectComparer() );
+    IRType< object > v = new EQ<object>( "orange", new ObjectComparer() );
     IRType< string > w = t.Contravary< object, string >();
     IRType< string > x = u.Contravary< object, string >();
     IRType< string > y = v.Contravary< object, string >();
 
-    Print( "Contravariant provides same Check() results as original" );
-    w.Check( "apple", new Literal() );
+    Print( "Contravariant provides same Assert() results as original" );
+    w.Require( "apple", new Literal() );
     Expect< RTypeException >(
-        () => w.Check( "orange", new Literal() ) );
+        () => w.Require( "orange", new Literal() ) );
 
     Print( "Contravariant .Equals() original and vice-versa" );
     Assert( t.Equals( w ) );
@@ -246,13 +245,14 @@ T
     : SimpleTextRTypeBase< int >
 {
     public T() : base( "", "", "" ) {}
-    public override IEnumerable< IRType< int > > Components
+    public override SCG.IEnumerable< IRType< int > > GetComponents()
     {
-        get {
-            return base.Components
-            .Append( new NEQ( "T1" ).Contravary< object, int >() )
-            .Append( new NEQ( "T2" ).Contravary< object, int >() );
-        }
+        return
+            base.GetComponents()
+            .Append( new NEQ<object>( "T1", new ObjectComparer() )
+                .Contravary< object, int >() )
+            .Append( new NEQ<object>( "T2", new ObjectComparer() )
+                .Contravary< object, int >() );
     }
 }
 
@@ -261,13 +261,13 @@ U
     : SimpleTextRTypeBase< int >
 {
     public U() : base( "", "", "" ) {}
-    public override IEnumerable< IRType< int > > Components
+    public override SCG.IEnumerable< IRType< int > > GetComponents()
     {
-        get {
-            return base.Components
+        return
+            base.GetComponents()
             .Append( new T() )
-            .Append( new NEQ( "U2" ).Contravary< object, int >() );
-        }
+            .Append( new NEQ<object>( "U2", new ObjectComparer() )
+                .Contravary< object, int >() );
     }
 }
 
@@ -279,7 +279,7 @@ Test_AllComponentsDepthFirst()
 {
     Print( "No components" );
     Assert(
-        new NEQ(4).AllComponentsDepthFirst()
+        new NEQ<object>( 4, new ObjectComparer() ).AllComponentsDepthFirst()
         .SequenceEqual(
             Enumerable.Empty< IRType< object > >() ) );
 
@@ -288,8 +288,10 @@ Test_AllComponentsDepthFirst()
         new T().AllComponentsDepthFirst()
         .SequenceEqual(
             Enumerable.Empty< IRType< int > >()
-            .Append( new NEQ( "T1" ).Contravary< object, int >() )
-            .Append( new NEQ( "T2" ).Contravary< object, int >() ) ) );
+            .Append( new NEQ<object>( "T1", new ObjectComparer() )
+                .Contravary< object, int >() )
+            .Append( new NEQ<object>( "T2", new ObjectComparer() )
+                .Contravary< object, int >() ) ) );
 
     Print( "Nested components" );
     Assert(
@@ -297,9 +299,12 @@ Test_AllComponentsDepthFirst()
         .SequenceEqual(
             Enumerable.Empty< IRType< int > >()
             .Append( new T() )
-            .Append( new NEQ( "T1" ).Contravary< object, int >() )
-            .Append( new NEQ( "T2" ).Contravary< object, int >() )
-            .Append( new NEQ( "U2" ).Contravary< object, int >() ) ) );
+            .Append( new NEQ<object>( "T1", new ObjectComparer() )
+                .Contravary< object, int >() )
+            .Append( new NEQ<object>( "T2", new ObjectComparer() )
+                .Contravary< object, int >() )
+            .Append( new NEQ<object>( "U2", new ObjectComparer() )
+                .Contravary< object, int >() ) ) );
 }
 
 
@@ -313,15 +318,15 @@ Test_IsEqualToOrMoreSpecificThan()
         new NonNull().IsEqualToOrMoreSpecificThan(
             new NonNull() ) );
 
-    Print( "NonNull <= NEQ( null )" );
+    Print( "NonNull <= NEQ<object>( null, new ObjectComparer() )" );
     Assert(
         new NonNull().IsEqualToOrMoreSpecificThan(
-            new NEQ( null ) ) );
+            new NEQ<object>( null, new ObjectComparer() ) ) );
 
-    Print( "NonBlankString !<= EQ( \"foo\" )" );
+    Print( "NonBlankString !<= EQ<object>( \"foo\", new ObjectComparer() )" );
     Assert( !(
         new NonBlankString().IsEqualToOrMoreSpecificThan(
-            new EQ( "foo" ) ) ) );
+            new EQ<object>( "foo", new ObjectComparer() ) ) ) );
 }
 
 

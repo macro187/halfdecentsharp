@@ -16,11 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
-using Com.Halfdecent;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 
 
@@ -30,7 +27,30 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// Abstract base class for implementing RTypes
+/// Base class for implementing RTypes
+///
+/// @section implementing Implementing
+///
+///     This base class offers three mechanisms for implementing RType logic,
+///     any number of which can be used simultaneously.  In decreasing order of
+///     preference, they are:
+///
+///     -#  <tt>GetComponents()</tt>, other RTypes to apply to the item
+///
+///     -#  <tt>CheckMembers()</tt>, a method in which other RTypes can be
+///         applied to parts of the item
+///
+///     -#  <tt>Predicate()</tt>, a method which can contain arbitrary logic
+///
+///     The earlier-listed mechanisms are more preferable for at least two
+///     reasons.  First, they are composed of existing -- and therefore
+///     presumably tested and correct -- RTypes, and so bring less chance of
+///     introducing bugs.  Secondly, they provide more details (in the form of
+///     inner exceptions) when items fail.
+///
+///     In short, try to compose new RTypes from existing ones using the first
+///     two mechanisms.  Only resort to a hand-written <tt>Predicate()</tt>
+///     when the required logic doesn't exist anywhere else.
 // =============================================================================
 
 public abstract class
@@ -43,24 +63,12 @@ RTypeBase<
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// Constructors
 // -----------------------------------------------------------------------------
 
-/// Overridable equality checker
-///
-/// Subtypes with value parameters should take them into account by overriding
-/// this.
-///
-protected virtual
-bool
-Equals(
-    IRType t
-    ///< RType to compare against
-    ///  - Will never be <tt>null</tt>
-    ///  - Will always be the exact same run-time .NET type as <tt>this</tt>
-)
+public
+RTypeBase()
 {
-    return true;
 }
 
 
@@ -70,15 +78,26 @@ Equals(
 // -----------------------------------------------------------------------------
 
 public virtual
-IEnumerable< IRType< T > >
-Components
+    SCG.IEnumerable< IRType< T > >
+GetComponents()
 {
-    get { yield break; }
+    yield break;
 }
 
 
 public virtual
-bool
+    RTypeException
+CheckMembers(
+    T       item,
+    Value   itemReference
+)
+{
+    return null;
+}
+
+
+public virtual
+    bool
 Predicate(
     T item
 )
@@ -92,22 +111,30 @@ Predicate(
 // IRType
 // -----------------------------------------------------------------------------
 
+public virtual
+IRType
+GetUnderlying()
+{
+    return this;
+}
+
+
 public abstract
-Localised< string >
+    Localised< string >
 SayIs(
     Localised< string > reference
 );
 
 
 public abstract
-Localised< string >
+    Localised< string >
 SayIsNot(
     Localised< string > reference
 );
 
 
 public abstract
-Localised< string >
+    Localised< string >
 SayMustBe(
     Localised< string > reference
 );
@@ -115,45 +142,59 @@ SayMustBe(
 
 
 // -----------------------------------------------------------------------------
-// Object
+// IEquatable< RType >
 // -----------------------------------------------------------------------------
 
-/// <tt>.Equals( object )</tt>
-///
-/// Subtypes with value parameters should take them into account by overriding
-/// <tt>.Equals( IRType )</tt>, not this.
-///
-public sealed override
-bool
+public
+    bool
 Equals(
-    object obj
+    IRType that
 )
 {
-    if( obj is IRTypeContravariantAdapter )
-        obj = ((IRTypeContravariantAdapter)obj).From;
-    if( base.Equals( obj ) ) return true;
-    if( obj == null ) return false;
-    if( this.GetType() != obj.GetType() ) return false;
-    return this.Equals( (IRType)obj );
+    return Equatable.Equals( this, that );
 }
 
 
-/// <tt>.GetHashCode()</tt>
-///
-/// Subtypes with value parameters should take them into account by overriding
-/// this.
-///
+public virtual
+    bool
+DirectionalEquals(
+    IRType that
+)
+{
+    if( that == null ) return false;
+    return
+        this.GetUnderlying().GetType() ==
+        that.GetUnderlying().GetType();
+}
+
+
 public override
-int
+    int
 GetHashCode()
 {
-    return this.GetType().GetHashCode();
+    return this.GetUnderlying().GetType().GetHashCode();
 }
 
 
 
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
 
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
+public override sealed
+    bool
+Equals(
+    object that
+)
+{
+    return
+        that != null &&
+        that is IRType &&
+        this.Equals( (IRType)that );
+}
+
+
+
 
 } // type
 } // namespace

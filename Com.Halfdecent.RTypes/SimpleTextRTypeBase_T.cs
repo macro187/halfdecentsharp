@@ -16,10 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
-using Com.Halfdecent.Exceptions;
 
 
 namespace
@@ -28,8 +26,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// Abstract base class for implementing RTypes with simple IsA, IsNotA, and
-/// MustBe text
+/// Base class for implementing RTypes with simple IsA, IsNotA, and MustBe text
 // =============================================================================
 
 public abstract class
@@ -76,7 +73,7 @@ SimpleTextRTypeBase(
 // -----------------------------------------------------------------------------
 
 private
-Localised< string >
+    Localised< string >
 IsFormat
 {
     get;
@@ -85,7 +82,7 @@ IsFormat
 
 
 private
-Localised< string >
+    Localised< string >
 IsNotFormat
 {
     get;
@@ -94,7 +91,7 @@ IsNotFormat
 
 
 private
-Localised< string >
+    Localised< string >
 MustBeFormat
 {
     get;
@@ -108,7 +105,7 @@ MustBeFormat
 // -----------------------------------------------------------------------------
 
 public override
-Localised< string >
+    Localised< string >
 SayIs(
     Localised< string > reference
 )
@@ -120,7 +117,7 @@ SayIs(
 
 
 public override
-Localised< string >
+    Localised< string >
 SayIsNot(
     Localised< string > reference
 )
@@ -132,7 +129,7 @@ SayIsNot(
 
 
 public override
-Localised< string >
+    Localised< string >
 SayMustBe(
     Localised< string > reference
 )

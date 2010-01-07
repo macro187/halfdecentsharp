@@ -16,8 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Exceptions;
@@ -30,16 +29,15 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// RType< T > contravariant type adapter
+/// IRType< T > contravariant type adapter
 // =============================================================================
 
 public class
-RTypeContravariantAdapter<
+RTypeAdapter<
     TFrom,
     TTo
 >
     : IRType< TTo >
-    , IRTypeContravariantAdapter
     where TTo : TFrom
 {
 
@@ -50,7 +48,7 @@ RTypeContravariantAdapter<
 // -----------------------------------------------------------------------------
 
 public
-RTypeContravariantAdapter(
+RTypeAdapter(
     IRType< TFrom > from
 )
 {
@@ -66,7 +64,7 @@ RTypeContravariantAdapter(
 // -----------------------------------------------------------------------------
 
 public
-IRType< TFrom >
+    IRType< TFrom >
 From
 {
     get;
@@ -76,35 +74,31 @@ From
 
 
 // -----------------------------------------------------------------------------
-// IRTypeContravariantAdapter
-// -----------------------------------------------------------------------------
-
-IRType
-IRTypeContravariantAdapter.From
-{
-    get { return this.From; }
-}
-
-
-
-// -----------------------------------------------------------------------------
 // IRType< T >
 // -----------------------------------------------------------------------------
 
 public
-IEnumerable< IRType< TTo > >
-Components
+    SCG.IEnumerable< IRType< TTo > >
+GetComponents()
 {
-    get
-    {
-        return this.From.Components
-            .Select( c => c.Contravary< TFrom, TTo >() );
-    }
+    return this.From.GetComponents()
+        .Select( c => c.Contravary< TFrom, TTo >() );
 }
 
 
 public
-bool
+    RTypeException
+CheckMembers(
+    TTo     item,
+    Value   itemReference
+)
+{
+    return this.From.CheckMembers( item, itemReference );
+}
+
+
+public
+    bool
 Predicate(
     TTo item
 )
@@ -118,8 +112,16 @@ Predicate(
 // IRType
 // -----------------------------------------------------------------------------
 
+public virtual
+IRType
+GetUnderlying()
+{
+    return this.From.GetUnderlying();
+}
+
+
 public
-Localised< string >
+    Localised< string >
 SayIs(
     Localised< string > reference
 )
@@ -129,7 +131,7 @@ SayIs(
 
 
 public
-Localised< string >
+    Localised< string >
 SayIsNot(
     Localised< string > reference
 )
@@ -139,7 +141,7 @@ SayIsNot(
 
 
 public
-Localised< string >
+    Localised< string >
 SayMustBe(
     Localised< string > reference
 )
@@ -150,24 +152,52 @@ SayMustBe(
 
 
 // -----------------------------------------------------------------------------
-// object
+// IEquatable< RType >
 // -----------------------------------------------------------------------------
 
-public override
-bool
+public
+    bool
 Equals(
-    object obj
+    IRType that
 )
 {
-    return this.From.Equals( obj );
+    return this.From.Equals( that );
+}
+
+
+public
+    bool
+DirectionalEquals(
+    IRType that
+)
+{
+    return this.From.DirectionalEquals( that );
 }
 
 
 public override
-int
+    int
 GetHashCode()
 {
     return this.From.GetHashCode();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
+
+public override
+    bool
+Equals(
+    object that
+)
+{
+    return
+        that != null &&
+        that is IRType &&
+        this.Equals( (IRType)that );
 }
 
 

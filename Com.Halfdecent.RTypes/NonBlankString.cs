@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
@@ -46,25 +46,25 @@ NonBlankString()
     : base(
         _S("{0} is not blank"),
         _S("{0} is blank"),
-        _S("{0} must not be blank")
-    )
+        _S("{0} must not be blank") )
 {
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IRType< string >
+// RTypeBase< string >
 // -----------------------------------------------------------------------------
 
 public override
-bool
-Predicate(
-    string item
-)
+    SCG.IEnumerable< IRType< string > >
+GetComponents()
 {
-    if( item == null ) return true;
-    return ( item != string.Empty );
+    return
+        base.GetComponents()
+        .Append(
+            new NEQ<object>( string.Empty, new ObjectComparer() )
+            .Contravary< object, string >() );
 }
 
 

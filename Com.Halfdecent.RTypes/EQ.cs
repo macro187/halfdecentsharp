@@ -16,10 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
+using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
 
 
 namespace
@@ -28,14 +27,17 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// RType: Equal to a particular value
+/// RType: Equal to a particular value, according to a particular definition of
+/// equality
 ///
-/// According to <tt>System.Object.Equals()</tt>
+/// <tt>null</tt> values always pass.
 // =============================================================================
 
 public class
-EQ
-    : SimpleTextRTypeBase< object >
+EQ<
+    T
+>
+    : SimpleTextRTypeBase< T >
 {
 
 
@@ -46,15 +48,18 @@ EQ
 
 public
 EQ(
-    object compareTo
+    T                       compareTo,
+    IEqualityComparer< T >  comparer
 )
     : base(
-        _S( "{{0}} is equal to {0}", compareTo ?? "null" ),
-        _S( "{{0}} isn't equal to {0}", compareTo ?? "null" ),
-        _S( "{{0}} must be equal to {0}", compareTo ?? "null" )
-    )
+        _S( "{{0}} is equal to {0}", ObjectUtils.ToString( compareTo ) ),
+        _S( "{{0}} isn't equal to {0}", ObjectUtils.ToString( compareTo ) ),
+        _S( "{{0}} must be equal to {0}", ObjectUtils.ToString( compareTo ) ) )
 {
+    if( comparer == null )
+        throw new ValueArgumentNullException( new Parameter( "comparer" ) );
     this.CompareTo = compareTo;
+    this.Comparer = comparer;
 }
 
 
@@ -66,8 +71,19 @@ EQ(
 /// The value to compare to
 ///
 public
-object
+    T
 CompareTo
+{
+    get;
+    private set;
+}
+
+
+/// The kind of equality to use
+///
+public
+    IEqualityComparer< T >
+Comparer
 {
     get;
     private set;
@@ -79,48 +95,48 @@ CompareTo
 // RTypeBase< object >
 // -----------------------------------------------------------------------------
 
-protected override
-bool
-Equals(
-    IRType t
-)
-{
-    return object.Equals(
-        this.CompareTo,
-        ((EQ)t).CompareTo );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IRType< object >
-// -----------------------------------------------------------------------------
-
 public override
-bool
+    bool
 Predicate(
-    object item
+    T item
 )
 {
     if( this.CompareTo == null ) return ( item == null );
     if( item == null ) return true;
-    return this.CompareTo.Equals( item );
+    return this.Comparer.Equals( item, this.CompareTo );
 }
 
 
 
 // -----------------------------------------------------------------------------
-// object
+// IComparable< IRType >
 // -----------------------------------------------------------------------------
 
 public override
-int
+    bool
+DirectionalEquals(
+    IRType that
+)
+{
+    if( !base.DirectionalEquals( that ) ) return false;
+    EQ<T> eq = that.GetUnderlying() as EQ<T>;
+    if( eq == null ) return false;
+    return
+        eq.Comparer.Equals( this.Comparer ) &&
+        this.Comparer.Equals( eq.CompareTo, this.CompareTo );
+}
+
+
+public override
+    int
 GetHashCode()
 {
     return
-        this.CompareTo == null ?
-        base.GetHashCode() :
-        base.GetHashCode() ^ this.CompareTo.GetHashCode();
+        base.GetHashCode() ^
+        this.Comparer.GetHashCode() ^
+        ( this.CompareTo != null ?
+            this.Comparer.GetHashCode( this.CompareTo ) :
+            0 );
 }
 
 

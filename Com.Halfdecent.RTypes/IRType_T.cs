@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
-using Com.Halfdecent.Globalisation;
+using SCG = System.Collections.Generic;
+using Com.Halfdecent.Meta;
 
 
 namespace
@@ -26,14 +26,12 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// Composable value check
+/// Composable value check for items of a particular type
 // =============================================================================
 
 public interface
 IRType<
     T
-    ///< .NET type of items this RType applies to
-    ///  (contravariant)
 >
     : IRType
 {
@@ -41,30 +39,57 @@ IRType<
 
 
 // -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// RTypes that this one is composed of
-///
-IEnumerable< IRType< T > >
-Components
-{
-    get;
-}
-
-
-
-// -----------------------------------------------------------------------------
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Logic (in addition to that of any <tt>.Components</tt>) determining whether
-/// an item "is of" this RType
+/// RType logic as a list of other RTypes to be applied to the item
 ///
-/// Generally returns <tt>true</tt> for <tt>null</tt> items unless the RType
-/// explicitly disallows <tt>null</tt>s
+    SCG.IEnumerable< IRType< T > >
+GetComponents();
+
+
+/// RType logic by applying RType checks to parts of the item
 ///
-bool
+/// @section implementing Implementing
+///
+///     The <tt>??</tt> operator is a nice way to implement this method if
+///     there is more than one check:
+///
+///     <code>
+///     public override
+///     RTypeException
+///     CheckMembers(
+///         T       item,
+///         Value   itemReference
+///     )
+///     {
+///         return
+///             new SomeRType().Check(
+///                 item.Prop, itemReference.Property( "Prop" ) ) ??
+///             new AnotherRType().Check(
+///                 item[2], itemReference.Indexer( 2 ) ) ??
+///             new YetAnotherRType().Check(
+///                 item.Prop2, itemReference.Property( "Prop2" ) );
+///     }
+///     </code>
+///
+    RTypeException
+    /// @returns
+    /// <tt>null</tt>, if all member rtype checks passed
+    /// - OR -
+    /// An <tt>RTypeException</tt> with details, if a member rtype check
+    /// failed
+CheckMembers(
+    T       item,
+    Value   itemReference
+);
+
+
+/// RType logic as a method
+///
+    bool
+    /// @returns
+    /// Whether <tt>item</tt> conforms
 Predicate(
     T item
 );

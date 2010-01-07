@@ -28,8 +28,8 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// A value was found not to be of a particular <tt>RType</tt> when it was
-/// required to be
+/// A value was found not to be of a particular RType when it was required to
+/// be
 // =============================================================================
 
 public class
@@ -46,9 +46,9 @@ RTypeException
 public
 RTypeException(
     Value   valueReference,
-    IRType  rType
+    IRType  rtype
 )
-    : this( valueReference, rType, null )
+    : this( valueReference, rtype, null )
 {
 }
 
@@ -56,7 +56,7 @@ RTypeException(
 public
 RTypeException(
     Value       valueReference,
-    IRType      rType,
+    IRType      rtype,
     Exception   innerException
 )
     : base( valueReference, null, innerException )
@@ -64,9 +64,9 @@ RTypeException(
     if( valueReference == null )
         throw new ValueArgumentNullException(
             new Parameter( "valueReference" ) );
-    if( rType == null )
-        throw new ValueArgumentNullException( new Parameter( "rType" ) );
-    this.RType = rType;
+    if( rtype == null )
+        throw new ValueArgumentNullException( new Parameter( "rtype" ) );
+    this.RType = rtype;
 }
 
 

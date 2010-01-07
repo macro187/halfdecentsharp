@@ -15,7 +15,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
@@ -46,27 +46,23 @@ NonNull()
     : base(
         _S("{0} is non-null"),
         _S("{0} is null"),
-        _S("{0} must not be null")
-    )
+        _S("{0} must not be null") )
 {
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IRType< object >
+// RType< object >
 // -----------------------------------------------------------------------------
 
 public override
-IEnumerable< IRType< object > >
-Components
+    SCG.IEnumerable< IRType< object > >
+GetComponents()
 {
-    get
-    {
-        return
-            base.Components
-            .Append( new NEQ( null ) );
-    }
+    return
+        base.GetComponents()
+        .Append( new NEQ<object>( null, new ObjectComparer() ) );
 }
 
 

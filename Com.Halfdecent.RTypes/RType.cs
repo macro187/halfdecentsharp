@@ -16,11 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent;
-using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 
 
@@ -30,7 +28,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// RType Library
+/// <tt>IRType</tt> and <tt>IRType<T></tt> Library
 // =============================================================================
 
 public static class
@@ -40,102 +38,140 @@ RType
 
 
 // -----------------------------------------------------------------------------
-// Extension Methods
+// Methods
 // -----------------------------------------------------------------------------
 
-/// Ensure that an item is of the RType
-///
-/// @exception RTypeException
-/// <tt>item</tt> was found not to be of the RType
+/// Determine whether an item conforms to this RType
 ///
 public static
-void
+    RTypeException
+    /// @returns
+    /// <tt>null</tt>, if <tt>item</tt> conforms to this RType
+    /// - OR -
+    /// An <tt>RTypeException</tt> with details, if <tt>item</tt> does not
+    /// conform to this RType
 Check<
-    T,
-    U
+    T
 >(
-    this IRType< T >    t,
-    U                   item,
+    this IRType< T >    dis,
+    T                   item,
     ///< Item to check
     Value               itemReference
-    ///< What the caller refers to <tt>item</tt> as
+    ///< Reference to <tt>item</tt> from the caller's perspective
 )
-    where U : T
 {
-    if( t == null )
-        throw new ValueArgumentNullException(
-            new Parameter( "t" ) );
+    if( dis == null )
+        throw new ValueArgumentNullException( new Parameter( "dis" ) );
     if( itemReference == null )
         throw new ValueArgumentNullException(
             new Parameter( "itemReference" ) );
-    foreach( IRType< T > c in t.Components ) {
-        try {
-            c.Check( item, itemReference );
-        } catch( RTypeException e ) {
-            throw new RTypeException( itemReference, t, e );
-        }
+
+    RTypeException rte;
+
+    // GetComponents()
+    foreach( IRType< T > c in dis.GetComponents() ) {
+        rte = c.Check( item, itemReference );
+        if( rte != null )
+            return new RTypeException(
+                itemReference, dis.GetUnderlying(), rte );
     }
-    if( !t.Predicate( item ) )
-        throw new RTypeException( itemReference, t );
+
+    // CheckMembers()
+    rte = dis.CheckMembers( item, itemReference );
+    if( rte != null )
+        return new RTypeException(
+            itemReference, dis.GetUnderlying(), rte );
+
+    // Predicate()
+    if( !dis.Predicate( item ) )
+        return new RTypeException( itemReference, dis.GetUnderlying() );
+
+    return null;
+}
+
+
+/// Require that an item conform to this RType
+///
+/// @exception RTypeException
+/// <tt>item</tt> does not conform to this RType
+///
+public static
+    void
+Require<
+    T
+>(
+    this IRType< T >    dis,
+    T                   item,
+    ///< Item to check
+    Value               itemReference
+    ///< Reference to <tt>item</tt> from the caller's perspective
+)
+{
+    if( dis == null )
+        throw new ValueArgumentNullException( new Parameter( "dis" ) );
+    RTypeException rte = dis.Check( item, itemReference );
+    if( rte != null ) throw rte;
 }
 
 
 /// Determine whether this RType is the same or more specific than another
 ///
 public static
-bool
+    bool
 IsEqualToOrMoreSpecificThan<
     T
 >(
-    this IRType< T >    t,
-    IRType              u
+    this IRType< T >    dis,
+    IRType              that
 )
 {
-    if( t == null )
-        throw new ValueArgumentNullException( new Parameter( "t" ) );
-    if( u == null )
-        throw new ValueArgumentNullException( new Parameter( "u" ) );
+    if( dis == null )
+        throw new ValueArgumentNullException( new Parameter( "dis" ) );
+    if( that == null )
+        throw new ValueArgumentNullException( new Parameter( "that" ) );
     return
-        t.AsSingleItemEnumerable()
-        .Concat( t.AllComponentsDepthFirst() )
-        .Covary< IRType< T >, IRType >()
-        .Contains( u );
+        dis.AsSingleItemEnumerable()
+        .Concat( dis.AllComponentsDepthFirst() )
+        .OfType< IRType >()
+        .Contains( that, new EquatableComparer< IRType >() );
 }
 
 
-/// Recursively list all components of this RType, depth first
+/// <tt>GetComponents()</tt>, recursive, depth first
 ///
 public static
-IEnumerable< IRType< T > >
+    SCG.IEnumerable< IRType< T > >
 AllComponentsDepthFirst<
     T
 >(
-    this IRType< T >    t
+    this IRType< T > dis
 )
 {
-    if( t == null )
-        throw new ValueArgumentNullException( new Parameter( "t" ) );
+    if( dis == null )
+        throw new ValueArgumentNullException( new Parameter( "dis" ) );
     return
-        t.Components
+        dis.GetComponents()
         .SelectMany( c =>
             c.AsSingleItemEnumerable()
             .Concat( c.AllComponentsDepthFirst() ) );
 }
 
 
-/// Contravary the RType into one of a more specific type of item
+/// Contravary to an RType of a more specific type of item
 ///
 public static
-IRType< TTo >
+    IRType< TTo >
 Contravary<
-    TFrom,
+    T,
     TTo
 >(
-    this IRType< TFrom > t
+    this IRType< T > dis
 )
-    where TTo : TFrom
+    where TTo : T
 {
-    return new RTypeContravariantAdapter< TFrom, TTo >( t );
+    if( dis == null )
+        throw new ValueArgumentNullException( new Parameter( "dis" ) );
+    return new RTypeAdapter< T, TTo >( dis );
 }
 
 
