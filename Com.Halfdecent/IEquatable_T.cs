@@ -16,9 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-
-
 namespace
 Com.Halfdecent
 {
@@ -90,6 +87,10 @@ IEquatable<
 
 
 
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
 /// Determine whether this and another item are equal
 ///
 /// That is, <tt>this</tt> and <tt>that</tt> <tt>DirectionalEquals()</tt> each
@@ -97,7 +98,7 @@ IEquatable<
 ///
 /// This method should be implemented using <tt>Equatable.Equals<T>()</tt>.
 ///
-bool
+    bool
 Equals(
     T that
 );
@@ -105,7 +106,7 @@ Equals(
 
 /// Determine whether this item considers itself equal to another
 ///
-bool
+    bool
 DirectionalEquals(
     T that
 );
@@ -118,7 +119,7 @@ DirectionalEquals(
 /// - If <tt>a.Equals( b )</tt> then <tt>a.GetHashCode()</tt> must equal
 ///   <tt>b.GetHashCode()</tt>.
 ///
-int
+    int
 GetHashCode();
 
 

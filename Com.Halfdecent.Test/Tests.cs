@@ -16,9 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
+using SCG = System.Collections.Generic;
 using System.Linq;
+using Com.Halfdecent;
 using Com.Halfdecent.Testing;
 
 
@@ -78,15 +78,15 @@ public static
 void
 Test_ExceptionUtils()
 {
-    Exception e = new Exception();
-    Exception f = new Exception( "", e );
-    Exception g = new Exception( "", f );
-    Exception h = new Exception( "", g );
+    System.Exception e = new System.Exception();
+    System.Exception f = new System.Exception( "", e );
+    System.Exception g = new System.Exception( "", f );
+    System.Exception h = new System.Exception( "", g );
     Print( ".Chain()" );
     Assert(
         h.Chain()
         .SequenceEqual(
-            Enumerable.Empty< Exception >()
+            Enumerable.Empty< System.Exception >()
             .Append( h )
             .Append( g )
             .Append( f )
@@ -107,6 +107,7 @@ Test_ObjectUtils()
 
 public interface A : Halfdecent.IEquatable< A > {}
 public interface B : Halfdecent.IEquatable< B > {}
+public interface AA : A {}
 public class C : A, B {
     public bool Equals( A that ) {
         return Equatable.Equals( this, that );
@@ -130,8 +131,8 @@ public class C : A, B {
     int Halfdecent.IEquatable<B>.GetHashCode() {
         return 0xCB;
     }
-    public override bool Equals( object that ) { throw new Exception(); }
-    public override int GetHashCode() { throw new Exception(); }
+    public override bool Equals( object that ) { throw new System.Exception(); }
+    public override int GetHashCode() { throw new System.Exception(); }
 }
 public class D : A, B {
     public bool Equals( A that ) {
@@ -156,8 +157,8 @@ public class D : A, B {
     int Halfdecent.IEquatable<B>.GetHashCode() {
         return 0xDB;
     }
-    public override bool Equals( object that ) { throw new Exception(); }
-    public override int GetHashCode() { throw new Exception(); }
+    public override bool Equals( object that ) { throw new System.Exception(); }
+    public override int GetHashCode() { throw new System.Exception(); }
 }
 
 
@@ -184,6 +185,54 @@ Test_IEquatable_T()
     Print( ".Equals() requires both items to agree" );
     Assert( !( ca.Equals( da ) ) );
     Assert( cb.Equals( db ) );
+}
+
+
+[Test( "EquatableComparer< T >" )]
+public static
+void
+Test_EquatableComparer_T()
+{
+    C c = new C();
+    D d = new D();
+
+    IEqualityComparer< A > acomparer = new EquatableComparer< A >();
+    IEqualityComparer< B > bcomparer = new EquatableComparer< B >();
+
+    Print( "Calls underlying IEquatable<T>s correctly" );
+    Assert( acomparer.GetHashCode( c ) == 0xCA  );
+    Assert( bcomparer.GetHashCode( c ) == 0xCB  );
+    Assert( acomparer.Equals( c, c ) );
+    Assert( !acomparer.Equals( d, d ) );
+    Assert( !( acomparer.Equals( c, d ) ) );
+    Assert( bcomparer.Equals( c, d ) );
+
+    Print( "Implements IEquatable< IEqualityComparer > correctly" );
+    Assert( acomparer.Equals( acomparer ) );
+    Assert(
+        new EquatableComparer< A >().Equals(
+        new EquatableComparer< A >() ) );
+    Assert( !acomparer.Equals( bcomparer ) );
+}
+
+
+[Test( "EquatableComparerAdapter< T >" )]
+public static
+void
+Test_EquatableComparerAdapter_T()
+{
+    IEqualityComparer< A >  acomparer = new EquatableComparer< A >();
+    IEqualityComparer< B >  bcomparer = new EquatableComparer< B >();
+    IEqualityComparer< AA > aacomparer = acomparer.Contravary< A, AA >();
+
+    Print( "Adapter Equals() underlying" );
+    Assert( aacomparer.Equals( acomparer ) );
+
+    Print( "Adapter has same hash code as underlying" );
+    Assert( aacomparer.GetHashCode() == acomparer.GetHashCode() );
+
+    Print( "Adapter !Equals() comparer for a different type" );
+    Assert( !aacomparer.Equals( bcomparer ) );
 }
 
 
