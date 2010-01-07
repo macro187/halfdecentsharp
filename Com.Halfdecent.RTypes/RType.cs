@@ -51,14 +51,16 @@ public static
     /// An <tt>RTypeException</tt> with details, if <tt>item</tt> does not
     /// conform to this RType
 Check<
-    T
+    T,
+    U
 >(
     this IRType< T >    dis,
-    T                   item,
+    U                   item,
     ///< Item to check
     Value               itemReference
     ///< Reference to <tt>item</tt> from the caller's perspective
 )
+    where U : T
 {
     if( dis == null )
         throw new ValueArgumentNullException( new Parameter( "dis" ) );
@@ -98,14 +100,16 @@ Check<
 public static
     void
 Require<
-    T
+    T,
+    U
 >(
     this IRType< T >    dis,
-    T                   item,
+    U                   item,
     ///< Item to check
     Value               itemReference
     ///< Reference to <tt>item</tt> from the caller's perspective
 )
+    where U : T
 {
     if( dis == null )
         throw new ValueArgumentNullException( new Parameter( "dis" ) );
