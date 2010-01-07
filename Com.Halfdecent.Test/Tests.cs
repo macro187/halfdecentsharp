@@ -111,7 +111,7 @@ public class C : A, B {
     bool Halfdecent.IEquatable<A>.Equals( A that ) {
         return Equatable.Equals( this, that );
     }
-    bool Halfdecent.IEquatable<A>.ConsidersItselfEqualTo(
+    bool Halfdecent.IEquatable<A>.DirectionalEquals(
         A that
     ) {
         return true;
@@ -122,7 +122,7 @@ public class C : A, B {
     bool Halfdecent.IEquatable<B>.Equals( B that ) {
         return Equatable.Equals( this, that );
     }
-    bool Halfdecent.IEquatable<B>.ConsidersItselfEqualTo(
+    bool Halfdecent.IEquatable<B>.DirectionalEquals(
         B that
     ) {
         return true;
@@ -137,7 +137,7 @@ public class D : A, B {
     bool Halfdecent.IEquatable<A>.Equals( A that ) {
         return Equatable.Equals( this, that );
     }
-    bool Halfdecent.IEquatable<A>.ConsidersItselfEqualTo(
+    bool Halfdecent.IEquatable<A>.DirectionalEquals(
         A that
     ) {
         return false;
@@ -148,7 +148,7 @@ public class D : A, B {
     bool Halfdecent.IEquatable<B>.Equals( B that ) {
         return Equatable.Equals( this, that );
     }
-    bool Halfdecent.IEquatable<B>.ConsidersItselfEqualTo(
+    bool Halfdecent.IEquatable<B>.DirectionalEquals(
         B that
     ) {
         return true;

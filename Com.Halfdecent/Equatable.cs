@@ -49,8 +49,8 @@ Equals<
     if( dis == null ) throw new ArgumentNullException( "dis" );
     if( (object)that == null ) return false;
     return
-        dis.ConsidersItselfEqualTo( that ) &&
-        that.ConsidersItselfEqualTo( dis );
+        dis.DirectionalEquals( that ) &&
+        that.DirectionalEquals( dis );
 }
 
 

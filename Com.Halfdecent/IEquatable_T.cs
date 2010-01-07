@@ -39,7 +39,7 @@ IEquatable<
 
 /// Determine whether this and another item are equal
 ///
-/// That is, each <tt>ConsidersItselfEqualTo()</tt> the other.
+/// That is, each <tt>DirectionalEquals()</tt> the other.
 ///
 /// This method should be implemented with <tt>Equatable.Equals<T>()</tt>.
 ///
@@ -52,7 +52,7 @@ Equals(
 /// Determine whether this item considers itself equal to another
 ///
 bool
-ConsidersItselfEqualTo(
+DirectionalEquals(
     T that
 );
 
