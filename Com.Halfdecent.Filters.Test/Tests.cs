@@ -136,25 +136,25 @@ Test_FilterBase_Push()
 
     Print( "1-to-1 filter" );
     to.Clear();
-    f = new PassThrough { To = to.AsBag().AsSink() };
+    f = new PassThrough { To = to.AsGrowableShrinkableBag().AsSink() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( from ) );
 
     Print( "1-to-many filter" );
     to.Clear();
-    f = new DoubleUp { To = to.AsBag().AsSink() };
+    f = new DoubleUp { To = to.AsGrowableShrinkableBag().AsSink() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
 
     Print( "Many-to-1 filter" );
     to.Clear();
-    f = new AddPairs { To = to.AsBag().AsSink() };
+    f = new AddPairs { To = to.AsGrowableShrinkableBag().AsSink() };
     foreach( int i in from ) f.Push( i );
     Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
 
     Print( "Closing filter" );
     to.Clear();
-    f = new PassOne { To = to.AsBag().AsSink() };
+    f = new PassOne { To = to.AsGrowableShrinkableBag().AsSink() };
     f.Push( 1 );
     AssertEqual( f.TryPush( 2 ), false );
     Assert( to.SequenceEqual( new int[] { 1 } ) );
@@ -164,10 +164,10 @@ Test_FilterBase_Push()
     too.Clear();
     f = new DoubleUp { To =
         new PassOne { To =
-        to.AsBag().AsSink() } };
+        to.AsGrowableShrinkableBag().AsSink() } };
     f.Push( 1 );
     Assert( to.SequenceEqual( new int[] { 1 } ) );
-    f.To = too.AsBag().AsSink();
+    f.To = too.AsGrowableShrinkableBag().AsSink();
     // (filter immediately flushes pending item to new sink)
     Assert( too.SequenceEqual( new int[] { 1 } ) );
 }
@@ -179,12 +179,15 @@ public static
 void
 Test_FilterBase_Pull()
 {
-    IBag< int >                     from = new int[] { 1, 2, 3, 4 }
-                                        .AsReadOnlyBag();
-    IBag< int >                     from1 = new int[] { 1 }.AsReadOnlyBag();
-    IBag< int >                     from2 = new int[] { 2 }.AsReadOnlyBag();
-    IFilter< int, int >             f;
-    BagFromSystemCollectionAdapter< int > to = new List< int >().AsBag();
+    IBag< int > from =
+        new int[] { 1, 2, 3, 4 }.AsBag();
+    IBag< int > from1 =
+        new int[] { 1 }.AsBag();
+    IBag< int > from2 =
+        new int[] { 2 }.AsBag();
+    IFilter< int, int > f;
+    GrowableShrinkableBagFromSystemCollectionAdapter< int > to =
+        new List< int >().AsGrowableShrinkableBag();
 
     Print( "1-to-1 filter" );
     f = new PassThrough { From = from.Stream() };
