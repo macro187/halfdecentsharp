@@ -31,6 +31,17 @@ IValue
 
 
 
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Produce a pseudo source code representation of the value reference
+///
+string
+ToString();
+
+
+
 
 } // type
 } // namespace
