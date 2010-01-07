@@ -274,6 +274,114 @@ Test_ObjectComparer_T()
 }
 
 
+public interface I : IComparable< I > {}
+public class AlwaysBigger : I {
+    // IComparable< I >
+    public int CompareTo( I that ) {
+        return Comparable.CompareTo( this, that );
+    }
+    public int DirectionalCompareTo( I that ) {
+        return 1;
+    }
+    // IEquatable< I >
+    public bool Equals( I that ) {
+        return Equatable.Equals( this, that );
+    }
+    public bool DirectionalEquals(
+        I that
+    ) {
+        return false;
+    }
+    int IEquatable<I>.GetHashCode() {
+        return 1;
+    }
+    // System.Object
+    public override bool Equals( object that ) { throw new System.Exception(); }
+    public override int GetHashCode() { throw new System.Exception(); }
+}
+public class AlwaysEqual : I {
+    // IComparable< I >
+    public int CompareTo( I that ) {
+        return Comparable.CompareTo( this, that );
+    }
+    public int DirectionalCompareTo( I that ) {
+        return 0;
+    }
+    // IEquatable< I >
+    public bool Equals( I that ) {
+        return Equatable.Equals( this, that );
+    }
+    public bool DirectionalEquals(
+        I that
+    ) {
+        return true;
+    }
+    int IEquatable<I>.GetHashCode() {
+        return 0;
+    }
+    // System.Object
+    public override bool Equals( object that ) { throw new System.Exception(); }
+    public override int GetHashCode() { throw new System.Exception(); }
+}
+public class AlwaysSmaller : I {
+    // IComparable< I >
+    public int CompareTo( I that ) {
+        return Comparable.CompareTo( this, that );
+    }
+    public int DirectionalCompareTo( I that ) {
+        return -1;
+    }
+    // IEquatable< I >
+    public bool Equals( I that ) {
+        return Equatable.Equals( this, that );
+    }
+    public bool DirectionalEquals(
+        I that
+    ) {
+        return false;
+    }
+    int IEquatable<I>.GetHashCode() {
+        return 0;
+    }
+    // System.Object
+    public override bool Equals( object that ) { throw new System.Exception(); }
+    public override int GetHashCode() { throw new System.Exception(); }
+}
+
+
+[Test( "IComparable< T >" )]
+public static
+void
+Test_IComparable()
+{
+    I bigger = new AlwaysBigger();
+    I equal = new AlwaysEqual();
+    I smaller = new AlwaysSmaller();
+
+    Print( "Comparison with nulls" );
+    Assert( bigger.CompareTo( null ) > 0 );
+    Assert( equal.CompareTo( null ) > 0 );
+    Assert( smaller.CompareTo( null ) > 0 );
+
+    Print( "Same result yields that result" );
+    Assert( equal.CompareTo( equal ) == 0 );
+    Assert( bigger.CompareTo( smaller ) > 0 );
+    Assert( smaller.CompareTo( bigger ) < 0 );
+
+    Print( "One equal, other greater/less than yields greater/less than" );
+    Assert( bigger.CompareTo( equal ) > 0 );
+    Assert( smaller.CompareTo( equal ) < 0 );
+    Assert( equal.CompareTo( smaller ) > 0 );
+    Assert( equal.CompareTo( bigger ) < 0 );
+
+    Print( "Opposite results throws ComparisonDisagreementException" );
+    Expect< ComparisonDisagreementException >(
+        () => bigger.CompareTo( bigger ) );
+    Expect< ComparisonDisagreementException >(
+        () => smaller.CompareTo( smaller ) );
+}
+
+
 
 
 } // type
