@@ -55,7 +55,7 @@ SayMessage(
 
 /// A reference to the problematic value
 ///
-IValue
+Value
 ValueReference
 {
     get;

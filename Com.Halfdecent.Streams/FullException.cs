@@ -45,7 +45,7 @@ FullException
 
 public
 FullException(
-    IValue  sinkReference
+    Value sinkReference
 )
     : this( sinkReference, null )
 {
@@ -54,7 +54,7 @@ FullException(
 
 public
 FullException(
-    IValue      sinkReference,
+    Value       sinkReference,
     Exception   innerException
 )
     : base(

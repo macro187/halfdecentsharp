@@ -134,7 +134,7 @@ SayMessage(
 }
 
 
-IValue
+Value
 IValueException.ValueReference
 {
     get { return this.Parameter; }

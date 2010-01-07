@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
+using Com.Halfdecent;
 using Com.Halfdecent.Exceptions;
 
 
@@ -26,35 +26,40 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Base class for implementing IVariable
+/// Reference to a member variable
 // =============================================================================
 
 public abstract class
-VariableBase
-    : IVariable
+Member
+    : Value
 {
 
 
 
-protected
-VariableBase(
-    string name
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+internal
+Member(
+    Value parent
 )
 {
-    if( name == null ) throw new LocalisedArgumentNullException( "name" );
-    if( name == "" ) throw new LocalisedArgumentException( "Is blank", "name" );
-    this.Name = name;
+    if( parent == null ) throw new LocalisedArgumentNullException( "parent" );
+    this.Parent = parent;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IVariable
+// Properties
 // -----------------------------------------------------------------------------
 
+/// The <tt>Value</tt> that this one is a member of
+///
 public
-string
-Name
+Value
+Parent
 {
     get;
     private set;
@@ -63,37 +68,62 @@ Name
 
 
 // -----------------------------------------------------------------------------
-// Object
+// Methods
 // -----------------------------------------------------------------------------
 
-public override sealed
+protected abstract
+string
+ComponentToString();
+
+
+protected abstract
+bool
+ComponentEquals(
+    Member that
+);
+
+
+
+// -----------------------------------------------------------------------------
+// Value
+// -----------------------------------------------------------------------------
+
+public override
 string
 ToString()
 {
-    return this.Name;
+    return
+        string.Concat(
+            this.Parent.ToString(),
+            this.ComponentToString() );
 }
 
 
-public override sealed
+public override
 bool
 Equals(
-    object item
+    Value that
 )
 {
     return
-        item != null &&
-        this.GetType() == item.GetType() &&
-        this.Name == ((IVariable)item).Name;
+        base.Equals( that ) &&
+        ((Member)that).Parent.Equals( this.Parent ) &&
+        this.ComponentEquals( (Member)that );
 }
 
 
-public override sealed
+
+// -----------------------------------------------------------------------------
+// Object
+// -----------------------------------------------------------------------------
+
+public override
 int
 GetHashCode()
 {
     return
-        this.GetType().GetHashCode() ^
-        this.Name.GetHashCode();
+        base.GetHashCode() ^
+        this.Parent.GetHashCode();
 }
 
 

@@ -355,11 +355,11 @@ Test_InInterval()
     int to          = 10;
     int gt          = 12;
 
-    IValue _lt      = new Local( "lt" );
-    IValue _from    = new Local( "from" );
-    IValue _between = new Local( "between" );
-    IValue _to      = new Local( "to" );
-    IValue _gt      = new Local( "gt" );
+    Value _lt       = new Local( "lt" );
+    Value _from     = new Local( "from" );
+    Value _between  = new Local( "between" );
+    Value _to       = new Local( "to" );
+    Value _gt       = new Local( "gt" );
 
     IRType< int > rtinc =
         new InInterval< int >(

@@ -44,7 +44,7 @@ ValueException
 
 public
 ValueException(
-    IValue valueReference
+    Value valueReference
 )
     : this( valueReference, null, null )
 {
@@ -53,7 +53,7 @@ ValueException(
 
 public
 ValueException(
-    IValue              valueReference,
+    Value               valueReference,
     Localised< string > messageFormat
 )
     : this( valueReference, messageFormat, null )
@@ -63,7 +63,7 @@ ValueException(
 
 public
 ValueException(
-    IValue              valueReference,
+    Value               valueReference,
     Localised< string > messageFormat,
     Exception           innerException
 )
@@ -108,7 +108,7 @@ SayMessage(
 
 
 public
-IValue
+Value
 ValueReference
 {
     get;

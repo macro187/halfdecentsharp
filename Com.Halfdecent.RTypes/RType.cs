@@ -57,7 +57,7 @@ Check<
     this IRType< T >    t,
     U                   item,
     ///< Item to check
-    IValue              itemReference
+    Value               itemReference
     ///< What the caller refers to <tt>item</tt> as
 )
     where U : T

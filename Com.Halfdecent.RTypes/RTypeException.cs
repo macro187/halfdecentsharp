@@ -45,7 +45,7 @@ RTypeException
 
 public
 RTypeException(
-    IValue  valueReference,
+    Value   valueReference,
     IRType  rType
 )
     : this( valueReference, rType, null )
@@ -55,7 +55,7 @@ RTypeException(
 
 public
 RTypeException(
-    IValue      valueReference,
+    Value       valueReference,
     IRType      rType,
     Exception   innerException
 )

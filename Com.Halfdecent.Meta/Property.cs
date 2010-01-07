@@ -25,20 +25,24 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// A property
+/// Reference to a property
 // =============================================================================
 
 public class
 Property
-    : MemberBase
+    : Member
 {
 
 
 
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
 internal
 Property(
-    IValue parent,
-    string name
+    Value   parent,
+    string  name
 )
     : base( parent )
 {
@@ -53,6 +57,8 @@ Property(
 // Properties
 // -----------------------------------------------------------------------------
 
+/// The property's name
+///
 public
 string
 Name
@@ -64,9 +70,8 @@ Name
 
 
 // -----------------------------------------------------------------------------
-// MemberBase
+// Member
 // -----------------------------------------------------------------------------
-
 
 protected override
 string
@@ -79,18 +84,25 @@ ComponentToString()
 protected override
 bool
 ComponentEquals(
-    IMember item
+    Member item
 )
 {
     return ((Property)item).Name == this.Name;
 }
 
 
-protected override
+
+// -----------------------------------------------------------------------------
+// object
+// -----------------------------------------------------------------------------
+
+public override
 int
-ComponentGetHashCode()
+GetHashCode()
 {
-    return this.Name.GetHashCode();
+    return
+        base.GetHashCode() ^
+        this.Name.GetHashCode();
 }
 
 

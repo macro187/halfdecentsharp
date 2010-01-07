@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent;
 using Com.Halfdecent.Exceptions;
 
 
@@ -26,20 +25,24 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// An item accessed through an indexer
+/// Reference to a value accessed through an indexer
 // =============================================================================
 
 public class
 Indexer
-    : MemberBase
+    : Member
 {
 
 
 
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
 internal
 Indexer(
-    IValue parent,
-    object index
+    Value   parent,
+    object  index
 )
     : base( parent )
 {
@@ -63,9 +66,8 @@ Index
 
 
 // -----------------------------------------------------------------------------
-// MemberBase
+// Member
 // -----------------------------------------------------------------------------
-
 
 protected override
 string
@@ -78,19 +80,27 @@ ComponentToString()
 protected override
 bool
 ComponentEquals(
-    IMember item
+    Member item
 )
 {
     return object.Equals( ((Indexer)item).Index, this.Index );
 }
 
 
-protected override
+
+// -----------------------------------------------------------------------------
+// object
+// -----------------------------------------------------------------------------
+
+public override
 int
-ComponentGetHashCode()
+GetHashCode()
 {
-    if( this.Index == null ) return 0;
-    return this.Index.GetHashCode();
+    return
+        base.GetHashCode() ^
+        ( this.Index != null ?
+            this.Index.GetHashCode() :
+            0 );
 }
 
 

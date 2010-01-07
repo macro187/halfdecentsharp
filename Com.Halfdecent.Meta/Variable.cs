@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Exceptions;
 
 
@@ -26,56 +25,42 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Base class for implementing member variables
+/// Reference to a stack frame variable
 // =============================================================================
 
 public abstract class
-MemberBase
-    : IMember
+Variable
+    : Value
 {
 
 
 
-protected
-MemberBase(
-    IValue parent
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+internal
+Variable(
+    string name
 )
+    : base()
 {
-    if( parent == null ) throw new LocalisedArgumentNullException( "parent" );
-    this.Parent = parent;
+    if( name == null ) throw new LocalisedArgumentNullException( "name" );
+    if( name == "" ) throw new LocalisedArgumentException( "Is blank", "name" );
+    this.Name = name;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// Properties
 // -----------------------------------------------------------------------------
 
-protected abstract
-string
-ComponentToString();
-
-
-protected abstract
-bool
-ComponentEquals(
-    IMember item
-);
-
-
-protected abstract
-int
-ComponentGetHashCode();
-
-
-
-// -----------------------------------------------------------------------------
-// IMember
-// -----------------------------------------------------------------------------
-
+/// The variable's source code name
+///
 public
-IValue
-Parent
+string
+Name
 {
     get;
     private set;
@@ -84,42 +69,41 @@ Parent
 
 
 // -----------------------------------------------------------------------------
-// Object
+// Value
 // -----------------------------------------------------------------------------
 
-public override sealed
+public override
 string
 ToString()
 {
-    return
-        string.Concat(
-            this.Parent.ToString(),
-            this.ComponentToString() );
+    return this.Name;
 }
 
 
-public override sealed
+public override
 bool
 Equals(
-    object item
+    Value that
 )
 {
     return
-        item != null &&
-        this.GetType() == item.GetType() &&
-        this.ComponentEquals( (IMember)item ) &&
-        this.Parent.Equals( ((IMember)item).Parent );
+        base.Equals( that ) &&
+        ((Variable)that).Name == this.Name;
 }
 
 
-public override sealed
+
+// -----------------------------------------------------------------------------
+// Object
+// -----------------------------------------------------------------------------
+
+public override
 int
 GetHashCode()
 {
     return
-        this.GetType().GetHashCode() ^
-        this.ComponentGetHashCode() ^
-        this.Parent.GetHashCode();
+        base.GetHashCode() ^
+        this.Name.GetHashCode();
 }
 
 

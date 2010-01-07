@@ -45,7 +45,7 @@ EmptyException
 
 public
 EmptyException(
-    IValue  streamReference
+    Value streamReference
 )
     : this( streamReference, null )
 {
@@ -54,7 +54,7 @@ EmptyException(
 
 public
 EmptyException(
-    IValue      streamReference,
+    Value       streamReference,
     Exception   innerException
 )
     : base(

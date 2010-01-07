@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2008, 2009
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,26 +16,111 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Exceptions;
-
-
 namespace
 Com.Halfdecent.Meta
 {
 
 
 // =============================================================================
-/// IValue library
+/// Reference to a value
 // =============================================================================
 
-public static class
+public abstract class
 Value
 {
 
 
 
 // -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+internal
+Value()
+{
+}
+
+
+
+// -----------------------------------------------------------------------------
 // Methods
+// -----------------------------------------------------------------------------
+
+/// Produce a reference to the value of a particular property of this value
+///
+public
+Property
+Property(
+    string name
+)
+{
+    return new Property( this, name );
+}
+
+
+/// Produce a reference to the value returned by this value's indexer
+/// given a particular index
+///
+public
+Indexer
+Indexer(
+    object index
+)
+{
+    return new Indexer( this, index );
+}
+
+
+/// Produce a pseudo source code representation of this value reference
+///
+public abstract override
+string
+ToString();
+
+
+/// Determine whether this <tt>Value</tt> represents the same value as another
+///
+public virtual
+bool
+Equals(
+    Value that
+)
+{
+    return
+        that != null &&
+        that.GetType() == this.GetType();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
+
+public override sealed
+bool
+Equals(
+    object that
+)
+{
+    return
+        that != null &&
+        that is Value &&
+        this.Equals( (Value)that );
+}
+
+
+public override
+int
+GetHashCode()
+{
+    return this.GetType().GetHashCode();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Static Methods
 // -----------------------------------------------------------------------------
 
 /// Format an object like a source code literal
@@ -50,34 +135,6 @@ FormatLiteral(
     if( value is string )
         return string.Concat( "\"", (string)value, "\"" );
     return value.ToString();
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Extension Methods
-// -----------------------------------------------------------------------------
-
-public static
-Property
-Property(
-    this IValue value,
-    string      name
-)
-{
-    if( value == null ) throw new LocalisedArgumentNullException( "value" );
-    return new Property( value, name );
-}
-
-
-public static
-Indexer
-Indexer(
-    this IValue value,
-    object      index
-)
-{
-    return new Indexer( value, index );
 }
 
 

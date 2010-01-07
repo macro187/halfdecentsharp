@@ -52,7 +52,7 @@ public static
 void
 Test_ValueException()
 {
-    IValue              valueReference = new Local( "fakelocal" );
+    Value               valueReference = new Local( "fakelocal" );
     Localised< string > messageFormat = "Fake problem with {0}";
     Exception           innerException = new Exception();
     Localised< string > reference = "some fake value";
