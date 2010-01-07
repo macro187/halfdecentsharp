@@ -40,8 +40,8 @@ public static
 GT<
     T
 >(
-    this T  dis,
-    T       that
+    this IComparable< T >   dis,
+    T                       that
 )
     where T : IComparable< T >
 {
@@ -54,8 +54,8 @@ public static
 GTE<
     T
 >(
-    this T  dis,
-    T       that
+    this IComparable< T >   dis,
+    T                       that
 )
     where T : IComparable< T >
 {
@@ -68,8 +68,8 @@ public static
 LT<
     T
 >(
-    this T  dis,
-    T       that
+    this IComparable< T >   dis,
+    T                       that
 )
     where T : IComparable< T >
 {
@@ -82,8 +82,8 @@ public static
 LTE<
     T
 >(
-    this T  dis,
-    T       that
+    this IComparable< T >   dis,
+    T                       that
 )
     where T : IComparable< T >
 {
