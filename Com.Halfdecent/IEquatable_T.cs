@@ -26,6 +26,59 @@ Com.Halfdecent
 
 // =============================================================================
 /// A type that introduces a new definition of equality
+///
+/// @section implementing Implementing
+///
+///     -#  Implement <tt>Equals()</tt> using <tt>Equatable.Equals<T>()</tt>,
+///         which handles <tt>null</tt> and checks both items'
+///         <tt>DirectionalEquals()</tt> for you.  Should not be
+///         <tt>virtual</tt> as this should not change.
+///         .
+///     -#  Implement <tt>DirectionalEquals()</tt> with your new equality
+///         implementation.  If you expect subclasses, this should be
+///         <tt>virtual</tt> so they can refine as necessary.
+///         .
+///     -#  Implement <tt>GetHashCode()</tt> to provide hash codes
+///         compatible<sup>1</sup> with your <tt>DirectionalEquals()</tt>
+///         implementation.  This will require an explicit interface member
+///         implementation to distinguish from
+///         <tt>System.Object.GetHashCode()</tt>.  If you expect subclasses,
+///         implement in a separate <tt>protected virtual</tt> method so they
+///         can refine as necessary (as illustrated in the following example).
+///
+///     Example:
+///     <code>
+///     //
+///     // Com.Halfdecent.IEquatable<T> Example
+///     //
+///     public interface IFoo : Halfdecent.IEquatable<IFoo> {}
+///
+///     public class C : IFoo
+///     {
+///         public bool Equals( IFoo that )
+///         {
+///             return Equatable.Equals( this, that );
+///         }
+///
+///         public virtual bool DirectionalEquals( IFoo that )
+///         {
+///             // (Your equality implementation in terms of IFoo)
+///         }
+///
+///         int Halfdecent.IEquatable<IFoo>.GetHashCode() {
+///             return this.IFooGetHashCode();
+///         }
+///
+///         protected virtual int IFooGetHashCode() {
+///             // (Hash code implementation to match your DirectionalEquals()
+///             // implementation)
+///         }
+///     }
+///     </code>
+///
+///     <sup>1</sup>Refer to the <tt>GetHashCode()</tt> documentation for
+///     details
+///
 // =============================================================================
 
 public interface
