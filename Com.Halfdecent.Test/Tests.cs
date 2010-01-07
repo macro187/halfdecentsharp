@@ -362,19 +362,39 @@ Test_IComparable()
 
     Print( "Comparison with nulls" );
     Assert( bigger.CompareTo( null ) > 0 );
+    Assert( bigger.GT( null ) );
+    Assert( bigger.GTE( null ) );
     Assert( equal.CompareTo( null ) > 0 );
+    Assert( equal.GT( null ) );
+    Assert( equal.GTE( null ) );
     Assert( smaller.CompareTo( null ) > 0 );
+    Assert( smaller.GT( null ) );
+    Assert( smaller.GTE( null ) );
 
     Print( "Same result yields that result" );
     Assert( equal.CompareTo( equal ) == 0 );
+    Assert( equal.GTE( equal ) );
+    Assert( equal.LTE( equal ) );
     Assert( bigger.CompareTo( smaller ) > 0 );
+    Assert( bigger.GT( smaller ) );
+    Assert( bigger.GTE( smaller ) );
     Assert( smaller.CompareTo( bigger ) < 0 );
+    Assert( smaller.LT( bigger ) );
+    Assert( smaller.LTE( bigger ) );
 
     Print( "One equal, other greater/less than yields greater/less than" );
     Assert( bigger.CompareTo( equal ) > 0 );
+    Assert( bigger.GT( equal ) );
+    Assert( bigger.GTE( equal ) );
     Assert( smaller.CompareTo( equal ) < 0 );
+    Assert( smaller.LT( equal ) );
+    Assert( smaller.LTE( equal ) );
     Assert( equal.CompareTo( smaller ) > 0 );
+    Assert( equal.GT( smaller ) );
+    Assert( equal.GTE( smaller ) );
     Assert( equal.CompareTo( bigger ) < 0 );
+    Assert( equal.LT( bigger ) );
+    Assert( equal.LTE( bigger ) );
 
     Print( "Opposite results throws ComparisonDisagreementException" );
     Expect< ComparisonDisagreementException >(

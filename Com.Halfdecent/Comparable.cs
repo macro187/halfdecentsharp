@@ -31,6 +31,71 @@ Comparable
 
 
 
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+public static
+    bool
+GT<
+    T
+>(
+    this T  dis,
+    T       that
+)
+    where T : IComparable< T >
+{
+    return dis.CompareTo( that ) > 0;
+}
+
+
+public static
+    bool
+GTE<
+    T
+>(
+    this T  dis,
+    T       that
+)
+    where T : IComparable< T >
+{
+    return dis.CompareTo( that ) >= 0;
+}
+
+
+public static
+    bool
+LT<
+    T
+>(
+    this T  dis,
+    T       that
+)
+    where T : IComparable< T >
+{
+    return dis.CompareTo( that ) < 0;
+}
+
+
+public static
+    bool
+LTE<
+    T
+>(
+    this T  dis,
+    T       that
+)
+    where T : IComparable< T >
+{
+    return dis.CompareTo( that ) <= 0;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Static Methods
+// -----------------------------------------------------------------------------
+
 /// <tt>IComparable<T>.CompareTo()</tt> implementation
 ///
 public static
