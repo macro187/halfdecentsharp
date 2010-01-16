@@ -216,9 +216,9 @@ Test_FilterBase_Pull()
 public static
     SCG.IEnumerator< bool >
 OnlyEvens(
-    Func< int >         get,
-    Func< int, Void >   put,
-    Func< int, Void >   drop
+    Func< int >     get,
+    Action< int >   put,
+    Action< int >   drop
 )
 {
     for( ;; ) {
@@ -236,11 +236,21 @@ public static
 void
 Test_Filter_TIn_TOut()
 {
-    IFilter< int, int > f = new Filter< int, int >( OnlyEvens );
+    IFilter< int, int > f;
     SCG.IList< int > results = new SCG.List< int >();
+
+    Print( "Filter( FilterKernel )" );
+    f = new Filter< int, int >( OnlyEvens );
     f.From = new int[] { 1, 2, 3, 4, 5, 6 }.AsStream();
     f.EmptyTo( results.AsSink() );
     Assert( results.SequenceEqual( new int[] { 2, 4, 6 } ) );
+
+    Print( "Filter( Func )" );
+    f = new Filter< int, int >( i => i * 2 );
+    results.Clear();
+    f.From = new int[] { 1, 2, 3, 4 }.AsStream();
+    f.EmptyTo( results.AsSink() );
+    Assert( results.SequenceEqual( new int[] { 2, 4, 6, 8 } ) );
 }
 
 

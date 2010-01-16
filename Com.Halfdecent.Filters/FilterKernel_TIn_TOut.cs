@@ -26,12 +26,12 @@ Com.Halfdecent.Filters
 
 
 // =============================================================================
-/// Filter processing function
+/// Filter processing kernel
 // =============================================================================
 
 public delegate
     SCG.IEnumerator< bool >
-FilterProcessFunc<
+FilterKernel<
     TIn,
     TOut
 >(

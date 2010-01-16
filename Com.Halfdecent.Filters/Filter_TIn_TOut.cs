@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
@@ -44,13 +45,41 @@ Filter<
 // Constructors
 // -----------------------------------------------------------------------------
 
+/// Use a specified filter function, don't drop input items
+///
 public
 Filter(
-    FilterProcessFunc< TIn, TOut > processor
+    Func< TIn, TOut > func
+)
+    : this( func, false )
+{
+}
+
+
+/// Use a specified filter function, drop input items as specified
+///
+public
+Filter(
+    Func< TIn, TOut >   func,
+    bool                dropInputItems
 )
 {
-    new NonNull().Require( "processor", new Parameter( "processor" ) );
-    this.Processor = processor;
+    new NonNull().Require( "func", new Parameter( "func" ) );
+    this.Func = func;
+    this.DropInputItems = dropInputItems;
+    this.Kernel = this.DefaultKernel;
+}
+
+
+/// Use a specified filter iterator
+///
+public
+Filter(
+    FilterKernel< TIn, TOut > kernel
+)
+{
+    new NonNull().Require( "kernel", new Parameter( "kernel" ) );
+    this.Kernel = kernel;
 }
 
 
@@ -60,8 +89,26 @@ Filter(
 // -----------------------------------------------------------------------------
 
 private
-FilterProcessFunc< TIn, TOut >
-Processor
+Func< TIn, TOut >
+Func
+{
+    get;
+    set;
+}
+
+
+private
+bool
+DropInputItems
+{
+    get;
+    set;
+}
+
+
+private
+FilterKernel< TIn, TOut >
+Kernel
 {
     get;
     set;
@@ -77,7 +124,30 @@ protected override
 SCG.IEnumerator< bool >
 Process()
 {
-    return this.Processor( this.GetItem, this.PutItem, this.DropItem );
+    return this.Kernel( this.GetItem, this.PutItem, this.DropItem );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private
+SCG.IEnumerator< bool >
+DefaultKernel(
+    Func< TIn >     get,
+    Action< TOut >  put,
+    Action< TIn >   drop
+)
+{
+    while( true ) {
+        yield return false;
+        TIn i = get();
+        put( this.Func( i ) );
+        if( this.DropInputItems  ) drop( i );
+        yield return true;
+    }
 }
 
 
