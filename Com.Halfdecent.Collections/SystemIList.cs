@@ -35,8 +35,7 @@ SystemIList
 {
 
 
-/// TODO
-///
+/*
 public static
     CollectionFromSystemListAdapter< T >
 AsHalfdecentCollection<
@@ -48,6 +47,7 @@ AsHalfdecentCollection<
     new NonNull().Require( dis, new Parameter( "dis" ) );
     return new CollectionFromSystemListAdapter< T >( dis );
 }
+*/
 
 
 

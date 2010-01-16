@@ -44,6 +44,12 @@ IKeyedCollection<
 // Methods
 // -----------------------------------------------------------------------------
 
+/// Produce a stream of all keys in the collection
+///
+    IStream< TKey >
+StreamKeys();
+
+
 /// Determine whether the collection contains item(s) with a specified key
 ///
     bool
