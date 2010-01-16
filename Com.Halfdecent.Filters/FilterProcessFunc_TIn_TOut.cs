@@ -35,9 +35,9 @@ FilterProcessFunc<
     TIn,
     TOut
 >(
-    Func< TIn >         get,
-    Func< TOut, Void >  put,
-    Func< TIn, Void >   drop
+    Func< TIn >     get,
+    Action< TOut >  put,
+    Action< TIn >   drop
 );
 
 

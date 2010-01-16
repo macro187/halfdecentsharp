@@ -124,8 +124,8 @@ GetAndReplaceAllViaUniqueKeyedCollectionFilter<
     TCollection     col,
     TKey            key,
     Func< T >       get,
-    Func< T, Void > put,
-    Func< T, Void > drop
+    Action< T >     put,
+    Action< T >     drop
 )
     where TCollection : IUniqueKeyedCollectionC< TKey, T >
 {

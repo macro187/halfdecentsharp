@@ -43,6 +43,7 @@ Contravary<
 >(
     this IComparer< TFrom > dis
 )
+    where T : TFrom
 {
     return new ComparerAdapter< TFrom, T >( dis );
 }

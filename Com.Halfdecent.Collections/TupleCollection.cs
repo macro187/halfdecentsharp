@@ -90,8 +90,8 @@ GetAndReplaceAllViaUniqueKeyedCollectionFilter<
     TCollection                     col,
     Func< ITuple< TKey, T >, bool > where,
     Func< ITuple< TKey, T > >       get,
-    Func< ITuple< TKey, T >, Void > put,
-    Func< ITuple< TKey, T >, Void > drop
+    Action< ITuple< TKey, T > >     put,
+    Action< ITuple< TKey, T > >     drop
 )
     where TCollection : IUniqueKeyedCollectionC< TKey, T >
 {

@@ -45,9 +45,24 @@ Tuple(
     T2  b
 )
 {
-    this.A = a;
-    this.B = b;
+    this.a = a;
+    this.b = b;
 }
+
+
+
+// -----------------------------------------------------------------------------
+// Fields
+// -----------------------------------------------------------------------------
+
+private
+T1
+a;
+
+
+private
+T2
+b;
 
 
 
@@ -59,8 +74,7 @@ public
 T1
 A
 {
-    get;
-    private set;
+    get { return this.a; }
 }
 
 
@@ -68,8 +82,7 @@ public
 T2
 B
 {
-    get;
-    private set;
+    get { return this.b; }
 }
 
 
