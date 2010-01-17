@@ -27,7 +27,6 @@ DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Meta)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.RTypes)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Numerics)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Streams)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Streams.SystemInterop)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Collections)
 
 
