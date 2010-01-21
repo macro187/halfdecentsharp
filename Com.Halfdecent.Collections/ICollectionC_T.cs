@@ -33,6 +33,7 @@ public interface
 ICollectionC<
     T
 >
+    : ICollection< T >
 {
 
 
