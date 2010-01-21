@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent;
@@ -32,58 +33,76 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// <tt>ICollection< T ></tt> library
+// TODO
 // =============================================================================
 
-public static class
-Collection
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Static Methods
-// -----------------------------------------------------------------------------
-
-/// <tt>ICollectionC< T >.Stream()</tt>
-/// via
-/// <tt>ICollection< ITuple< TKey, T > >.Stream()</tt>
-///
-public static
-    IStream< T >
-StreamViaTupleCollection<
-//    TCollection,
-    TKey,
+public abstract class
+OrderedCollectionBase<
     T
->(
-//    TCollection col
-    ICollection< ITuple< TKey, T > > col
-)
-//
-// XXX  Constrained type parameter doesn't work, but plain parameter of exact
-//      same type work?  WTF?
-//
-//      error CS0309: The type
-//      `Com.Halfdecent.Collections.CollectionFromSystemListAdapter<T>'
-//      must be convertible to
-//      `Com.Halfdecent.Collections.ICollection<Com.Halfdecent.ITuple<TKey,T>>'
-//      in order to use it as parameter `TCollection' in the generic type or
-//      method
-//      `Com.Halfdecent.Collections.Collection
-//          .StreamViaTupleCollection<TCollection,TKey,T>(TCollection)'
-//
-//    where TCollection : ICollection< ITuple< TKey, T > >
+>
+    : ItemFocusedExplicitUniqueKeyedCollectionBase< IInteger, T >
+    , IOrderedCollectionCSG< T >
+    , ICollectionG< T >
 {
-    new NonNull().Require( col, new Parameter( "col" ) );
+
+
+
+// -----------------------------------------------------------------------------
+// IKeyedCollection< IInteger, T >
+// -----------------------------------------------------------------------------
+
+public override
+    IStream< IInteger >
+StreamKeys()
+{
+    return this.StreamKeysIterator().AsStream();
+}
+
+protected
+    SCG.IEnumerator< IInteger >
+StreamKeysIterator()
+{
+    for(
+        IInteger i = Integer.From( 0 );
+        i.LT( this.Count );
+        i = i.Plus( Integer.From( 1 ) )
+    ) {
+        yield return i;
+    }
+}
+
+
+public override
+    bool
+Contains(
+    IInteger key
+)
+{
+    new NonNull().Require( key, new Parameter( "key" ) );
     return
-        col.Stream()
-        .AsEnumerable()
-        .Select( t => t.B )
-        .AsStream();
+        key.GTE( Integer.From( 0 ) ) &&
+        key.LT( this.Count );
 }
 
 
 
+// -----------------------------------------------------------------------------
+// ICollectionG< T >
+// -----------------------------------------------------------------------------
+
+public
+    void
+Add(
+    T item
+)
+{
+    this.Add( this.Count, item );
+}
+
+
+
+
+//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -21,20 +21,39 @@
 ///
 /// TODO (introduction)
 ///
-/// @section accessors Accessors
+/// @section collections Kinds of Collections
 ///
-///     TODO
+///     - ICollection< T >
+///     - IKeyedCollection< TKey, T >
+///     - IUniqueKeyedCollection< TKey, T >
+///     - IOrderedCollection< T >
 ///
-/// @section mutability Mutability
+/// @section mutability Kinds of Mutability
 ///
-///     TODO
-///     - Readable
-///     - Changeable
-///     - Shrinkable
-///     - Growable
+///     - (C)hangeable: Existing items can be replaced with new items
+///     - (S)hrinkable: Existing items can be removed, shrinking the collection
+///     - (G)rowable: New items can be added, growing the collection
+///
+/// @section keyedcollections Keyed Collections
+///
+///     - Explicit vs. non-explicit key
+///
+///         This refers to whether keys are specified explicitly or extracted
+///         from the items.  Explicit collections implement
+///         <tt>IKeyedCollectionG< T ></tt> and <tt>.Add( TKey, T )</tt>, while
+///         implicit collections implement <tt>ICollectionG< T ></tt> and
+///         <tt>.Add( T )</tt>.
+///
+///     - Item-centric vs. tuple-centric
+///
+///         All keyed collections imply both <tt>ICollection< T ></tt> and
+///         <tt>ICollection< ITuple< TKey, T > ></tt>, so at least one needs to
+///         be an explicit interface implementation.  An item-centric
+///         keyed collection is one where the 
 ///
 /// @section capacity Capacity
 ///
+///     XXX
 ///     Collections <em>may</em> have non-exceptional, clearly-definable
 ///     definitions of a "capacity", in which case operations attempting
 ///     to add items to the collection may be able to signal "full"

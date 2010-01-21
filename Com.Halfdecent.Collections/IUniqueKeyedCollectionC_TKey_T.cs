@@ -43,10 +43,8 @@ IUniqueKeyedCollectionC<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// TODO
-///
-    void
-Replace(
+    T
+GetAndReplace(
     TKey    key,
     T       replacement
 );

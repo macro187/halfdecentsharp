@@ -33,124 +33,17 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-// Base class for implementing keyed collections where keys must be specified
-// when adding items
+/// TODO
 // =============================================================================
 
 public abstract class
-ExplicitKeyedCollectionBase<
+ItemFocusedExplicitTupleCollectionBase<
     TKey,
     T
 >
-    : IKeyedCollectionCSG< TKey, T >
-    // TODO more?
+    : ICollectionCSG< ITuple< TKey, T > >
+    , ICollectionS< T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollection< TKey, T >
-// -----------------------------------------------------------------------------
-
-public
-    IStream< TKey >
-StreamKeys()
-{
-    return
-        this.StreamKeysIterator()
-        .AsStream();
-}
-
-protected abstract
-    SCG.IEnumerator< TKey >
-StreamKeysIterator();
-
-
-public abstract
-    bool
-Contains(
-    TKey key
-);
-
-
-public
-    IStream< T >
-GetAll(
-    TKey key
-)
-{
-    return
-        this.GetAllIterator( key )
-        .AsStream();
-}
-
-protected abstract
-    SCG.IEnumerator< T >
-GetAllIterator(
-    TKey key
-);
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionC< TKey, T >
-// -----------------------------------------------------------------------------
-
-public
-    IFilter< T, T >
-GetAndReplaceAll(
-    TKey key
-)
-{
-    return new Filter< T, T >(
-        ( get, put, drop ) =>
-            this.GetAndReplaceAllFilter( key, get, put, drop ) );
-}
-
-protected abstract
-    SCG.IEnumerator< bool >
-GetAndReplaceAllFilter(
-    TKey            key,
-    Func< T >       get,
-    Action< T >     put,
-    Action< T >     drop
-);
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< TKey, T >
-// -----------------------------------------------------------------------------
-
-public
-    IStream< T >
-GetAndRemoveAll(
-    TKey key
-)
-{
-    return
-        this.GetAndRemoveAllIterator( key )
-        .AsStream();
-}
-
-protected abstract
-    SCG.IEnumerator< T >
-GetAndRemoveAllIterator(
-    TKey key
-);
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< TKey, T >
-// -----------------------------------------------------------------------------
-
-public abstract
-    void
-Add(
-    TKey    key,
-    T       item
-);
 
 
 
@@ -169,20 +62,12 @@ Count
     IStream< ITuple< TKey, T > >
 ICollection< ITuple< TKey, T > >.Stream()
 {
-    return
-        this.StreamKeys()
-        .AsEnumerable()
-        .Aggregate(
-            new Stream< ITuple< TKey, T > >().AsEnumerable(),
-            ( s, key ) =>
-                s.Concat(
-                    this.GetAll( key )
-                    .AsEnumerable()
-                    .Select(
-                        item => ((ITuple< TKey, T >)
-                            new Tuple< TKey, T >( key, item ) ) ) ) )
-        .AsStream();
+    return this.TupleStream();
 }
+
+protected abstract
+    IStream< ITuple< TKey, T > >
+TupleStream();
 
 
 
@@ -190,26 +75,10 @@ ICollection< ITuple< TKey, T > >.Stream()
 // ICollectionC< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public
+public abstract
     IFilter< ITuple< TKey, T >, ITuple< TKey, T > >
 GetAndReplaceAll(
     Func< ITuple< TKey, T >, bool > where
-)
-{
-    new NonNull().Require( where, new Parameter( "where" ) );
-    return
-        new Filter< ITuple< TKey, T >, ITuple< TKey, T > >(
-            ( get, put, drop ) =>
-                this.TupleGetAndReplaceAllFilter( where, get, put, drop ) );
-}
-
-protected abstract
-    SCG.IEnumerator< bool >
-TupleGetAndReplaceAllFilter(
-    Func< ITuple< TKey, T >, bool > where,
-    Func< ITuple< TKey, T > >       get,
-    Action< ITuple< TKey, T > >     put,
-    Action< ITuple< TKey, T > >     drop
 );
 
 
@@ -218,21 +87,9 @@ TupleGetAndReplaceAllFilter(
 // ICollectionS< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public
+public abstract
     IStream< ITuple< TKey, T > >
 GetAndRemoveAll(
-    Func< ITuple< TKey, T >, bool > where
-)
-{
-    new NonNull().Require( where, new Parameter( "where" ) );
-    return
-        this.GetAndRemoveAllIterator( where )
-        .AsStream();
-}
-
-protected abstract
-    SCG.IEnumerator< ITuple< TKey, T > >
-GetAndRemoveAllIterator(
     Func< ITuple< TKey, T >, bool > where
 );
 
@@ -242,15 +99,11 @@ GetAndRemoveAllIterator(
 // ICollectionG< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public
+public abstract
     void
 Add(
     ITuple< TKey, T > item
-)
-{
-    new NonNull().Require( item, new Parameter( "item" ) );
-    this.Add( item.A, item.B );
-}
+);
 
 
 
@@ -258,12 +111,13 @@ Add(
 // ICollection< T >
 // -----------------------------------------------------------------------------
 
+
 public
     IStream< T >
 Stream()
 {
     return
-        ( (ICollection< ITuple< TKey, T > >) this ).Stream()
+        ((ICollection< ITuple< TKey, T > >)this).Stream()
         .AsEnumerable()
         .Select( t => t.B )
         .AsStream();

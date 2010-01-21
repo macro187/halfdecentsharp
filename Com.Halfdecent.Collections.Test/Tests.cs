@@ -98,14 +98,14 @@ Test_CollectionFromSystemListAdapter()
     Assert( c.Get( Integer.From( 1 ) ) == 3 );
     Assert( c.Get( Integer.From( 2 ) ) == 5 );
 
-    Print( "Replace( TKey, T )" );
-    c.Replace( Integer.From( 1 ), 2 );
+    Print( "GetAndReplace( TKey, T )" );
+    c.GetAndReplace( Integer.From( 1 ), 2 );
     Assert(
         c.Stream().AsEnumerable().SequenceEqual(
             new int[] { 1, 2, 5 } ) );
 
-    Print( "Remove( TKey )" );
-    c.Remove( Integer.From( 1 ) );
+    Print( "GetAndRemove( TKey )" );
+    c.GetAndRemove( Integer.From( 1 ) );
     Assert(
         c.Stream().AsEnumerable().SequenceEqual(
             new int[] { 1, 5 } ) );

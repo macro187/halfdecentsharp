@@ -44,8 +44,8 @@ IUniqueKeyedCollectionS<
 // Methods
 // -----------------------------------------------------------------------------
 
-    void
-Remove(
+    T
+GetAndRemove(
     TKey key
 );
 
