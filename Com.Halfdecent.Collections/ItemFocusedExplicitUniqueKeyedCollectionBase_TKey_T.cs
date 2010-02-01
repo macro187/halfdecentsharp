@@ -101,11 +101,7 @@ GetAll(
     TKey key
 )
 {
-    new NonNull().Require( key, new Parameter( "key" ) );
-    return
-        this.Contains( key )
-            ? new Stream< T >( this.Get( key ) )
-            : new Stream< T >();
+    return KeyedCollection.GetAllViaUniqueKeyedCollection( this, key );
 }
 
 
@@ -120,24 +116,8 @@ GetAndReplaceAll(
     TKey key
 )
 {
-    return new Filter< T, T >(
-        ( get, put, drop ) =>
-            this.GetAndReplaceAllFilter( key, get, put, drop ) );
-}
-
-protected
-    SCG.IEnumerator< bool >
-GetAndReplaceAllFilter(
-    TKey            key,
-    Func< T >       get,
-    Action< T >     put,
-    Action< T >     drop
-)
-{
-    if( !this.Contains( key ) ) yield break;
-    yield return false;
-    put( this.GetAndReplace( key, get() ) );
-    yield return true;
+    return
+        KeyedCollection.GetAndReplaceAllViaUniqueKeyedCollection( this, key );
 }
 
 
@@ -153,18 +133,7 @@ GetAndRemoveAll(
 )
 {
     return
-        this.GetAndRemoveAllIterator( key )
-        .AsStream();
-}
-
-protected
-    SCG.IEnumerator< T >
-GetAndRemoveAllIterator(
-    TKey key
-)
-{
-    if( !this.Contains( key ) ) yield break;
-    yield return this.GetAndRemove( key );
+        KeyedCollection.GetAndRemoveAllViaUniqueKeyedCollection( this, key );
 }
 
 
@@ -179,33 +148,9 @@ GetAndReplaceAll(
     Func< ITuple< TKey, T >, bool > where
 )
 {
-    new NonNull().Require( where, new Parameter( "where" ) );
     return
-        new Filter< ITuple< TKey, T >, ITuple< TKey, T > >(
-            ( get, put, drop ) =>
-                this.GetAndReplaceAllFilter( where, get, put, drop ) );
-}
-
-protected
-    SCG.IEnumerator< bool >
-GetAndReplaceAllFilter(
-    Func< ITuple< TKey, T >, bool > where,
-    Func< ITuple< TKey, T > >       get,
-    Action< ITuple< TKey, T > >     put,
-    Action< ITuple< TKey, T > >     drop
-)
-{
-    // XXX This algorithm assumes that .GetAndReplace() does not interfere
-    //     with .StreamKeys()
-    foreach( TKey key in this.StreamKeys().AsEnumerable() ) {
-        ITuple< TKey, T > old = new Tuple< TKey, T >( key, this.Get( key ) );
-        if( !where( old ) ) continue;
-        yield return false;
-        // TODO Change to .Replace() when it appears
-        this.GetAndReplace( key, get().B );
-        put( old );
-        yield return true;
-    }
+        KeyedCollection.GetAndReplaceAllViaUniqueKeyedCollection(
+            this, where );
 }
 
 
@@ -220,25 +165,8 @@ GetAndRemoveAll(
     Func< ITuple< TKey, T >, bool > where
 )
 {
-    new NonNull().Require( where, new Parameter( "where" ) );
-    return this.GetAndRemoveAllIterator( where ).AsStream();
-}
-
-protected
-    SCG.IEnumerator< ITuple< TKey, T > >
-GetAndRemoveAllIterator(
-    Func< ITuple< TKey, T >, bool > where
-)
-{
-    startover:
-    foreach( TKey key in this.StreamKeys().AsEnumerable() ) {
-        ITuple< TKey, T > old = new Tuple< TKey, T >( key, this.Get( key ) );
-        if( !where( old ) ) continue;
-        // TODO Use .Remove() when it appears
-        this.GetAndRemove( key );
-        yield return old;
-        goto startover;
-    }
+    return
+        TupleCollection.GetAndRemoveAllViaUniqueKeyedCollection( this, where );
 }
 
 
@@ -253,33 +181,7 @@ GetAndReplaceAll(
     Func< T, bool > where
 )
 {
-    new NonNull().Require( where, new Parameter( "where" ) );
-    return
-        new Filter< T, T >(
-            ( get, put, drop ) =>
-                this.GetAndReplaceAllFilter( where, get, put, drop ) );
-}
-
-protected
-    SCG.IEnumerator< bool >
-GetAndReplaceAllFilter(
-    Func< T, bool > where,
-    Func< T >       get,
-    Action< T >     put,
-    Action< T >     drop
-)
-{
-    // XXX This algorithm assumes that .GetAndReplace() does not interfere
-    //     with .StreamKeys()
-    foreach( TKey key in this.StreamKeys().AsEnumerable() ) {
-        T old = this.Get( key );
-        if( !where( old ) ) continue;
-        yield return false;
-        // TODO Change to .Replace() when it appears
-        this.GetAndReplace( key, get() );
-        put( old );
-        yield return true;
-    }
+    return Collection.GetAndReplaceAllViaUniqueKeyedCollection( this, where );
 }
 
 

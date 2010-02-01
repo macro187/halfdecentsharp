@@ -33,8 +33,7 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-// Base class for implementing keyed collections where keys must be specified
-// when adding items
+// TODO
 // =============================================================================
 
 public abstract class
@@ -117,19 +116,7 @@ protected override
     IStream< ITuple< TKey, T > >
 TupleStream()
 {
-    return
-        this.StreamKeys()
-        .AsEnumerable()
-        .Aggregate(
-            new Stream< ITuple< TKey, T > >().AsEnumerable(),
-            ( s, key ) =>
-                s.Concat(
-                    this.GetAll( key )
-                    .AsEnumerable()
-                    .Select(
-                        item => ((ITuple< TKey, T >)
-                            new Tuple< TKey, T >( key, item ) ) ) ) )
-        .AsStream();
+    return TupleCollection.StreamViaKeyedCollection( this );
 }
 
 
@@ -156,8 +143,7 @@ Add(
     ITuple< TKey, T > item
 )
 {
-    new NonNull().Require( item, new Parameter( "item" ) );
-    this.Add( item.A, item.B );
+    TupleCollection.AddViaKeyedCollection( this, item );
 }
 
 

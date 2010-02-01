@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -33,41 +33,108 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// TODO
+// TODO
 // =============================================================================
 
 public abstract class
-ItemFocusedExplicitTupleCollectionBase<
+TupleFocusedExplicitUniqueKeyedCollectionBase<
     TKey,
     T
 >
-    : ICollectionCSG< ITuple< TKey, T > >
-    , ICollectionS< T >
+    : TupleFocusedExplicitKeyedCollectionBase< TKey, T >
+    , IUniqueKeyedCollectionCSG< TKey, T >
+    , ICollectionC< T >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// ICollection< ITuple< TKey, T > >
+// IUniqueKeyedCollection< IInteger, T >
 // -----------------------------------------------------------------------------
 
 public abstract
-IInteger
-Count
+    T
+Get(
+    TKey key
+);
+
+
+
+// -----------------------------------------------------------------------------
+// IUniqueKeyedCollectionC< IInteger, T >
+// -----------------------------------------------------------------------------
+
+public abstract
+    T
+GetAndReplace(
+    TKey    key,
+    T       replacement
+);
+
+
+
+// -----------------------------------------------------------------------------
+// IUniqueKeyedCollectionS< IInteger, T >
+// -----------------------------------------------------------------------------
+
+public abstract
+    T
+GetAndRemove(
+    TKey key
+);
+
+
+
+// -----------------------------------------------------------------------------
+// IUniqueKeyedCollectionG< IInteger, T >
+// -----------------------------------------------------------------------------
+
+
+
+// -----------------------------------------------------------------------------
+// IKeyedCollection< TKey, T >
+// -----------------------------------------------------------------------------
+
+public override
+    IStream< T >
+GetAll(
+    TKey key
+)
 {
-    get;
+    return KeyedCollection.GetAllViaUniqueKeyedCollection( this, key );
 }
 
 
-    IStream< ITuple< TKey, T > >
-ICollection< ITuple< TKey, T > >.Stream()
+
+// -----------------------------------------------------------------------------
+// IKeyedCollectionC< TKey, T >
+// -----------------------------------------------------------------------------
+
+public override
+    IFilter< T, T >
+GetAndReplaceAll(
+    TKey key
+)
 {
-    return this.TupleStream();
+    return
+        KeyedCollection.GetAndReplaceAllViaUniqueKeyedCollection( this, key );
 }
 
-protected abstract
-    IStream< ITuple< TKey, T > >
-TupleStream();
+
+
+// -----------------------------------------------------------------------------
+// IKeyedCollectionS< TKey, T >
+// -----------------------------------------------------------------------------
+
+public override
+    IStream< T >
+GetAndRemoveAll(
+    TKey key
+)
+{
+    return
+        KeyedCollection.GetAndRemoveAllViaUniqueKeyedCollection( this, key );
+}
 
 
 
@@ -75,11 +142,16 @@ TupleStream();
 // ICollectionC< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public abstract
+public override
     IFilter< ITuple< TKey, T >, ITuple< TKey, T > >
 GetAndReplaceAll(
     Func< ITuple< TKey, T >, bool > where
-);
+)
+{
+    return
+        KeyedCollection.GetAndReplaceAllViaUniqueKeyedCollection(
+            this, where );
+}
 
 
 
@@ -87,52 +159,29 @@ GetAndReplaceAll(
 // ICollectionS< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public abstract
+public override
     IStream< ITuple< TKey, T > >
 GetAndRemoveAll(
     Func< ITuple< TKey, T >, bool > where
-);
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionG< ITuple< TKey, T > >
-// -----------------------------------------------------------------------------
-
-public abstract
-    void
-Add(
-    ITuple< TKey, T > item
-);
-
-
-
-// -----------------------------------------------------------------------------
-// ICollection< T >
-// -----------------------------------------------------------------------------
-
-
-public
-    IStream< T >
-Stream()
+)
 {
-    return Collection.StreamViaTupleCollection< TKey, T >( this );
+    return
+        TupleCollection.GetAndRemoveAllViaUniqueKeyedCollection( this, where );
 }
 
 
 
 // -----------------------------------------------------------------------------
-// ICollectionS< T >
+// ICollectionC< T >
 // -----------------------------------------------------------------------------
 
 public
-    IStream< T >
-GetAndRemoveAll(
+    IFilter< T, T >
+GetAndReplaceAll(
     Func< T, bool > where
 )
 {
-    return
-        Collection.GetAndRemoveAllViaTupleCollection< TKey, T >( this, where );
+    return Collection.GetAndReplaceAllViaUniqueKeyedCollection( this, where );
 }
 
 

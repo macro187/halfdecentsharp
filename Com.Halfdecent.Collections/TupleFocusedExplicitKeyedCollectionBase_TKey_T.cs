@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -33,17 +33,78 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// TODO
+// TODO
 // =============================================================================
 
 public abstract class
-ItemFocusedExplicitTupleCollectionBase<
+TupleFocusedExplicitKeyedCollectionBase<
     TKey,
     T
 >
-    : ICollectionCSG< ITuple< TKey, T > >
-    , ICollectionS< T >
+    : TupleFocusedExplicitTupleCollectionBase< TKey, T >
+    , IKeyedCollectionCSG< TKey, T >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// IKeyedCollection< TKey, T >
+// -----------------------------------------------------------------------------
+
+public abstract
+    IStream< TKey >
+StreamKeys();
+
+
+public abstract
+    bool
+Contains(
+    TKey key
+);
+
+
+public abstract
+    IStream< T >
+GetAll(
+    TKey key
+);
+
+
+
+// -----------------------------------------------------------------------------
+// IKeyedCollectionC< TKey, T >
+// -----------------------------------------------------------------------------
+
+public abstract
+    IFilter< T, T >
+GetAndReplaceAll(
+    TKey key
+);
+
+
+
+// -----------------------------------------------------------------------------
+// IKeyedCollectionS< TKey, T >
+// -----------------------------------------------------------------------------
+
+public abstract
+    IStream< T >
+GetAndRemoveAll(
+    TKey key
+);
+
+
+
+// -----------------------------------------------------------------------------
+// IKeyedCollectionG< TKey, T >
+// -----------------------------------------------------------------------------
+
+public abstract
+    void
+Add(
+    TKey    key,
+    T       item
+);
 
 
 
@@ -51,23 +112,12 @@ ItemFocusedExplicitTupleCollectionBase<
 // ICollection< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public abstract
-IInteger
-Count
-{
-    get;
-}
-
-
+public override
     IStream< ITuple< TKey, T > >
-ICollection< ITuple< TKey, T > >.Stream()
+Stream()
 {
-    return this.TupleStream();
+    return TupleCollection.StreamViaKeyedCollection( this );
 }
-
-protected abstract
-    IStream< ITuple< TKey, T > >
-TupleStream();
 
 
 
@@ -75,23 +125,11 @@ TupleStream();
 // ICollectionC< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public abstract
-    IFilter< ITuple< TKey, T >, ITuple< TKey, T > >
-GetAndReplaceAll(
-    Func< ITuple< TKey, T >, bool > where
-);
-
 
 
 // -----------------------------------------------------------------------------
 // ICollectionS< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
-
-public abstract
-    IStream< ITuple< TKey, T > >
-GetAndRemoveAll(
-    Func< ITuple< TKey, T >, bool > where
-);
 
 
 
@@ -99,40 +137,13 @@ GetAndRemoveAll(
 // ICollectionG< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public abstract
+public override
     void
 Add(
     ITuple< TKey, T > item
-);
-
-
-
-// -----------------------------------------------------------------------------
-// ICollection< T >
-// -----------------------------------------------------------------------------
-
-
-public
-    IStream< T >
-Stream()
-{
-    return Collection.StreamViaTupleCollection< TKey, T >( this );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionS< T >
-// -----------------------------------------------------------------------------
-
-public
-    IStream< T >
-GetAndRemoveAll(
-    Func< T, bool > where
 )
 {
-    return
-        Collection.GetAndRemoveAllViaTupleCollection< TKey, T >( this, where );
+    TupleCollection.AddViaKeyedCollection( this, item );
 }
 
 
@@ -142,4 +153,5 @@ GetAndRemoveAll(
 
 } // type
 } // namespace
+
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -37,7 +37,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public abstract class
-ItemFocusedExplicitTupleCollectionBase<
+TupleFocusedExplicitTupleCollectionBase<
     TKey,
     T
 >
@@ -59,15 +59,9 @@ Count
 }
 
 
+public abstract
     IStream< ITuple< TKey, T > >
-ICollection< ITuple< TKey, T > >.Stream()
-{
-    return this.TupleStream();
-}
-
-protected abstract
-    IStream< ITuple< TKey, T > >
-TupleStream();
+Stream();
 
 
 
@@ -111,10 +105,8 @@ Add(
 // ICollection< T >
 // -----------------------------------------------------------------------------
 
-
-public
     IStream< T >
-Stream()
+ICollection< T >.Stream()
 {
     return Collection.StreamViaTupleCollection< TKey, T >( this );
 }
