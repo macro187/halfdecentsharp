@@ -30,12 +30,12 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IKeyValuePairCollectionSG<
+IKeyValueCollectionCG<
     TKey,
     T
 >
-    : IKeyValuePairCollectionS< TKey, T >
-    , IKeyValuePairCollectionG< TKey, T >
+    : IKeyValueCollectionC< TKey, T >
+    , IKeyValueCollectionG< TKey, T >
 {
 
 

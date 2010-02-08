@@ -30,7 +30,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IKeyValuePairCollection<
+IKeyValueCollection<
     TKey,
     T
 >

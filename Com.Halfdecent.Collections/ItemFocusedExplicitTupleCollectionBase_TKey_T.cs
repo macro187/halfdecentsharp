@@ -41,7 +41,7 @@ ItemFocusedExplicitTupleCollectionBase<
     TKey,
     T
 >
-    : IKeyValuePairCollectionCSG< TKey, T >
+    : IKeyValueCollectionCSG< TKey, T >
 {
 
 
