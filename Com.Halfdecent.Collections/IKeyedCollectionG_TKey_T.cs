@@ -34,12 +34,6 @@ IKeyedCollectionG<
     T
 >
     : ICollectionG< ITuple< TKey, T > >
-    //
-    // NOTE Does not implement the following because the collection may
-    //      require an explicit key to add items
-    //
-    //, ICollectionG< T >
-    //
     , IKeyedCollection< TKey, T >
 {
 
