@@ -44,7 +44,7 @@ ICollectionC<
 
     IFilter< T, T >
 GetAndReplaceAll(
-    Func< T, bool > where
+    Predicate< T > where
 );
 
 

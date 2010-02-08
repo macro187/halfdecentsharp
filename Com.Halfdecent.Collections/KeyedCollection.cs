@@ -138,7 +138,7 @@ GetAndReplaceAllViaUniqueKeyedCollection<
     T
 >(
     IUniqueKeyedCollectionC< TKey, T >  col,
-    Func< ITuple< TKey, T >, bool >     where
+    Predicate< ITuple< TKey, T > >      where
 )
 {
     new NonNull().Require( col, new Parameter( "col" ) );
@@ -157,7 +157,7 @@ GetAndReplaceAllViaUniqueKeyedCollectionFilter<
     T
 >(
     IUniqueKeyedCollectionC< TKey, T >  col,
-    Func< ITuple< TKey, T >, bool >     where,
+    Predicate< ITuple< TKey, T > >      where,
     Func< ITuple< TKey, T > >           get,
     Action< ITuple< TKey, T > >         put,
     Action< ITuple< TKey, T > >         drop

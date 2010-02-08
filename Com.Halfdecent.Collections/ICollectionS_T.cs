@@ -44,7 +44,7 @@ ICollectionS<
 
     IStream< T >
 GetAndRemoveAll(
-    Func< T, bool > where
+    Predicate< T > where
 );
 
 

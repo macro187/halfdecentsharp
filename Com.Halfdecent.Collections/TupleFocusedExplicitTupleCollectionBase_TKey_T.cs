@@ -72,7 +72,7 @@ Stream();
 public abstract
     IFilter< ITuple< TKey, T >, ITuple< TKey, T > >
 GetAndReplaceAll(
-    Func< ITuple< TKey, T >, bool > where
+    Predicate< ITuple< TKey, T > > where
 );
 
 
@@ -84,7 +84,7 @@ GetAndReplaceAll(
 public abstract
     IStream< ITuple< TKey, T > >
 GetAndRemoveAll(
-    Func< ITuple< TKey, T >, bool > where
+    Predicate< ITuple< TKey, T > > where
 );
 
 
@@ -120,7 +120,7 @@ ICollection< T >.Stream()
 public
     IStream< T >
 GetAndRemoveAll(
-    Func< T, bool > where
+    Predicate< T > where
 )
 {
     return

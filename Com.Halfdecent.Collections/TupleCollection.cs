@@ -91,7 +91,7 @@ GetAndRemoveAllViaUniqueKeyedCollection<
     T
 >(
     IUniqueKeyedCollectionS< TKey, T >  col,
-    Func< ITuple< TKey, T >, bool >     where
+    Predicate< ITuple< TKey, T > >      where
 )
 {
     new NonNull().Require( col, new Parameter( "col" ) );
@@ -108,7 +108,7 @@ GetAndRemoveAllViaUniqueKeyedCollectionIterator<
     T
 >(
     IUniqueKeyedCollectionS< TKey, T >  col,
-    Func< ITuple< TKey, T >, bool >     where
+    Predicate< ITuple< TKey, T > >      where
 )
 {
     startover:

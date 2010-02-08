@@ -109,7 +109,7 @@ GetAndRemoveAll(
 public override
     IStream< ITuple< TKey, T > >
 GetAndRemoveAll(
-    Func< ITuple< TKey, T >, bool > where
+    Predicate< ITuple< TKey, T > > where
 )
 {
     return
@@ -125,7 +125,7 @@ GetAndRemoveAll(
 public override
     IFilter< T, T >
 GetAndReplaceAll(
-    Func< T, bool > where
+    Predicate< T > where
 )
 {
     return Collection.GetAndReplaceAllViaUniqueKeyedCollection<

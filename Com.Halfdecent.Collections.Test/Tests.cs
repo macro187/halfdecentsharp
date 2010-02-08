@@ -68,7 +68,7 @@ Test_CollectionFromSystemListAdapter()
         c.Stream().AsEnumerable().SequenceEqual(
             new int[] { 1, 2, 3, 4, 5, 6 } ) );
 
-    Print( "GetAndReplaceAll( Func< T, bool > )" );
+    Print( "GetAndReplaceAll( Predicate< T > )" );
     f = c.GetAndReplaceAll( i => i % 2 == 0 );
     f.From = new int[] { 20, 40, 60, 80, 100 }.AsStream();
     SCG.List< int > to = new SCG.List< int >();
@@ -81,7 +81,7 @@ Test_CollectionFromSystemListAdapter()
         to.SequenceEqual(
             new int[] { 2, 4, 6 } ) );
 
-    Print( "GetAndRemoveAll( Func< T, bool > )" );
+    Print( "GetAndRemoveAll( Predicate< T > )" );
     to.Clear();
     c.GetAndRemoveAll( i => i >= 10 )
         .EmptyTo( to.AsSink() );
@@ -173,7 +173,7 @@ Test_CollectionFromSystemListAdapter()
     SCG.List< ITuple< IInteger, int > > tto =
         new SCG.List< ITuple< IInteger, int > >();
 
-    Print( "GetAndReplaceAll( Func< ITuple< TKey, T > >, bool )" );
+    Print( "GetAndReplaceAll( Predicate< ITuple< TKey, T > > )" );
     tf = c.GetAndReplaceAll( t => t.B == 1 );
     tf.From =
         new Stream< ITuple< IInteger, int > >(
@@ -185,7 +185,7 @@ Test_CollectionFromSystemListAdapter()
         c.Stream().AsEnumerable().SequenceEqual(
             new int[] { 0, 1, 3, 2 } ) );
 
-    Print( "GetAndRemoveAll( Func< ITuple< TKey, T > >, bool )" );
+    Print( "GetAndRemoveAll( Predicate< ITuple< TKey, T > > )" );
     tto.Clear();
     c.GetAndRemoveAll( t => t.B % 2 == 0 )
         .EmptyTo( tto.AsSink() );
