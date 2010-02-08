@@ -41,7 +41,7 @@ TupleFocusedImplicitTupleCollectionBase<
     TKey,
     T
 >
-    : ICollectionS< ITuple< TKey, T > >
+    : IKeyValuePairCollectionS< TKey, T >
     , ICollectionCSG< T >
 {
 
