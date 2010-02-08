@@ -33,8 +33,9 @@ IUniqueKeyedCollectionC<
     TKey,
     T
 >
-    : IKeyedCollectionC< TKey, T >
-    , IUniqueKeyedCollection< TKey, T >
+    : IUniqueKeyedCollection< TKey, T >
+    , IKeyedCollectionC< TKey, T >
+    , ICollectionC< T >
 {
 
 

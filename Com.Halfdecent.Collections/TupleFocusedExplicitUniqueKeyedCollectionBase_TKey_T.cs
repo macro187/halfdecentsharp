@@ -43,7 +43,6 @@ TupleFocusedExplicitUniqueKeyedCollectionBase<
 >
     : TupleFocusedExplicitKeyedCollectionBase< TKey, T >
     , IUniqueKeyedCollectionCSG< TKey, T >
-    , ICollectionC< T >
 {
 
 

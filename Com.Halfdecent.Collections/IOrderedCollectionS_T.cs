@@ -32,8 +32,8 @@ public interface
 IOrderedCollectionS<
     T
 >
-    : IUniqueKeyedCollectionS< IInteger, T >
-    , IOrderedCollection< T >
+    : IOrderedCollection< T >
+    , IUniqueKeyedCollectionS< IInteger, T >
 {
 
 

@@ -43,7 +43,6 @@ ItemFocusedExplicitUniqueKeyedCollectionBase<
 >
     : ItemFocusedExplicitKeyedCollectionBase< TKey, T >
     , IUniqueKeyedCollectionCSG< TKey, T >
-    , ICollectionC< T >
 {
 
 
