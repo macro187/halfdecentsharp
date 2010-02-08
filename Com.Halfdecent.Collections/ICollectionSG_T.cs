@@ -29,8 +29,7 @@ public interface
 ICollectionSG<
     T
 >
-    : ICollection< T >
-    , ICollectionS< T >
+    : ICollectionS< T >
     , ICollectionG< T >
 {
 

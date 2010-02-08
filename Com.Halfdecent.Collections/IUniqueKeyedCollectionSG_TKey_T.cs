@@ -30,8 +30,7 @@ IUniqueKeyedCollectionSG<
     TKey,
     T
 >
-    : IUniqueKeyedCollection< TKey, T >
-    , IUniqueKeyedCollectionS< TKey, T >
+    : IUniqueKeyedCollectionS< TKey, T >
     , IUniqueKeyedCollectionG< TKey, T >
 {
 

@@ -42,7 +42,6 @@ OrderedCollectionBase<
 >
     : ItemFocusedExplicitUniqueKeyedCollectionBase< IInteger, T >
     , IOrderedCollectionCSG< T >
-    , ICollectionG< T >
 {
 
 

@@ -33,8 +33,8 @@ IKeyedCollectionG<
     TKey,
     T
 >
-    : ICollectionG< ITuple< TKey, T > >
-    , IKeyedCollection< TKey, T >
+    : IKeyedCollection< TKey, T >
+    , IKeyValueCollectionG< TKey, T >
 {
 
 

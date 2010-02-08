@@ -34,9 +34,8 @@ IKeyedCollectionS<
     TKey,
     T
 >
-    : ICollectionS< ITuple< TKey, T > >
-    , ICollectionS< T >
-    , IKeyedCollection< TKey, T >
+    : IKeyedCollection< TKey, T >
+    , IKeyValueCollectionS< TKey, T >
 {
 
 

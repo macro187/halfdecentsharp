@@ -30,8 +30,7 @@ IKeyedCollectionCS<
     TKey,
     T
 >
-    : IKeyedCollection< TKey, T >
-    , IKeyedCollectionC< TKey, T >
+    : IKeyedCollectionC< TKey, T >
     , IKeyedCollectionS< TKey, T >
 {
 

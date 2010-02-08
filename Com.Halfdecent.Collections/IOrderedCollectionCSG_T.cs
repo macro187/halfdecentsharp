@@ -29,10 +29,9 @@ public interface
 IOrderedCollectionCSG<
     T
 >
-    : IOrderedCollection< T >
-    , IOrderedCollectionC< T >
-    , IOrderedCollectionS< T >
-    , IOrderedCollectionG< T >
+    : IOrderedCollectionCS< T >
+    , IOrderedCollectionCG< T >
+    , IOrderedCollectionSG< T >
 {
 
 

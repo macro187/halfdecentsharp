@@ -29,8 +29,7 @@ public interface
 IOrderedCollectionCG<
     T
 >
-    : IOrderedCollection< T >
-    , IOrderedCollectionC< T >
+    : IOrderedCollectionC< T >
     , IOrderedCollectionG< T >
 {
 
