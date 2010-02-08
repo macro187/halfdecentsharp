@@ -42,7 +42,8 @@ ItemFocusedImplicitTupleCollectionBase<
     T
 >
     : IKeyValueCollectionS< TKey, T >
-    , ICollectionCSG< T >
+    , ICollectionC< T >
+    , ICollectionG< T >
 {
 
 
