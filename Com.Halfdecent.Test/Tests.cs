@@ -216,10 +216,10 @@ Test_EquatableComparer_T()
 }
 
 
-[Test( "EqualityComparerAdapter< T >" )]
+[Test( "EqualityComparerProxy< T >" )]
 public static
 void
-Test_EqualityComparerAdapter_T()
+Test_EqualityComparerProxy_T()
 {
     IEqualityComparer< A >  acomparer = new EquatableComparer< A >();
     IEqualityComparer< B >  bcomparer = new EquatableComparer< B >();
@@ -474,10 +474,10 @@ Test_Comparer_T()
 }
 
 
-[Test( "ComparerAdapter< T >" )]
+[Test( "ComparerProxy< T >" )]
 public static
 void
-Test_ComparerAdapter_T()
+Test_ComparerProxy_T()
 {
     IComparer< I >  icomparer = new ComparableComparer< I >();
     IComparer< J >  jcomparer = new ComparableComparer< J >();

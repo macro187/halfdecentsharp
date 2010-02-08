@@ -195,7 +195,7 @@ Contravary<
 {
     if( dis == null )
         throw new ValueArgumentNullException( new Parameter( "dis" ) );
-    return new RTypeAdapter< T, TTo >( dis );
+    return new RTypeProxy< T, TTo >( dis );
 }
 
 

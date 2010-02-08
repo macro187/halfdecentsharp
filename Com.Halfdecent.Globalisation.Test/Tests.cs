@@ -75,13 +75,13 @@ Test_Conversions()
 }
 
 
-[Test( "LocalisedTypeAdapter< TFrom, TTO>" )]
+[Test( "LocalisedProxy< TFrom, TTO>" )]
 public static
 void
-Test_LocalisedTypeAdapter()
+Test_LocalisedProxy()
 {
     Localised< string > s = new SingleValueLocalised< string >( "hello" );
-    Localised< object > o = new LocalisedTypeAdapter< string, object >( s );
+    Localised< object > o = new LocalisedProxy< string, object >( s );
 
     Print( "Correct value comes through adapter" );
     Assert( o.ToString() == "hello" );

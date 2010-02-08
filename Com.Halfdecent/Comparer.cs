@@ -45,7 +45,7 @@ Contravary<
 )
     where T : TFrom
 {
-    return new ComparerAdapter< TFrom, T >( dis );
+    return new ComparerProxy< TFrom, T >( dis );
 }
 
 

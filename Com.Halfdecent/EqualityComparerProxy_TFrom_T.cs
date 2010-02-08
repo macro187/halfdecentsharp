@@ -25,16 +25,16 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// An adapter that turns a comparer into one that compares a more specific
-/// kind of item
+/// An adapter that turns an equality comparer into one that compares a more
+/// specific kind of item
 // =============================================================================
 
 public class
-ComparerAdapter<
+EqualityComparerProxy<
     TFrom,
     T
 >
-    : IComparer< T >
+    : IEqualityComparer< T >
     where T : TFrom
 {
 
@@ -45,8 +45,8 @@ ComparerAdapter<
 // -----------------------------------------------------------------------------
 
 internal
-ComparerAdapter(
-    IComparer< TFrom > from
+EqualityComparerProxy(
+    IEqualityComparer< TFrom > from
 )
 {
     if( object.ReferenceEquals( from, null ) )
@@ -61,28 +61,11 @@ ComparerAdapter(
 // -----------------------------------------------------------------------------
 
 public
-IComparer< TFrom >
+IEqualityComparer< TFrom >
 From
 {
     get;
     private set;
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// System.Collections.Generic.IComparer< T >
-// -----------------------------------------------------------------------------
-
-public
-    int
-Compare(
-    T dis,
-    T that
-)
-{
-    return this.From.Compare( dis, that );
 }
 
 

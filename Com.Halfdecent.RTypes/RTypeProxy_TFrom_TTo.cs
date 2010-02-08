@@ -17,25 +17,28 @@
 
 
 using SCG = System.Collections.Generic;
+using System.Linq;
+using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Exceptions;
+using Com.Halfdecent.Meta;
 
 
 namespace
-Com.Halfdecent
+Com.Halfdecent.RTypes
 {
 
 
 // =============================================================================
-/// An adapter that turns an equality comparer into one that compares a more
-/// specific kind of item
+/// IRType< T > contravariant proxy
 // =============================================================================
 
 public class
-EqualityComparerAdapter<
+RTypeProxy<
     TFrom,
-    T
+    TTo
 >
-    : IEqualityComparer< T >
-    where T : TFrom
+    : IRType< TTo >
+    where TTo : TFrom
 {
 
 
@@ -44,13 +47,13 @@ EqualityComparerAdapter<
 // Constructors
 // -----------------------------------------------------------------------------
 
-internal
-EqualityComparerAdapter(
-    IEqualityComparer< TFrom > from
+public
+RTypeProxy(
+    IRType< TFrom > from
 )
 {
-    if( object.ReferenceEquals( from, null ) )
-        throw new System.ArgumentNullException( "from" );
+    if( from == null )
+        throw new ValueArgumentNullException( new Parameter( "from" ) );
     this.From = from;
 }
 
@@ -61,7 +64,7 @@ EqualityComparerAdapter(
 // -----------------------------------------------------------------------------
 
 public
-IEqualityComparer< TFrom >
+    IRType< TFrom >
 From
 {
     get;
@@ -71,52 +74,91 @@ From
 
 
 // -----------------------------------------------------------------------------
-// System.Collections.Generic.IEqualityComparer< T >
+// IRType< T >
 // -----------------------------------------------------------------------------
+
+public
+    SCG.IEnumerable< IRType< TTo > >
+GetComponents()
+{
+    return this.From.GetComponents()
+        .Select( c => c.Contravary< TFrom, TTo >() );
+}
+
+
+public
+    RTypeException
+CheckMembers(
+    TTo     item,
+    Value   itemReference
+)
+{
+    return this.From.CheckMembers( item, itemReference );
+}
+
 
 public
     bool
-Equals(
-    T a,
-    T b
+Predicate(
+    TTo item
 )
 {
-    return this.From.Equals( a, b );
-}
-
-
-public
-    int
-GetHashCode(
-    T item
-)
-{
-    return this.From.GetHashCode( item );
+    return this.From.Predicate( item );
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IEqualityComparer
+// IRType
 // -----------------------------------------------------------------------------
 
-public
-    IEqualityComparer
+public virtual
+    IRType
 GetUnderlying()
 {
     return this.From.GetUnderlying();
 }
 
 
+public
+    Localised< string >
+SayIs(
+    Localised< string > reference
+)
+{
+    return this.From.SayIs( reference );
+}
+
+
+public
+    Localised< string >
+SayIsNot(
+    Localised< string > reference
+)
+{
+    return this.From.SayIsNot( reference );
+}
+
+
+public
+    Localised< string >
+SayMustBe(
+    Localised< string > reference
+)
+{
+    return this.From.SayMustBe( reference );
+}
+
+
 
 // -----------------------------------------------------------------------------
-// IEquatable< IEqualityComparer >
+// IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public
     bool
 Equals(
-    IEqualityComparer that
+    IRType that
 )
 {
     return this.From.Equals( that );
@@ -126,7 +168,7 @@ Equals(
 public
     bool
 DirectionalEquals(
-    IEqualityComparer that
+    IRType that
 )
 {
     return this.From.DirectionalEquals( that );
@@ -154,8 +196,8 @@ Equals(
 {
     return
         that != null &&
-        that is IEqualityComparer &&
-        this.Equals( (IEqualityComparer)that );
+        that is IRType &&
+        this.Equals( (IRType)that );
 }
 
 

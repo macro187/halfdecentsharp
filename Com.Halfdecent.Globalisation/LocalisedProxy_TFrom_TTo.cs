@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -26,11 +26,11 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// Localised< T > covariant type adapter
+/// Localised< T > covariant proxy
 // =============================================================================
 
 public class
-LocalisedTypeAdapter<
+LocalisedProxy<
     TFrom,
     TTo
 >
@@ -45,7 +45,7 @@ LocalisedTypeAdapter<
 // -----------------------------------------------------------------------------
 
 public
-LocalisedTypeAdapter(
+LocalisedProxy(
     Localised< TFrom > from
 )
 {
