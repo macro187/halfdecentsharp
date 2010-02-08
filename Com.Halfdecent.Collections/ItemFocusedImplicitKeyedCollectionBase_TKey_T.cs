@@ -37,12 +37,12 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public abstract class
-TupleFocusedExplicitKeyedCollectionBase<
+ItemFocusedImplicitKeyedCollectionBase<
     TKey,
     T
 >
-    : TupleFocusedExplicitTupleCollectionBase< TKey, T >
-    , IKeyedCollectionCSG< TKey, T >
+    : ItemFocusedImplicitTupleCollectionBase< TKey, T >
+    , IKeyedCollectionS< TKey, T >
 {
 
 
@@ -72,18 +72,6 @@ GetAll(
 
 
 // -----------------------------------------------------------------------------
-// IKeyedCollectionC< TKey, T >
-// -----------------------------------------------------------------------------
-
-public abstract
-    IFilter< T, T >
-GetAndReplaceAll(
-    TKey key
-);
-
-
-
-// -----------------------------------------------------------------------------
 // IKeyedCollectionS< TKey, T >
 // -----------------------------------------------------------------------------
 
@@ -96,54 +84,14 @@ GetAndRemoveAll(
 
 
 // -----------------------------------------------------------------------------
-// IKeyedCollectionG< TKey, T >
-// -----------------------------------------------------------------------------
-
-public abstract
-    void
-Add(
-    TKey    key,
-    T       item
-);
-
-
-
-// -----------------------------------------------------------------------------
 // ICollection< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public override
+protected override
     IStream< ITuple< TKey, T > >
-Stream()
+TupleStream()
 {
     return TupleCollection.StreamViaKeyedCollection( this );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionC< ITuple< TKey, T > >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionS< ITuple< TKey, T > >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionG< ITuple< TKey, T > >
-// -----------------------------------------------------------------------------
-
-public override
-    void
-Add(
-    ITuple< TKey, T > item
-)
-{
-    TupleCollection.AddViaKeyedCollection( this, item );
 }
 
 

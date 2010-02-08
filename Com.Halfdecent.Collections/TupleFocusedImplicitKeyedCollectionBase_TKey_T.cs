@@ -37,12 +37,12 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public abstract class
-TupleFocusedExplicitKeyedCollectionBase<
+TupleFocusedImplicitKeyedCollectionBase<
     TKey,
     T
 >
-    : TupleFocusedExplicitTupleCollectionBase< TKey, T >
-    , IKeyedCollectionCSG< TKey, T >
+    : TupleFocusedImplicitTupleCollectionBase< TKey, T >
+    , IKeyedCollectionS< TKey, T >
 {
 
 
@@ -72,18 +72,6 @@ GetAll(
 
 
 // -----------------------------------------------------------------------------
-// IKeyedCollectionC< TKey, T >
-// -----------------------------------------------------------------------------
-
-public abstract
-    IFilter< T, T >
-GetAndReplaceAll(
-    TKey key
-);
-
-
-
-// -----------------------------------------------------------------------------
 // IKeyedCollectionS< TKey, T >
 // -----------------------------------------------------------------------------
 
@@ -91,19 +79,6 @@ public abstract
     IStream< T >
 GetAndRemoveAll(
     TKey key
-);
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< TKey, T >
-// -----------------------------------------------------------------------------
-
-public abstract
-    void
-Add(
-    TKey    key,
-    T       item
 );
 
 
@@ -121,30 +96,6 @@ Stream()
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionC< ITuple< TKey, T > >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionS< ITuple< TKey, T > >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionG< ITuple< TKey, T > >
-// -----------------------------------------------------------------------------
-
-public override
-    void
-Add(
-    ITuple< TKey, T > item
-)
-{
-    TupleCollection.AddViaKeyedCollection( this, item );
-}
 
 
 

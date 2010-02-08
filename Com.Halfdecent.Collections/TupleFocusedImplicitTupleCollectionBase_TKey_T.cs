@@ -33,78 +33,17 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-// TODO
+/// TODO
 // =============================================================================
 
 public abstract class
-TupleFocusedExplicitKeyedCollectionBase<
+TupleFocusedImplicitTupleCollectionBase<
     TKey,
     T
 >
-    : TupleFocusedExplicitTupleCollectionBase< TKey, T >
-    , IKeyedCollectionCSG< TKey, T >
+    : ICollectionS< ITuple< TKey, T > >
+    , ICollectionCSG< T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollection< TKey, T >
-// -----------------------------------------------------------------------------
-
-public abstract
-    IStream< TKey >
-StreamKeys();
-
-
-public abstract
-    bool
-Contains(
-    TKey key
-);
-
-
-public abstract
-    IStream< T >
-GetAll(
-    TKey key
-);
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionC< TKey, T >
-// -----------------------------------------------------------------------------
-
-public abstract
-    IFilter< T, T >
-GetAndReplaceAll(
-    TKey key
-);
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< TKey, T >
-// -----------------------------------------------------------------------------
-
-public abstract
-    IStream< T >
-GetAndRemoveAll(
-    TKey key
-);
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< TKey, T >
-// -----------------------------------------------------------------------------
-
-public abstract
-    void
-Add(
-    TKey    key,
-    T       item
-);
 
 
 
@@ -112,18 +51,17 @@ Add(
 // ICollection< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
-public override
-    IStream< ITuple< TKey, T > >
-Stream()
+public abstract
+IInteger
+Count
 {
-    return TupleCollection.StreamViaKeyedCollection( this );
+    get;
 }
 
 
-
-// -----------------------------------------------------------------------------
-// ICollectionC< ITuple< TKey, T > >
-// -----------------------------------------------------------------------------
+public abstract
+    IStream< ITuple< TKey, T > >
+Stream();
 
 
 
@@ -131,20 +69,63 @@ Stream()
 // ICollectionS< ITuple< TKey, T > >
 // -----------------------------------------------------------------------------
 
+public abstract
+    IStream< ITuple< TKey, T > >
+GetAndRemoveAll(
+    Func< ITuple< TKey, T >, bool > where
+);
+
 
 
 // -----------------------------------------------------------------------------
-// ICollectionG< ITuple< TKey, T > >
+// ICollection< T >
 // -----------------------------------------------------------------------------
 
-public override
-    void
-Add(
-    ITuple< TKey, T > item
+    IStream< T >
+ICollection< T >.Stream()
+{
+    return Collection.StreamViaTupleCollection< TKey, T >( this );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// ICollectionC< T >
+// -----------------------------------------------------------------------------
+
+public abstract
+    IFilter< T, T >
+GetAndReplaceAll(
+    Func< T, bool > where
+);
+
+
+
+// -----------------------------------------------------------------------------
+// ICollectionS< T >
+// -----------------------------------------------------------------------------
+
+public
+    IStream< T >
+GetAndRemoveAll(
+    Func< T, bool > where
 )
 {
-    TupleCollection.AddViaKeyedCollection( this, item );
+    return
+        Collection.GetAndRemoveAllViaTupleCollection< TKey, T >( this, where );
 }
+
+
+
+// -----------------------------------------------------------------------------
+// ICollectionG< T >
+// -----------------------------------------------------------------------------
+
+public abstract
+    void
+Add(
+    T item
+);
 
 
 
