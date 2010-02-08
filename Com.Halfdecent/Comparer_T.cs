@@ -91,7 +91,9 @@ Comparer(
     if( getHashCodeFunction == null )
         throw new System.ArgumentNullException( "getHashCodeFunction" );
     this.CompareFunction = compareFunction;
-    this.EqualsFunction = equalsFunction ?? this.EqualsFromCompare;
+    this.EqualsFunction =
+        equalsFunction ??
+        ( ( dis, dat ) => compareFunction( dis, dat ) == 0 );
     this.GetHashCodeFunction = getHashCodeFunction;
 }
 
@@ -125,22 +127,6 @@ GetHashCodeFunction
 {
     get;
     private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Private
-// -----------------------------------------------------------------------------
-
-private
-    bool
-EqualsFromCompare(
-    T dis,
-    T that
-)
-{
-    return this.Compare( dis, that ) == 0;
 }
 
 
