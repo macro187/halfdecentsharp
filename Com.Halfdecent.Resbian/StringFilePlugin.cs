@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2007, 2008, 2009, 2010
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -57,7 +58,7 @@ Process(
         return false;
     name = local.Substring( 0, (local.Length-SUFFIX.Length) );
 
-    string data = File.ReadAllText( filename );
+    string data = ReadAllText( filename );
 
     WriteLine( String.Format( "Adding as string named '{0}'", name ) );
     writer.AddResource( name, data );

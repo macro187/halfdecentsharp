@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2007, 2008, 2009, 2010
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -103,6 +104,73 @@ GetLocalFilename(
     }
     return result;
 }
+
+
+/// <summary>
+/// <c>System.IO.File.ReadAllBytes()</c> for .NET &lt; 2.0
+/// </summary>
+protected static
+    byte[]
+ReadAllBytes(
+    string path
+)
+{
+    byte[] r;
+    using( FileStream s = File.OpenRead( path ) ) {
+        long len = s.Length;
+        r = new byte[ len ];
+        for( long i = 0; i < len; i++ )
+            r[ i ] = ((byte)s.ReadByte());
+    }
+    return r;
+}
+
+
+/// <summary>
+/// <c>System.IO.File.ReadAllLines()</c> for .NET &lt; 2.0
+/// </summary>
+protected static
+    string[]
+ReadAllLines(
+    string path
+)
+{
+    string[] r = new string[ 0 ];
+    using( StreamReader rdr = File.OpenText( path ) ) {
+        for( ;; ) {
+            string s = rdr.ReadLine();
+            if( s == null ) break;
+            string[] old = r;
+            r = new string[ old.Length + 1 ];
+            Array.Copy( old, r, old.Length );
+            r[ r.Length - 1 ] = s;
+        }
+    }
+    return r;
+}
+
+
+/// <summary>
+/// <c>System.IO.File.ReadAllText()</c> for .NET &lt; 2.0
+/// </summary>
+protected static
+    string
+ReadAllText(
+    string path
+)
+{
+    string r = "";
+    using( StreamReader rdr = File.OpenText( path ) ) {
+        for( ;; ) {
+            string s = rdr.ReadLine();
+            if( s == null ) break;
+            if( r != "" ) r += Environment.NewLine;
+            r += s;
+        }
+    }
+    return r;
+}
+
 
 
 
