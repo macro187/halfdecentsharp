@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -119,17 +119,13 @@ Enumerator
 // -----------------------------------------------------------------------------
 
 public
-    bool
-TryPull(
-    out T item
-)
+    ITuple< bool, T >
+TryPull()
 {
     if( this.Enumerator.MoveNext() ) {
-        item = this.Enumerator.Current;
-        return true;
+        return new Tuple< bool, T >( true, this.Enumerator.Current );
     } else {
-        item = default( T );
-        return false;
+        return new Tuple< bool, T >( false, default( T ) );
     }
 }
 

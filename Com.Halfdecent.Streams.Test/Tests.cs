@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -245,6 +245,36 @@ Test_Collection_AsSink()
 }
 
 
+[Test( "Sink.Contravary()" )]
+public static
+void
+Test_Sink_Contravary()
+{
+    IList< object > objs = new List< object >();
+    ISink< string > s = objs.AsSink().Contravary< object, string >();
+    s.Push( "1" );
+    s.Push( "2" );
+    s.Push( "3" );
+    Assert( objs.SequenceEqual( new object[] { "1", "2", "3" } ) );
+}
+
+
+#if DOTNET40
+[Test( "Sink.Contravariance" )]
+public static
+void
+Test_Sink_Contravariance()
+{
+    IList< object > objs = new List< object >();
+    ISink< string > s = objs.AsSink();
+    s.Push( "1" );
+    s.Push( "2" );
+    s.Push( "3" );
+    Assert( objs.SequenceEqual( new object[] { "1", "2", "3" } ) );
+}
+#endif
+
+
 [Test( "Stream.Covary()" )]
 public static
 void
@@ -254,6 +284,20 @@ Test_Stream_Covary()
         new int[] { 1, 2, 3 }.AsStream().Covary< int, object >();
     Assert( s.AsEnumerable().SequenceEqual( new object[] { 1, 2, 3 } ) );
 }
+
+
+// TODO Enable once Mono's runtime can handle this
+#if DOTNET40 && !MONO
+[Test( "Stream Covariance" )]
+public static
+void
+Test_Stream_Covariance()
+{
+    IStream< object > s =
+        new string[] { "1", "2", "3" }.AsStream();
+    Assert( s.AsEnumerable().SequenceEqual( new string[] { "1", "2", "3" } ) );
+}
+#endif
 
 
 

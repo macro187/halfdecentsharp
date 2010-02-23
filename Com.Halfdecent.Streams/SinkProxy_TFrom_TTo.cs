@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -26,51 +26,45 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// <tt>ISink< T ></tt> Library
+/// TODO
 // =============================================================================
 
-public static class
-Sink
+public class
+SinkProxy<
+    TFrom,
+    TTo
+>
+    : ISink< TTo >
+    where TTo : TFrom
 {
 
 
-
-// -----------------------------------------------------------------------------
-// Extension Methods
-// -----------------------------------------------------------------------------
-
-/// Push an item into the sink, expecting there to be capacity for it
-///
-/// @exception FullException
-/// The sink did not have capacity to accept the item
-///
-public static
-    void
-Push<
-    T
->(
-    this ISink< T > sink,
-    T               item
+public
+SinkProxy(
+    ISink< TFrom > from
 )
 {
-    new NonNull().Require( sink, new Parameter( "sink" ) );
-    if( !sink.TryPush( item ) )
-        throw new FullException( new This() );
+    new NonNull().Require( from, new Parameter( "from" ) );
+    this.From = from;
 }
 
 
-public static
-    ISink< TTo >
-Contravary<
-    TFrom,
-    TTo
->(
-    this ISink< TFrom > dis
-)
-    where TTo : TFrom
+protected
+ISink< TFrom >
+From
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    return new SinkProxy< TFrom, TTo >( dis );
+    get;
+    private set;
+}
+
+
+public
+    bool
+TryPush(
+    TTo item
+)
+{
+    return this.From.TryPush( item );
 }
 
 

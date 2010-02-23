@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -35,7 +35,11 @@ Com.Halfdecent.Streams
 
 public interface
 IStream<
+#if DOTNET40
+    out T
+#else
     T
+#endif
 >
 {
 
@@ -49,16 +53,10 @@ IStream<
 /// Once this method returns <tt>false</tt>, indicating the end of the stream
 /// has been reached, it will never produce items again.
 ///
-    bool
+    ITuple< bool, T >
     /// @returns
     /// Whether there was another item in the stream
-TryPull(
-    out T item
-    ///< The next item in the stream
-    ///  - OR -
-    ///  An undefined and unusable value if there are no more items on the
-    ///  stream (as indicated by a <tt>false</tt> return value)
-);
+TryPull();
 
 
 

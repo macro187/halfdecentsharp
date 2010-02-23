@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -75,6 +75,29 @@ Concat<
         dis.AsEnumerable().Concat(
             stream.AsEnumerable() )
         .AsStream();
+}
+
+
+/// Try to pull the next item from the stream
+///
+public static
+    bool
+    /// @returns
+    /// Whether there was another item in the stream
+TryPull<
+    T
+>(
+    this IStream< T >   dis,
+    out T               item
+    ///< The next item in the stream, if there was another item
+    ///  - OR -
+    ///  An undefined and unusable value, if there were no more items
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    ITuple< bool, T > t = dis.TryPull();
+    item = t.B;
+    return t.A;
 }
 
 

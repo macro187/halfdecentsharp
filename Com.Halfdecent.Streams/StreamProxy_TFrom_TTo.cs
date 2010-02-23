@@ -59,15 +59,15 @@ From
 
 
 public
-    bool
-TryPull(
-    out TTo item
-)
+    ITuple< bool, TTo >
+TryPull()
 {
-    TFrom i;
-    bool r = this.From.TryPull( out i );
-    item = i;
-    return r;
+// TODO Why doesn't this work?  Is it just Mono?
+#if DOTNET40 && !MONO
+    return this.From.TryPull();
+#else
+    return this.From.TryPull().Covary< bool, TFrom, bool, TTo >();
+#endif
 }
 
 
