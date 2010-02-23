@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -560,6 +560,25 @@ Test_Interval()
 
     Print( ".GetHashCode()" );
     Assert( inc.GetHashCode() == anotherinc.GetHashCode() );
+}
+
+
+[Test( "Tuple" )]
+public static void
+Test_Tuple()
+{
+    Print( "Make a tuple of ints" );
+    ITuple< int, int > ints = new Tuple< int, int >( 1, 2 );
+    Print( "Check ints" );
+    Assert( ints.A == 1 );
+    Assert( ints.B == 2 );
+
+    Print( "Covary() to objects" );
+    ITuple< object, object > objects =
+        ints.Covary< int, int, object, object >();
+    Print( "Check objects" );
+    Assert( objects.A.Equals( ((object)1) ) );
+    Assert( objects.B.Equals( ((object)2) ) );
 }
 
 

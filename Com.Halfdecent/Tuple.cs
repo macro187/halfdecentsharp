@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -22,42 +22,31 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// TODO
+/// <tt>ITuple< T1, T2 ></tt> Library
 // =============================================================================
 
-public interface
-ITuple<
-#if DOTNET40
-    out T1,
-    out T2
-#else
-    T1,
-    T2
-#endif
->
+public static class
+Tuple
 {
 
 
 
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// TODO
-///
-T1
-A
+public static
+    ITuple< TTo1, TTo2 >
+Covary<
+    TFrom1,
+    TFrom2,
+    TTo1,
+    TTo2
+>(
+    this ITuple< TFrom1, TFrom2 > dis
+)
+    where TFrom1 : TTo1
+    where TFrom2 : TTo2
 {
-    get;
-}
-
-
-/// TODO
-///
-T2
-B
-{
-    get;
+    if( object.ReferenceEquals( dis, null ) )
+        throw new System.ArgumentNullException( "dis" );
+    return new TupleProxy< TFrom1, TFrom2, TTo1, TTo2 >( dis );
 }
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -25,17 +25,33 @@ Com.Halfdecent
 /// TODO
 // =============================================================================
 
-public interface
-ITuple<
-#if DOTNET40
-    out T1,
-    out T2
-#else
-    T1,
-    T2
-#endif
+public class
+TupleProxy<
+    TFrom1,
+    TFrom2,
+    TTo1,
+    TTo2
 >
+    : ITuple< TTo1, TTo2 >
+    where TFrom1 : TTo1
+    where TFrom2 : TTo2
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+internal
+TupleProxy(
+    ITuple< TFrom1, TFrom2 > from
+)
+{
+    if( object.ReferenceEquals( from, null ) )
+        throw new System.ArgumentNullException( "from" );
+    this.From = from;
+}
 
 
 
@@ -43,21 +59,33 @@ ITuple<
 // Properties
 // -----------------------------------------------------------------------------
 
-/// TODO
-///
-T1
-A
+public
+ITuple< TFrom1, TFrom2 >
+From
 {
     get;
+    private set;
 }
 
 
-/// TODO
-///
-T2
+
+// -----------------------------------------------------------------------------
+// ITuple< TTo1, TTo2 >
+// -----------------------------------------------------------------------------
+
+public
+TTo1
+A
+{
+    get { return this.From.A; }
+}
+
+
+public
+TTo2
 B
 {
-    get;
+    get { return this.From.B; }
 }
 
 
