@@ -245,6 +245,17 @@ Test_Collection_AsSink()
 }
 
 
+[Test( "Stream.Covary()" )]
+public static
+void
+Test_Stream_Covary()
+{
+    IStream< object > s =
+        new int[] { 1, 2, 3 }.AsStream().Covary< int, object >();
+    Assert( s.AsEnumerable().SequenceEqual( new object[] { 1, 2, 3 } ) );
+}
+
+
 
 
 } // type

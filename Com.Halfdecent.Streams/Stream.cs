@@ -140,6 +140,19 @@ AsEnumerable<
 }
 
 
+public static
+    IStream< TTo >
+Covary<
+    TFrom,
+    TTo
+>(
+    this IStream< TFrom > dis
+)
+{
+    return new StreamProxy< TFrom, TTo >( dis );
+}
+
+
 
 
 } // type
