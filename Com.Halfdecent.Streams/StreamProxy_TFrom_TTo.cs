@@ -54,7 +54,7 @@ IStream< TFrom >
 From
 {
     get;
-    set;
+    private set;
 }
 
 
