@@ -62,12 +62,7 @@ public
     ITuple< bool, TTo >
 TryPull()
 {
-// TODO Why doesn't this work?  Is it just Mono?
-#if DOTNET40 && !MONO
-    return this.From.TryPull();
-#else
     return this.From.TryPull().Covary< bool, TFrom, bool, TTo >();
-#endif
 }
 
 
