@@ -171,6 +171,7 @@ Covary<
 >(
     this IStream< TFrom > dis
 )
+    where TFrom : TTo
 {
     return new StreamProxy< TFrom, TTo >( dis );
 }
