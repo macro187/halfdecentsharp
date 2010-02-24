@@ -579,6 +579,23 @@ Test_Tuple()
     Print( "Check objects" );
     Assert( objects.A.Equals( ((object)1) ) );
     Assert( objects.B.Equals( ((object)2) ) );
+
+#if DOTNET40
+    //
+    // NOTE
+    // "Covariance and contravariance are supported for reference types, but
+    // they are not supported for value types."
+    // - http://msdn.microsoft.com/en-gb/library/dd469487%28VS.100%29.aspx
+    //
+    Print( "Make a tuple of strings" );
+    ITuple< string, string > strings =
+        new Tuple< string, string >( "A", "B" );
+    Print( "C# covariance to objects" );
+    objects = strings;
+    Print( "Check objects" );
+    Assert( objects.A.Equals( "A" ) );
+    Assert( objects.B.Equals( "B" ) );
+#endif
 }
 
 
