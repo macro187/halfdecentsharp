@@ -33,9 +33,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public class
-ExistingOrNextPositionIn<
-    T
->
+ExistingOrNextPositionIn
     : SimpleTextRTypeBase< IInteger >
 {
 
@@ -106,8 +104,11 @@ DirectionalEquals(
     IRType that
 )
 {
-    // XXX
-    return false;
+    return
+        that.GetType() == this.GetType() &&
+        object.ReferenceEquals(
+            ((ExistingOrNextPositionIn)that).Collection,
+            this.Collection );
 }
 
 
@@ -115,7 +116,6 @@ public override
     int
 GetHashCode()
 {
-    // XXX
     return
         base.GetHashCode() ^
         this.Collection.GetHashCode();
