@@ -37,6 +37,24 @@ IUniqueKeyedCollectionRC<
 
 
 
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Retrieve the item with the specified key, replacing it with the specified
+/// item
+///
+    ITuple< bool, T >
+    /// @returns
+    /// A tuple indicating whether there was an item with the specified key
+    /// and, if so, that item
+TryGetAndReplace(
+    TKey    key,
+    T       replacement
+);
+
+
+
 
 } // type
 } // namespace

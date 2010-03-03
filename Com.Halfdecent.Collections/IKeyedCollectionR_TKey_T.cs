@@ -49,10 +49,18 @@ IKeyedCollectionR<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Produce a stream of all key-value pairs in the collection
+/// Stream all key-value pairs
 ///
     IStream< ITuple< TKey, T > >
 StreamKeyValuePairs();
+
+
+/// Determine whether the collection contains any items with the specified key
+///
+    bool
+Contains(
+    TKey key
+);
 
 
 /// Stream all items with the specified key

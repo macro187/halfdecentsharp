@@ -45,12 +45,13 @@ IUniqueKeyedCollectionC<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Replace the item with a specified key with another specified item
+/// If the collection contains an item with the specified key, replace it with
+/// the specified replacement item
 ///
-// TODO Exception if key doesn't exist?
-//
-    void
-Replace(
+    bool
+    /// @returns
+    /// Whether the collection contained an item with the specified key
+TryReplace(
     TKey    key,
     T       replacement
 );
