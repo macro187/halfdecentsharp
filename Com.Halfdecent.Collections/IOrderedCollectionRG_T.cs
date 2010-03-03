@@ -35,6 +35,7 @@ IOrderedCollectionRG<
     : IOrderedCollectionR< T >
     , IOrderedCollectionG< T >
     , IUniqueKeyedCollectionRG< IInteger, T >
+    , IImplicitUniqueKeyedCollectionRG< IInteger, T >
 {
 
 

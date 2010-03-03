@@ -38,7 +38,7 @@ IOrderedCollectionG<
 >
     : IOrderedCollection
     , IUniqueKeyedCollectionG< IInteger, T >
-    , ICollectionG< T >
+    , IImplicitUniqueKeyedCollectionG< T >
 {
 
 
