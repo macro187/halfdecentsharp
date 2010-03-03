@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -322,10 +322,8 @@ TryPush(
 
 
 public
-bool
-TryPull(
-    out TOut item
-)
+ITuple< bool, TOut >
+TryPull()
 {
     if( this.From == null )
         throw new LocalisedInvalidOperationException(
@@ -333,23 +331,24 @@ TryPull(
 
     this.StartIfNotStarted();
 
-    item = default( TOut );
     for( ;; ) {
 
         // Process() is done
-        if( this.process == null ) return false;
+        if( this.process == null )
+            return new Tuple< bool, TOut >( false, default( TOut ) );
 
         // Process() has produced an item
         if( this.process.Current ) {
-            item = this.PeekFromProcess();
+            TOut o = this.PeekFromProcess();
             this.AcceptFromProcess();
             this.Tick();
-            return true;
+            return new Tuple< bool, TOut >( true, o );
 
         // Process() wants an item
         } else {
             TIn i;
-            if( !this.From.TryPull( out i ) ) return false;
+            if( !this.From.TryPull( out i ) )
+                return new Tuple< bool, TOut >( false, default( TOut ) );
             this.GiveToProcess( i );
 
         }
