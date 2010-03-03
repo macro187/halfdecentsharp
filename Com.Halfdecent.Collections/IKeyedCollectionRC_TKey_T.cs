@@ -16,6 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Filters;
+
+
 namespace
 Com.Halfdecent.Collections
 {
@@ -34,6 +37,20 @@ IKeyedCollectionRC<
     , IKeyedCollectionC< TKey, T >
     , ICollectionRC< T >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Generate a filter that replaces any items with the specified key while
+/// passing along the replaced items
+///
+    IFilter< T, T >
+GetAndReplace(
+    TKey key
+);
 
 
 

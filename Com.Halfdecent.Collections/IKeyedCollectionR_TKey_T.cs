@@ -52,7 +52,7 @@ IKeyedCollectionR<
 /// Stream all key-value pairs
 ///
     IStream< ITuple< TKey, T > >
-StreamKeyValuePairs();
+StreamPairs();
 
 
 /// Determine whether the collection contains any items with the specified key

@@ -43,12 +43,10 @@ IUniqueKeyedCollectionS<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Remove the item with a specified key, if such an item exists
+/// Remove the item with a specified key
 ///
-    bool
-    /// @returns
-    /// Whether the collection contained an item with the specified key
-TryRemove(
+    void
+Remove(
     TKey key
 );
 

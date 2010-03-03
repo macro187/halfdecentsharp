@@ -42,22 +42,6 @@ IUniqueKeyedCollectionRS<
 
 
 
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Retrieve and remove the item with the specified key, if such an item exists
-///
-    ITuple< bool, T >
-    /// @returns
-    /// A tuple indicating whether there was an item with the specified key
-    /// and, if so, the item
-TryGetAndRemove(
-    TKey key
-);
-
-
-
 
 } // type
 } // namespace

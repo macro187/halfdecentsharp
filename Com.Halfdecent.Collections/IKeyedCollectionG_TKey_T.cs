@@ -39,7 +39,6 @@ IKeyedCollectionG<
 #endif
 >
     : IKeyedCollection
-    , ICollectionG< ITuple< TKey, T > >
 {
 
 

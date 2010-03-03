@@ -45,13 +45,10 @@ IUniqueKeyedCollectionC<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// If the collection contains an item with the specified key, replace it with
-/// the specified replacement item
+/// Replace the item with the specified key with the specified replacement item
 ///
-    bool
-    /// @returns
-    /// Whether the collection contained an item with the specified key
-TryReplace(
+    void
+Replace(
     TKey    key,
     T       replacement
 );

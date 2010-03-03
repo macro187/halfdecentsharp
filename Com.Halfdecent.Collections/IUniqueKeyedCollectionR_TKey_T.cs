@@ -45,13 +45,10 @@ IUniqueKeyedCollectionR<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Retrieve the item with the given key, if one exists
+/// Retrieve the item with the given key
 ///
-    ITuple< bool, T >
-    /// @returns
-    /// A tuple indicating whether the collection contained an item with the
-    /// specified key and, if so, the item
-TryGet(
+    T
+Get(
     TKey key
 );
 

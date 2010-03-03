@@ -44,19 +44,6 @@ IKeyedCollectionC<
 
 
 
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Generate a sink replacing items with a specified key
-///
-    ISink< T >
-Replace(
-    TKey key
-);
-
-
-
 
 } // type
 } // namespace
