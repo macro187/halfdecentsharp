@@ -29,16 +29,9 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IOrderedCollectionCG<
-#if DOTNET40
-    in T
-#else
-    T
-#endif
->
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+IOrderedCollectionS
+    : IOrderedCollection
+    , IUniqueKeyedCollectionS< IInteger >
 {
 
 

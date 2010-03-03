@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent;
-using Com.Halfdecent.Filters;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -31,11 +30,16 @@ Com.Halfdecent.Collections
 
 public interface
 IKeyedCollectionC<
+#if DOTNET40
+    in TKey,
+    in T
+#else
     TKey,
     T
+#endif
 >
-    : IKeyedCollection< TKey, T >
-    , IKeyValueCollectionC< TKey, T >
+    : IKeyedCollection
+    , ICollectionC< T >
 {
 
 
@@ -44,10 +48,10 @@ IKeyedCollectionC<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// TODO
+/// Generate a sink replacing items with a specified key
 ///
-    IFilter< T, T >
-GetAndReplaceAll(
+    ISink< T >
+Replace(
     TKey key
 );
 

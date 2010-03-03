@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,10 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using Com.Halfdecent.Streams;
-
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -30,22 +26,13 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-ICollectionS<
+IKeyedCollectionRG<
+    TKey,
     T
 >
-    : ICollection< T >
+    : IKeyedCollectionR< TKey, T >
+    , IKeyedCollectionG< TKey, T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-    IStream< T >
-GetAndRemoveAll(
-    Predicate< T > where
-);
 
 
 

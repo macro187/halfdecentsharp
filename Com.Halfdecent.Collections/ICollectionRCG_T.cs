@@ -16,26 +16,22 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// Collection of key-value pairs
+/// TODO
 // =============================================================================
 
 public interface
-IKeyValueCollectionC<
-    TKey,
+ICollectionRCG<
     T
 >
-    : IKeyValueCollection< TKey, T >
-    , ICollectionC< ITuple< TKey, T > >
+    : ICollectionRC< T >
+    , ICollectionRG< T >
+    , ICollectionCG< T >
 {
 
 

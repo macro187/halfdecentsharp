@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
+using System;
+using Com.Halfdecent.Filters;
 
 
 namespace
@@ -29,17 +30,26 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IOrderedCollectionCG<
-#if DOTNET40
-    in T
-#else
+ICollectionRC<
     T
-#endif
 >
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+    : ICollectionR< T >
+    , ICollectionC< T >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Generate a filter that retrieves and replaces items matching a specified
+/// predicate
+///
+    IFilter< T, T >
+GetAndReplaceWhere(
+    Predicate< T > where
+);
 
 
 

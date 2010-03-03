@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
+using Com.Halfdecent;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -29,17 +30,40 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IOrderedCollectionCG<
+IKeyedCollectionR<
 #if DOTNET40
-    in T
+    TKey,
+    out T
 #else
+    TKey,
     T
 #endif
 >
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+    : IKeyedCollection
+    , ICollectionR< T >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Produce a stream of all key-value pairs in the collection
+///
+    IStream< ITuple< TKey, T > >
+StreamKeyValuePairs();
+
+
+/// Stream all items with the specified key
+///
+    IStream< T >
+    /// @returns
+    /// A stream of all items with the specified <tt>key</tt>
+Stream(
+    TKey key
+    ///< - <tt>NonNull</tt>
+);
 
 
 

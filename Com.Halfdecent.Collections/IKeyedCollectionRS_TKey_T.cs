@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -29,17 +29,32 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IOrderedCollectionCG<
+IKeyedCollectionRS<
 #if DOTNET40
-    in T
+    TKey,
+    out T
 #else
+    TKey,
     T
 #endif
 >
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+    : IKeyedCollectionR< TKey, T >
+    , IKeyedCollectionS< TKey >
+    , ICollectionRS< T >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Produce a stream that yields and removes items with a specified key
+///
+    IStream< T >
+GetAndRemove(
+    TKey key
+);
 
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,51 +16,24 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// A finite, unordered collection of items
-///
-/// See <tt>http://en.wikipedia.org/wiki/Multiset</tt>
+/// TODO
 // =============================================================================
 
 public interface
-ICollection<
+IUniqueKeyedCollectionRC<
+    TKey,
     T
 >
+    : IUniqueKeyedCollectionR< TKey, T >
+    , IUniqueKeyedCollectionC< TKey, T >
+    , IKeyedCollectionRC< TKey, T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// The number of items in the collection
-///
-IInteger
-Count
-{
-    get;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Produce a stream of all items in no particular order
-///
-    IStream< T >
-Stream();
 
 
 

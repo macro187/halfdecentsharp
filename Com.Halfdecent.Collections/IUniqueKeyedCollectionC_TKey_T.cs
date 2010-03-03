@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,9 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Filters;
-
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -30,12 +27,16 @@ Com.Halfdecent.Collections
 
 public interface
 IUniqueKeyedCollectionC<
+#if DOTNET40
+    in TKey,
+    in T
+#else
     TKey,
     T
+#endif
 >
-    : IUniqueKeyedCollection< TKey, T >
+    : IUniqueKeyedCollection
     , IKeyedCollectionC< TKey, T >
-    , ICollectionC< T >
 {
 
 
@@ -44,8 +45,12 @@ IUniqueKeyedCollectionC<
 // Methods
 // -----------------------------------------------------------------------------
 
-    T
-GetAndReplace(
+/// Replace the item with a specified key with another specified item
+///
+// TODO Exception if key doesn't exist?
+//
+    void
+Replace(
     TKey    key,
     T       replacement
 );

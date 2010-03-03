@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -22,29 +22,18 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// Access items in a collection by a key value
+/// TODO
 // =============================================================================
 
 public interface
-IUniqueKeyedCollection<
-    TKey,
+ICollectionRCSG<
     T
 >
-    : IKeyedCollection< TKey, T >
+    : ICollectionRCS< T >
+    , ICollectionRCG< T >
+    , ICollectionRSG< T >
+    , ICollectionCSG< T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// TODO
-///
-    T
-Get(
-    TKey key
-);
 
 
 

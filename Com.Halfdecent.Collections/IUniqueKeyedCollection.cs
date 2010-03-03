@@ -16,29 +16,18 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// TODO
+/// Access items in a collection by a key value
 // =============================================================================
 
 public interface
-IOrderedCollectionCG<
-#if DOTNET40
-    in T
-#else
-    T
-#endif
->
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+IUniqueKeyedCollection
+    : IKeyedCollection
 {
 
 

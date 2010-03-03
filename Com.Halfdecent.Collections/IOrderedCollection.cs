@@ -16,9 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -29,16 +26,8 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IOrderedCollectionCG<
-#if DOTNET40
-    in T
-#else
-    T
-#endif
->
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+IOrderedCollection
+    : IUniqueKeyedCollection
 {
 
 

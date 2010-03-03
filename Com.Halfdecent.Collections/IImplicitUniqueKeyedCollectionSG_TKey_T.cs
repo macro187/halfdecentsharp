@@ -16,26 +16,28 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// Collection of key-value pairs
+/// TODO
 // =============================================================================
 
 public interface
-IKeyValueCollectionCS<
+IImplicitUniqueKeyedCollectionSG<
+#if DOTNET40
+    in TKey,
+    in T
+#else
     TKey,
     T
+#endif
 >
-    : IKeyValueCollectionC< TKey, T >
-    , IKeyValueCollectionS< TKey, T >
+    : IUniqueKeyedCollectionS< TKey >
+    , IImplicitUniqueKeyedCollectionG< T >
+    , IImplicitKeyedCollectionSG< TKey, T >
 {
 
 

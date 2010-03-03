@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,27 +16,46 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// Collection of key-value pairs
+/// Access items in a collection by a key value
 // =============================================================================
 
 public interface
-IKeyValueCollectionCG<
+IUniqueKeyedCollectionR<
+#if DOTNET40
+    TKey,
+    out T
+#else
     TKey,
     T
+#endif
 >
-    : IKeyValueCollectionC< TKey, T >
-    , IKeyValueCollectionG< TKey, T >
+    : IUniqueKeyedCollection
+    , IKeyedCollectionR< TKey, T >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+// TODO TryGet()
+
+
+/// Retrieve the item with the given key
+///
+// TODO Exception if key doesn't exist?
+//
+    T
+Get(
+    TKey key
+);
 
 
 

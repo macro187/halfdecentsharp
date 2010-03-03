@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using Com.Halfdecent.Streams;
+using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -30,24 +29,15 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IUniqueKeyedCollectionS<
-    TKey,
+IOrderedCollectionRCSG<
     T
 >
-    : IUniqueKeyedCollection< TKey, T >
-    , IKeyedCollectionS< TKey, T >
+    : IOrderedCollectionRCS< T >
+    , IOrderedCollectionRCG< T >
+    , IOrderedCollectionRSG< T >
+    , IOrderedCollectionCSG< T >
+    , IUniqueKeyedCollectionRCSG< IInteger, T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-    T
-GetAndRemove(
-    TKey key
-);
 
 
 

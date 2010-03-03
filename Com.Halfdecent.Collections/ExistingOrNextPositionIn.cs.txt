@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -33,7 +33,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public class
-ExistingPositionIn<
+ExistingOrNextPositionIn<
     T
 >
     : SimpleTextRTypeBase< IInteger >
@@ -46,13 +46,13 @@ ExistingPositionIn<
 // -----------------------------------------------------------------------------
 
 public
-ExistingPositionIn(
-    ICollection< T > collection
+ExistingOrNextPositionIn(
+    ICollection collection
 )
     : base(
-        _S( "{0} is the position of an item in the collection" ),
-        _S( "{0} is not the position of an item in the collection" ),
-        _S( "{0} must be the position of an item in the collection" ) )
+        _S( "{0} is an existing or the next position in the collection" ),
+        _S( "{0} is not an existing or the next position in the collection" ),
+        _S( "{0} must be an existing or the next position in the collection" ) )
 {
     new NonNull().Require( collection, new Parameter( "collection" ) );
     this.Collection = collection;
@@ -65,7 +65,7 @@ ExistingPositionIn(
 // -----------------------------------------------------------------------------
 
 public
-ICollection< T >
+ICollection
 Collection
 {
     get;
@@ -88,7 +88,7 @@ GetComponents()
             Integer.From( 0 ),
             new ComparableComparer< IReal >()
                 .Contravary< IReal, IInteger >() ) )
-        .Append( new LT< IInteger >(
+        .Append( new LTE< IInteger >(
             this.Collection.Count,
             new ComparableComparer< IReal >()
                 .Contravary< IReal, IInteger >() ) );

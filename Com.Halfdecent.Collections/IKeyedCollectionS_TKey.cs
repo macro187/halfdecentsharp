@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -31,11 +31,13 @@ Com.Halfdecent.Collections
 
 public interface
 IKeyedCollectionS<
-    TKey,
-    T
+#if DOTNET40
+    in TKey
+#else
+    TKey
+#endif
 >
-    : IKeyedCollection< TKey, T >
-    , IKeyValueCollectionS< TKey, T >
+    : IKeyedCollection
 {
 
 
@@ -44,8 +46,10 @@ IKeyedCollectionS<
 // Methods
 // -----------------------------------------------------------------------------
 
-    IStream< T >
-GetAndRemoveAll(
+/// Remove all items with a specified key
+///
+    void
+Remove(
     TKey key
 );
 

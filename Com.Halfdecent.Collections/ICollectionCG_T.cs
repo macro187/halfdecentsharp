@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -27,7 +27,11 @@ Com.Halfdecent.Collections
 
 public interface
 ICollectionCG<
+#if DOTNET40
+    in T
+#else
     T
+#endif
 >
     : ICollectionC< T >
     , ICollectionG< T >

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,9 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -29,16 +26,12 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IOrderedCollectionCG<
-#if DOTNET40
-    in T
-#else
+ICollectionRCS<
     T
-#endif
 >
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+    : ICollectionRC< T >
+    , ICollectionRS< T >
+    , ICollectionCS< T >
 {
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,10 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -25,21 +28,52 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// TODO
+// TODO
 // =============================================================================
 
-public interface
-IOrderedCollectionCG<
-#if DOTNET40
-    in T
-#else
-    T
-#endif
+public class
+CollectionProxy<
+    TFrom,
+    TTo
 >
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+    : ICollection< TTo >
+    where TFrom : TTo
 {
+
+
+public
+CollectionProxy(
+    ICollection< TFrom > from
+)
+{
+    new NonNull().Require( from, new Parameter( "from" ) );
+    this.From = from;
+}
+
+
+protected
+ICollection< TFrom >
+From
+{
+    get;
+    private set;
+}
+
+
+public
+IInteger
+Count
+{
+    get { return this.From.Count; }
+}
+
+
+public
+IStream< TTo >
+Stream()
+{
+    return this.From.Stream().Covary< TFrom, TTo >();
+}
 
 
 

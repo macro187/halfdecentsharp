@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,23 +16,18 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// TODO
+/// Access items in a collection by a key value
 // =============================================================================
 
 public interface
-IOrderedCollection<
-    T
->
-    : IUniqueKeyedCollection< IInteger, T >
+IKeyedCollection
+    : ICollection
 {
 
 

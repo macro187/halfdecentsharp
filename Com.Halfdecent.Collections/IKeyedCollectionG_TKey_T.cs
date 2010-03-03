@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -30,11 +30,16 @@ Com.Halfdecent.Collections
 
 public interface
 IKeyedCollectionG<
+#if DOTNET40
+    in TKey,
+    in T
+#else
     TKey,
     T
+#endif
 >
-    : IKeyedCollection< TKey, T >
-    , IKeyValueCollectionG< TKey, T >
+    : IKeyedCollection
+    , ICollectionG< ITuple< TKey, T > >
 {
 
 
@@ -43,7 +48,7 @@ IKeyedCollectionG<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// TODO
+/// Add a new item with 
 ///
     void
 Add(

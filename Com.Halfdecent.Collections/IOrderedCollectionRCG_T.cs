@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -29,16 +29,13 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public interface
-IOrderedCollectionCG<
-#if DOTNET40
-    in T
-#else
+IOrderedCollectionRCG<
     T
-#endif
 >
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+    : IOrderedCollectionRC< T >
+    , IOrderedCollectionRG< T >
+    , IOrderedCollectionCG< T >
+    , IUniqueKeyedCollectionRCG< IInteger, T >
 {
 
 

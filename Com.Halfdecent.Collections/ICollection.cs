@@ -25,21 +25,28 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// TODO
+/// A finite, unordered collection of items
+///
+/// See <tt>http://en.wikipedia.org/wiki/Multiset</tt>
 // =============================================================================
 
 public interface
-IOrderedCollectionCG<
-#if DOTNET40
-    in T
-#else
-    T
-#endif
->
-    : IOrderedCollectionC< T >
-    , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+ICollection
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+/// The number of items in the collection
+///
+IInteger
+Count
+{
+    get;
+}
 
 
 

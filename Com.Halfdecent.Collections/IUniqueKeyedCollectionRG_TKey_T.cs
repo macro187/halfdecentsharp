@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,56 +16,24 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent;
-using Com.Halfdecent.Streams;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// Access items in a collection by a key value
+/// TODO
 // =============================================================================
 
 public interface
-IKeyedCollection<
+IUniqueKeyedCollectionRG<
     TKey,
     T
 >
-    : IKeyValueCollection< TKey, T >
+    : IUniqueKeyedCollectionR< TKey, T >
+    , IUniqueKeyedCollectionG< TKey, T >
+    , IKeyedCollectionRG< TKey, T >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Produce a stream of all keys in the collection
-///
-    IStream< TKey >
-StreamKeys();
-
-
-/// Determine whether the collection contains item(s) with a specified key
-///
-    bool
-Contains(
-    TKey key
-);
-
-
-/// Retrieve all items with the specified key
-///
-    IStream< T >
-    /// @returns
-    /// A stream of any items with the specified <tt>key</tt>
-GetAll(
-    TKey key
-    ///< - NonNull
-);
 
 
 
