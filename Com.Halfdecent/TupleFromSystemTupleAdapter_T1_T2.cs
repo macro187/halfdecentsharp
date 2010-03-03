@@ -15,6 +15,8 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+#if DOTNET40
+
 
 namespace
 Com.Halfdecent
@@ -22,53 +24,73 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>ITuple< T1, T2 ></tt> Library
+/// TODO
 // =============================================================================
 
-public static class
-Tuple
-{
-
-
-
-public static
-    ITuple< TTo1, TTo2 >
-Covary<
-    TFrom1,
-    TFrom2,
-    TTo1,
-    TTo2
->(
-    this ITuple< TFrom1, TFrom2 > dis
-)
-    where TFrom1 : TTo1
-    where TFrom2 : TTo2
-{
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    return new TupleProxy< TFrom1, TFrom2, TTo1, TTo2 >( dis );
-}
-
-
-#if DOTNET40
-public static
-    System.Tuple< T1, T2 >
-AsSystemTuple<
+public class
+TupleFromSystemTupleAdapter<
     T1,
     T2
->(
-    this ITuple< T1, T2 > dis
+>
+    : ITuple< T1, T2 >
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+internal
+TupleFromSystemTupleAdapter(
+    System.Tuple< T1, T2 > from
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    return new System.Tuple< T1, T2 >( dis.A, dis.B );
+    if( object.ReferenceEquals( from, null ) )
+        throw new System.ArgumentNullException( "from" );
+    this.From = from;
 }
-#endif
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+System.Tuple< T1, T2 >
+From
+{
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// ITuple< T1, T2 >
+// -----------------------------------------------------------------------------
+
+public
+T1
+A
+{
+    get { return this.From.Item1; }
+}
+
+
+public
+T2
+B
+{
+    get { return this.From.Item2; }
+}
 
 
 
 
 } // type
 } // namespace
+
+#endif
 

@@ -15,6 +15,8 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
+#if DOTNET40
+
 
 namespace
 Com.Halfdecent
@@ -22,53 +24,34 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>ITuple< T1, T2 ></tt> Library
+/// <tt>System.Tuple</tt> Library
 // =============================================================================
 
 public static class
-Tuple
+SystemTuple
 {
 
 
 
 public static
-    ITuple< TTo1, TTo2 >
-Covary<
-    TFrom1,
-    TFrom2,
-    TTo1,
-    TTo2
->(
-    this ITuple< TFrom1, TFrom2 > dis
-)
-    where TFrom1 : TTo1
-    where TFrom2 : TTo2
-{
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    return new TupleProxy< TFrom1, TFrom2, TTo1, TTo2 >( dis );
-}
-
-
-#if DOTNET40
-public static
-    System.Tuple< T1, T2 >
-AsSystemTuple<
+    ITuple< T1, T2 >
+AsHalfdecentTuple<
     T1,
     T2
 >(
-    this ITuple< T1, T2 > dis
+    this System.Tuple< T1, T2 > dis
 )
 {
     if( object.ReferenceEquals( dis, null ) )
         throw new System.ArgumentNullException( "dis" );
-    return new System.Tuple< T1, T2 >( dis.A, dis.B );
+    return new TupleFromSystemTupleAdapter< T1, T2 >( dis );
 }
-#endif
 
 
 
 
 } // type
 } // namespace
+
+#endif
 

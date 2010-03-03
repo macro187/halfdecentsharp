@@ -567,36 +567,77 @@ Test_Interval()
 public static void
 Test_Tuple()
 {
+    ITuple< object, object > objects;
+
+    Print( "Make a tuple of strings" );
+    ITuple< string, string > strings =
+        new Tuple< string, string >( "A", "B" );
+    Print( "Check strings" );
+    Assert( strings.A == "A" );
+    Assert( strings.B == "B" );
+
+#if DOTNET40
+    Print( "C# covary to objects" );
+    objects = strings;
+    Print( "Check objects" );
+    Assert( objects.A.Equals( "A" ) );
+    Assert( objects.B.Equals( "B" ) );
+#endif
+
+    Print( "Covary() to objects" );
+    objects = strings.Covary< string, string, object, object >();
+    Print( "Check objects" );
+    Assert( objects.A.Equals( "A" ) );
+    Assert( objects.B.Equals( "B" ) );
+
     Print( "Make a tuple of ints" );
     ITuple< int, int > ints = new Tuple< int, int >( 1, 2 );
     Print( "Check ints" );
     Assert( ints.A == 1 );
     Assert( ints.B == 2 );
 
+#if DOTNET40
+    Print( "(C# doesn't vary value types)" );
+#endif
+
     Print( "Covary() to objects" );
-    ITuple< object, object > objects =
-        ints.Covary< int, int, object, object >();
+    objects = ints.Covary< int, int, object, object >();
     Print( "Check objects" );
-    Assert( objects.A.Equals( ((object)1) ) );
-    Assert( objects.B.Equals( ((object)2) ) );
+    Assert( objects.A.Equals( 1 ) );
+    Assert( objects.B.Equals( 2 ) );
+}
+
 
 #if DOTNET40
-    //
-    // NOTE
-    // "Covariance and contravariance are supported for reference types, but
-    // they are not supported for value types."
-    // - http://msdn.microsoft.com/en-gb/library/dd469487%28VS.100%29.aspx
-    //
-    Print( "Make a tuple of strings" );
+[Test( "TupleFromSystemTupleAdapter" )]
+public static void
+Test_TupleFromSystemTupleAdapter()
+{
+    Print( "Make a tuple of strings out of a System.Tuple" );
     ITuple< string, string > strings =
-        new Tuple< string, string >( "A", "B" );
-    Print( "C# covariance to objects" );
-    objects = strings;
-    Print( "Check objects" );
-    Assert( objects.A.Equals( "A" ) );
-    Assert( objects.B.Equals( "B" ) );
-#endif
+        new System.Tuple< string, string >( "A", "B" )
+        .AsHalfdecentTuple();
+    Print( "Check strings" );
+    Assert( strings.A == "A" );
+    Assert( strings.B == "B" );
 }
+#endif
+
+
+#if DOTNET40
+[Test( "ITuple.AsSystemTuple()" )]
+public static void
+Test_ITupleAsSystemTuple()
+{
+    Print( "Make a System.Tuple of strings out of an ITuple" );
+    System.Tuple< string, string > strings =
+        new Tuple< string, string >( "A", "B" )
+        .AsSystemTuple();
+    Print( "Check strings" );
+    Assert( strings.Item1 == "A" );
+    Assert( strings.Item2 == "B" );
+}
+#endif
 
 
 
