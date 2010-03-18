@@ -52,7 +52,7 @@ IKeyedCollectionRS<
 /// Produce a stream that yields and removes items with a specified key
 ///
     IStream< T >
-GetAndRemove(
+GetAndRemoveAll(
     TKey key
 );
 

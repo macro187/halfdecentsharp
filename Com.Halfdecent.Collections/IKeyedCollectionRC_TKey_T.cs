@@ -48,7 +48,7 @@ IKeyedCollectionRC<
 /// passing along the replaced items
 ///
     IFilter< T, T >
-GetAndReplace(
+GetAndReplaceAll(
     TKey key
 );
 
