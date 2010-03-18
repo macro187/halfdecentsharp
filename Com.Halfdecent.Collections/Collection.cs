@@ -33,7 +33,7 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// <tt>ICollection< T ></tt> library
+/// <tt>ICollection</tt> library
 // =============================================================================
 
 public static class
@@ -42,51 +42,21 @@ Collection
 
 
 
-public static
-    IStream< T >
-StreamViaTupleCollection<
-    TKey,
-    T
->(
-    ICollection< ITuple< TKey, T > > col
-)
-{
-    new NonNull().Require( col, new Parameter( "col" ) );
-    return
-        col.Stream()
-        .AsEnumerable()
-        .Select( t => t.B )
-        .AsStream();
-}
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
 
-
-public static
-    IStream< T >
-GetAndRemoveAllViaTupleCollection<
-    TKey,
-    T
->(
-    ICollectionS< ITuple< TKey, T > >   col,
-    Predicate< T >                      where
-)
-{
-    new NonNull().Require( col, new Parameter( "col" ) );
-    new NonNull().Require( where, new Parameter( "where" ) );
-    return
-        col.GetAndRemoveAll( t => where( t.B ) )
-        .AsEnumerable()
-        .Select( t => t.B )
-        .AsStream();
-}
-
-
+/// <tt>ICollectionRC< T >.GetAndReplaceWhere()</tt>
+/// in terms of
+/// <tt>IUniqueKeyedCollection</tt>
+///
 public static
     IFilter< T, T >
-GetAndReplaceAllViaUniqueKeyedCollection<
+GetAndReplaceWhereViaUniqueKeyedCollection<
     TKey,
     T
 >(
-    IUniqueKeyedCollectionC< TKey, T >  col,
+    IUniqueKeyedCollectionRC< TKey, T > col,
     Predicate< T >                      where
 )
 {
@@ -95,17 +65,17 @@ GetAndReplaceAllViaUniqueKeyedCollection<
     return
         new Filter< T, T >(
             ( get, put, drop ) =>
-                GetAndReplaceAllViaUniqueKeyedCollectionFilter(
+                GetAndReplaceWhereViaUniqueKeyedCollectionFilter(
                     col, where, get, put, drop ) );
 }
 
 private static
     SCG.IEnumerator< bool >
-GetAndReplaceAllViaUniqueKeyedCollectionFilter<
+GetAndReplaceWhereViaUniqueKeyedCollectionFilter<
     TKey,
     T
 >(
-    IUniqueKeyedCollectionC< TKey, T >  col,
+    IUniqueKeyedCollectionRC< TKey, T > col,
     Predicate< T >                      where,
     Func< T >                           get,
     Action< T >                         put,
@@ -113,7 +83,7 @@ GetAndReplaceAllViaUniqueKeyedCollectionFilter<
 )
 {
     // XXX
-    // This algorithm assumes that .GetAndReplace() does not interfere with
+    // This algorithm assumes that .Replace() doesn't interfere with
     // .StreamKeys().  If this becomes an issue, just retrieve all keys at once
     // first.
     //
@@ -121,70 +91,78 @@ GetAndReplaceAllViaUniqueKeyedCollectionFilter<
         T old = col.Get( key );
         if( !where( old ) ) continue;
         yield return false;
-        // TODO Change to .Replace() when it appears
-        col.GetAndReplace( key, get() );
+        col.Replace( key, get() );
         put( old );
         yield return true;
     }
 }
 
 
+/// <tt>ICollectionRS< T >.GetAndRemoveWhere()</tt>
+/// in terms of
+/// <tt>IUniqueKeyedCollection</tt>
+///
 public static
-    IFilter< T, T >
-GetAndReplaceAllViaUniqueKeyedCollection<
-    TCollection,
+    IStream< T >
+GetAndRemoveWhereViaUniqueKeyedCollection<
     TKey,
     T
 >(
-    TCollection     col,
-    Predicate< T >  where
+    IUniqueKeyedCollectionRS< TKey, T > col,
+    Predicate< T >                      where
 )
-    where TCollection
-        : IUniqueKeyedCollectionS< TKey, T >
-        , ICollectionG< T >
 {
     new NonNull().Require( col, new Parameter( "col" ) );
     new NonNull().Require( where, new Parameter( "where" ) );
     return
-        new Filter< T, T >(
-            ( get, put, drop ) =>
-                GetAndReplaceAllViaUniqueKeyedCollectionFilter<
-                    TCollection, TKey, T >(
-                    col, where, get, put, drop ) );
+        GetAndRemoveWhereViaUniqueKeyedCollectionIterator( col, where )
+        .AsStream();
 }
 
 private static
-    SCG.IEnumerator< bool >
-GetAndReplaceAllViaUniqueKeyedCollectionFilter<
-    TCollection,
+    SCG.IEnumerator< T >
+GetAndRemoveWhereViaUniqueKeyedCollectionIterator<
     TKey,
     T
 >(
-    TCollection     col,
-    Predicate< T >  where,
-    Func< T >       get,
-    Action< T >     put,
-    Action< T >     drop
+    IUniqueKeyedCollectionRS< TKey, T > col,
+    Predicate< T >                      where
 )
-    where TCollection
-        : IUniqueKeyedCollectionS< TKey, T >
-        , ICollectionG< T >
 {
-    // XXX
-    // This algorithm assumes that .GetAndReplace() does not interfere with
-    // .StreamKeys().  If this becomes an issue, just retrieve all keys at once
-    // first.
-    //
-    foreach( TKey key in col.StreamKeys().AsEnumerable() ) {
-        T old = col.Get( key );
-        if( !where( old ) ) continue;
-        yield return false;
-        // TODO change to .Remove() when it appears
-        col.GetAndRemove( key );
-        col.Add( get() );
-        put( old );
-        yield return true;
+    restart:
+    while( true ) {
+        foreach( TKey key in col.StreamKeys().AsEnumerable() ) {
+            T item = col.Get( key );
+            if( !where( item ) ) continue;
+            col.Remove( key );
+            yield return item;
+            // Restart because keys may have changed
+            goto restart;
+        }
+        yield break;
     }
+}
+
+
+/// <tt>ICollectionR< T >.Stream()</tt>
+/// in terms of
+/// <tt>IKeyedCollection</tt>
+///
+public static
+    IStream< T >
+StreamViaKeyedCollection<
+    TKey,
+    T
+>(
+    IKeyedCollectionR< TKey, T > col
+)
+{
+    new NonNull().Require( col, new Parameter( "col" ) );
+    return
+        col.StreamPairs()
+        .AsEnumerable()
+        .Select( pair => pair.B )
+        .AsStream();
 }
 
 

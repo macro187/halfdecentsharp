@@ -17,7 +17,7 @@
 
 
 using SCG = System.Collections.Generic;
-using System;
+using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
@@ -33,14 +33,14 @@ Com.Halfdecent.Collections
 
 // =============================================================================
 /// Present a <tt>System.Collections.Generic.IList< T ></tt> as an
-/// <tt>IOrderedCollectionCSG< T ></tt>
+/// <tt>IOrderedCollectionRCSG< T ></tt>
 // =============================================================================
 
 public class
 OrderedCollectionFromSystemListAdapter<
     T
 >
-    : OrderedCollectionBase< T >
+    : IOrderedCollectionRCSG< T >
 {
 
 
@@ -51,11 +51,11 @@ OrderedCollectionFromSystemListAdapter<
 
 internal
 OrderedCollectionFromSystemListAdapter(
-    SCG.IList< T > list
+    SCG.IList< T > from
 )
 {
-    new NonNull().Require( list, new Parameter( "list" ) );
-    this.List = list;
+    new NonNull().Require( from, new Parameter( "from" ) );
+    this.From = from;
 }
 
 
@@ -66,7 +66,7 @@ OrderedCollectionFromSystemListAdapter(
 
 protected
 SCG.IList< T >
-List
+From
 {
     get;
     private set;
@@ -75,93 +75,60 @@ List
 
 
 // -----------------------------------------------------------------------------
-// IOrderedCollection< T >
-// IOrderedCollectionC< T >
-// IOrderedCollectionS< T >
-// IOrderedCollectionG< T >
+// IUniqueKeyedCollectionC< T >
 // -----------------------------------------------------------------------------
 
+public
+    void
+Replace(
+    IInteger    key,
+    T           replacement
+)
+{
+    new NonNull().Require( key, new Parameter( "key" ) );
+    new ExistingKeyIn< IInteger, T >( this )
+        .Require( key, new Parameter( "key" ) );
+    int i = (int)( key.GetValue() );
+    this.From[ i ] = replacement;
+}
+
 
 
 // -----------------------------------------------------------------------------
-// IUniqueKeyedCollection< IInteger, T >
+// IUniqueKeyedCollectionR< IInteger, T >
 // -----------------------------------------------------------------------------
 
-public override
+public
     T
 Get(
     IInteger key
 )
 {
     new NonNull().Require( key, new Parameter( "key" ) );
-    new ExistingPositionIn< T >( this ).Require( key, new Parameter( "key" ) );
-    return this.List[ (int)( key.GetValue() ) ];
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionC< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public override
-    T
-GetAndReplace(
-    IInteger    key,
-    T           replacement
-)
-{
-    new NonNull().Require( key, new Parameter( "key" ) );
-    new ExistingPositionIn< T >( this ).Require( key, new Parameter( "key" ) );
+    new ExistingKeyIn< IInteger, T >( this )
+        .Require( key, new Parameter( "key" ) );
     int i = (int)( key.GetValue() );
-    T old = this.List[ i ];
-    this.List[ i ] = replacement;
-    return old;
+    return this.From[ i ];
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionS< IInteger, T >
+// IUniqueKeyedCollectionS< T >
 // -----------------------------------------------------------------------------
 
-public override
-    T
-GetAndRemove(
+public
+    void
+Remove(
     IInteger key
 )
 {
     new NonNull().Require( key, new Parameter( "key" ) );
-    new ExistingPositionIn< T >( this ).Require( key, new Parameter( "key" ) );
+    new ExistingKeyIn< IInteger, T >( this )
+        .Require( key, new Parameter( "key" ) );
     int i = (int)( key.GetValue() );
-    T old = this.List[ i ];
-    this.List.RemoveAt( i );
-    return old;
+    this.From.RemoveAt( i );
 }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionG< IInteger, T >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollection< IInteger, T >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionC< IInteger, T >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< IInteger, T >
-// -----------------------------------------------------------------------------
 
 
 
@@ -169,7 +136,7 @@ GetAndRemove(
 // IKeyedCollectionG< IInteger, T >
 // -----------------------------------------------------------------------------
 
-public override
+public
     void
 Add(
     IInteger    key,
@@ -177,86 +144,160 @@ Add(
 )
 {
     new NonNull().Require( key, new Parameter( "key" ) );
-    new ExistingOrNextPositionIn< T >( this )
-        .Require( key, new Parameter( "key" ) );
+    new ExistingOrNextPositionIn( this ).Require( key, new Parameter( "key" ) );
     new InInt32Range().Require( key, new Parameter( "key" ) );
-    this.List.Insert( (int)( key.GetValue() ), item );
+    int i = (int)( key.GetValue() );
+    this.From.Insert( i, item );
 }
 
 
 
 // -----------------------------------------------------------------------------
-// ICollection< ITuple< IInteger, T > >
+// IKeyedCollectionRC< IInteger, T >
 // -----------------------------------------------------------------------------
 
-public override
-IInteger
+public
+    IFilter< T, T >
+GetAndReplaceAll(
+    IInteger key
+)
+{
+    return KeyedCollection
+        .GetAndReplaceAllViaUniqueKeyedCollection( this, key );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IKeyedCollectionRS< IInteger, T >
+// -----------------------------------------------------------------------------
+
+public
+    IStream< T >
+GetAndRemoveAll(
+    IInteger key
+)
+{
+    return KeyedCollection
+        .GetAndRemoveAllViaUniqueKeyedCollection( this, key );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IKeyedCollectionR< IInteger, T >
+// -----------------------------------------------------------------------------
+
+public
+    IStream< ITuple< IInteger, T > >
+StreamPairs()
+{
+    return this.StreamPairsIterator().AsStream();
+}
+
+private
+    SCG.IEnumerator< ITuple< IInteger, T > >
+StreamPairsIterator()
+{
+    for( int i = 0; i < this.From.Count; i++ ) {
+        yield return new Tuple< IInteger, T >(
+            Integer.From( i ), this.From[ i ] );
+    }
+}
+
+
+public
+    bool
+Contains(
+    IInteger key
+)
+{
+    if( key == null ) return false;
+    if( key.LT( Integer.From( 0 ) ) ) return false;
+    if( key.GTE( Integer.From( this.From.Count ) ) ) return false;
+    return true;
+}
+
+
+public
+    IStream< T >
+Stream(
+    IInteger key
+)
+{
+    return KeyedCollection.StreamViaUniqueKeyedCollection( this, key );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// ICollection
+// -----------------------------------------------------------------------------
+
+public
+    IInteger
 Count
 {
-    get { return Integer.From( this.List.Count ); }
+    get { return Integer.From( this.From.Count ); }
 }
-
-
-protected override
-    IStream< ITuple< IInteger, T > >
-TupleStream()
-{
-    return
-        this.TupleStreamIterator()
-        .AsStream();
-}
-
-protected
-    SCG.IEnumerator< ITuple< IInteger, T > >
-TupleStreamIterator()
-{
-    for( int i = 0; i < this.List.Count; i++ )
-        yield return new Tuple< IInteger, T >(
-            Integer.From( i ),
-            this.List[ i ] );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionC< ITuple< IInteger, T > >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionS< ITuple< IInteger, T > >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionG< ITuple< IInteger, T > >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// ICollection< T >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionC< T >
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionS< T >
-// -----------------------------------------------------------------------------
 
 
 
 // -----------------------------------------------------------------------------
 // ICollectionG< T >
 // -----------------------------------------------------------------------------
+
+public
+    void
+Add(
+    T item
+)
+{
+    this.From.Add( item );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// ICollectionRC< T >
+// -----------------------------------------------------------------------------
+
+public
+    IFilter< T, T >
+GetAndReplaceWhere(
+    System.Predicate< T > where
+)
+{
+    return Collection.GetAndReplaceWhereViaUniqueKeyedCollection( this, where );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// ICollectionRS< T >
+// -----------------------------------------------------------------------------
+
+public
+    IStream< T >
+GetAndRemoveWhere(
+    System.Predicate< T > where
+)
+{
+    return Collection.GetAndRemoveWhereViaUniqueKeyedCollection( this, where );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// ICollectionR< T >
+// -----------------------------------------------------------------------------
+
+public
+    IStream< T >
+Stream()
+{
+    return Collection.StreamViaKeyedCollection( this );
+}
 
 
 
