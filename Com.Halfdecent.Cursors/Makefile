@@ -20,6 +20,8 @@ MODULES_use += dotnet.lib.project
 MODULES_use += dotnet.csharp
 MODULES_use += testable
 
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Meta)
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.RTypes)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Numerics)
 
 DOTNET_required_generation = 35
