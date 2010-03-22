@@ -25,7 +25,7 @@ Com.Halfdecent.Streams
 /// A programmatic source of a potentially infinite sequence of items, yielded
 /// one after another over time
 ///
-/// See <tt>http://en.wikipedia.org/wiki/Stream_(computer)</tt>
+/// See <tt>http://en.wikipedia.org/wiki/Stream_(computing)</tt>
 ///
 /// On it's own, <tt>IStream< T ></tt> does not imply how many more items (if
 /// any) are available, nor how long (if ever) it will take to yield the next
