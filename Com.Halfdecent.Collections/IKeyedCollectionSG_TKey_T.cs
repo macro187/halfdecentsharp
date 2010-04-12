@@ -37,7 +37,6 @@ IKeyedCollectionSG<
 >
     : IKeyedCollectionS< TKey >
     , IKeyedCollectionG< TKey, T >
-    , ICollectionSG< T >
 {
 
 
