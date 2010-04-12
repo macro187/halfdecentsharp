@@ -71,7 +71,7 @@ public IInteger Count { get { return this.From.Count; } }
 // ICollectionR< T >
 // -----------------------------------------------------------------------------
 
-public IStream< T > Stream() { return this.From.Stream(); }
+public IStream< T > Stream() { return this.From.Stream().Covary< TFrom, T >(); }
 
 
 
