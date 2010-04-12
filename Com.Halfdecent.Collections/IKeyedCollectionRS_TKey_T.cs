@@ -30,13 +30,8 @@ Com.Halfdecent.Collections
 
 public interface
 IKeyedCollectionRS<
-#if DOTNET40
-    TKey,
-    out T
-#else
     TKey,
     T
-#endif
 >
     : IKeyedCollectionR< TKey, T >
     , IKeyedCollectionS< TKey >

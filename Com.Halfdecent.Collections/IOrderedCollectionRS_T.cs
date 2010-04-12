@@ -30,11 +30,7 @@ Com.Halfdecent.Collections
 
 public interface
 IOrderedCollectionRS<
-#if DOTNET40
-    out T
-#else
     T
-#endif
 >
     : IOrderedCollectionR< T >
     , IOrderedCollectionS

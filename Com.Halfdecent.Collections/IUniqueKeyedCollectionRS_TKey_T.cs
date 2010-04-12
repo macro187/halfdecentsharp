@@ -27,13 +27,8 @@ Com.Halfdecent.Collections
 
 public interface
 IUniqueKeyedCollectionRS<
-#if DOTNET40
-    TKey,
-    out T
-#else
     TKey,
     T
-#endif
 >
     : IUniqueKeyedCollectionR< TKey, T >
     , IUniqueKeyedCollectionS< TKey >

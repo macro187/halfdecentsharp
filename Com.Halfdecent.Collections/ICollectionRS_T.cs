@@ -31,11 +31,7 @@ Com.Halfdecent.Collections
 
 public interface
 ICollectionRS<
-#if DOTNET40
-    out T
-#else
     T
-#endif
 >
     : ICollectionR< T >
     , ICollectionS
