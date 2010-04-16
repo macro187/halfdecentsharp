@@ -29,14 +29,14 @@ KeyedCollectionR
 
 public static
     IKeyedCollectionR< TKey, T >
-Contravary<
+Covary<
     TFrom,
     TKey,
     T
 >(
     this IKeyedCollectionR< TKey, TFrom > from
 )
-    where T : TFrom
+    where TFrom : T
 {
     return new KeyedCollectionRProxy< TFrom, TKey, T >( from );
 }
