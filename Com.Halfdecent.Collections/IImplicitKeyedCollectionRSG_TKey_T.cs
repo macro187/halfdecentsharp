@@ -27,13 +27,8 @@ Com.Halfdecent.Collections
 
 public interface
 IImplicitKeyedCollectionRSG<
-#if DOTNET40
     TKey,
     T
-#else
-    TKey,
-    T
-#endif
 >
     : IKeyedCollectionRS< TKey, T >
     , IImplicitKeyedCollectionSG< TKey, T >
