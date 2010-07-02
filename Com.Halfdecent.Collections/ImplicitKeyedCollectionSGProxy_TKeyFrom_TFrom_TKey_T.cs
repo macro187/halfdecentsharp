@@ -69,6 +69,14 @@ public void Add( T item ) { this.From.Add( item ); }
 
 
 
+// -----------------------------------------------------------------------------
+// IKeyedCollectionS< TKey >
+// -----------------------------------------------------------------------------
+
+public void RemoveAll( TKey key ) { this.From.RemoveAll( key ); }
+
+
+
 
 } // type
 } // namespace

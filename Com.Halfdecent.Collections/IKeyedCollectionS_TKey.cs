@@ -42,6 +42,19 @@ IKeyedCollectionS<
 
 
 
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Remove all items with a specified key
+///
+    void
+RemoveAll(
+    TKey key
+);
+
+
+
 
 } // type
 } // namespace
