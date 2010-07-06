@@ -19,11 +19,10 @@
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.IO
+Com.Halfdecent.Streams
 {
 
 

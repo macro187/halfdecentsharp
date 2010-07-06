@@ -19,71 +19,44 @@
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.IO
+Com.Halfdecent.Streams
 {
 
 
-public class
-SinkFromSystemStreamAdapter
-    : ISink< byte >
+public static class
+SystemStream
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Extension Methods
 // -----------------------------------------------------------------------------
 
-public
-SinkFromSystemStreamAdapter(
-    System.IO.Stream from
+public static
+    IStream< byte >
+AsHalfdecentStream(
+    this System.IO.Stream from
 )
 {
-    new NonNull().Check( from, new Parameter( "from" ) );
-    if( !from.CanWrite ) throw new ValueArgumentException(
-        new Parameter( "from" ),
-        _S("{0} is not a writeable stream") );
-    this.From = from;
+    return new StreamFromSystemStreamAdapter( from );
 }
 
 
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-protected
-System.IO.Stream
-From
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// ISink< byte >
-// -----------------------------------------------------------------------------
-
-public
-    bool
-TryPush(
-    byte item
+public static
+    ISink< byte >
+AsHalfdecentSink(
+    this System.IO.Stream from
 )
 {
-    this.From.WriteByte( item );
-    return true;
+    return new SinkFromSystemStreamAdapter( from );
 }
 
 
 
-
-private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( global::System.Reflection.MethodInfo.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace
