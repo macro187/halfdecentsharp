@@ -50,22 +50,22 @@ StreamToFilter<
 
 internal
 StreamToFilter(
-    IStream< TFrom >        from,
-    bool                    disposeFrom,
-    IFilter< TFrom, TTo >   to,
-    bool                    disposeTo
+    IStream< TFrom >        s,
+    bool                    disposeS,
+    IFilter< TFrom, TTo >   f,
+    bool                    disposeF
 )
 {
-    new NonNull().Check( from, new Parameter( "from" ) );
-    new NonNull().Check( to, new Parameter( "to" ) );
+    new NonNull().Check( s, new Parameter( "s" ) );
+    new NonNull().Check( f, new Parameter( "f" ) );
 
-    this.From = from;
-    this.DisposeFrom = disposeFrom;
-    this.To = to;
-    this.DisposeTo = disposeTo;
+    this.S = s;
+    this.DisposeS = disposeS;
+    this.F = f;
+    this.DisposeF = disposeF;
 
     // Connect
-    this.To.From = this.From;
+    this.F.From = this.S;
 }
 
 
@@ -74,9 +74,9 @@ StreamToFilter(
 // Properties
 // -----------------------------------------------------------------------------
 
-public
+protected
     IStream< TFrom >
-From
+S
 {
     get;
     private set;
@@ -85,16 +85,16 @@ From
 
 protected
     bool
-DisposeFrom
+DisposeS
 {
     get;
     private set;
 }
 
 
-public
+protected
     IFilter< TFrom, TTo >
-To
+F
 {
     get;
     private set;
@@ -103,7 +103,7 @@ To
 
 protected
     bool
-DisposeTo
+DisposeF
 {
     get;
     private set;
@@ -120,7 +120,7 @@ public
     ITuple< bool, TTo >
 TryPull()
 {
-    return this.To.TryPull();
+    return this.F.TryPull();
 }
 
 
@@ -155,13 +155,13 @@ Dispose(
         // (managed)
 
         // Disconnect
-        this.To.From = null;
+        this.F.From = null;
 
         // Dispose
-        if( this.DisposeFrom && this.From is IDisposable )
-            ((IDisposable)this.From).Dispose();
-        if( this.DisposeTo && this.To is IDisposable )
-            ((IDisposable)this.To).Dispose();
+        if( this.DisposeS && this.S is IDisposable )
+            ((IDisposable)this.S).Dispose();
+        if( this.DisposeF && this.F is IDisposable )
+            ((IDisposable)this.F).Dispose();
     }
     // (unmanaged)
     this.disposed = true;

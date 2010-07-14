@@ -181,7 +181,7 @@ Covary<
 ///
 public static
     IStream< TTo >
-To<
+PipeTo<
     TFrom,
     TTo
 >(
@@ -189,7 +189,7 @@ To<
     IFilter< TFrom, TTo > to
 )
 {
-    return dis.To< TFrom, TTo >( to, true );
+    return dis.PipeTo< TFrom, TTo >( to, true );
 }
 
 
@@ -197,7 +197,7 @@ To<
 ///
 public static
     IStream< TTo >
-To<
+PipeTo<
     TFrom,
     TTo
 >(
@@ -206,7 +206,7 @@ To<
     bool                    disposeTo
 )
 {
-    return dis.To< TFrom, TTo >( to, true, disposeTo );
+    return dis.PipeTo< TFrom, TTo >( to, true, disposeTo );
 }
 
 
@@ -214,7 +214,7 @@ To<
 ///
 public static
     IStream< TTo >
-To<
+PipeTo<
     TFrom,
     TTo
 >(
