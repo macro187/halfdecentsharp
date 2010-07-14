@@ -334,6 +334,211 @@ Test_System_IO_Stream__AsHalfdecentSink()
 
 
 
+public class
+PassOne
+    : FilterBase< int, int >
+{
+    protected override
+    IEnumerator< bool >
+    Process()
+    {
+        yield return false;
+        this.PutItem( this.GetItem() );
+        yield return true;
+    }
+}
+
+
+
+public class
+PassThrough
+    : FilterBase< int, int >
+{
+    protected override
+    IEnumerator< bool >
+    Process()
+    {
+        for( ;; ) {
+            yield return false;
+            this.PutItem( this.GetItem() );
+            yield return true;
+        }
+    }
+}
+
+
+
+public class
+DoubleUp
+    : FilterBase< int, int >
+{
+    protected override
+    IEnumerator< bool >
+    Process()
+    {
+        for( ;; ) {
+            int i;
+            yield return false; i = this.GetItem();
+            this.PutItem( i ); yield return true;
+            this.PutItem( i ); yield return true;
+        }
+    }
+}
+
+
+
+public class
+AddPairs
+    : FilterBase< int, int >
+{
+    protected override
+    IEnumerator< bool >
+    Process()
+    {
+        for( ;; ) {
+            int i,j;
+            yield return false; i = this.GetItem();
+            yield return false; j = this.GetItem();
+            this.PutItem( i + j ); yield return true;
+        }
+    }
+}
+
+
+[Test( "FilterBase::Push()" )]
+public static
+void
+Test_FilterBase_Push()
+{
+    int[]               from = new int[] { 1, 2, 3, 4 };
+    IFilter< int, int > f;
+    List< int >     to = new List< int >();
+    List< int >     too = new List< int >();
+
+    Print( "1-to-1 filter" );
+    to.Clear();
+    f = new PassThrough { To = to.AsSink() };
+    foreach( int i in from ) f.Push( i );
+    Assert( to.SequenceEqual( from ) );
+
+    Print( "1-to-many filter" );
+    to.Clear();
+    f = new DoubleUp { To = to.AsSink() };
+    foreach( int i in from ) f.Push( i );
+    Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
+
+    Print( "Many-to-1 filter" );
+    to.Clear();
+    f = new AddPairs { To = to.AsSink() };
+    foreach( int i in from ) f.Push( i );
+    Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
+
+    Print( "Closing filter" );
+    to.Clear();
+    f = new PassOne { To = to.AsSink() };
+    f.Push( 1 );
+    Assert( !f.TryPush( 2 ) );
+    Assert( to.SequenceEqual( new int[] { 1 } ) );
+
+    Print( "1-to-many filter, switch .To mid-block" );
+    to.Clear();
+    too.Clear();
+    f = new DoubleUp { To =
+        new PassOne { To =
+        to.AsSink() } };
+    f.Push( 1 );
+    Assert( to.SequenceEqual( new int[] { 1 } ) );
+    f.To = too.AsSink();
+    // (filter immediately flushes pending item to new sink)
+    Assert( too.SequenceEqual( new int[] { 1 } ) );
+}
+
+
+
+[Test( "FilterBase::Pull()" )]
+public static
+void
+Test_FilterBase_Pull()
+{
+    IFilter< int, int > f;
+    List< int > to = new List< int >();
+
+    Print( "1-to-1 filter" );
+    f = new PassThrough { From = new Stream< int >( 1, 2, 3, 4 ) };
+    to.Clear();
+    f.EmptyTo( to.AsSink() );
+    Assert( to.SequenceEqual( new int[] { 1, 2, 3, 4 } ) );
+
+    Print( "1-to-many filter" );
+    f = new DoubleUp { From = new Stream< int >( 1, 2, 3, 4 ) };
+    to.Clear();
+    f.EmptyTo( to.AsSink() );
+    Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
+
+    Print( "Many-to-1 filter" );
+    f = new AddPairs { From = new Stream< int >( 1, 2, 3, 4 ) };
+    to.Clear();
+    f.EmptyTo( to.AsSink() );
+    Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
+
+    Print( "Closing filter" );
+    f = new PassOne { From = new Stream< int >( 1, 2, 3, 4 ) };
+    to.Clear();
+    f.EmptyTo( to.AsSink() );
+    Assert( to.SequenceEqual( new int[] { 1 } ) );
+
+    Print( "Many-to-1 filter, switch .From mid-block" );
+    f = new AddPairs { From = new Stream< int >( 1 ) };
+    to.Clear();
+    f.EmptyTo( to.AsSink() );
+    Assert( to.Count == 0 );
+    f.From = new Stream< int >( 2 );
+    f.EmptyTo( to.AsSink() );
+    Assert( to.SequenceEqual( new int[] { 3 } ) );
+}
+
+
+public static
+    IEnumerator< bool >
+OnlyEvens(
+    Func< int >     get,
+    Action< int >   put,
+    Action< int >   drop
+)
+{
+    for( ;; ) {
+        yield return false;
+        int i = get();
+        if( i % 2 != 0 ) continue;
+        put( i );
+        yield return true;
+    }
+}
+
+
+[Test( "Filter< TIn, TOut >" )]
+public static
+void
+Test_Filter_TIn_TOut()
+{
+    IFilter< int, int > f;
+    IList< int > results = new List< int >();
+
+    Print( "Filter( FilterKernel )" );
+    f = new Filter< int, int >( OnlyEvens );
+    f.From = new int[] { 1, 2, 3, 4, 5, 6 }.AsStream();
+    f.EmptyTo( results.AsSink() );
+    Assert( results.SequenceEqual( new int[] { 2, 4, 6 } ) );
+
+    Print( "Filter( Func )" );
+    f = new Filter< int, int >( i => i * 2 );
+    results.Clear();
+    f.From = new int[] { 1, 2, 3, 4 }.AsStream();
+    f.EmptyTo( results.AsSink() );
+    Assert( results.SequenceEqual( new int[] { 2, 4, 6, 8 } ) );
+}
+
+
 
 } // type
 } // namespace

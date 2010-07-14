@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Filters;
+using Com.Halfdecent.Streams;
 
 
 namespace

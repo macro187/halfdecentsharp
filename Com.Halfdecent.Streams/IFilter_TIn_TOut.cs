@@ -16,32 +16,51 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using SCG = System.Collections.Generic;
+using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Filters
+Com.Halfdecent.Streams
 {
 
 
 // =============================================================================
-/// Filter processing kernel
+/// Processes elements passing between an input stream and an output sink
 // =============================================================================
 
-public delegate
-    SCG.IEnumerator< bool >
-FilterKernel<
+public interface
+IFilter<
     TIn,
     TOut
->(
-    Func< TIn >     get,
-    Action< TOut >  put,
-    Action< TIn >   drop
-);
+>
+    : ISink< TIn >
+    , IStream< TOut >
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+IStream< TIn >
+From
+{
+    get;
+    set;
+}
+
+
+ISink< TOut >
+To
+{
+    get;
+    set;
+}
 
 
 
 
+} // type
 } // namespace
 

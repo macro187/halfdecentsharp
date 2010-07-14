@@ -19,11 +19,10 @@
 using System;
 using System.Collections.Generic;
 using Com.Halfdecent.Exceptions;
-using Com.Halfdecent.Streams;
 
 
 namespace
-Com.Halfdecent.Filters
+Com.Halfdecent.Streams
 {
 
 

@@ -20,7 +20,6 @@ using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Filters;
 using Com.Halfdecent.Numerics;
 
 

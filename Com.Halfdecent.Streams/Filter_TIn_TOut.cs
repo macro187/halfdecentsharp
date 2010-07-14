@@ -23,7 +23,7 @@ using Com.Halfdecent.RTypes;
 
 
 namespace
-Com.Halfdecent.Filters
+Com.Halfdecent.Streams
 {
 
 
