@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -27,11 +27,11 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// <tt>System.Collections.Generic.ICollection< T ></tt> Library
+/// <tt>System.Collections.Generic.IEnumerator< T ></tt> Library
 // =============================================================================
 
 public static class
-Collection
+SystemEnumerator
 {
 
 
@@ -40,18 +40,18 @@ Collection
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Present the collection as a sink
+/// Present the enumerator as a stream
 ///
 public static
-    ISink< T >
-AsSink<
+    IStream< T >
+AsStream<
     T
 >(
-    this SCG.ICollection< T > dis
+    this SCG.IEnumerator< T > dis
 )
 {
     new NonNull().Require( dis, new Parameter( "dis" ) );
-    return new SinkFromCollectionAdapter< T >( dis );
+    return new Stream< T >( dis );
 }
 
 

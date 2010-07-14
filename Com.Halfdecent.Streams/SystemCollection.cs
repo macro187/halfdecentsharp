@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -26,58 +27,31 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// Presents a stream as an enumerator
+/// <tt>System.Collections.Generic.ICollection< T ></tt> Library
 // =============================================================================
 
-internal class
-StreamToEnumeratorAdapter<
+public static class
+SystemCollection
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+/// Present the collection as a sink
+///
+public static
+    ISink< T >
+AsSink<
     T
->
-    : EnumeratorBase< T >
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-StreamToEnumeratorAdapter(
-    IStream< T > stream
+>(
+    this SCG.ICollection< T > dis
 )
 {
-    new NonNull().Require( stream, new Parameter( "stream" ) );
-    this.Stream = stream;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-IStream< T >
-Stream
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// EnumeratorBase< T >
-// -----------------------------------------------------------------------------
-
-protected override
-    bool
-MoveNext(
-    out T nextItem
-)
-{
-    return this.Stream.TryPull( out nextItem );
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    return new SinkFromSystemCollectionAdapter< T >( dis );
 }
 
 

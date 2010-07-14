@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -27,11 +27,11 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// <tt>IEnumerable< T ></tt> Library
+/// <tt>System.Collections.Generic.IEnumerable< T ></tt> Library
 // =============================================================================
 
 public static class
-Enumerable
+SystemEnumerable
 {
 
 

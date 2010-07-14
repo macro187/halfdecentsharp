@@ -158,8 +158,8 @@ AsEnumerable<
 {
     new NonNull().Require( dis, new Parameter( "dis" ) );
     return
-        new EnumerableFromEnumeratorAdapter< T >(
-            new StreamToEnumeratorAdapter< T >( dis ) );
+        new SystemEnumerableFromSystemEnumeratorAdapter< T >(
+            new StreamToSystemEnumeratorAdapter< T >( dis ) );
 }
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System.Collections;
+using System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -27,31 +28,64 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// <tt>IEnumerator< T ></tt> Library
+/// An enumerable that only yields a specified enumerator
 // =============================================================================
 
-public static class
-Enumerator
+internal class
+SystemEnumerableFromSystemEnumeratorAdapter<
+    T
+>
+    : IEnumerable< T >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Extension Methods
+// Constructors
 // -----------------------------------------------------------------------------
 
-/// Present the enumerator as a stream
-///
-public static
-    IStream< T >
-AsStream<
-    T
->(
-    this SCG.IEnumerator< T > dis
+public
+SystemEnumerableFromSystemEnumeratorAdapter(
+    IEnumerator< T > enumerator
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    return new Stream< T >( dis );
+    new NonNull().Require( enumerator, new Parameter( "enumerator" ) );
+    this.enumerator = enumerator;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private
+IEnumerator< T >
+enumerator;
+
+
+
+// -----------------------------------------------------------------------------
+// IEnumerable< T >
+// -----------------------------------------------------------------------------
+
+public
+    IEnumerator< T >
+GetEnumerator()
+{
+    return this.enumerator;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEnumerable
+// -----------------------------------------------------------------------------
+
+    IEnumerator
+IEnumerable.GetEnumerator()
+{
+    return this.enumerator;
 }
 
 

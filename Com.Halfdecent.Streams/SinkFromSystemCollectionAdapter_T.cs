@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -31,7 +31,7 @@ Com.Halfdecent.Streams
 // =============================================================================
 
 internal class
-SinkFromCollectionAdapter<
+SinkFromSystemCollectionAdapter<
     T
 >
     : ISink< T >
@@ -44,7 +44,7 @@ SinkFromCollectionAdapter<
 // -----------------------------------------------------------------------------
 
 public
-SinkFromCollectionAdapter(
+SinkFromSystemCollectionAdapter(
     ICollection< T > collection
 )
 {
