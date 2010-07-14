@@ -156,7 +156,14 @@ TestStream
 private class
 TestSink
     : ISink< int >
+    , IDisposable
 {
+    public
+    TestSink()
+    {
+        this.Disposed = false;
+    }
+
     public
     int[]
     Items = new int[3];
@@ -176,6 +183,21 @@ TestSink
     private
     int
     current = 0;
+
+    public
+        void
+    Dispose()
+    {
+        this.Disposed = true;
+        GC.SuppressFinalize( this );
+    }
+
+    ~TestSink()
+    {
+        this.Dispose();
+    }
+
+    public bool Disposed { get; private set; }
 }
 
 
@@ -700,10 +722,10 @@ Test_Filter_TIn_TOut()
 }
 
 
-[Test( "IFilter::PipeTo()" )]
+[Test( "IFilter::PipeTo( IFilter )" )]
 public static
 void
-Test_IFilter_PipeTo()
+Test_IFilter_PipeTo_IFilter()
 {
     IFilter< int, int > f;
     IList< int > to = new List< int >();
@@ -809,6 +831,82 @@ Test_IFilter_PipeTo()
     Assert( f1.Disposed );
     Assert( f2.Disposed );
     Assert( f3.Disposed );
+}
+
+
+[Test( "IFilter::PipeTo( ISink )" )]
+public static
+void
+Test_IFilter_PipeTo_ISink()
+{
+    Print( "Works as a sink" );
+    List< int > to = new List< int >();
+    ISink< int > sink = new DoubleUp().PipeTo( to.AsSink() );
+    new int[] { 1, 2 }.AsStream().EmptyTo( sink );
+    Assert( to.SequenceEqual( new int[] { 1, 1, 2, 2 } ) );
+
+    PassThrough f;
+
+    Print( "Connection and Disconnection" );
+    f = new PassThrough();
+    Assert( f.From == null );
+    Assert( f.To == null );
+    using( (IDisposable)( f.PipeTo( new TestSink() ) ) ) {
+        Assert( f.From == null );
+        Assert( f.To != null );
+    }
+    Assert( f.From == null );
+    Assert( f.To == null );
+
+    TestSink s;
+
+    Print( "Disposal (both)" );
+    f = new PassThrough();
+    s = new TestSink();
+    Assert( !f.Disposed );
+    Assert( !s.Disposed );
+    using( (IDisposable)( f.PipeTo( s ) ) ) {
+        Assert( !f.Disposed );
+        Assert( !s.Disposed );
+    }
+    Assert( f.Disposed );
+    Assert( s.Disposed );
+
+    Print( "Disposal (filter only)" );
+    f = new PassThrough();
+    s = new TestSink();
+    Assert( !f.Disposed );
+    Assert( !s.Disposed );
+    using( (IDisposable)( f.PipeTo( s, false ) ) ) {
+        Assert( !f.Disposed );
+        Assert( !s.Disposed );
+    }
+    Assert( f.Disposed );
+    Assert( !s.Disposed );
+
+    Print( "Disposal (sink only)" );
+    f = new PassThrough();
+    s = new TestSink();
+    Assert( !f.Disposed );
+    Assert( !s.Disposed );
+    using( (IDisposable)( f.PipeTo( s, false, true ) ) ) {
+        Assert( !f.Disposed );
+        Assert( !s.Disposed );
+    }
+    Assert( !f.Disposed );
+    Assert( s.Disposed );
+
+    Print( "Disposal (neither)" );
+    f = new PassThrough();
+    s = new TestSink();
+    Assert( !f.Disposed );
+    Assert( !s.Disposed );
+    using( (IDisposable)( f.PipeTo( s, false, false ) ) ) {
+        Assert( !f.Disposed );
+        Assert( !s.Disposed );
+    }
+    Assert( !f.Disposed );
+    Assert( !s.Disposed );
 }
 
 

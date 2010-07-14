@@ -90,6 +90,57 @@ PipeTo<
 }
 
 
+/// Connect a filter to a sink
+///
+public static
+    ISink< TFrom >
+PipeTo<
+    TFrom,
+    TTo
+>(
+    this IFilter< TFrom, TTo >  dis,
+    ISink< TTo >                to
+)
+{
+    return dis.PipeTo< TFrom, TTo >( to, true );
+}
+
+
+/// Connect a filter to a sink
+///
+public static
+    ISink< TFrom >
+PipeTo<
+    TFrom,
+    TTo
+>(
+    this IFilter< TFrom, TTo >  dis,
+    ISink< TTo >                to,
+    bool                        disposeTo
+)
+{
+    return dis.PipeTo< TFrom, TTo >( to, true, disposeTo );
+}
+
+
+/// Connect a filter to a sink
+///
+public static
+    ISink< TFrom >
+PipeTo<
+    TFrom,
+    TTo
+>(
+    this IFilter< TFrom, TTo >  dis,
+    ISink< TTo >                to,
+    bool                        disposeThis,
+    bool                        disposeTo
+)
+{
+    return new FilterToSink< TFrom, TTo >( dis, disposeThis, to, disposeTo );
+}
+
+
 
 
 } // type
