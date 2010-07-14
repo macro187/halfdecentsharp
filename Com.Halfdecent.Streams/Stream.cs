@@ -177,6 +177,57 @@ Covary<
 }
 
 
+/// Connect a stream to a filter
+///
+public static
+    IStream< TTo >
+To<
+    TFrom,
+    TTo
+>(
+    this IStream< TFrom > dis,
+    IFilter< TFrom, TTo > to
+)
+{
+    return dis.To< TFrom, TTo >( to, true );
+}
+
+
+/// Connect a stream to a filter
+///
+public static
+    IStream< TTo >
+To<
+    TFrom,
+    TTo
+>(
+    this IStream< TFrom >   dis,
+    IFilter< TFrom, TTo >   to,
+    bool                    disposeTo
+)
+{
+    return dis.To< TFrom, TTo >( to, true, disposeTo );
+}
+
+
+/// Connect a stream to a filter
+///
+public static
+    IStream< TTo >
+To<
+    TFrom,
+    TTo
+>(
+    this IStream< TFrom >   dis,
+    IFilter< TFrom, TTo >   to,
+    bool                    disposeThis,
+    bool                    disposeTo
+)
+{
+    return new StreamToFilter< TFrom, TTo >( dis, disposeThis, to, disposeTo );
+}
+
+
 
 
 } // type
