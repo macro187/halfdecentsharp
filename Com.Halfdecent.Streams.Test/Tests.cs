@@ -700,6 +700,119 @@ Test_Filter_TIn_TOut()
 }
 
 
+[Test( "IFilter::PipeTo()" )]
+public static
+void
+Test_IFilter_PipeTo()
+{
+    IFilter< int, int > f;
+    IList< int > to = new List< int >();
+
+    Print( "Works as a filter" );
+    f = new DoubleUp()
+        .PipeTo( new AddPairs() )
+        .PipeTo( new PassThrough() );
+    f.From = new int[] { 1, 2 }.AsStream();
+    f.EmptyTo( to.AsSink() );
+    Assert( to.SequenceEqual( new int[] { 2, 4 } ) );
+    f.From = null;
+
+    PassThrough f1;
+    PassThrough f2;
+    PassThrough f3;
+
+    Print( "Connection and Disconnection" );
+    f1 = new PassThrough();
+    f2 = new PassThrough();
+    f3 = new PassThrough();
+    Assert( f1.From == null );
+    Assert( f1.To == null );
+    Assert( f2.From == null );
+    Assert( f2.To == null );
+    Assert( f3.From == null );
+    Assert( f3.To == null );
+    using( (IDisposable)( f1.PipeTo( f2 ).PipeTo( f3 ) ) ) {
+        Assert( f1.From == null );
+        Assert( f1.To != null );
+        Assert( f2.From != null );
+        Assert( f2.To != null );
+        Assert( f3.From != null );
+        Assert( f3.To == null );
+    }
+    Assert( f1.From == null );
+    Assert( f1.To == null );
+    Assert( f2.From == null );
+    Assert( f2.To == null );
+    Assert( f3.From == null );
+    Assert( f3.To == null );
+
+    Print( "Disposal (both)" );
+    f1 = new PassThrough();
+    f2 = new PassThrough();
+    Assert( !f1.Disposed );
+    Assert( !f2.Disposed );
+    using( (IDisposable)( f1.To( f2 ) ) ) {
+        Assert( !f1.Disposed );
+        Assert( !f2.Disposed );
+    }
+    Assert( f1.Disposed );
+    Assert( f2.Disposed );
+
+    Print( "Disposal (f1 only)" );
+    f1 = new PassThrough();
+    f2 = new PassThrough();
+    Assert( !f1.Disposed );
+    Assert( !f2.Disposed );
+    using( (IDisposable)( f1.To( f2, false ) ) ) {
+        Assert( !f1.Disposed );
+        Assert( !f2.Disposed );
+    }
+    Assert( f1.Disposed );
+    Assert( !f2.Disposed );
+
+    Print( "Disposal (f2 only)" );
+    f1 = new PassThrough();
+    f2 = new PassThrough();
+    Assert( !f1.Disposed );
+    Assert( !f2.Disposed );
+    using( (IDisposable)( f1.To( f2, false, true ) ) ) {
+        Assert( !f1.Disposed );
+        Assert( !f2.Disposed );
+    }
+    Assert( !f1.Disposed );
+    Assert( f2.Disposed );
+
+    Print( "Disposal (neither)" );
+    f1 = new PassThrough();
+    f2 = new PassThrough();
+    Assert( !f1.Disposed );
+    Assert( !f2.Disposed );
+    using( (IDisposable)( f1.To( f2, false, false ) ) ) {
+        Assert( !f1.Disposed );
+        Assert( !f2.Disposed );
+    }
+    Assert( !f1.Disposed );
+    Assert( !f2.Disposed );
+
+    Print( "Disposal (chained)" );
+    f1 = new PassThrough();
+    f2 = new PassThrough();
+    f3 = new PassThrough();
+    Assert( !f1.Disposed );
+    Assert( !f2.Disposed );
+    Assert( !f3.Disposed );
+    using( (IDisposable)( f1.To( f2 ).To( f3 ) ) ) {
+        Assert( !f1.Disposed );
+        Assert( !f2.Disposed );
+        Assert( !f3.Disposed );
+    }
+    Assert( f1.Disposed );
+    Assert( f2.Disposed );
+    Assert( f3.Disposed );
+}
+
+
+
 
 } // type
 } // namespace
