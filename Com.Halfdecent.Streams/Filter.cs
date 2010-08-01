@@ -48,29 +48,12 @@ PipeTo<
     IFilter< TBetween, TTo >        to
 )
 {
-    return dis.PipeTo< TFrom, TBetween, TTo >( to, true );
+    return dis.PipeTo< TFrom, TBetween, TTo >( to, true, true );
 }
 
 
-/// Connect a filter to another filter
-///
-public static
-    IFilter< TFrom, TTo >
-PipeTo<
-    TFrom,
-    TBetween,
-    TTo
->(
-    this IFilter< TFrom, TBetween > dis,
-    IFilter< TBetween, TTo >        to,
-    bool                            disposeTo
-)
-{
-    return dis.PipeTo< TFrom, TBetween, TTo >( to, true, disposeTo );
-}
-
-
-/// Connect a filter to another filter
+/// Connect a filter to another filter, specifying whether each should be
+/// disposed after use
 ///
 public static
     IFilter< TFrom, TTo >
@@ -102,28 +85,12 @@ PipeTo<
     ISink< TTo >                to
 )
 {
-    return dis.PipeTo< TFrom, TTo >( to, true );
+    return dis.PipeTo< TFrom, TTo >( to, true, true );
 }
 
 
-/// Connect a filter to a sink
-///
-public static
-    ISink< TFrom >
-PipeTo<
-    TFrom,
-    TTo
->(
-    this IFilter< TFrom, TTo >  dis,
-    ISink< TTo >                to,
-    bool                        disposeTo
-)
-{
-    return dis.PipeTo< TFrom, TTo >( to, true, disposeTo );
-}
-
-
-/// Connect a filter to a sink
+/// Connect a filter to a sink, specifying whether each should be disposed
+/// after use
 ///
 public static
     ISink< TFrom >

@@ -189,28 +189,12 @@ PipeTo<
     IFilter< TFrom, TTo > to
 )
 {
-    return dis.PipeTo< TFrom, TTo >( to, true );
+    return dis.PipeTo< TFrom, TTo >( to, true, true );
 }
 
 
-/// Connect a stream to a filter
-///
-public static
-    IStream< TTo >
-PipeTo<
-    TFrom,
-    TTo
->(
-    this IStream< TFrom >   dis,
-    IFilter< TFrom, TTo >   to,
-    bool                    disposeTo
-)
-{
-    return dis.PipeTo< TFrom, TTo >( to, true, disposeTo );
-}
-
-
-/// Connect a stream to a filter
+/// Connect a stream to a filter, specifying whether each should be disposed
+/// after use
 ///
 public static
     IStream< TTo >

@@ -632,7 +632,7 @@ Test_IStream_PipeTo_IFilter()
     f = new PassThrough();
     Assert( !s.Disposed );
     Assert( !f.Disposed );
-    using( (IDisposable)( s.PipeTo( f, false ) ) ) {
+    using( (IDisposable)( s.PipeTo( f, true, false ) ) ) {
         Assert( !s.Disposed );
         Assert( !f.Disposed );
     }
@@ -785,7 +785,7 @@ Test_IFilter_PipeTo_IFilter()
     f2 = new PassThrough();
     Assert( !f1.Disposed );
     Assert( !f2.Disposed );
-    using( (IDisposable)( f1.PipeTo( f2, false ) ) ) {
+    using( (IDisposable)( f1.PipeTo( f2, true, false ) ) ) {
         Assert( !f1.Disposed );
         Assert( !f2.Disposed );
     }
@@ -877,7 +877,7 @@ Test_IFilter_PipeTo_ISink()
     s = new TestSink();
     Assert( !f.Disposed );
     Assert( !s.Disposed );
-    using( (IDisposable)( f.PipeTo( s, false ) ) ) {
+    using( (IDisposable)( f.PipeTo( s, true, false ) ) ) {
         Assert( !f.Disposed );
         Assert( !s.Disposed );
     }
