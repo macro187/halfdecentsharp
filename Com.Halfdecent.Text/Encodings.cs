@@ -145,7 +145,7 @@ public static
     Encoding
 UTF32LE
 {
-    get { return new UnicodeEncoding( false, false, true ); }
+    get { return new UTF32Encoding( false, false, true ); }
 }
 
 
@@ -155,7 +155,7 @@ public static
     Encoding
 UTF32LEBOM
 {
-    get { return new UnicodeEncoding( false, true, true ); }
+    get { return new UTF32Encoding( false, true, true ); }
 }
 
 
@@ -165,7 +165,7 @@ public static
     Encoding
 UTF32BE
 {
-    get { return new UnicodeEncoding( true, false, true ); }
+    get { return new UTF32Encoding( true, false, true ); }
 }
 
 
@@ -175,7 +175,7 @@ public static
     Encoding
 UTF32BEBOM
 {
-    get { return new UnicodeEncoding( true, true, true ); }
+    get { return new UTF32Encoding( true, true, true ); }
 }
 
 
