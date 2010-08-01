@@ -1024,6 +1024,21 @@ Test_TextEncoder()
 
 
 
+[Test( "TextLineSplitter" )]
+public static
+void
+Test_TextLineSplitter()
+{
+    "line1\nline2\rline3\r\nline4\r\rline6\n\nline8\n"
+        .AsStream()
+        .PipeTo( new TextLineSplitter() )
+        .AsEnumerable()
+        .SequenceEqual( new string[] {
+            "line1", "line2", "line3", "line4", "", "line6", "", "line8" } );
+}
+
+
+
 
 } // type
 } // namespace
