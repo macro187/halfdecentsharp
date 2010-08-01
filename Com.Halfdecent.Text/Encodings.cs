@@ -59,6 +59,8 @@ UTF8BOM
 }
 
 
+/// UTF-16, native byte order, no byte-order mark
+///
 public static
     Encoding
 UTF16
@@ -67,6 +69,8 @@ UTF16
 }
 
 
+/// UTF-16, native byte order, byte-order mark
+///
 public static
     Encoding
 UTF16BOM
@@ -75,6 +79,8 @@ UTF16BOM
 }
 
 
+/// UTF-16, little-endian, no byte-order mark
+///
 public static
     Encoding
 UTF16LE
@@ -83,6 +89,8 @@ UTF16LE
 }
 
 
+/// UTF-16, little-endian, byte-order mark
+///
 public static
     Encoding
 UTF16LEBOM
@@ -91,6 +99,8 @@ UTF16LEBOM
 }
 
 
+/// UTF-16, big-endian, no byte-order mark
+///
 public static
     Encoding
 UTF16BE
@@ -99,6 +109,8 @@ UTF16BE
 }
 
 
+/// UTF-16, big-endian, byte-order mark
+///
 public static
     Encoding
 UTF16BEBOM
@@ -107,6 +119,8 @@ UTF16BEBOM
 }
 
 
+/// UTF-32, native byte order, no byte-order mark
+///
 public static
     Encoding
 UTF32
@@ -115,6 +129,8 @@ UTF32
 }
 
 
+/// UTF-32, native byte order, byte-order mark
+///
 public static
     Encoding
 UTF32BOM
@@ -123,6 +139,8 @@ UTF32BOM
 }
 
 
+/// UTF-32, little-endian, no byte-order mark
+///
 public static
     Encoding
 UTF32LE
@@ -131,6 +149,8 @@ UTF32LE
 }
 
 
+/// UTF-32, little-endian, byte-order mark
+///
 public static
     Encoding
 UTF32LEBOM
@@ -139,6 +159,8 @@ UTF32LEBOM
 }
 
 
+/// UTF-32, big-endian, no byte-order mark
+///
 public static
     Encoding
 UTF32BE
@@ -147,6 +169,8 @@ UTF32BE
 }
 
 
+/// UTF-32, big-endian, byte-order mark
+///
 public static
     Encoding
 UTF32BEBOM
