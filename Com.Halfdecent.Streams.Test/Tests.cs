@@ -919,48 +919,45 @@ Test_TextDecoder()
 {
     char[] src = { '\u65E5', '\u672C', '\u8A9E' };
     System.Text.Encoding e;
-    byte[] b;
-    List< char > dest = new List< char >();
 
     Print( "UTF8" );
     e = Encodings.UTF8;
-    b = e.GetBytes( src );
-    Print( "byte count: {0}", b.Length.ToString() );
-    dest.Clear();
-    b.AsStream().PipeTo( new TextDecoder( e ) ).EmptyTo( dest.AsSink() );
-    Print( "char count: {0}", dest.Count.ToString() );
-    Assert( dest.SequenceEqual( src ) );
+    Assert(
+        e.GetBytes( src )
+            .AsStream()
+            .PipeTo( new TextDecoder( e ) )
+            .AsEnumerable()
+            .SequenceEqual( src ) );
 
     Print( "UTF16LE" );
     e = Encodings.UTF16LE;
-    b = e.GetBytes( src );
-    Print( "byte count: {0}", b.Length.ToString() );
-    dest.Clear();
-    b.AsStream().PipeTo( new TextDecoder( e ) ).EmptyTo( dest.AsSink() );
-    Print( "char count: {0}", dest.Count.ToString() );
-    Assert( dest.SequenceEqual( src ) );
+    Assert(
+        e.GetBytes( src )
+            .AsStream()
+            .PipeTo( new TextDecoder( e ) )
+            .AsEnumerable()
+            .SequenceEqual( src ) );
 
     Print( "UTF16BE" );
     e = Encodings.UTF16BE;
-    b = e.GetBytes( src );
-    Print( "byte count: {0}", b.Length.ToString() );
-    dest.Clear();
-    b.AsStream().PipeTo( new TextDecoder( e ) ).EmptyTo( dest.AsSink() );
-    Print( "char count: {0}", dest.Count.ToString() );
-    Assert( dest.SequenceEqual( src ) );
+    Assert(
+        e.GetBytes( src )
+            .AsStream()
+            .PipeTo( new TextDecoder( e ) )
+            .AsEnumerable()
+            .SequenceEqual( src ) );
 
     #if !MONO
     // Fails on Mono with char count: 0, may be Mono UTF32Encoding bug
     // TODO Does this pass on MS?
     Print( "UTF32" );
     e = Encodings.UTF32;
-    b = e.GetBytes( src );
-    Print( "byte count: {0}", b.Length.ToString() );
-    dest.Clear();
-    foreach( byte bb in b ) Print( bb.ToString() );
-    b.AsStream().PipeTo( new TextDecoder( e ) ).EmptyTo( dest.AsSink() );
-    Print( "char count: {0}", dest.Count.ToString() );
-    Assert( dest.SequenceEqual( src ) );
+    Assert(
+        e.GetBytes( src )
+            .AsStream()
+            .PipeTo( new TextDecoder( e ) )
+            .AsEnumerable()
+            .SequenceEqual( src ) );
     #endif
 }
 
@@ -973,53 +970,36 @@ Test_TextEncoder()
 {
     char[] src = { '\u65E5', '\u672C', '\u8A9E' };
     System.Text.Encoding e;
-    byte[] b;
-    List< byte > dest = new List< byte >();
 
     Print( "UTF8" );
     e = Encodings.UTF8;
-    b = e.GetBytes( src );
-    Print( "GetBytes() byte count: {0}", b.Length.ToString() );
-    dest.Clear();
-    src.AsStream().PipeTo( new TextEncoder( e ) ).EmptyTo( dest.AsSink() );
-    Print( "TextEncoder byte count: {0}", dest.Count.ToString() );
-    Assert( dest.SequenceEqual( b ) );
+    Assert(
+        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+            .SequenceEqual( e.GetBytes( src ) ) );
 
     Print( "UTF16LE" );
     e = Encodings.UTF16LE;
-    b = e.GetBytes( src );
-    Print( "GetBytes() byte count: {0}", b.Length.ToString() );
-    dest.Clear();
-    src.AsStream().PipeTo( new TextEncoder( e ) ).EmptyTo( dest.AsSink() );
-    Print( "TextEncoder byte count: {0}", dest.Count.ToString() );
-    Assert( dest.SequenceEqual( b ) );
+    Assert(
+        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+            .SequenceEqual( e.GetBytes( src ) ) );
 
     Print( "UTF16BE" );
     e = Encodings.UTF16BE;
-    b = e.GetBytes( src );
-    Print( "GetBytes() byte count: {0}", b.Length.ToString() );
-    dest.Clear();
-    src.AsStream().PipeTo( new TextEncoder( e ) ).EmptyTo( dest.AsSink() );
-    Print( "TextEncoder byte count: {0}", dest.Count.ToString() );
-    Assert( dest.SequenceEqual( b ) );
+    Assert(
+        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+            .SequenceEqual( e.GetBytes( src ) ) );
 
     Print( "UTF32LE" );
     e = Encodings.UTF32LE;
-    b = e.GetBytes( src );
-    Print( "GetBytes() byte count: {0}", b.Length.ToString() );
-    dest.Clear();
-    src.AsStream().PipeTo( new TextEncoder( e ) ).EmptyTo( dest.AsSink() );
-    Print( "TextEncoder byte count: {0}", dest.Count.ToString() );
-    Assert( dest.SequenceEqual( b ) );
+    Assert(
+        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+            .SequenceEqual( e.GetBytes( src ) ) );
 
     Print( "UTF32BE" );
     e = Encodings.UTF32BE;
-    b = e.GetBytes( src );
-    Print( "GetBytes() byte count: {0}", b.Length.ToString() );
-    dest.Clear();
-    src.AsStream().PipeTo( new TextEncoder( e ) ).EmptyTo( dest.AsSink() );
-    Print( "TextEncoder byte count: {0}", dest.Count.ToString() );
-    Assert( dest.SequenceEqual( b ) );
+    Assert(
+        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+            .SequenceEqual( e.GetBytes( src ) ) );
 }
 
 
