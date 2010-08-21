@@ -16,6 +16,14 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+using Com.Halfdecent;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
+using Com.Halfdecent.Streams;
+using Com.Halfdecent.Numerics;
+
+
 namespace
 Com.Halfdecent.Collections
 {
@@ -38,6 +46,29 @@ Covary<
     where TFrom : T
 {
     return new OrderedCollectionRProxy< TFrom, T >( from );
+}
+
+
+/// Determine the index of the first item in the collection that matches
+/// specified criteria
+///
+public static
+    IInteger
+    /// @returns Index of the matching item
+    /// - OR -
+    /// -1 if no matching item
+IndexWhere<
+    T
+>(
+    this IOrderedCollectionR< T >   dis,
+    Predicate< T >                  where
+)
+{
+    new NonNull().Require( where, new Parameter( "where" ) );
+    foreach( ITuple< IInteger, T > t in dis.StreamPairs().AsEnumerable() ) {
+        if( where( t.B ) ) return t.A;
+    }
+    return Integer.From( -1 );
 }
 
 

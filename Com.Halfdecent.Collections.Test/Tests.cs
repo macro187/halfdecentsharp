@@ -347,6 +347,20 @@ Test_CollectionFromSystemStringBuilderAdapter()
 }
 
 
+[Test( "OrderedCollectionR" )]
+public static
+void
+Test_OrderedCollectionR()
+{
+    Print( "IndexWhere()" );
+    Assert(
+        "abcdcdc"
+        .AsHalfdecentCollection()
+        .IndexWhere( c => c == 'c' )
+        .Equals( Integer.From( 2 ) ) );
+}
+
+
 
 
 } // type
