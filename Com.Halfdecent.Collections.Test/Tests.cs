@@ -18,6 +18,7 @@
 
 using SCG = System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
@@ -216,6 +217,132 @@ Test_OrderedCollectionFromStringAdapter()
     Assert( tup.A.Equals( Integer.From( 1 ) ) );  Assert( tup.B == 'b' );
     Assert( ts.TryPull( out tup ) );
     Assert( tup.A.Equals( Integer.From( 2 ) ) );  Assert( tup.B == 'c' );
+    Assert( !ts.TryPull( out tup ) );
+}
+
+
+[Test( "CollectionFromSystemStringBuilderAdapter()" )]
+public static
+void
+Test_CollectionFromSystemStringBuilderAdapter()
+{
+    IFilter< char, char > f;
+
+    Print( "Create" );
+    var c = new StringBuilder( "abcde" ).AsHalfdecentCollection();
+
+    Print( ".Stream()" );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new char[] { 'a', 'b', 'c', 'd', 'e' } ) );
+
+    Print( ".GetAndReplaceWhere( Predicate< char > )" );
+    f = c.GetAndReplaceWhere( ch => ch == 'b' );
+    f.From = new char[] { 'B' }.AsStream();
+    SCG.List< char > to = new SCG.List< char >();
+    f.EmptyTo( to.AsSink() );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new char[] { 'a', 'B', 'c', 'd', 'e' } ) );
+    to.Sort();
+    Assert(
+        to.SequenceEqual(
+            new char[] { 'b' } ) );
+
+    Print( ".GetAndRemoveWhere( Predicate< char > )" );
+    to.Clear();
+    c.GetAndRemoveWhere( ch => ch == 'B' )
+        .EmptyTo( to.AsSink() );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new char[] { 'a', 'c', 'd', 'e' } ) );
+    to.Sort();
+    Assert(
+        to.SequenceEqual(
+            new char[] { 'B' } ) );
+
+    Print( ".Get( IInteger )" );
+    Assert( c.Get( Integer.From( 0 ) ) == 'a' );
+    Assert( c.Get( Integer.From( 1 ) ) == 'c' );
+    Assert( c.Get( Integer.From( 2 ) ) == 'd' );
+    Assert( c.Get( Integer.From( 3 ) ) == 'e' );
+
+    Print( ".Replace( IInteger, char )" );
+    c.Replace( Integer.From( 1 ), 'C' );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new char[] { 'a', 'C', 'd', 'e' } ) );
+
+    Print( ".Remove( IInteger )" );
+    c.Remove( Integer.From( 1 ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new char[] { 'a', 'd', 'e' } ) );
+
+    Print( ".Contains( IInteger )" );
+    Assert( !c.Contains( Integer.From( -1 ) ) );
+    Assert( c.Contains( Integer.From( 0 ) ) );
+    Assert( c.Contains( Integer.From( 1 ) ) );
+    Assert( c.Contains( Integer.From( 2 ) ) );
+    Assert( !c.Contains( Integer.From( 3 ) ) );
+
+    Print( ".Stream( IInteger )" );
+    Assert(
+        c.Stream( Integer.From( 1 ) )
+        .AsEnumerable()
+        .SequenceEqual(
+            new char[] { 'd' } ) );
+
+    Print( ".GetAndReplaceAll( IInteger )" );
+    f = c.GetAndReplaceAll( Integer.From( 1 ) );
+    f.From = new Stream< char >( 'D' );
+    to.Clear();
+    f.EmptyTo( to.AsSink() );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new char[] { 'a', 'D', 'e' } ) );
+    Assert(
+        to.SequenceEqual(
+            new char[] { 'd' } ) );
+
+    Print( ".GetAndRemoveAll( IInteger )" );
+    to.Clear();
+    c.GetAndRemoveAll( Integer.From( 1 ) ).EmptyTo( to.AsSink() );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new char[] { 'a', 'e' } ) );
+    Assert(
+        to.SequenceEqual(
+            new char[] { 'D' } ) );
+
+    Print( ".Add( IInteger, char )" );
+    c.Add( Integer.From( 1 ), 'b' );
+    c.Add( Integer.From( 2 ), 'c' );
+    c.Add( Integer.From( 3 ), 'd' );
+    c.Add( Integer.From( 5 ), 'f' );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new char[] { 'a', 'b', 'c', 'd', 'e', 'f' } ) );
+
+    Print( ".Count" );
+    Assert( c.Count.Equals( Integer.From( 6 ) ) );
+
+    Print( ".StreamPairs()" );
+    IStream< ITuple< IInteger, char > > ts =
+        c.StreamPairs();
+    ITuple< IInteger, char > tup;
+    Assert( ts.TryPull( out tup ) );
+    Assert( tup.A.Equals( Integer.From( 0 ) ) );  Assert( tup.B == 'a' );
+    Assert( ts.TryPull( out tup ) );
+    Assert( tup.A.Equals( Integer.From( 1 ) ) );  Assert( tup.B == 'b' );
+    Assert( ts.TryPull( out tup ) );
+    Assert( tup.A.Equals( Integer.From( 2 ) ) );  Assert( tup.B == 'c' );
+    Assert( ts.TryPull( out tup ) );
+    Assert( tup.A.Equals( Integer.From( 3 ) ) );  Assert( tup.B == 'd' );
+    Assert( ts.TryPull( out tup ) );
+    Assert( tup.A.Equals( Integer.From( 4 ) ) );  Assert( tup.B == 'e' );
+    Assert( ts.TryPull( out tup ) );
+    Assert( tup.A.Equals( Integer.From( 5 ) ) );  Assert( tup.B == 'f' );
     Assert( !ts.TryPull( out tup ) );
 }
 
