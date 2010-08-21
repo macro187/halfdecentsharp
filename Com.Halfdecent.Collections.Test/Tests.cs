@@ -361,6 +361,23 @@ Test_OrderedCollectionR()
 }
 
 
+[Test( "ICollectionG.AsSink()" )]
+public static
+void
+Test_ICollectionG_AsSink()
+{
+    ICollectionRG< int > c =
+        new SCG.List< int >()
+        .AsHalfdecentCollection();
+    new int[] { 1, 2, 3 }
+        .AsStream()
+        .EmptyTo( c.AsSink() );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 2, 3 } ) );
+}
+
+
 
 
 } // type

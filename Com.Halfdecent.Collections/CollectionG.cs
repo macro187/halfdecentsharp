@@ -16,6 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Streams;
+
+
 namespace
 Com.Halfdecent.Collections
 {
@@ -38,6 +41,20 @@ Contravary<
     where T : TFrom
 {
     return new CollectionGProxy< TFrom, T >( from );
+}
+
+
+/// Present the growable collection as a sink
+///
+public static
+    ISink< T >
+AsSink<
+    T
+>(
+    this ICollectionG< T > dis
+)
+{
+    return new CollectionGToSinkAdapter< T >( dis );
 }
 
 
