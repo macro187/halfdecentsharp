@@ -41,7 +41,7 @@ SystemIList
 // -----------------------------------------------------------------------------
 
 public static
-    OrderedCollectionFromSystemListAdapter< T >
+    IOrderedCollectionRCSG< T >
 AsHalfdecentCollection<
     T
 >(
@@ -49,7 +49,7 @@ AsHalfdecentCollection<
 )
 {
     new NonNull().Require( dis, new Parameter( "dis" ) );
-    return new OrderedCollectionFromSystemListAdapter< T >( dis );
+    return new CollectionFromSystemListAdapter< T >( dis );
 }
 
 

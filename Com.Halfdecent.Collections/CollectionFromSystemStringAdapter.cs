@@ -35,7 +35,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public class
-OrderedCollectionFromStringAdapter
+CollectionFromSystemStringAdapter
     : IOrderedCollectionR< char >
 {
 
@@ -46,7 +46,7 @@ OrderedCollectionFromStringAdapter
 // -----------------------------------------------------------------------------
 
 internal
-OrderedCollectionFromStringAdapter(
+CollectionFromSystemStringAdapter(
     string from
 )
 {

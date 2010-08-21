@@ -36,7 +36,7 @@ Com.Halfdecent.Collections
 // =============================================================================
 
 public class
-OrderedCollectionFromSystemListAdapter<
+CollectionFromSystemListAdapter<
     T
 >
     : IOrderedCollectionRCSG< T >
@@ -49,7 +49,7 @@ OrderedCollectionFromSystemListAdapter<
 // -----------------------------------------------------------------------------
 
 internal
-OrderedCollectionFromSystemListAdapter(
+CollectionFromSystemListAdapter(
     SCG.IList< T > from
 )
 {

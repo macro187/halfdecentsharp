@@ -41,13 +41,13 @@ SystemString
 // -----------------------------------------------------------------------------
 
 public static
-    OrderedCollectionFromStringAdapter
+    IOrderedCollectionR< char >
 AsHalfdecentCollection(
     this string dis
 )
 {
     new NonNull().Require( dis, new Parameter( "dis" ) );
-    return new OrderedCollectionFromStringAdapter( dis );
+    return new CollectionFromSystemStringAdapter( dis );
 }
 
 
