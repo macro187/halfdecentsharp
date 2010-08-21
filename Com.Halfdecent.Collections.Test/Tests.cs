@@ -170,6 +170,56 @@ Test_CollectionFromSystemListAdapter()
 }
 
 
+[Test( "OrderedCollectionFromStringAdapter()" )]
+public static
+void
+Test_OrderedCollectionFromStringAdapter()
+{
+    Print( "Create" );
+    var c =
+        "abc"
+        .AsHalfdecentCollection();
+
+    Print( ".Stream()" );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new char[] { 'a', 'b', 'c' } ) );
+
+    Print( ".Get( TKey )" );
+    Assert( c.Get( Integer.From( 0 ) ) == 'a' );
+    Assert( c.Get( Integer.From( 1 ) ) == 'b' );
+    Assert( c.Get( Integer.From( 2 ) ) == 'c' );
+
+    Print( ".Contains( TKey )" );
+    Assert( !c.Contains( Integer.From( -1 ) ) );
+    Assert( c.Contains( Integer.From( 0 ) ) );
+    Assert( c.Contains( Integer.From( 1 ) ) );
+    Assert( c.Contains( Integer.From( 2 ) ) );
+    Assert( !c.Contains( Integer.From( 3 ) ) );
+
+    Print( ".Stream( TKey )" );
+    Assert(
+        c.Stream( Integer.From( 1 ) )
+        .AsEnumerable()
+        .SequenceEqual(
+            new char[] { 'b' } ) );
+
+    Print( ".Count" );
+    Assert( c.Count.Equals( Integer.From( 3 ) ) );
+
+    Print( ".StreamPairs()" );
+    IStream< ITuple< IInteger, char > > ts = c.StreamPairs();
+    ITuple< IInteger, char > tup;
+    Assert( ts.TryPull( out tup ) );
+    Assert( tup.A.Equals( Integer.From( 0 ) ) );  Assert( tup.B == 'a' );
+    Assert( ts.TryPull( out tup ) );
+    Assert( tup.A.Equals( Integer.From( 1 ) ) );  Assert( tup.B == 'b' );
+    Assert( ts.TryPull( out tup ) );
+    Assert( tup.A.Equals( Integer.From( 2 ) ) );  Assert( tup.B == 'c' );
+    Assert( !ts.TryPull( out tup ) );
+}
+
+
 
 
 } // type
