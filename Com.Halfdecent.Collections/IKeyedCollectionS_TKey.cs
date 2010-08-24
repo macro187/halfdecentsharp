@@ -51,6 +51,8 @@ IKeyedCollectionS<
     void
 RemoveAll(
     TKey key
+    ///< Key of item(s) to remove
+    ///  - <tt>ExistingKeyIn( this )</tt>
 );
 
 

@@ -48,6 +48,8 @@ IUniqueKeyedCollectionS<
     void
 Remove(
     TKey key
+    ///< Key of item to remove
+    ///  - <tt>ExistingKeyIn( this )</tt>
 );
 
 
