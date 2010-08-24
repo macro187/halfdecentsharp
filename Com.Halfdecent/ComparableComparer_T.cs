@@ -16,9 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
-
-
 namespace
 Com.Halfdecent
 {
