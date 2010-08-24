@@ -21,7 +21,7 @@
 ///
 /// TODO (introduction)
 ///
-/// @section collections Kinds of Collections
+/// @section kinds Kinds of Collections
 ///
 ///     - ICollection< T >
 ///     - IKeyedCollection< TKey, T >
@@ -30,36 +30,54 @@
 ///
 /// @section mutability Kinds of Mutability
 ///
-///     - (C)hangeable: Existing items can be replaced with new items
+///     - (R)eadable: Existing items can be retrieved
+///     - (C)hangeable: Existing items can be replaced with new ones
 ///     - (S)hrinkable: Existing items can be removed, shrinking the collection
 ///     - (G)rowable: New items can be added, growing the collection
 ///
 /// @section keyedcollections Keyed Collections
 ///
-///     - Explicit vs. non-explicit key
+///     - Explicit vs. implicit keys
 ///
 ///         This refers to whether keys are specified explicitly or extracted
-///         from the items.  Explicit collections implement
+///         from the items.  Explicitly-keyed collections implement
 ///         <tt>IKeyedCollectionG< T ></tt> and <tt>.Add( TKey, T )</tt>, while
-///         implicit collections implement <tt>ICollectionG< T ></tt> and
-///         <tt>.Add( T )</tt>.
-///
-///     - Item-centric vs. tuple-centric
-///
-///         All keyed collections imply both <tt>ICollection< T ></tt> and
-///         <tt>ICollection< ITuple< TKey, T > ></tt>, so at least one needs to
-///         be an explicit interface implementation.  An item-centric
-///         keyed collection is one where the 
+///         implicitly-keyed collections implement <tt>ICollectionG< T ></tt>
+///         and <tt>.Add( T )</tt>.
 ///
 /// @section capacity Capacity
 ///
-///     XXX
+///     TODO
 ///     Collections <em>may</em> have non-exceptional, clearly-definable
-///     definitions of a "capacity", in which case operations attempting
-///     to add items to the collection may be able to signal "full"
-///     conditions via a return value.  <tt>false</tt> will never be
-///     returned.  Regardless, all other failures will be signalled with
-///     appropriate exceptions.
+///     definitions of "capacity", in which case collection-growing operations
+///     may be able to signal "full" conditions via return values.
+///
+/// @section namespaceconflict Namespace Conflict
+///
+///     This namespace contains type names conflicting with
+///     <tt>System.Collections</tt> and <tt>System.Collections.Generic</tt>.
+///     Ideally, this namespace completely supercedes them, but in cases where
+///     they must both be used, use either full type names...
+///
+///     <code>
+///     using Com.Halfdecent.Collections;
+///
+///     // ...
+///
+///     System.Collections.Enumerator e = someenumerable.GetEnumerator();
+///     </code>
+///
+///     ...or namespace aliases:
+///
+///     <code>
+///     using SC = System.Collections;
+///     using SCG = System.Collections.Generic;
+///     using Com.Halfdecent.Collections;
+///
+///     //...
+///
+///     SC.Enumerator e = someenumerable.GetEnumerator();
+///     </code>
 ///
 /// @section seealso See Also
 ///
