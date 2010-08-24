@@ -25,12 +25,16 @@ Com.Halfdecent
 
 
 // =============================================================================
-// A definition of equality between items of a particular type
+// A definition of comparison between items of a particular type
 // =============================================================================
 
 public interface
 IComparer<
+#if DOTNET40
+    in T
+#else
     T
+#endif
 >
     : IEqualityComparer< T >
     , SCG.IComparer< T >

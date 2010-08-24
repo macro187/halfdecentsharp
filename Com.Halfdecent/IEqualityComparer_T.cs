@@ -30,7 +30,11 @@ Com.Halfdecent
 
 public interface
 IEqualityComparer<
+#if DOTNET40
+    in T
+#else
     T
+#endif
 >
     : IEqualityComparer
     , SCG.IEqualityComparer< T >
