@@ -378,6 +378,29 @@ Test_ICollectionG_AsSink()
 }
 
 
+[Test( "ArrayList< T >" )]
+public static
+void
+Test_ArrayList()
+{
+    ArrayList< int > l;
+
+    Print( "ArrayList()" );
+    l = new ArrayList< int >();
+    Assert( l.Count.Equals( Integer.From( 0 ) ) );
+
+    Print( "ArrayList( ICollectionR<T> )" );
+    l = new ArrayList< int >(
+        new int[] { 1, 2, 3 }.AsHalfdecentCollection() );
+    // Presumably the capacity has been optimised for the number of items
+    // in the source collection, but that's an internal detail so can't really
+    // check it.  We can check that the correct items where added, though.
+    Assert(
+        l.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 2, 3 } ) );
+}
+
+
 
 
 } // type
