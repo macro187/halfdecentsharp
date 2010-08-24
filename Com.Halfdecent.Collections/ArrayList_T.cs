@@ -99,9 +99,9 @@ List
 // Methods
 // -----------------------------------------------------------------------------
 
-// Suggest that the internal capacity be optimised for the number of items
-// currently in the collection
-//
+/// Suggest that the internal capacity be optimised for the number of items
+/// currently in the collection
+///
 public
     void
 TrimInternalCapacity()
@@ -110,9 +110,9 @@ TrimInternalCapacity()
 }
 
 
-// Suggest that the internal capacity be adjusted to optimally handle the
-// addition of a certain number of items
-//
+/// Suggest that the internal capacity be adjusted to optimally handle the
+/// addition of a certain number of items
+///
 public
     void
 PrepareInternalCapacityForAdditional(
