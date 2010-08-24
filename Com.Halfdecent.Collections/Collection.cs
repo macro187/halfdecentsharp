@@ -165,6 +165,24 @@ StreamViaKeyedCollection<
 }
 
 
+/// <tt>ICollectionG< T >.Add()</tt>
+/// in terms of
+/// <tt>IOrderedCollectionG< T ></tt>
+///
+public static
+    void
+AddViaOrderedCollection<
+    T
+>(
+    IOrderedCollectionG< T >    col,
+    T                           item
+)
+{
+    new NonNull().Require( col, new Parameter( "col" ) );
+    col.Add( col.Count, item );
+}
+
+
 
 
 } // type
