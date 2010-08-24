@@ -49,6 +49,8 @@ ArrayList<
 // Constructors
 // -----------------------------------------------------------------------------
 
+/// Initialise a new, empty list
+///
 public
 ArrayList()
     : this( new SCG.List< T >() )
@@ -56,6 +58,9 @@ ArrayList()
 }
 
 
+/// Initialise a new list containing the items from another collection while
+/// (possibly) minimising the number of internal capacity changes required
+///
 public
 ArrayList(
     ICollectionR< T > from
