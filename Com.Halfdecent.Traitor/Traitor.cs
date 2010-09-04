@@ -64,6 +64,18 @@ Main(
 }
 
 
+private struct
+Trait
+{
+    public string           Name;
+    public string           File;
+    public int              Line;
+    public string           Text;
+    public int              TextLines;
+    public IList< string >  Usings;
+}
+
+
 private static
     string
 indir = "";
@@ -77,8 +89,8 @@ private static
 infiles = new List< string >();
 
 private static
-    IDictionary< string, string >
-traits = new Dictionary< string, string >();
+    IDictionary< string, Trait >
+traits = new Dictionary< string, Trait >();
 
 
 private static
@@ -171,24 +183,34 @@ ScanTrait(
 {
     using( TextReader reader = File.OpenText( path ) ) {
 
-    int linenum = 0;
-    bool inblock = false;
-    int blocklinenum = -1;
-    int ifdepth = 0;
-    string name = "";
-    StringBuilder text = new StringBuilder();
+    int             linenum = 0;
+    bool            inblock = false;
+    int             blocklinenum = -1;
+    int             ifdepth = 0;
+    IList< string > usings = new List< string >();
+    string          name = "";
+    StringBuilder   text = new StringBuilder();
+    int             textlines = 0;
 
     for( ;; ) {
         string line = reader.ReadLine();
         if( line == null ) break;
         linenum++;
 
-        // Entering the "#if TRAITOR" block
         if( !inblock ) {
+
+            // Entering the "#if TRAITOR" block
             if( line.Trim() == "#if TRAITOR" ) {
                 inblock = true;
                 blocklinenum = linenum;
+                continue;
             }
+
+            // using directive
+            if( line.Trim().StartsWith( "using " ) ) {
+                usings.Add( line.Trim() );
+            }
+
             continue;
         }
 
@@ -202,16 +224,25 @@ ScanTrait(
             if( traits.ContainsKey( name ) )
                 Error( path, blocklinenum,
                     "Found duplicate trait '{0}'", name );
-//            Info( path, blocklinenum, "Found trait '{0}'", name );
-            traits.Add( name, text.ToString() );
+            traits.Add(
+                name,
+                new Trait() {
+                    Name = name,
+                    File = path,
+                    Line = blocklinenum,
+                    Text = text.ToString(),
+                    TextLines = textlines,
+                    Usings = usings } );
             inblock = false;
             blocklinenum = -1;
             text.Length = 0;
+            textlines = 0;
             continue;
         }
 
         // Add the line to the trait text
         text.AppendLine( line );
+        textlines++;
 
         // Entering a nested #if
         if( line.Trim().StartsWith( "#if" ) ) {
@@ -259,17 +290,75 @@ WriteFile(
     string outpath
 )
 {
-    using( TextReader reader = File.OpenText( inpath ) ) {
-    using( TextWriter writer = File.CreateText( outpath ) ) {
+    //
+    // Pass 1
+    // - Learn which traits will be referenced
+    //
+    // Pass 2
+    // - Copy source file contents
+    // - Insert 'using' directives from traits
+    // - Insert trait contents
+    // - TODO Insert source #file directives
+    //
 
-    int linenum = 0;
-    bool inblock = false;
-    bool firsttrait = true;
+    TextReader reader = null;
+    TextWriter writer = null;
+
+    try {
+
+    IList< string >         traitsused = new List< string >();
+    ICollection< string >   traitswritten = new HashSet< string >();
+    ICollection< string >   usingswritten = new HashSet< string >();
+
+    string  line;
+    int     linenum = 0;
+    bool    inblock = false;
+    bool    inusingblock = false;
+    bool    pass2 = false;
+
+    reader = File.OpenText( inpath );
+    writer = File.CreateText( outpath );
 
     for( ;; ) {
-        string line = reader.ReadLine();
-        if( line == null ) break;
+        line = reader.ReadLine();
+        if( line == null ) {
+
+            // End of first pass, restart
+            if( !pass2 ) {
+                reader.Dispose();
+                reader = File.OpenText( inpath );
+                linenum = 0;
+                pass2 = true;
+                continue;
+
+            // End of second pass, done
+            } else {
+                break;
+
+            }
+        }
         linenum++;
+
+        // Usings
+        if( pass2 ) {
+
+            // Entering/in using block
+            if( line.Trim().StartsWith( "using " ) ) {
+                inusingblock = true;
+                usingswritten.Add( line.Trim() );
+
+            // End of using block, append usings from traits
+            } else if( inusingblock ) {
+                inusingblock = false;
+                foreach( string usedname in traitsused )
+                    foreach( string usedusing in traits[ usedname ].Usings )
+                        if( !usingswritten.Contains( usedusing ) ) {
+                            writer.WriteLine( usedusing );
+                            usingswritten.Add( usedusing );
+                        }
+            }
+
+        }
 
         // Entering the block "#region TRAITOR"
         if( !inblock && line.Trim() == "#region TRAITOR" )
@@ -281,24 +370,30 @@ WriteFile(
             if( !traits.ContainsKey( name ) )
                 Error( inpath, linenum,
                     "Reference to non-existent trait '{0}'", name );
-//            Info( inpath, linenum, "Inserting trait '{0}'", name );
-            if( !firsttrait ) writer.WriteLine();
-            writer.Write( traits[ name ] );
-            firsttrait = false;
+            if( !pass2 ) {
+                traitsused.Add( name );
+            } else {
+                if( traitswritten.Count > 0 ) writer.WriteLine();
+                writer.Write( traits[ name ].Text );
+                traitswritten.Add( name );
+            }
             continue;
         }
 
         // Exiting the block "#endregion"
         if( inblock && line.Trim() == "#endregion" ) {
             inblock = false;
-            firsttrait = true;
         }
 
         // Write the line to the output file
-        writer.WriteLine( line );
+        if( pass2 )
+            writer.WriteLine( line );
     }
 
-    }} // using(s)
+    } finally {
+        if( reader != null ) reader.Dispose();
+        if( writer != null ) writer.Dispose();
+    }
 }
 
 
