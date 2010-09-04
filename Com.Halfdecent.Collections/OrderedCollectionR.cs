@@ -29,7 +29,7 @@ Com.Halfdecent.Collections
 {
 
 
-public static class
+public static partial class
 OrderedCollectionR
 {
 

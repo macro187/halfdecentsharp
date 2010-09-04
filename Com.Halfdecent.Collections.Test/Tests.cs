@@ -502,6 +502,44 @@ Test_IndexSliceRCSG_T()
 }
 
 
+[Test( "IOrderedCollectionR< T >.SplitWhere()" )]
+public static
+void
+Test_IOrderedCollectionR_T_SplitWhere()
+{
+    IOrderedCollectionR< char > chars;
+    IStream< IOrderedCollectionR< char > > s =
+        " abc def  ghi "
+        .AsHalfdecentCollection()
+        .SplitWhere( c => c == ' ' );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{} ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'a', 'b', 'c' } ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'd', 'e', 'f' } ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{} ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'g', 'h', 'i' } ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{} ) );
+    Assert( !s.TryPull( out chars ) );
+}
+
+
 
 
 } // type
