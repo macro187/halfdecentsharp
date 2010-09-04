@@ -331,6 +331,9 @@ WriteFile(
     int     linenum = 0;
     bool    inblock = false;
     bool    inusingblock = false;
+    int     usingblockendline = 0;
+    int     firstnoncommentline = 0;
+    int     usinginsertionline = 0;
     bool    pass2 = false;
 
     reader = File.OpenText( inpath );
@@ -346,6 +349,10 @@ WriteFile(
                 reader = File.OpenText( inpath );
                 linenum = 0;
                 pass2 = true;
+                // Insert usings at the end of existing using block, or
+                // first non-comment line
+                usinginsertionline =
+                    Math.Max( firstnoncommentline, usingblockendline );
                 continue;
 
             // End of second pass, done
@@ -359,8 +366,12 @@ WriteFile(
         if( pass2 && linenum == 1 )
             writer.WriteLine( LineRef( 1, inpath ) );
 
-        // Usings
-        if( pass2 ) {
+        // First non-comment line
+        if( !pass2 && firstnoncommentline == 0 && !line.StartsWith( "//" ) )
+            firstnoncommentline = linenum;
+
+        // Find using block
+        if( !pass2 ) {
 
             // Entering/in using block
             if( line.Trim().StartsWith( "using " ) ) {
@@ -370,18 +381,23 @@ WriteFile(
             // End of using block, append usings from traits
             } else if( inusingblock ) {
                 inusingblock = false;
-                foreach( string usedname in traitsused )
-                    foreach( string usedusing in traits[ usedname ].Usings )
-                        if( !usingswritten.Contains( usedusing ) ) {
-                            writer.WriteLine(
-                                // TODO Track using line #'s
-                                LineRef( 1, traits[ usedname ].File ) );
-                            writer.WriteLine( usedusing );
-                            writer.WriteLine( LineRef( linenum, inpath ) );
-                            usingswritten.Add( usedusing );
-                        }
+                usingblockendline = linenum;
             }
 
+        }
+
+        // Insert trait usings
+        if( pass2 && linenum == usinginsertionline ) {
+            foreach( string usedname in traitsused )
+                foreach( string usedusing in traits[ usedname ].Usings )
+                    if( !usingswritten.Contains( usedusing ) ) {
+                        writer.WriteLine(
+                            // TODO Track using line #'s
+                            LineRef( 1, traits[ usedname ].File ) );
+                        writer.WriteLine( usedusing );
+                        writer.WriteLine( LineRef( linenum, inpath ) );
+                        usingswritten.Add( usedusing );
+                    }
         }
 
         // Entering the block "#region TRAITOR"
