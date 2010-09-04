@@ -53,6 +53,18 @@ GetAndRemoveAll(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IKeyedCollectionRS< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IStream< T >
+    GetAndRemoveAll( TKey key ) {
+        return this.From.GetAndRemoveAll( key ); }
+#endif
+
+
+
 
 } // type
 } // namespace

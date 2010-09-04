@@ -50,6 +50,17 @@ Count
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollection.Proxy
+// -----------------------------------------------------------------------------
+
+public IInteger Count { get {
+    return this.From.Count; } }
+#endif
+
+
+
 
 } // type
 } // namespace

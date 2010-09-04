@@ -16,9 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Linq;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 
 
 namespace
@@ -31,8 +30,7 @@ OrderedCollectionRProxy<
     TFrom,
     T
 >
-    : OrderedCollectionProxy
-    , IOrderedCollectionR< T >
+    : IOrderedCollectionR< T >
 
     where TFrom : T
 {
@@ -43,13 +41,13 @@ public
 OrderedCollectionRProxy(
     IOrderedCollectionR< TFrom > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IOrderedCollectionR< TFrom >
 From
 {
@@ -59,31 +57,14 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream().Covary< TFrom, T >(); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionR< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public IStream< ITuple< IInteger, T > > StreamPairs() { return this.From.StreamPairs().AsEnumerable().Select( t => t.Covary< IInteger, TFrom, IInteger, T >() ).AsStream(); }
-
-public bool Contains( IInteger key ) { return this.From.Contains( key ); }
-
-public IStream< T > Stream( IInteger key ) { return this.From.Stream( key ).Covary< TFrom, T >(); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionR< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public T Get( IInteger key ) { return this.From.Get( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< out T >.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR< out T >.Proxy
+#endregion
 
 
 

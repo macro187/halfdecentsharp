@@ -38,6 +38,14 @@ IUniqueKeyedCollectionRCS<
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionRCS< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+#endif
+
+
+
 
 } // type
 } // namespace

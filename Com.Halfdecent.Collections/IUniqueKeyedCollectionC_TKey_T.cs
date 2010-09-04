@@ -55,6 +55,17 @@ Replace(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionC< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+
+public void Replace( TKey key, T replacement ) {
+    this.From.Replace( key, replacement ); }
+#endif
+
+
+
 
 } // type
 } // namespace

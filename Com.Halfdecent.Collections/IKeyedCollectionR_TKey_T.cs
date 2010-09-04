@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Streams;
 
@@ -72,6 +73,55 @@ Stream(
     TKey key
     ///< - <tt>NonNull</tt>
 );
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IKeyedCollectionR< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IStream< ITuple< TKey, T > > StreamPairs() {
+    return this.From.StreamPairs(); }
+
+public bool Contains( TKey key ) { return this.From.Contains( key ); }
+
+public IStream< T > Stream( TKey key ) {
+    return this.From.Stream( key ); }
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IKeyedCollectionR< TKey, out T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IStream< ITuple< TKey, T > > StreamPairs() {
+//
+// NET 4.0 covariance (apparently) isn't smart enough to do this
+// - Mono dmcs v2.6.7.0
+// - TODO Try MS compiler
+//
+//#if DOTNET40
+//    return this.From.StreamPairs(); }
+//#else
+    return
+        this.From.StreamPairs()
+        .AsEnumerable()
+        .Select( t => t.Covary< TKey, TFrom, TKey, T >() )
+        .AsStream(); }
+//#endif
+
+public bool Contains( TKey key ) { return this.From.Contains( key ); }
+
+public IStream< T > Stream( TKey key ) {
+#if DOTNET40
+    return this.From.Stream( key ); }
+#else
+    return this.From.Stream( key ).Covary< TFrom, T >(); }
+#endif
+#endif
 
 
 

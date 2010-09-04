@@ -43,6 +43,16 @@ IOrderedCollectionG<
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionG< T >.Proxy
+// -----------------------------------------------------------------------------
+
+public void Add( IInteger key, T item ) { this.From.Add( key, item ); }
+#endif
+
+
+
 
 } // type
 } // namespace

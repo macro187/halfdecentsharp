@@ -16,11 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -32,8 +29,7 @@ public class
 OrderedCollectionRCSProxy<
     T
 >
-    : OrderedCollectionProxy
-    , IOrderedCollectionRCS< T >
+    : IOrderedCollectionRCS< T >
 {
 
 
@@ -42,13 +38,13 @@ public
 OrderedCollectionRCSProxy(
     IOrderedCollectionRCS< T > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IOrderedCollectionRCS< T >
 From
 {
@@ -58,87 +54,26 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream(); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionRC< T >
-// -----------------------------------------------------------------------------
-
-public IFilter< T, T > GetAndReplaceWhere( Predicate< T > where ) { return this.From.GetAndReplaceWhere( where ); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionRS< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > GetAndRemoveWhere( Predicate< T > where ) { return this.From.GetAndRemoveWhere( where ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionR< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public IStream< ITuple< IInteger, T > > StreamPairs() { return this.From.StreamPairs(); }
-
-public bool Contains( IInteger key ) { return this.From.Contains( key ); }
-
-public IStream< T > Stream( IInteger key ) { return this.From.Stream( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< IInteger >
-// -----------------------------------------------------------------------------
-
-public void RemoveAll( IInteger key ) { this.From.RemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionRC< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public IFilter< T, T > GetAndReplaceAll( IInteger key ) { return this.From.GetAndReplaceAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionRS< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > GetAndRemoveAll( IInteger key ) { return this.From.GetAndRemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionR< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public T Get( IInteger key ) { return this.From.Get( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionC< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public void Replace( IInteger key, T replacement ) { this.From.Replace( key, replacement ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionS< IInteger >
-// -----------------------------------------------------------------------------
-
-public void Remove( IInteger key ) { this.From.Remove( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< T >.Proxy
+// ICollectionC< T >.Proxy
+// ICollectionS.Proxy
+// ICollectionRC< T >.Proxy
+// ICollectionRS< T >.Proxy
+// ICollectionCS< T >.Proxy
+// ICollectionRCS< T >.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR< T >.Proxy
+// IOrderedCollectionC< T >.Proxy
+// IOrderedCollectionS.Proxy
+// IOrderedCollectionRC< T >.Proxy
+// IOrderedCollectionRS< T >.Proxy
+// IOrderedCollectionCS< T >.Proxy
+// IOrderedCollectionRCS< T >.Proxy
+#endregion
 
 
 

@@ -16,10 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Linq;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -33,8 +31,7 @@ KeyedCollectionRProxy<
     TKey,
     T
 >
-    : KeyedCollectionProxy
-    , IKeyedCollectionR< TKey, T >
+    : IKeyedCollectionR< TKey, T >
 
     where TFrom : T
 {
@@ -45,13 +42,13 @@ public
 KeyedCollectionRProxy(
     IKeyedCollectionR< TKey, TFrom > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IKeyedCollectionR< TKey, TFrom >
 From
 {
@@ -61,23 +58,12 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream().Covary< TFrom, T >(); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionR< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IStream< ITuple< TKey, T > > StreamPairs() { return this.From.StreamPairs().AsEnumerable().Select( t => t.Covary< TKey, TFrom, TKey, T >() ).AsStream(); }
-
-public bool Contains( TKey key ) { return this.From.Contains( key ); }
-
-public IStream< T > Stream( TKey key ) { return this.From.Stream( key ).Covary< TFrom, T >(); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< out T >.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionR< TKey, out T >.Proxy
+#endregion
 
 
 

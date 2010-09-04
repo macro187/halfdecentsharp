@@ -16,10 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -32,8 +30,7 @@ UniqueKeyedCollectionRSGProxy<
     TKey,
     T
 >
-    : UniqueKeyedCollectionProxy
-    , IUniqueKeyedCollectionRSG< TKey, T >
+    : IUniqueKeyedCollectionRSG< TKey, T >
 {
 
 
@@ -42,13 +39,13 @@ public
 UniqueKeyedCollectionRSGProxy(
     IUniqueKeyedCollectionRSG< TKey, T > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IUniqueKeyedCollectionRSG< TKey, T >
 From
 {
@@ -58,71 +55,28 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream(); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionRS< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > GetAndRemoveWhere( Predicate< T > where ) { return this.From.GetAndRemoveWhere( where ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionR< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IStream< ITuple< TKey, T > > StreamPairs() { return this.From.StreamPairs(); }
-
-public bool Contains( TKey key ) { return this.From.Contains( key ); }
-
-public IStream< T > Stream( TKey key ) { return this.From.Stream( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< TKey >
-// -----------------------------------------------------------------------------
-
-public void RemoveAll( TKey key ) { this.From.RemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< TKey, T >
-// -----------------------------------------------------------------------------
-
-public void Add( TKey key, T item ) { this.From.Add( key, item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionRS< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > GetAndRemoveAll( TKey key ) { return this.From.GetAndRemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionR< TKey, T >
-// -----------------------------------------------------------------------------
-
-public T Get( TKey key ) { return this.From.Get( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionS< TKey >
-// -----------------------------------------------------------------------------
-
-public void Remove( TKey key ) { this.From.Remove( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< T >.Proxy
+// ICollectionS.Proxy
+// ICollectionRS< T >.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionR< TKey, T >.Proxy
+// IKeyedCollectionS< TKey >.Proxy
+// IKeyedCollectionG< TKey, T >.Proxy
+// IKeyedCollectionRS< TKey, T >.Proxy
+// IKeyedCollectionRG< TKey, T >.Proxy
+// IKeyedCollectionSG< TKey, T >.Proxy
+// IKeyedCollectionRSG< TKey, T >.Proxy
+// IUniqueKeyedCollection.Proxy
+// IUniqueKeyedCollectionR< TKey, T >.Proxy
+// IUniqueKeyedCollectionS< TKey >.Proxy
+// IUniqueKeyedCollectionG< TKey, T >.Proxy
+// IUniqueKeyedCollectionRS< TKey, T >.Proxy
+// IUniqueKeyedCollectionRG< TKey, T >.Proxy
+// IUniqueKeyedCollectionSG< TKey, T >.Proxy
+// IUniqueKeyedCollectionRSG< TKey, T >.Proxy
+#endregion
 
 
 

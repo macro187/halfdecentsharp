@@ -32,8 +32,7 @@ ImplicitKeyedCollectionSGProxy<
     TKey,
     T
 >
-    : KeyedCollectionProxy
-    , IImplicitKeyedCollectionSG< TKey, T >
+    : IImplicitKeyedCollectionSG< TKey, T >
 
     where TKey : TKeyFrom
     where T : TFrom
@@ -45,13 +44,13 @@ public
 ImplicitKeyedCollectionSGProxy(
     IImplicitKeyedCollectionSG< TKeyFrom, TFrom > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IImplicitKeyedCollectionSG< TKeyFrom, TFrom >
 From
 {
@@ -61,19 +60,16 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionG< T >
-// -----------------------------------------------------------------------------
-
-public void Add( T item ) { this.From.Add( item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< TKey >
-// -----------------------------------------------------------------------------
-
-public void RemoveAll( TKey key ) { this.From.RemoveAll( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionS.Proxy
+// ICollectionG< T >.Proxy
+// ICollectionSG< T >.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionS< TKey >.Proxy
+// IImplicitKeyedCollectionG< T >.Proxy
+// IImplicitKeyedCollectionSG< TKey, T >.Proxy
+#endregion
 
 
 

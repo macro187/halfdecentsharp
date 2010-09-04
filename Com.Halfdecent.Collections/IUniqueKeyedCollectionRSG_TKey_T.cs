@@ -38,6 +38,14 @@ IUniqueKeyedCollectionRSG<
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionRSG< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+#endif
+
+
+
 
 } // type
 } // namespace

@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 
 
 namespace
@@ -26,8 +27,7 @@ Com.Halfdecent.Collections
 
 public class
 OrderedCollectionSProxy
-    : OrderedCollectionProxy
-    , IOrderedCollectionS
+    : IOrderedCollectionS
 {
 
 
@@ -36,13 +36,13 @@ public
 OrderedCollectionSProxy(
     IOrderedCollectionS from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IOrderedCollectionS
 From
 {
@@ -52,19 +52,14 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< IInteger >
-// -----------------------------------------------------------------------------
-
-public void RemoveAll( IInteger key ) { this.From.RemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionS< IInteger >
-// -----------------------------------------------------------------------------
-
-public void Remove( IInteger key ) { this.From.Remove( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionS.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionS.Proxy
+#endregion
 
 
 

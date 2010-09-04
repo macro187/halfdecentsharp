@@ -16,11 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -32,8 +29,7 @@ public class
 OrderedCollectionRCProxy<
     T
 >
-    : OrderedCollectionProxy
-    , IOrderedCollectionRC< T >
+    : IOrderedCollectionRC< T >
 {
 
 
@@ -42,13 +38,13 @@ public
 OrderedCollectionRCProxy(
     IOrderedCollectionRC< T > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IOrderedCollectionRC< T >
 From
 {
@@ -58,55 +54,18 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream(); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionRC< T >
-// -----------------------------------------------------------------------------
-
-public IFilter< T, T > GetAndReplaceWhere( Predicate< T > where ) { return this.From.GetAndReplaceWhere( where ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionR< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public IStream< ITuple< IInteger, T > > StreamPairs() { return this.From.StreamPairs(); }
-
-public bool Contains( IInteger key ) { return this.From.Contains( key ); }
-
-public IStream< T > Stream( IInteger key ) { return this.From.Stream( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionRC< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public IFilter< T, T > GetAndReplaceAll( IInteger key ) { return this.From.GetAndReplaceAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionR< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public T Get( IInteger key ) { return this.From.Get( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionC< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public void Replace( IInteger key, T replacement ) { this.From.Replace( key, replacement ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< T >.Proxy
+// ICollectionC< T >.Proxy
+// ICollectionRC< T >.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR< T >.Proxy
+// IOrderedCollectionC< T >.Proxy
+// IOrderedCollectionRC< T >.Proxy
+#endregion
 
 
 

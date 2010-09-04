@@ -18,7 +18,6 @@
 
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -31,8 +30,7 @@ ImplicitKeyedCollectionRGProxy<
     TKey,
     T
 >
-    : KeyedCollectionProxy
-    , IImplicitKeyedCollectionRG< TKey, T >
+    : IImplicitKeyedCollectionRG< TKey, T >
 {
 
 
@@ -41,13 +39,13 @@ public
 ImplicitKeyedCollectionRGProxy(
     IImplicitKeyedCollectionRG< TKey, T > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IImplicitKeyedCollectionRG< TKey, T >
 From
 {
@@ -57,31 +55,16 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream(); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionR< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IStream< ITuple< TKey, T > > StreamPairs() { return this.From.StreamPairs(); }
-
-public bool Contains( TKey key ) { return this.From.Contains( key ); }
-
-public IStream< T > Stream( TKey key ) { return this.From.Stream( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionG< T >
-// -----------------------------------------------------------------------------
-
-public void Add( T item ) { this.From.Add( item ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< T >.Proxy
+// ICollectionG< T >.Proxy
+// ICollectionRG< T >.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionR< TKey, T >.Proxy
+// IImplicitKeyedCollectionG< T >.Proxy
+// IImplicitKeyedCollectionRG< TKey, T >.Proxy
+#endregion
 
 
 

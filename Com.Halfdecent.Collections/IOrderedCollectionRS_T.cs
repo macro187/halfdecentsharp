@@ -17,6 +17,7 @@
 
 
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -36,6 +37,17 @@ IOrderedCollectionRS<
     , IOrderedCollectionS
     , IUniqueKeyedCollectionRS< IInteger, T >
 {
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionRS< T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IStream< T > GetAndRemoveAll( IInteger key ) {
+    return this.From.GetAndRemoveAll( key ); }
+#endif
 
 
 

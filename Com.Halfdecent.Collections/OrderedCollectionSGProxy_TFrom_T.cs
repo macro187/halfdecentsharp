@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 
 
 namespace
@@ -29,8 +30,7 @@ OrderedCollectionSGProxy<
     TFrom,
     T
 >
-    : OrderedCollectionProxy
-    , IOrderedCollectionSG< T >
+    : IOrderedCollectionSG< T >
 
     where T : TFrom
 {
@@ -41,13 +41,13 @@ public
 OrderedCollectionSGProxy(
     IOrderedCollectionSG< TFrom > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IOrderedCollectionSG< TFrom >
 From
 {
@@ -57,35 +57,18 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionG< T >
-// -----------------------------------------------------------------------------
-
-public void Add( T item ) { this.From.Add( item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< IInteger >
-// -----------------------------------------------------------------------------
-
-public void RemoveAll( IInteger key ) { this.From.RemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public void Add( IInteger key, T item ) { this.From.Add( key, item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionS< IInteger >
-// -----------------------------------------------------------------------------
-
-public void Remove( IInteger key ) { this.From.Remove( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionS.Proxy
+// ICollectionG< T >.Proxy
+// ICollectionSG< T >.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionS.Proxy
+// IOrderedCollectionG< T >.Proxy
+// IOrderedCollectionSG< T >.Proxy
+#endregion
 
 
 

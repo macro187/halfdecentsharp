@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 
 
 namespace
@@ -28,8 +29,7 @@ public class
 OrderedCollectionCSGProxy<
     T
 >
-    : OrderedCollectionProxy
-    , IOrderedCollectionCSG< T >
+    : IOrderedCollectionCSG< T >
 {
 
 
@@ -38,13 +38,13 @@ public
 OrderedCollectionCSGProxy(
     IOrderedCollectionCSG< T > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IOrderedCollectionCSG< T >
 From
 {
@@ -54,43 +54,25 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionG< T >
-// -----------------------------------------------------------------------------
-
-public void Add( T item ) { this.From.Add( item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< IInteger >
-// -----------------------------------------------------------------------------
-
-public void RemoveAll( IInteger key ) { this.From.RemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public void Add( IInteger key, T item ) { this.From.Add( key, item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionC< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public void Replace( IInteger key, T replacement ) { this.From.Replace( key, replacement ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionS< IInteger >
-// -----------------------------------------------------------------------------
-
-public void Remove( IInteger key ) { this.From.Remove( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionC< T >.Proxy
+// ICollectionS.Proxy
+// ICollectionG< T >.Proxy
+// ICollectionCS< T >.Proxy
+// ICollectionCG< T >.Proxy
+// ICollectionSG< T >.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionC< T >.Proxy
+// IOrderedCollectionS.Proxy
+// IOrderedCollectionG< T >.Proxy
+// IOrderedCollectionCS< T >.Proxy
+// IOrderedCollectionCG< T >.Proxy
+// IOrderedCollectionSG< T >.Proxy
+// IOrderedCollectionCSG< T >.Proxy
+#endregion
 
 
 

@@ -30,8 +30,7 @@ KeyedCollectionCSGProxy<
     TKey,
     T
 >
-    : KeyedCollectionProxy
-    , IKeyedCollectionCSG< TKey, T >
+    : IKeyedCollectionCSG< TKey, T >
 {
 
 
@@ -40,13 +39,13 @@ public
 KeyedCollectionCSGProxy(
     IKeyedCollectionCSG< TKey, T > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IKeyedCollectionCSG< TKey, T >
 From
 {
@@ -56,19 +55,20 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< TKey >
-// -----------------------------------------------------------------------------
-
-public void RemoveAll( TKey key ) { this.From.RemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< TKey, T >
-// -----------------------------------------------------------------------------
-
-public void Add( TKey key, T item ) { this.From.Add( key, item ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionC< T >.Proxy
+// ICollectionS.Proxy
+// ICollectionCS< T >.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionC< TKey, T >.Proxy
+// IKeyedCollectionS< TKey >.Proxy
+// IKeyedCollectionG< TKey, T >.Proxy
+// IKeyedCollectionCS< TKey, T >.Proxy
+// IKeyedCollectionCG< TKey, T >.Proxy
+// IKeyedCollectionSG< TKey, T >.Proxy
+// IKeyedCollectionCSG< TKey, T >.Proxy
+#endregion
 
 
 

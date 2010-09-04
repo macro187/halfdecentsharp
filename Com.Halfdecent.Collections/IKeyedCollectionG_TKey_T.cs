@@ -57,6 +57,16 @@ Add(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IKeyedCollectionG< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+
+public void Add( TKey key, T item ) { this.From.Add( key, item ); }
+#endif
+
+
+
 
 } // type
 } // namespace

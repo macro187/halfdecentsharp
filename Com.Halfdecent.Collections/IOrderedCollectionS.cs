@@ -36,6 +36,18 @@ IOrderedCollectionS
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionS.Proxy
+// -----------------------------------------------------------------------------
+
+public void RemoveAll( IInteger key ) { this.From.RemoveAll( key ); }
+
+public void Remove( IInteger key ) { this.From.Remove( key ); }
+#endif
+
+
+
 
 } // type
 } // namespace

@@ -52,6 +52,27 @@ Stream();
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionR< T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IStream< T > Stream() {
+    return this.From.Stream(); }
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionR< out T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IStream< T > Stream() {
+    return this.From.Stream().Covary< TFrom, T >(); }
+#endif
+
+
 
 } // type
 } // namespace

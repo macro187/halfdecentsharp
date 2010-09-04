@@ -54,6 +54,16 @@ Get(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionR< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+
+public T Get( TKey key ) { return this.From.Get( key ); }
+#endif
+
+
+
 
 } // type
 } // namespace

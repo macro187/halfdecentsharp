@@ -38,6 +38,14 @@ IImplicitKeyedCollectionRSG<
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IImplicitKeyedCollectionRSG< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+#endif
+
+
+
 
 } // type
 } // namespace

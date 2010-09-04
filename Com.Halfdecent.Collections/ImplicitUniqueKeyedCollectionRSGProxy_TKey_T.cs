@@ -16,10 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -32,8 +30,7 @@ ImplicitUniqueKeyedCollectionRSGProxy<
     TKey,
     T
 >
-    : UniqueKeyedCollectionProxy
-    , IImplicitUniqueKeyedCollectionRSG< TKey, T >
+    : IImplicitUniqueKeyedCollectionRSG< TKey, T >
 {
 
 
@@ -42,13 +39,13 @@ public
 ImplicitUniqueKeyedCollectionRSGProxy(
     IImplicitUniqueKeyedCollectionRSG< TKey, T > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IImplicitUniqueKeyedCollectionRSG< TKey, T >
 From
 {
@@ -58,71 +55,32 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream(); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionG< T >
-// -----------------------------------------------------------------------------
-
-public void Add( T item ) { this.From.Add( item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionRS< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > GetAndRemoveWhere( Predicate< T > where ) { return this.From.GetAndRemoveWhere( where ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionR< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IStream< ITuple< TKey, T > > StreamPairs() { return this.From.StreamPairs(); }
-
-public bool Contains( TKey key ) { return this.From.Contains( key ); }
-
-public IStream< T > Stream( TKey key ) { return this.From.Stream( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< TKey >
-// -----------------------------------------------------------------------------
-
-public void RemoveAll( TKey key ) { this.From.RemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionRS< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > GetAndRemoveAll( TKey key ) { return this.From.GetAndRemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionR< TKey, T >
-// -----------------------------------------------------------------------------
-
-public T Get( TKey key ) { return this.From.Get( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionS< TKey >
-// -----------------------------------------------------------------------------
-
-public void Remove( TKey key ) { this.From.Remove( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< T >.Proxy
+// ICollectionS.Proxy
+// ICollectionG< T >.Proxy
+// ICollectionRS< T >.Proxy
+// ICollectionRG< T >.Proxy
+// ICollectionSG< T >.Proxy
+// ICollectionRSG< T >.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionR< TKey, T >.Proxy
+// IKeyedCollectionS< TKey >.Proxy
+// IKeyedCollectionRS< TKey, T >.Proxy
+// IImplicitKeyedCollectionG< T >.Proxy
+// IImplicitKeyedCollectionRG< TKey, T >.Proxy
+// IImplicitKeyedCollectionSG< TKey, T >.Proxy
+// IImplicitKeyedCollectionRSG< TKey, T >.Proxy
+// IUniqueKeyedCollection.Proxy
+// IUniqueKeyedCollectionR< TKey, T >.Proxy
+// IUniqueKeyedCollectionS< TKey >.Proxy
+// IUniqueKeyedCollectionRS< TKey, T >.Proxy
+// IImplicitUniqueKeyedCollectionG< T >.Proxy
+// IImplicitUniqueKeyedCollectionRG< TKey, T >.Proxy
+// IImplicitUniqueKeyedCollectionSG< TKey, T >.Proxy
+// IImplicitUniqueKeyedCollectionRSG< TKey, T >.Proxy
+#endregion
 
 
 

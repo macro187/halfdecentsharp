@@ -54,6 +54,18 @@ GetAndReplaceAll(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IKeyedCollectionRC< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IFilter< T, T >
+    GetAndReplaceAll( TKey key ) {
+        return this.From.GetAndReplaceAll( key ); }
+#endif
+
+
+
 
 } // type
 } // namespace

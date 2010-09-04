@@ -18,8 +18,6 @@
 
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -59,19 +57,10 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollection
-// -----------------------------------------------------------------------------
-
-public IInteger Count { get { return this.From.Count; } }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream().Covary< TFrom, T >(); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< out T >.Proxy
+#endregion
 
 
 

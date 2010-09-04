@@ -32,8 +32,7 @@ KeyedCollectionGProxy<
     TKey,
     T
 >
-    : KeyedCollectionProxy
-    , IKeyedCollectionG< TKey, T >
+    : IKeyedCollectionG< TKey, T >
 
     where TKey : TKeyFrom
     where T : TFrom
@@ -45,13 +44,13 @@ public
 KeyedCollectionGProxy(
     IKeyedCollectionG< TKeyFrom, TFrom > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IKeyedCollectionG< TKeyFrom, TFrom >
 From
 {
@@ -61,11 +60,11 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< TKey, T >
-// -----------------------------------------------------------------------------
-
-public void Add( TKey key, T item ) { this.From.Add( key, item ); }
+#region TRAITOR
+// ICollection.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionG< TKey, T >.Proxy
+#endregion
 
 
 

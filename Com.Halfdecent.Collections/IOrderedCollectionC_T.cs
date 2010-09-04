@@ -42,6 +42,17 @@ IOrderedCollectionC<
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionC< T >.Proxy
+// -----------------------------------------------------------------------------
+
+public void Replace( IInteger key, T replacement ) {
+    this.From.Replace( key, replacement ); }
+#endif
+
+
+
 
 } // type
 } // namespace

@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Streams;
 
 
@@ -48,8 +47,20 @@ ICollectionRC<
 ///
     IFilter< T, T >
 GetAndReplaceWhere(
-    Predicate< T > where
+    System.Predicate< T > where
 );
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionRC< T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IFilter< T, T >
+    GetAndReplaceWhere( System.Predicate< T > where ) {
+        return this.From.GetAndReplaceWhere( where ); }
+#endif
 
 
 

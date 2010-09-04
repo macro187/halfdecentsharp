@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System.Linq;
 using Com.Halfdecent.Numerics;
 
 
@@ -39,6 +40,55 @@ IOrderedCollectionR<
     : IOrderedCollection
     , IUniqueKeyedCollectionR< IInteger, T >
 {
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionR< T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IStream< ITuple< IInteger, T > > StreamPairs() {
+    return this.From.StreamPairs(); }
+
+public bool Contains( IInteger key ) { return this.From.Contains( key ); }
+
+public IStream< T > Stream( IInteger key ) {
+    return this.From.Stream( key ); }
+
+public T Get( IInteger key ) { return this.From.Get( key ); }
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionR< out T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IStream< ITuple< IInteger, T > > StreamPairs() {
+#if DOTNET40
+    return this.From.StreamPairs(); }
+#else
+    return
+        this.From.StreamPairs()
+        .AsEnumerable()
+        .Select( t => t.Covary< IInteger, TFrom, IInteger, T >() )
+        .AsStream(); }
+#endif
+
+public bool Contains( IInteger key ) { return this.From.Contains( key ); }
+
+public IStream< T > Stream( IInteger key ) {
+#if DOTNET40
+    return this.From.Stream( key ); }
+#else
+    return this.From.Stream().Covary< TFrom, T >(); }
+#endif
+
+public T Get( IInteger key ) { return this.From.Get( key ); }
+#endif
+
 
 
 

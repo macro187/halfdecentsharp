@@ -18,7 +18,6 @@
 
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -31,8 +30,7 @@ UniqueKeyedCollectionRGProxy<
     TKey,
     T
 >
-    : UniqueKeyedCollectionProxy
-    , IUniqueKeyedCollectionRG< TKey, T >
+    : IUniqueKeyedCollectionRG< TKey, T >
 {
 
 
@@ -41,13 +39,13 @@ public
 UniqueKeyedCollectionRGProxy(
     IUniqueKeyedCollectionRG< TKey, T > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IUniqueKeyedCollectionRG< TKey, T >
 From
 {
@@ -57,39 +55,18 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream(); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionR< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IStream< ITuple< TKey, T > > StreamPairs() { return this.From.StreamPairs(); }
-
-public bool Contains( TKey key ) { return this.From.Contains( key ); }
-
-public IStream< T > Stream( TKey key ) { return this.From.Stream( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< TKey, T >
-// -----------------------------------------------------------------------------
-
-public void Add( TKey key, T item ) { this.From.Add( key, item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionR< TKey, T >
-// -----------------------------------------------------------------------------
-
-public T Get( TKey key ) { return this.From.Get( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< T >.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionR< TKey, T >.Proxy
+// IKeyedCollectionG< TKey, T >.Proxy
+// IKeyedCollectionRG< TKey, T >.Proxy
+// IUniqueKeyedCollection.Proxy
+// IUniqueKeyedCollectionR< TKey, T >.Proxy
+// IUniqueKeyedCollectionG< TKey, T >.Proxy
+// IUniqueKeyedCollectionRG< TKey, T >.Proxy
+#endregion
 
 
 

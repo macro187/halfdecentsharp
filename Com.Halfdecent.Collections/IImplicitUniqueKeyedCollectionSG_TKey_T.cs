@@ -42,6 +42,14 @@ IImplicitUniqueKeyedCollectionSG<
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IImplicitUniqueKeyedCollectionSG< TKey, T >.Proxy
+// -----------------------------------------------------------------------------
+#endif
+
+
+
 
 } // type
 } // namespace

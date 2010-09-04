@@ -18,9 +18,6 @@
 
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
-using Com.Halfdecent.Streams;
-using System;
 
 
 namespace
@@ -57,35 +54,16 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollection
-// -----------------------------------------------------------------------------
-
-public IInteger Count { get { return this.From.Count; } }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream(); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionG< T >
-// -----------------------------------------------------------------------------
-
-public void Add( T item ) { this.From.Add( item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionRC< T >
-// -----------------------------------------------------------------------------
-
-public IFilter< T, T > GetAndReplaceWhere( Predicate< T > where ) { return this.From.GetAndReplaceWhere( where ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< T >.Proxy
+// ICollectionC< T >.Proxy
+// ICollectionG< T >.Proxy
+// ICollectionRC< T >.Proxy
+// ICollectionRG< T >.Proxy
+// ICollectionCG< T >.Proxy
+// ICollectionRCG< T >.Proxy
+#endregion
 
 
 

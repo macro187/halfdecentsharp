@@ -18,7 +18,6 @@
 
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -53,11 +52,12 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollection
-// -----------------------------------------------------------------------------
-
-public IInteger Count { get { return this.From.Count; } }
+#region TRAITOR
+// ICollection.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+#endregion
 
 
 

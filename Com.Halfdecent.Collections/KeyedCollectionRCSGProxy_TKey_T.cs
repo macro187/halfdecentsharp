@@ -16,10 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Streams;
 
 
 namespace
@@ -32,8 +30,7 @@ KeyedCollectionRCSGProxy<
     TKey,
     T
 >
-    : KeyedCollectionProxy
-    , IKeyedCollectionRCSG< TKey, T >
+    : IKeyedCollectionRCSG< TKey, T >
 {
 
 
@@ -42,13 +39,13 @@ public
 KeyedCollectionRCSGProxy(
     IKeyedCollectionRCSG< TKey, T > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IKeyedCollectionRCSG< TKey, T >
 From
 {
@@ -58,71 +55,32 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionR< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > Stream() { return this.From.Stream(); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionRC< T >
-// -----------------------------------------------------------------------------
-
-public IFilter< T, T > GetAndReplaceWhere( Predicate< T > where ) { return this.From.GetAndReplaceWhere( where ); }
-
-
-
-// -----------------------------------------------------------------------------
-// ICollectionRS< T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > GetAndRemoveWhere( Predicate< T > where ) { return this.From.GetAndRemoveWhere( where ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionR< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IStream< ITuple< TKey, T > > StreamPairs() { return this.From.StreamPairs(); }
-
-public bool Contains( TKey key ) { return this.From.Contains( key ); }
-
-public IStream< T > Stream( TKey key ) { return this.From.Stream( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionS< TKey >
-// -----------------------------------------------------------------------------
-
-public void RemoveAll( TKey key ) { this.From.RemoveAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< TKey, T >
-// -----------------------------------------------------------------------------
-
-public void Add( TKey key, T item ) { this.From.Add( key, item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionRC< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IFilter< T, T > GetAndReplaceAll( TKey key ) { return this.From.GetAndReplaceAll( key ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionRS< TKey, T >
-// -----------------------------------------------------------------------------
-
-public IStream< T > GetAndRemoveAll( TKey key ) { return this.From.GetAndRemoveAll( key ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionR< T >.Proxy
+// ICollectionC< T >.Proxy
+// ICollectionS.Proxy
+// ICollectionRC< T >.Proxy
+// ICollectionRS< T >.Proxy
+// ICollectionCS< T >.Proxy
+// ICollectionRCS< T >.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionR< TKey, T >.Proxy
+// IKeyedCollectionC< TKey, T >.Proxy
+// IKeyedCollectionS< TKey >.Proxy
+// IKeyedCollectionG< TKey, T >.Proxy
+// IKeyedCollectionRC< TKey, T >.Proxy
+// IKeyedCollectionRS< TKey, T >.Proxy
+// IKeyedCollectionRG< TKey, T >.Proxy
+// IKeyedCollectionCS< TKey, T >.Proxy
+// IKeyedCollectionCG< TKey, T >.Proxy
+// IKeyedCollectionSG< TKey, T >.Proxy
+// IKeyedCollectionRCS< TKey, T >.Proxy
+// IKeyedCollectionRCG< TKey, T >.Proxy
+// IKeyedCollectionRSG< TKey, T >.Proxy
+// IKeyedCollectionCSG< TKey, T >.Proxy
+// IKeyedCollectionRCSG< TKey, T >.Proxy
+#endregion
 
 
 

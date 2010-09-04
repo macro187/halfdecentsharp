@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Streams;
 
 
@@ -47,8 +46,20 @@ ICollectionRS<
 ///
     IStream< T >
 GetAndRemoveWhere(
-    Predicate< T > where
+    System.Predicate< T > where
 );
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionRS< T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IStream< T >
+    GetAndRemoveWhere( System.Predicate< T > where ) {
+        return this.From.GetAndRemoveWhere( where ); }
+#endif
 
 
 

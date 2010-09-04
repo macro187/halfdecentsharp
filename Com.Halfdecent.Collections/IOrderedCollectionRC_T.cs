@@ -17,6 +17,7 @@
 
 
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -36,6 +37,17 @@ IOrderedCollectionRC<
     , IOrderedCollectionC< T >
     , IUniqueKeyedCollectionRC< IInteger, T >
 {
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionRC< T >.Proxy
+// -----------------------------------------------------------------------------
+
+public IFilter< T, T > GetAndReplaceAll( IInteger key ) {
+    return this.From.GetAndReplaceAll( key ); }
+#endif
 
 
 

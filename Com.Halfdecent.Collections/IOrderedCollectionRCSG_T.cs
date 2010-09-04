@@ -37,7 +37,16 @@ IOrderedCollectionRCSG<
     , IOrderedCollectionRSG< T >
     , IOrderedCollectionCSG< T >
     , IUniqueKeyedCollectionRCSG< IInteger, T >
+    , IImplicitUniqueKeyedCollectionRSG< IInteger, T >
 {
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionRCSG< T >.Proxy
+// -----------------------------------------------------------------------------
+#endif
 
 
 

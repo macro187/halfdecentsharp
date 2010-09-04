@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 
 
 namespace
@@ -29,8 +30,7 @@ OrderedCollectionGProxy<
     TFrom,
     T
 >
-    : OrderedCollectionProxy
-    , IOrderedCollectionG< T >
+    : IOrderedCollectionG< T >
 
     where T : TFrom
 {
@@ -41,13 +41,13 @@ public
 OrderedCollectionGProxy(
     IOrderedCollectionG< TFrom > from
 )
-    : base( from )
 {
+    new NonNull().Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
 
-new protected
+protected
     IOrderedCollectionG< TFrom >
 From
 {
@@ -57,19 +57,14 @@ From
 
 
 
-// -----------------------------------------------------------------------------
-// ICollectionG< T >
-// -----------------------------------------------------------------------------
-
-public void Add( T item ) { this.From.Add( item ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IKeyedCollectionG< IInteger, T >
-// -----------------------------------------------------------------------------
-
-public void Add( IInteger key, T item ) { this.From.Add( key, item ); }
+#region TRAITOR
+// ICollection.Proxy
+// ICollectionG< T >.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionG< T >.Proxy
+#endregion
 
 
 

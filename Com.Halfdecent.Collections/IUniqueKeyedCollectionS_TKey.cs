@@ -54,6 +54,16 @@ Remove(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionS< TKey >.Proxy
+// -----------------------------------------------------------------------------
+
+public void Remove( TKey key ) { this.From.Remove( key ); }
+#endif
+
+
+
 
 } // type
 } // namespace
