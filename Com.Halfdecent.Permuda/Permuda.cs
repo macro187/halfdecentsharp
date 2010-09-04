@@ -466,9 +466,15 @@ SubVars(
         if( varname == "" ) {
             varval = combo;
 
-        // Blank combo => blank
+        // Blank combo => try looking up, blank if not found
         } else if( combo == "" ) {
-            varval = "";
+            if( !vars.ContainsKey( varname ) )
+                Error( path, linenum,
+                    "Undefined Permuda variable '{0}'", varname );
+            if( vars[ varname ].ContainsKey( "_" ) )
+                varval = vars[ varname ][ "_" ];
+            else
+                varval = "";
 
         // Otherwise, look up
         } else {
