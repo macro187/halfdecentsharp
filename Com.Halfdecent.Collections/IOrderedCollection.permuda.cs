@@ -34,6 +34,9 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 // Methods
 // -----------------------------------------------------------------------------
 
+/// Take a by-reference slice of a specified length starting at a specified
+/// position
+///
     /*PERMUDA NEWSLICE*/ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 Slice(
     IInteger    index,
