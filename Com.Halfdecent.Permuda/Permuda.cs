@@ -365,7 +365,7 @@ WritePermutation(
     string combo
 )
 {
-    Info( inpath, 1, "Combo '{0}'", combo );
+    //Info( inpath, 1, "Combo '{0}'", combo );
 
     // Compute output filename
     // TODO track 'filenamepattern' source line
