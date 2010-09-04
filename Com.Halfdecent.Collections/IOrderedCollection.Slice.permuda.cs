@@ -37,7 +37,7 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 /// Take a by-reference slice of a specified length starting at a specified
 /// position
 ///
-    /*PERMUDA NEWSLICE*/ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
+    /*PERMUDA NEW*/ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 Slice(
     IInteger    index,
     IInteger    count
@@ -83,7 +83,7 @@ Slice(
 // CSG:     < T >
 // RCSG:    < T >
 #endregion
-#region PERMUDA NEWSLICE
+#region PERMUDA NEW
 // R:       new
 // C:       new
 // S:       new
