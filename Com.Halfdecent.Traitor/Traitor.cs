@@ -139,7 +139,8 @@ Error(
     string  message
 )
 {
-    Trace.TraceError( "{0}({1},1): Error: {2}", file, line, message );
+    Trace.WriteLine(
+        string.Format( "{0}({1},1): Error: {2}", file, line, message ) );
     throw new Exception( message );
 }
 
