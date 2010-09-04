@@ -202,7 +202,7 @@ ScanTrait(
             // Entering the "#if TRAITOR" block
             if( line.Trim() == "#if TRAITOR" ) {
                 inblock = true;
-                blocklinenum = linenum;
+                blocklinenum = linenum+1;
                 continue;
             }
 
@@ -284,6 +284,22 @@ WriteFiles()
 
 
 private static
+    string
+LineRef(
+    int     linenumber,
+    string  filename
+)
+{
+    filename = filename ?? "";
+    return string.Format(
+        "#line {0}{1}{2}",
+        linenumber,
+        filename != "" ? " " : "",
+        filename );
+}
+
+
+private static
     void
 WriteFile(
     string inpath,
@@ -339,6 +355,9 @@ WriteFile(
         }
         linenum++;
 
+        if( pass2 && linenum == 1 )
+            writer.WriteLine( LineRef( 1, inpath ) );
+
         // Usings
         if( pass2 ) {
 
@@ -353,7 +372,11 @@ WriteFile(
                 foreach( string usedname in traitsused )
                     foreach( string usedusing in traits[ usedname ].Usings )
                         if( !usingswritten.Contains( usedusing ) ) {
+                            writer.WriteLine(
+                                // TODO Track using line #'s
+                                LineRef( 1, traits[ usedname ].File ) );
                             writer.WriteLine( usedusing );
+                            writer.WriteLine( LineRef( linenum, inpath ) );
                             usingswritten.Add( usedusing );
                         }
             }
@@ -374,7 +397,14 @@ WriteFile(
                 traitsused.Add( name );
             } else {
                 if( traitswritten.Count > 0 ) writer.WriteLine();
-                writer.Write( traits[ name ].Text );
+                writer.WriteLine(
+                    LineRef( traits[ name ].Line, traits[ name ].File ) );
+                writer.Write(
+                    traits[ name ].Text );
+                writer.WriteLine(
+                    LineRef( linenum+1, inpath ) ); // +1 because we're
+                                                    // replacing the reference
+                                                    // line
                 traitswritten.Add( name );
             }
             continue;
