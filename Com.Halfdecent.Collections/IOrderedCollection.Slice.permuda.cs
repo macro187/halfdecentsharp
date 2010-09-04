@@ -47,7 +47,7 @@ Slice(
 
 #region PERMUDA
 // permute _RCSG
-// filename IOrderedCollection/*PERMUDA*//*PERMUDA FILESUFFIX*/.slice.cs
+// filename IOrderedCollection/*PERMUDA*//*PERMUDA FILESUFFIX*/.Slice.cs
 #endregion
 #region PERMUDA FILESUFFIX
 // R:       _T
