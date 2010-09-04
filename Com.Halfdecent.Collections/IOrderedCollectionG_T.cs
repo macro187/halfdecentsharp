@@ -16,6 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
 
 
@@ -28,7 +30,7 @@ Com.Halfdecent.Collections
 /// TODO
 // =============================================================================
 
-public interface
+public partial interface
 IOrderedCollectionG<
 #if DOTNET40
     in T
@@ -49,6 +51,32 @@ IOrderedCollectionG<
 // -----------------------------------------------------------------------------
 
 public void Add( IInteger key, T item ) { this.From.Add( key, item ); }
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionG< T >.IndexSlice
+// -----------------------------------------------------------------------------
+
+public
+    void
+Add(
+    IInteger    key,
+    T           item
+)
+{
+    new NonNull().Require( key, new Parameter( "key" ) );
+    new ExistingOrNextPositionIn( this )
+        .Require( key, new Parameter( "key" ) );
+    this.From.Add( this.Trans( key ), item );
+    this.SliceCount = this.SliceCount.Plus( Integer.From( 1 ) );
+}
+
+
+public void Add( T item ) {
+    Collection.AddViaOrderedCollection( this, item ); }
 #endif
 
 

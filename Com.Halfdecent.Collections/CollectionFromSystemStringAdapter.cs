@@ -34,7 +34,7 @@ Com.Halfdecent.Collections
 /// Present a string as a read-only collection of characters
 // =============================================================================
 
-public class
+public partial class
 CollectionFromSystemStringAdapter
     : IOrderedCollectionR< char >
 {

@@ -16,43 +16,27 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Collections
 {
 
 
-// =============================================================================
-/// TODO
-// =============================================================================
-
-public partial interface
-IOrderedCollectionRCG<
-    T
->
-    : IOrderedCollectionRC< T >
-    , IOrderedCollectionRG< T >
-    , IOrderedCollectionCG< T >
-    , IUniqueKeyedCollectionRCG< IInteger, T >
+public partial class
+CollectionFromSystemStringBuilderAdapter
 {
 
 
 
-#if TRAITOR
-// -----------------------------------------------------------------------------
-// Trait IOrderedCollectionRCG< T >.Proxy
-// -----------------------------------------------------------------------------
-#endif
+#region TRAITOR
+// IndexSlice/*PERMUDA*/.Slice< char >
+#endregion
 
 
 
-#if TRAITOR
-// -----------------------------------------------------------------------------
-// Trait IOrderedCollectionRCG< T >.IndexSlice
-// -----------------------------------------------------------------------------
-#endif
+#region PERMUDA
+// permute _RCSG
+// filename CollectionFromSystemStringBuilderAdapter.Slice/*PERMUDA*/.cs
+#endregion
 
 
 

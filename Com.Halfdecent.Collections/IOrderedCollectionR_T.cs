@@ -17,7 +17,11 @@
 
 
 using System.Linq;
+using SCG = System.Collections.Generic;
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
+using Com.Halfdecent.Streams;
 
 
 namespace
@@ -29,7 +33,7 @@ Com.Halfdecent.Collections
 /// TODO
 // =============================================================================
 
-public interface
+public partial interface
 IOrderedCollectionR<
 #if DOTNET40
     out T
@@ -89,6 +93,69 @@ public IStream< T > Stream( IInteger key ) {
 public T Get( IInteger key ) { return this.From.Get( key ); }
 #endif
 
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionR< T >.IndexSlice
+// -----------------------------------------------------------------------------
+
+public
+    T
+Get(
+    IInteger key
+)
+{
+    new NonNull().Require( key, new Parameter( "key" ) );
+    new ExistingKeyIn< IInteger, T >( this )
+        .Require( key, new Parameter( "key" ) );
+    return this.From.Get( this.Trans( key ) );
+}
+
+
+public
+    IStream< ITuple< IInteger, T > >
+StreamPairs()
+{
+    return this.StreamPairsIterator().AsStream();
+}
+
+private
+    SCG.IEnumerable< ITuple< IInteger, T > >
+StreamPairsIterator()
+{
+    IInteger to = this.SliceIndex.Plus( this.SliceCount );
+    IInteger one = Integer.From( 1 );
+    for(
+        IInteger i = this.SliceIndex;
+        i.LT( to );
+        i = i.Plus( one )
+    ) {
+        yield return new Tuple< IInteger, T >(
+            i,
+            this.From.Get( i ) );
+    }
+}
+
+
+public
+    bool
+Contains(
+    IInteger key
+)
+{
+    new NonNull().Require( key, new Parameter( "key" ) );
+    return key.GTE( Integer.From( 0 ) ) && key.LT( this.SliceCount );
+}
+
+
+public IStream< T > Stream( IInteger key ) {
+    return KeyedCollection.StreamViaUniqueKeyedCollection( this, key ); }
+
+
+public IStream< T > Stream() {
+    return Collection.StreamViaKeyedCollection( this ); }
+#endif
 
 
 

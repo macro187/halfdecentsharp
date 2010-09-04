@@ -35,7 +35,7 @@ Com.Halfdecent.Collections
 /// <tt>IOrderedCollectionRCSG< T ></tt>
 // =============================================================================
 
-public class
+public partial class
 CollectionFromSystemListAdapter<
     T
 >

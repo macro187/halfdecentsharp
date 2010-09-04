@@ -25,7 +25,7 @@ Com.Halfdecent.Collections
 /// TODO
 // =============================================================================
 
-public interface
+public partial interface
 IOrderedCollection
     : IUniqueKeyedCollection
 {
@@ -36,6 +36,16 @@ IOrderedCollection
 // -----------------------------------------------------------------------------
 // Trait IOrderedCollection.Proxy
 // -----------------------------------------------------------------------------
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollection.IndexSlice
+// -----------------------------------------------------------------------------
+
+public IInteger Count { get { return this.SliceCount; } }
 #endif
 
 

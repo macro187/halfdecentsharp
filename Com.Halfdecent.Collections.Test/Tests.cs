@@ -401,6 +401,107 @@ Test_ArrayList()
 }
 
 
+[Test( "IndexSliceRCSG< T >" )]
+public static
+void
+Test_IndexSliceRCSG_T()
+{
+    Print( "Create ordered collection" );
+    IOrderedCollectionRCSG< int > c = new ArrayList< int >();
+    c.Add( 1 );
+    c.Add( 2 );
+    c.Add( 3 );
+    c.Add( 4 );
+    c.Add( 5 );
+
+    Print( "Slice" );
+    IOrderedCollectionRCSG< int > s =
+        c.Slice( Integer.From( 1 ), Integer.From( 3 ) );
+    Assert(
+        s.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 2, 3, 4 } ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 2, 3, 4, 5 } ) );
+
+    Print( "Insert an item at the beginning" );
+    s.Add( Integer.From( 0 ), 11 );
+    Assert(
+        s.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 11, 2, 3, 4 } ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 11, 2, 3, 4, 5 } ) );
+
+    Print( "Insert an item in the middle" );
+    s.Add( Integer.From( 2 ), 22 );
+    Assert(
+        s.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 11, 2, 22, 3, 4 } ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 11, 2, 22, 3, 4, 5 } ) );
+
+    Print( "Add an item to the end" );
+    s.Add( 44 );
+    Assert(
+        s.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 11, 2, 22, 3, 4, 44 } ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 11, 2, 22, 3, 4, 44, 5 } ) );
+
+    Print( "Remove an item from the beginning" );
+    s.Remove( Integer.From( 0 ) );
+    Assert(
+        s.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 2, 22, 3, 4, 44 } ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 2, 22, 3, 4, 44, 5 } ) );
+
+    Print( "Remove an item from the middle" );
+    s.Remove( Integer.From( 1 ) );
+    Assert(
+        s.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 2, 3, 4, 44 } ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 2, 3, 4, 44, 5 } ) );
+
+    Print( "Remove an item from the end" );
+    s.Remove( Integer.From( 3 ) );
+    Assert(
+        s.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 2, 3, 4 } ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 2, 3, 4, 5 } ) );
+
+    Print( "Remove all items" );
+    s.Remove( Integer.From( 0 ) );
+    s.Remove( Integer.From( 0 ) );
+    s.Remove( Integer.From( 0 ) );
+    Assert(
+        s.Stream().AsEnumerable().SequenceEqual(
+            new int[] { } ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 5 } ) );
+
+    Print( "Add items back" );
+    s.Add( 2 );
+    s.Add( 3 );
+    s.Add( 4 );
+    Assert(
+        s.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 2, 3, 4 } ) );
+    Assert(
+        c.Stream().AsEnumerable().SequenceEqual(
+            new int[] { 1, 2, 3, 4, 5 } ) );
+}
+
+
 
 
 } // type

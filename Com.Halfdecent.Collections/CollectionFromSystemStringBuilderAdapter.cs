@@ -36,7 +36,7 @@ Com.Halfdecent.Collections
 /// characters
 // =============================================================================
 
-public class
+public partial class
 CollectionFromSystemStringBuilderAdapter
     : IOrderedCollectionRCSG< char >
 {
@@ -69,6 +69,15 @@ From
     get;
     private set;
 }
+
+
+
+// -----------------------------------------------------------------------------
+// IOrderedCollectionRCSG< char >
+// -----------------------------------------------------------------------------
+
+public IOrderedCollectionRCSG< char > Slice( IInteger index, IInteger count ) {
+    return new IndexSliceRCSG< char >( this, index, count ); }
 
 
 

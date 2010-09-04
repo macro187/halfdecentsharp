@@ -16,6 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
 
 
@@ -28,7 +30,7 @@ Com.Halfdecent.Collections
 /// TODO
 // =============================================================================
 
-public interface
+public partial interface
 IOrderedCollectionC<
 #if DOTNET40
     in T
@@ -49,6 +51,41 @@ IOrderedCollectionC<
 
 public void Replace( IInteger key, T replacement ) {
     this.From.Replace( key, replacement ); }
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionC< T >.IndexSlice
+// -----------------------------------------------------------------------------
+
+public
+    void
+Replace(
+    IInteger    key,
+    T           replacement
+)
+{
+    new NonNull().Require( key, new Parameter( "key" ) );
+    new GTE< IInteger >(
+        Integer.From( 0 ),
+#if DOTNET40
+        new ComparableComparer< IReal >() )
+#else
+        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
+#endif
+            .Require( key, new Parameter( "key" ) );
+    new LTE< IInteger >(
+        this.Count,
+#if DOTNET40
+        new ComparableComparer< IReal >() )
+#else
+        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
+#endif
+            .Require( key, new Parameter( "key" ) );
+    this.From.Replace( this.Trans( key ), replacement );
+}
 #endif
 
 

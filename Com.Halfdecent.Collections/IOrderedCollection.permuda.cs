@@ -24,35 +24,79 @@ Com.Halfdecent.Collections
 {
 
 
-// =============================================================================
-/// TODO
-// =============================================================================
-
 public partial interface
-IOrderedCollectionRCG<
-    T
->
-    : IOrderedCollectionRC< T >
-    , IOrderedCollectionRG< T >
-    , IOrderedCollectionCG< T >
-    , IUniqueKeyedCollectionRCG< IInteger, T >
+IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 {
 
 
 
-#if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IOrderedCollectionRCG< T >.Proxy
+// Methods
 // -----------------------------------------------------------------------------
-#endif
+
+    /*PERMUDA NEWSLICE*/ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
+Slice(
+    IInteger    index,
+    IInteger    count
+);
 
 
 
-#if TRAITOR
-// -----------------------------------------------------------------------------
-// Trait IOrderedCollectionRCG< T >.IndexSlice
-// -----------------------------------------------------------------------------
-#endif
+#region PERMUDA
+// permute _RCSG
+// filename IOrderedCollection/*PERMUDA*//*PERMUDA FILESUFFIX*/.slice.cs
+#endregion
+#region PERMUDA FILESUFFIX
+// R:       _T
+// C:       _T
+// S:
+// G:       _T
+// RC:      _T
+// RS:      _T
+// RG:      _T
+// CS:      _T
+// CG:      _T
+// SG:      _T
+// RCS:     _T
+// RCG:     _T
+// RSG:     _T
+// CSG:     _T
+// RCSG:    _T
+#endregion
+#region PERMUDA TYPESUFFIX
+// R:       < T >
+// C:       < T >
+// S:
+// G:       < T >
+// RC:      < T >
+// RS:      < T >
+// RG:      < T >
+// CS:      < T >
+// CG:      < T >
+// SG:      < T >
+// RCS:     < T >
+// RCG:     < T >
+// RSG:     < T >
+// CSG:     < T >
+// RCSG:    < T >
+#endregion
+#region PERMUDA NEWSLICE
+// R:       new
+// C:       new
+// S:       new
+// G:       new
+// RC:      new
+// RS:      new
+// RG:      new
+// CS:      new
+// CG:      new
+// SG:      new
+// RCS:     new
+// RCG:     new
+// RSG:     new
+// CSG:     new
+// RCSG:    new
+#endregion
 
 
 

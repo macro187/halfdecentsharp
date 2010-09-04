@@ -29,7 +29,7 @@ Com.Halfdecent.Collections
 /// TODO
 // =============================================================================
 
-public interface
+public partial interface
 IOrderedCollectionRC<
     T
 >
@@ -47,6 +47,23 @@ IOrderedCollectionRC<
 
 public IFilter< T, T > GetAndReplaceAll( IInteger key ) {
     return this.From.GetAndReplaceAll( key ); }
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionRC< T >.IndexSlice
+// -----------------------------------------------------------------------------
+
+public IFilter< T, T > GetAndReplaceAll( IInteger key ) {
+    return KeyedCollection
+        .GetAndReplaceAllViaUniqueKeyedCollection( this, key ); }
+
+
+public IFilter< T, T > GetAndReplaceWhere( System.Predicate< T > where ) {
+    return Collection
+        .GetAndReplaceWhereViaUniqueKeyedCollection( this, where ); }
 #endif
 
 

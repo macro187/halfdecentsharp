@@ -16,6 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Meta;
+using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
 
 
@@ -28,7 +30,7 @@ Com.Halfdecent.Collections
 /// TODO
 // =============================================================================
 
-public interface
+public partial interface
 IOrderedCollectionS
     : IOrderedCollection
     , IUniqueKeyedCollectionS< IInteger >
@@ -44,6 +46,44 @@ IOrderedCollectionS
 public void RemoveAll( IInteger key ) { this.From.RemoveAll( key ); }
 
 public void Remove( IInteger key ) { this.From.Remove( key ); }
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionS.IndexSlice
+// -----------------------------------------------------------------------------
+
+public
+    void
+Remove(
+    IInteger key
+)
+{
+    new NonNull().Require( key, new Parameter( "key" ) );
+    new GTE< IInteger >(
+        Integer.From( 0 ),
+#if DOTNET40
+        new ComparableComparer< IReal >() )
+#else
+        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
+#endif
+            .Require( key, new Parameter( "key" ) );
+    new LTE< IInteger >(
+        this.Count,
+#if DOTNET40
+        new ComparableComparer< IReal >() )
+#else
+        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
+#endif
+            .Require( key, new Parameter( "key" ) );
+    this.From.Remove( this.Trans( key ) );
+    this.SliceCount = this.SliceCount.Minus( Integer.From( 1 ) );
+}
+
+
+public void RemoveAll( IInteger key ) { this.Remove( key ); }
 #endif
 
 

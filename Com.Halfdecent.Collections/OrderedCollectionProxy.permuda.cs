@@ -66,6 +66,59 @@ From
 
 
 
+#if TRAITOR
+// Trait OrderedCollectionProxy/*PERMUDA*/.Slice< T >
+
+    IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
+IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
+    IInteger index,
+    IInteger count
+)
+{
+    return this.From.Slice( index, count );
+}
+#endif
+
+
+
+#if TRAITOR
+// Trait OrderedCollectionProxy/*PERMUDA*/.Slice< in T >
+
+    IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
+IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
+    IInteger index,
+    IInteger count
+)
+{
+#if DOTNET40
+    return this.From.Slice( index, count );
+#else
+    return this.From.Contravary< TFrom, T >().Slice( index, count );
+#endif
+}
+#endif
+
+
+
+#if TRAITOR
+// Trait OrderedCollectionProxy/*PERMUDA*/.Slice< out T >
+
+    IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
+IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
+    IInteger index,
+    IInteger count
+)
+{
+#if DOTNET40
+    return this.From.Slice( index, count );
+#else
+    return this.From.Covary< TFrom, T >().Slice( index, count );
+#endif
+}
+#endif
+
+
+
 #region PERMUDA
 // permute _RCSG
 // filename OrderedCollection/*PERMUDA*/Proxy/*PERMUDA FILESUFFIX*/.cs
@@ -155,21 +208,32 @@ From
 // CSG:     < T >
 // RCSG:    < T >
 #endregion
+#region PERMUDA TRAITS _
+// OrderedCollectionProxy.Slice< T >
+#endregion
 #region PERMUDA TRAITS R
 // ICollectionR< out T >.Proxy
 // IOrderedCollectionR< out T >.Proxy
+// OrderedCollectionProxy.Slice< out T >
+// OrderedCollectionProxyR.Slice< out T >
 #endregion
 #region PERMUDA TRAITS C
 // ICollectionC< T >.Proxy
 // IOrderedCollectionC< T >.Proxy
+// OrderedCollectionProxy.Slice< in T >
+// OrderedCollectionProxyC.Slice< in T >
 #endregion
 #region PERMUDA TRAITS S
 // ICollectionS.Proxy
 // IOrderedCollectionS.Proxy
+// OrderedCollectionProxy.Slice< T >
+// OrderedCollectionProxyS.Slice< T >
 #endregion
 #region PERMUDA TRAITS G
 // ICollectionG< T >.Proxy
 // IOrderedCollectionG< T >.Proxy
+// OrderedCollectionProxy.Slice< in T >
+// OrderedCollectionProxyG.Slice< in T >
 #endregion
 #region PERMUDA TRAITS RC
 // ICollectionR< T >.Proxy
@@ -178,6 +242,10 @@ From
 // IOrderedCollectionR< T >.Proxy
 // IOrderedCollectionC< T >.Proxy
 // IOrderedCollectionRC< T >.Proxy
+// OrderedCollectionProxy.Slice< T >
+// OrderedCollectionProxyR.Slice< T >
+// OrderedCollectionProxyC.Slice< T >
+// OrderedCollectionProxyRC.Slice< T >
 #endregion
 #region PERMUDA TRAITS RS
 // ICollectionR< T >.Proxy
@@ -186,6 +254,10 @@ From
 // IOrderedCollectionR< T >.Proxy
 // IOrderedCollectionS.Proxy
 // IOrderedCollectionRS< T >.Proxy
+// OrderedCollectionProxy.Slice< T >
+// OrderedCollectionProxyR.Slice< T >
+// OrderedCollectionProxyS.Slice< T >
+// OrderedCollectionProxyRS.Slice< T >
 #endregion
 #region PERMUDA TRAITS RG
 // ICollectionR< T >.Proxy
@@ -194,6 +266,10 @@ From
 // IOrderedCollectionR< T >.Proxy
 // IOrderedCollectionG< T >.Proxy
 // IOrderedCollectionRG< T >.Proxy
+// OrderedCollectionProxy.Slice< T >
+// OrderedCollectionProxyR.Slice< T >
+// OrderedCollectionProxyG.Slice< T >
+// OrderedCollectionProxyRG.Slice< T >
 #endregion
 #region PERMUDA TRAITS CS
 // ICollectionC< T >.Proxy
@@ -202,6 +278,10 @@ From
 // IOrderedCollectionC< T >.Proxy
 // IOrderedCollectionS.Proxy
 // IOrderedCollectionCS< T >.Proxy
+// OrderedCollectionProxy.Slice< in T >
+// OrderedCollectionProxyC.Slice< in T >
+// OrderedCollectionProxyS.Slice< in T >
+// OrderedCollectionProxyCS.Slice< in T >
 #endregion
 #region PERMUDA TRAITS CG
 // ICollectionC< T >.Proxy
@@ -210,6 +290,10 @@ From
 // IOrderedCollectionC< T >.Proxy
 // IOrderedCollectionG< T >.Proxy
 // IOrderedCollectionCG< T >.Proxy
+// OrderedCollectionProxy.Slice< in T >
+// OrderedCollectionProxyC.Slice< in T >
+// OrderedCollectionProxyG.Slice< in T >
+// OrderedCollectionProxyCG.Slice< in T >
 #endregion
 #region PERMUDA TRAITS SG
 // ICollectionS.Proxy
@@ -218,6 +302,10 @@ From
 // IOrderedCollectionS.Proxy
 // IOrderedCollectionG< T >.Proxy
 // IOrderedCollectionSG< T >.Proxy
+// OrderedCollectionProxy.Slice< in T >
+// OrderedCollectionProxyS.Slice< in T >
+// OrderedCollectionProxyG.Slice< in T >
+// OrderedCollectionProxySG.Slice< in T >
 #endregion
 #region PERMUDA TRAITS RCS
 // ICollectionR< T >.Proxy
@@ -234,6 +322,14 @@ From
 // IOrderedCollectionRS< T >.Proxy
 // IOrderedCollectionCS< T >.Proxy
 // IOrderedCollectionRCS< T >.Proxy
+// OrderedCollectionProxy.Slice< T >
+// OrderedCollectionProxyR.Slice< T >
+// OrderedCollectionProxyC.Slice< T >
+// OrderedCollectionProxyS.Slice< T >
+// OrderedCollectionProxyRC.Slice< T >
+// OrderedCollectionProxyRS.Slice< T >
+// OrderedCollectionProxyCS.Slice< T >
+// OrderedCollectionProxyRCS.Slice< T >
 #endregion
 #region PERMUDA TRAITS RCG
 // ICollectionR< T >.Proxy
@@ -250,6 +346,14 @@ From
 // IOrderedCollectionRG< T >.Proxy
 // IOrderedCollectionCG< T >.Proxy
 // IOrderedCollectionRCG< T >.Proxy
+// OrderedCollectionProxy.Slice< T >
+// OrderedCollectionProxyR.Slice< T >
+// OrderedCollectionProxyC.Slice< T >
+// OrderedCollectionProxyG.Slice< T >
+// OrderedCollectionProxyRC.Slice< T >
+// OrderedCollectionProxyRG.Slice< T >
+// OrderedCollectionProxyCG.Slice< T >
+// OrderedCollectionProxyRCG.Slice< T >
 #endregion
 #region PERMUDA TRAITS RSG
 // ICollectionR< T >.Proxy
@@ -266,6 +370,14 @@ From
 // IOrderedCollectionRG< T >.Proxy
 // IOrderedCollectionSG< T >.Proxy
 // IOrderedCollectionRSG< T >.Proxy
+// OrderedCollectionProxy.Slice< T >
+// OrderedCollectionProxyR.Slice< T >
+// OrderedCollectionProxyS.Slice< T >
+// OrderedCollectionProxyG.Slice< T >
+// OrderedCollectionProxyRS.Slice< T >
+// OrderedCollectionProxyRG.Slice< T >
+// OrderedCollectionProxySG.Slice< T >
+// OrderedCollectionProxyRSG.Slice< T >
 #endregion
 #region PERMUDA TRAITS CSG
 // ICollectionC< T >.Proxy
@@ -281,6 +393,14 @@ From
 // IOrderedCollectionCG< T >.Proxy
 // IOrderedCollectionSG< T >.Proxy
 // IOrderedCollectionCSG< T >.Proxy
+// OrderedCollectionProxy.Slice< T >
+// OrderedCollectionProxyC.Slice< T >
+// OrderedCollectionProxyS.Slice< T >
+// OrderedCollectionProxyG.Slice< T >
+// OrderedCollectionProxyCS.Slice< T >
+// OrderedCollectionProxyCG.Slice< T >
+// OrderedCollectionProxySG.Slice< T >
+// OrderedCollectionProxyCSG.Slice< T >
 #endregion
 #region PERMUDA TRAITS RCSG
 // ICollectionR< T >.Proxy
@@ -311,6 +431,22 @@ From
 // IOrderedCollectionRSG< T >.Proxy
 // IOrderedCollectionCSG< T >.Proxy
 // IOrderedCollectionRCSG< T >.Proxy
+// OrderedCollectionProxy.Slice< T >
+// OrderedCollectionProxyR.Slice< T >
+// OrderedCollectionProxyC.Slice< T >
+// OrderedCollectionProxyS.Slice< T >
+// OrderedCollectionProxyG.Slice< T >
+// OrderedCollectionProxyRC.Slice< T >
+// OrderedCollectionProxyRS.Slice< T >
+// OrderedCollectionProxyRG.Slice< T >
+// OrderedCollectionProxyCS.Slice< T >
+// OrderedCollectionProxyCG.Slice< T >
+// OrderedCollectionProxySG.Slice< T >
+// OrderedCollectionProxyRCS.Slice< T >
+// OrderedCollectionProxyRCG.Slice< T >
+// OrderedCollectionProxyRSG.Slice< T >
+// OrderedCollectionProxyCSG.Slice< T >
+// OrderedCollectionProxyRCSG.Slice< T >
 #endregion
 
 

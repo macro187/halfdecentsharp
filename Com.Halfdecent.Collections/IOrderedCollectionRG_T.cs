@@ -28,7 +28,7 @@ Com.Halfdecent.Collections
 /// TODO
 // =============================================================================
 
-public interface
+public partial interface
 IOrderedCollectionRG<
     T
 >
@@ -43,6 +43,14 @@ IOrderedCollectionRG<
 #if TRAITOR
 // -----------------------------------------------------------------------------
 // Trait IOrderedCollectionRG< T >.Proxy
+// -----------------------------------------------------------------------------
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionRG< T >.IndexSlice
 // -----------------------------------------------------------------------------
 #endif
 
