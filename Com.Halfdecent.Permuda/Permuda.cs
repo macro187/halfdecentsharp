@@ -125,6 +125,7 @@ Main(
 
         usepermuda = false;
         permutechars = "";
+        combos = new string[]{};
         permuteblank = false;
         filenamepattern = "";
         vars = new Dictionary< string, IDictionary< string, string > >();
@@ -186,6 +187,7 @@ AddVar(
 
 private static bool     usepermuda = false;
 private static string   permutechars = "";
+private static string[] combos;
 private static bool     permuteblank = false;
 private static string   filenamepattern = "";
 private static IDictionary< string, IDictionary< string, string > > vars;
@@ -246,8 +248,9 @@ Scan(
 
             // ...of a "#region PERMUDA" block
             } else if( blockvar == "" && blockcombo == "" ) {
-                if( permutechars == "" )
-                    Error( path, blockline, "No permutechars specified" );
+                if( permutechars == "" && combos.Length == 0 )
+                    Error( path, blockline,
+                        "No permutechars or combos specified" );
                 if( filenamepattern == "" )
                     Error( path, blockline, "No filenamechars specified" );
             }
@@ -265,6 +268,8 @@ Scan(
 
             // "// permute <characters>"
             if( line.StartsWith( "// permute " ) ) {
+                if( combos.Length > 0 )
+                    Error( path, linenum, "Combos already specified" );
                 permutechars = line.Substring( 11 ).Trim();
                 if( permutechars.StartsWith( "_" ) ) {
                     permuteblank = true;
@@ -277,6 +282,17 @@ Scan(
                         "No permutation character(s) specified" );
                 //Info( path, linenum, "Permutation chars: '{0}'", permutechars );
                 //Info( path, linenum, "Blank permutation: {0}", permuteblank );
+                continue;
+            }
+
+            // "// combos <combo>[ <combo2>[ ...]]"
+            if( line.StartsWith( "// combos " ) ) {
+                if( permutechars != "" )
+                    Error( path, linenum, "Permutechars already specified" );
+                // TODO handle '_' permutation
+                combos = line.Substring( 10 ).Trim().Split( ' ' );
+                if( combos.Length == 0 )
+                    Error( path, linenum, "No combo(s) specified" );
             }
 
             // "// filename <filenamepattern>"
@@ -333,8 +349,12 @@ CheckForAllVariableCombos(
 )
 {
     // Check for all combos for all vars
+    IEnumerable< string > combosinuse =
+        permutechars != ""
+            ? AllCharCombinations( permutechars )
+            : combos;
     foreach( string varname in vars.Keys )
-        foreach( string combo in AllCharCombinations( permutechars ) )
+        foreach( string combo in combosinuse )
             if( !vars[ varname ].ContainsKey( combo ) )
                 Error( path, 1,
                     "No definition for Permuda variable '{0}' combo '{1}'",
@@ -352,7 +372,12 @@ WritePermutations(
 {
     if( permuteblank )
         WritePermutation( inpath, outdir, "" );
-    foreach( string combo in AllCharCombinations( permutechars ) )
+
+    IEnumerable< string > combosinuse =
+        permutechars != ""
+            ? AllCharCombinations( permutechars )
+            : combos;
+    foreach( string combo in combosinuse )
         WritePermutation( inpath, outdir, combo );
 }
 
