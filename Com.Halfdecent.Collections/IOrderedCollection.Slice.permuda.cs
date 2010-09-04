@@ -25,7 +25,12 @@ Com.Halfdecent.Collections
 
 
 public partial interface
-IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
+IOrderedCollection/*PERMUDA*/
+#if DOTNET40
+/*PERMUDA VARIANTTYPESUFFIX*/
+#else
+/*PERMUDA TYPESUFFIX*/
+#endif
 {
 
 
@@ -65,6 +70,23 @@ Slice(
 // RSG:     _T
 // CSG:     _T
 // RCSG:    _T
+#endregion
+#region PERMUDA VARIANTTYPESUFFIX
+// R:       < out T >
+// C:       < in T >
+// S:
+// G:       < in T >
+// RC:      < T >
+// RS:      < T >
+// RG:      < T >
+// CS:      < in T >
+// CG:      < in T >
+// SG:      < in T >
+// RCS:     < T >
+// RCG:     < T >
+// RSG:     < T >
+// CSG:     < T >
+// RCSG:    < T >
 #endregion
 #region PERMUDA TYPESUFFIX
 // R:       < T >
