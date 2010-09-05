@@ -31,6 +31,26 @@ Tuple
 
 
 
+/// Assign the tuple values to the specifed variables
+///
+public static
+    void
+AssignTo<
+    T1,
+    T2
+>(
+    this ITuple< T1, T2 >   dis,
+    out T1                  a,
+    out T2                  b
+)
+{
+    if( object.ReferenceEquals( dis, null ) )
+        throw new System.ArgumentNullException( "dis" );
+    a = dis.A;
+    b = dis.B;
+}
+
+
 public static
     ITuple< TTo1, TTo2 >
 Covary<

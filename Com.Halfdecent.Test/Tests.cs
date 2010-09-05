@@ -576,6 +576,13 @@ Test_Tuple()
     Assert( strings.A == "A" );
     Assert( strings.B == "B" );
 
+    Print( "AssignTo() variables and check" );
+    string a;
+    string b;
+    strings.AssignTo( out a, out b );
+    Assert( a == "A" );
+    Assert( b == "B" );
+
 #if DOTNET40
     Print( "C# covary to objects" );
     objects = strings;
