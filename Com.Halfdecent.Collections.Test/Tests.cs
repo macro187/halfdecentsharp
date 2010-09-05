@@ -508,6 +508,8 @@ void
 Test_IOrderedCollectionR_T_SplitWhere()
 {
     IOrderedCollectionR< char > chars;
+    IOrderedCollectionR< char > s1;
+    IOrderedCollectionR< char > s2;
     IStream< IOrderedCollectionR< char > > s;
 
     Print( ".SplitWhere()" );
@@ -541,18 +543,46 @@ Test_IOrderedCollectionR_T_SplitWhere()
     Assert( !s.TryPull( out chars ) );
 
     Print( ".SplitAtFirstWhere()" );
-    s = "abcbc"
+    "abcbc"
         .AsHalfdecentCollection()
-        .SplitAtFirstWhere( c => c == 'b' );
-    Assert( s.TryPull( out chars ) );
+        .SplitAtFirstWhere( c => c == 'b' )
+        .AssignTo( out s1, out s2 );
     Assert(
-        chars.Stream().AsEnumerable().SequenceEqual(
+        s1.Stream().AsEnumerable().SequenceEqual(
             new char[]{ 'a' } ) );
-    Assert( s.TryPull( out chars ) );
     Assert(
-        chars.Stream().AsEnumerable().SequenceEqual(
+        s2.Stream().AsEnumerable().SequenceEqual(
             new char[]{ 'c', 'b', 'c' } ) );
-    Assert( !s.TryPull( out chars ) );
+    "bbb"
+        .AsHalfdecentCollection()
+        .SplitAtFirstWhere( c => c == 'b' )
+        .AssignTo( out s1, out s2 );
+    Assert(
+        s1.Stream().AsEnumerable().SequenceEqual(
+            new char[]{} ) );
+    Assert(
+        s2.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'b', 'b' } ) );
+    "aaa"
+        .AsHalfdecentCollection()
+        .SplitAtFirstWhere( c => c == 'b' )
+        .AssignTo( out s1, out s2 );
+    Assert(
+        s1.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'a', 'a', 'a' } ) );
+    Assert(
+        s2.Stream().AsEnumerable().SequenceEqual(
+            new char[]{} ) );
+    "aaab"
+        .AsHalfdecentCollection()
+        .SplitAtFirstWhere( c => c == 'b' )
+        .AssignTo( out s1, out s2 );
+    Assert(
+        s1.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'a', 'a', 'a' } ) );
+    Assert(
+        s2.Stream().AsEnumerable().SequenceEqual(
+            new char[]{} ) );
 
     Print( ".SplitBeforeWhere()" );
     s = "OneTwo"
@@ -573,18 +603,46 @@ Test_IOrderedCollectionR_T_SplitWhere()
     Assert( !s.TryPull( out chars ) );
 
     Print( ".SplitBeforeFirstWhere()" );
-    s = "   a b c"
+    "abcbc"
         .AsHalfdecentCollection()
-        .SplitBeforeFirstWhere( c => !char.IsWhiteSpace( c ) );
-    Assert( s.TryPull( out chars ) );
+        .SplitBeforeFirstWhere( c => c == 'b' )
+        .AssignTo( out s1, out s2 );
     Assert(
-        chars.Stream().AsEnumerable().SequenceEqual(
-            new char[]{ ' ', ' ', ' ' } ) );
-    Assert( s.TryPull( out chars ) );
+        s1.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'a' } ) );
     Assert(
-        chars.Stream().AsEnumerable().SequenceEqual(
-            new char[]{ 'a', ' ', 'b', ' ', 'c' } ) );
-    Assert( !s.TryPull( out chars ) );
+        s2.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'b', 'c', 'b', 'c' } ) );
+    "bbb"
+        .AsHalfdecentCollection()
+        .SplitBeforeFirstWhere( c => c == 'b' )
+        .AssignTo( out s1, out s2 );
+    Assert(
+        s1.Stream().AsEnumerable().SequenceEqual(
+            new char[]{} ) );
+    Assert(
+        s2.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'b', 'b', 'b' } ) );
+    "aaa"
+        .AsHalfdecentCollection()
+        .SplitBeforeFirstWhere( c => c == 'b' )
+        .AssignTo( out s1, out s2 );
+    Assert(
+        s1.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'a', 'a', 'a' } ) );
+    Assert(
+        s2.Stream().AsEnumerable().SequenceEqual(
+            new char[]{} ) );
+    "aaab"
+        .AsHalfdecentCollection()
+        .SplitBeforeFirstWhere( c => c == 'b' )
+        .AssignTo( out s1, out s2 );
+    Assert(
+        s1.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'a', 'a', 'a' } ) );
+    Assert(
+        s2.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'b' } ) );
 }
 
 

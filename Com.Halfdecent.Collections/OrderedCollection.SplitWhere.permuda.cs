@@ -17,6 +17,7 @@
 
 
 using SCG = System.Collections.Generic;
+using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
@@ -39,7 +40,7 @@ OrderedCollection/*PERMUDA*/
 // -----------------------------------------------------------------------------
 
 /// Split the collection into by-reference slices at elements matching
-/// specified criteria, with those elements excluded
+/// specified criteria, with those elements omitted
 ///
 /// If no separator elements are found, a slice consisting of the entire
 /// collection is returned.
@@ -63,16 +64,19 @@ SplitWhere<
 }
 
 
-/// Split the collection into (a maximum of) two by-reference slices at the
-/// first element matching specified criteria, with that element excluded
+/// Split the collection into two by-reference slices at the first element
+/// matching specified criteria, with that element omitted
 ///
-/// If no separator element is found, a slice consisting of the entire
-/// collection is returned.
+/// If a separator element was not found or was the last item in the
+/// collection, the second slice will be a zero-length slice at the end of the
+/// collection.
 ///
 /// The slices are produced using <tt>.Slice()</tt>.
 ///
 public static
-    IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
+    ITuple<
+        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/,
+        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
 SplitAtFirstWhere<
     T
 >(
@@ -82,9 +86,21 @@ SplitAtFirstWhere<
 {
     new NonNull().Require( dis, new Parameter( "dis" ) );
     new NonNull().Require( where, new Parameter( "where" ) );
-    return
+
+    IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ > slices =
         SplitWhereIterator< T >( dis, where, false, Integer.From( 2 ) )
         .AsStream();
+
+    IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s1;
+    IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s2;
+    s1 = slices.Pull();
+    if( !slices.TryPull( out s2 ) )
+        s2 = dis.Slice( dis.Count, Integer.From( 0 ) );
+
+    return new Tuple< 
+        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/,
+        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >(
+            s1, s2 );
 }
 
 
@@ -113,16 +129,18 @@ SplitBeforeWhere<
 }
 
 
-/// Split the collection into (a maximum of) two by-reference slices at the
-/// first element matching specified criteria, with that element included
+/// Split the collection into two by-reference slices before the first element
+/// matching specified criteria, with that element included in the second slice
 ///
-/// If no separator element is found, a slice consisting of the entire
-/// collection is returned.
+/// If a separator element was not found, the second slice will be a
+/// zero-length slice at the end of the collection.
 ///
 /// The slices are produced using <tt>.Slice()</tt>.
 ///
 public static
-    IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
+    ITuple<
+        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/,
+        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
 SplitBeforeFirstWhere<
     T
 >(
@@ -132,9 +150,21 @@ SplitBeforeFirstWhere<
 {
     new NonNull().Require( dis, new Parameter( "dis" ) );
     new NonNull().Require( where, new Parameter( "where" ) );
-    return
+
+    IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ > slices =
         SplitWhereIterator< T >( dis, where, true, Integer.From( 2 ) )
         .AsStream();
+
+    IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s1;
+    IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s2;
+    s1 = slices.Pull();
+    if( !slices.TryPull( out s2 ) )
+        s2 = dis.Slice( dis.Count, Integer.From( 0 ) );
+
+    return new Tuple< 
+        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/,
+        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >(
+            s1, s2 );
 }
 
 
