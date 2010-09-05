@@ -502,14 +502,16 @@ Test_IndexSliceRCSG_T()
 }
 
 
-[Test( "IOrderedCollectionR< T >.SplitWhere()" )]
+[Test( "IOrderedCollectionR< T >.SplitWhere() and friends" )]
 public static
 void
 Test_IOrderedCollectionR_T_SplitWhere()
 {
     IOrderedCollectionR< char > chars;
-    IStream< IOrderedCollectionR< char > > s =
-        " abc def  ghi "
+    IStream< IOrderedCollectionR< char > > s;
+
+    Print( ".SplitWhere()" );
+    s = " abc def  ghi "
         .AsHalfdecentCollection()
         .SplitWhere( c => c == ' ' );
     Assert( s.TryPull( out chars ) );
@@ -536,6 +538,52 @@ Test_IOrderedCollectionR_T_SplitWhere()
     Assert(
         chars.Stream().AsEnumerable().SequenceEqual(
             new char[]{} ) );
+    Assert( !s.TryPull( out chars ) );
+
+    Print( ".SplitAtFirstWhere()" );
+    s = "abcbc"
+        .AsHalfdecentCollection()
+        .SplitAtFirstWhere( c => c == 'b' );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'a' } ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'c', 'b', 'c' } ) );
+    Assert( !s.TryPull( out chars ) );
+
+    Print( ".SplitBeforeWhere()" );
+    s = "OneTwo"
+        .AsHalfdecentCollection()
+        .SplitBeforeWhere( c => char.IsUpper( c ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{} ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'O', 'n', 'e' } ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'T', 'w', 'o' } ) );
+    Assert( !s.TryPull( out chars ) );
+
+    Print( ".SplitBeforeFirstWhere()" );
+    s = "   a b c"
+        .AsHalfdecentCollection()
+        .SplitBeforeFirstWhere( c => !char.IsWhiteSpace( c ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ ' ', ' ', ' ' } ) );
+    Assert( s.TryPull( out chars ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'a', ' ', 'b', ' ', 'c' } ) );
     Assert( !s.TryPull( out chars ) );
 }
 

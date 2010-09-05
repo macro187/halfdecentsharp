@@ -38,12 +38,13 @@ OrderedCollection/*PERMUDA*/
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Split the collection into slices at single elements matching the specified
-/// criteria
+/// Split the collection into by-reference slices at elements matching
+/// specified criteria, with those elements excluded
+///
+/// If no separator elements are found, a slice consisting of the entire
+/// collection is returned.
 ///
 /// The slices are produced using <tt>.Slice()</tt>.
-///
-/// The elements at the split points are not included in the slices.
 ///
 public static
     IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
@@ -56,8 +57,86 @@ SplitWhere<
 {
     new NonNull().Require( dis, new Parameter( "dis" ) );
     new NonNull().Require( where, new Parameter( "where" ) );
-    return SplitWhereIterator< T >( dis, where ).AsStream();
+    return
+        SplitWhereIterator< T >( dis, where, false, Integer.From( -1 ) )
+        .AsStream();
 }
+
+
+/// Split the collection into (a maximum of) two by-reference slices at the
+/// first element matching specified criteria, with that element excluded
+///
+/// If no separator element is found, a slice consisting of the entire
+/// collection is returned.
+///
+/// The slices are produced using <tt>.Slice()</tt>.
+///
+public static
+    IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
+SplitAtFirstWhere<
+    T
+>(
+    this IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
+    System.Predicate< T > where
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( where, new Parameter( "where" ) );
+    return
+        SplitWhereIterator< T >( dis, where, false, Integer.From( 2 ) )
+        .AsStream();
+}
+
+
+/// Split the collection into by-reference slices at elements matching
+/// specified criteria, with those elements included
+///
+/// If no separator elements are found, a slice consisting of the entire
+/// collection is returned.
+///
+/// The slices are produced using <tt>.Slice()</tt>.
+///
+public static
+    IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
+SplitBeforeWhere<
+    T
+>(
+    this IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
+    System.Predicate< T > where
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( where, new Parameter( "where" ) );
+    return
+        SplitWhereIterator< T >( dis, where, true, Integer.From( -1 ) )
+        .AsStream();
+}
+
+
+/// Split the collection into (a maximum of) two by-reference slices at the
+/// first element matching specified criteria, with that element included
+///
+/// If no separator element is found, a slice consisting of the entire
+/// collection is returned.
+///
+/// The slices are produced using <tt>.Slice()</tt>.
+///
+public static
+    IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
+SplitBeforeFirstWhere<
+    T
+>(
+    this IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
+    System.Predicate< T > where
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( where, new Parameter( "where" ) );
+    return
+        SplitWhereIterator< T >( dis, where, true, Integer.From( 2 ) )
+        .AsStream();
+}
+
 
 private static
     SCG.IEnumerable< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
@@ -65,11 +144,19 @@ SplitWhereIterator<
     T
 >(
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
-    System.Predicate< T > where
+    System.Predicate< T >   where,
+    bool                    includeSeparator,
+    IInteger                maxSlices
 )
 {
+    if( maxSlices.Equals( Integer.From( 1 ) ) ) {
+        yield return dis.Slice( Integer.From( 0 ), dis.Count );
+        yield break;
+    }
+
     IInteger from = Integer.From( 0 );
     IInteger count = Integer.From( 0 );
+    IInteger slices = Integer.From( 0 );
     for(
         IInteger i = Integer.From( 0 );
         i.LT( dis.Count );
@@ -80,10 +167,25 @@ SplitWhereIterator<
 
             // Yield the slice leading up to this separator
             yield return dis.Slice( from, count );
+            slices = slices.Plus( Integer.From( 1 ) );
 
-            // Next slice starts at the next item
-            from = i.Plus( Integer.From( 1 ) );
-            count = Integer.From( 0 );
+            // Start the next slice
+            if( includeSeparator ) {
+                from = i;
+                count = Integer.From( 1 );
+            } else {
+                from = i.Plus( Integer.From( 1 ) );
+                count = Integer.From( 0 );
+            }
+
+            // If we're one away from the desired number of slices, bail out
+            // and use the rest as the last slice
+            if( maxSlices.GT( Integer.From( 0 ) ) ) {
+                if( slices.GTE( maxSlices.Minus( Integer.From( 1 ) ) ) ) {
+                    count = dis.Count.Minus( from );
+                    break;
+                }
+            }
 
         // This item is not a separator
         } else {
