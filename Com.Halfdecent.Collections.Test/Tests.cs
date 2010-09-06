@@ -502,6 +502,37 @@ Test_IndexSliceRCSG_T()
 }
 
 
+[Test( "IOrderedCollectionS.RemoveFirst() and friends" )]
+public static
+void
+Test_ICollectionS_RemoveFirst()
+{
+    IOrderedCollectionRCSG< char > chars =
+        new ArrayList< char >( "abcdefg".AsHalfdecentCollection() );
+
+    Print( ".RemoveFirst()" );
+    chars.RemoveFirst();
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'b', 'c', 'd', 'e', 'f', 'g' } ) );
+    Print( ".RemoveFirst( IInteger )" );
+    chars.RemoveFirst( Integer.From( 2 ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'd', 'e', 'f', 'g' } ) );
+    Print( ".RemoveFirst()" );
+    chars.RemoveLast();
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'd', 'e', 'f' } ) );
+    Print( ".RemoveLast( IInteger )" );
+    chars.RemoveLast( Integer.From( 2 ) );
+    Assert(
+        chars.Stream().AsEnumerable().SequenceEqual(
+            new char[]{ 'd' } ) );
+}
+
+
 [Test( "IOrderedCollectionR< T >.SplitWhere() and friends" )]
 public static
 void
