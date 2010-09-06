@@ -18,6 +18,7 @@
 
 using SCG = System.Collections.Generic;
 using System.Linq;
+using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -119,6 +120,75 @@ Pull<
     if( !stream.TryPull( out r ) )
         throw new EmptyException( new This() );
     return r;
+}
+
+
+public static
+    bool
+SequenceEqual<
+    T
+>(
+    this IStream< T >   dis,
+    IStream< T >        that
+)
+{
+    return dis.SequenceEqual(
+        that, new ObjectComparer().Contravary< object, T >() );
+}
+
+
+public static
+    bool
+SequenceEqual<
+    T,
+    TEquatable
+    ///< Definition of equality to use
+>(
+    this IStream< T >   dis,
+    IStream< T >        that
+)
+    where T : TEquatable
+    where TEquatable : IEquatable< TEquatable >
+{
+    return dis.SequenceEqual< T >(
+        that,
+        new EquatableComparer< TEquatable >().Contravary< TEquatable, T >() );
+}
+
+
+public static
+    bool
+SequenceEqual<
+    T
+>(
+    this IStream< T >       dis,
+    IStream< T >            that,
+    IEqualityComparer< T >  comparer
+    ///< Equality comparer to use
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( that, new Parameter( "that" ) );
+    new NonNull().Require( comparer, new Parameter( "comparer" ) );
+
+    T a, b;
+    bool havea, haveb;
+
+    for( ;; ) {
+
+        // Try grabbing the next items
+        havea = dis.TryPull( out a );
+        haveb = that.TryPull( out b );
+
+        // If we've made it to the end of both, they're equal
+        if( !havea && !haveb ) return true;
+
+        // If either ended before the other, they're not equal
+        if( havea != haveb ) return false;
+
+        // If the two items aren't equal, they're not equal
+        if( !comparer.Equals( a, b ) ) return false;
+    }
 }
 
 

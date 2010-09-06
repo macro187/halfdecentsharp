@@ -110,7 +110,6 @@ Test_Stream_Pull()
 }
 
 
-
 // A test IStream<T> implementation that yields 3 ints
 private class
 TestStream
@@ -363,6 +362,32 @@ Test_Stream_Covariance()
     Assert( s.AsEnumerable().SequenceEqual( new string[] { "1", "2", "3" } ) );
 }
 #endif
+
+
+[Test( "IStream<T>.SequenceEqual() and friends..." )]
+public static
+void
+Test_IStream_SequenceEqual()
+{
+    Print( ".SequenceEqual<T>( that )" );
+    Assert(
+        "abc".AsStream().SequenceEqual(
+            "abc".AsStream() ) );
+    Assert(
+        "".AsStream().SequenceEqual(
+            "".AsStream() ) );
+    Assert( !
+        "abc".AsStream().SequenceEqual(
+            "def".AsStream() ) );
+    Assert( !
+        "abc".AsStream().SequenceEqual(
+            "abcd".AsStream() ) );
+    Assert( !
+        "abcd".AsStream().SequenceEqual(
+            "abc".AsStream() ) );
+    // TODO Print( ".SequenceEqual<T,TEquatable>( that )" );
+    // TODO Print( ".SequenceEqual<T>( that, comparer )" );
+}
 
 
 [Test( "System.IO.Stream::AsHalfdecentStream()" )]
