@@ -54,7 +54,7 @@ RemoveFirst(
     new NonNull().Require( dis, new Parameter( "dis" ) );
     new GTE< IReal >( Integer.From( 0 ), new ComparableComparer< IReal >() )
         .Require( count, new Parameter( "count" ) );
-    new LT< IReal >( dis.Count, new ComparableComparer< IReal >() )
+    new LTE< IReal >( dis.Count, new ComparableComparer< IReal >() )
         .Require( count, new Parameter( "count" ) );
 
     while( count.GT( Integer.From( 0 ) ) ) {
@@ -85,7 +85,7 @@ RemoveLast(
     new NonNull().Require( dis, new Parameter( "dis" ) );
     new GTE< IReal >( Integer.From( 0 ), new ComparableComparer< IReal >() )
         .Require( count, new Parameter( "count" ) );
-    new LT< IReal >( dis.Count, new ComparableComparer< IReal >() )
+    new LTE< IReal >( dis.Count, new ComparableComparer< IReal >() )
         .Require( count, new Parameter( "count" ) );
 
     while( count.GT( Integer.From( 0 ) ) ) {
