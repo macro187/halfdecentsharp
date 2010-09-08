@@ -55,38 +55,16 @@ IndexSlice/*PERMUDA*/(
 {
     new NonNull().Require( from, new Parameter( "from" ) );
     new NonNull().Require( sliceIndex, new Parameter( "sliceIndex" ) );
-    new GTE< IInteger >(
-        Integer.From( 0 ),
-#if DOTNET40
-        new ComparableComparer< IReal >() )
-#else
-        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
-#endif
+    new GTE< IReal >( Integer.From( 0 ), new ComparableComparer< IReal >() )
             .Require( sliceIndex, new Parameter( "sliceIndex" ) );
-    new LTE< IInteger >(
-        from.Count,
-#if DOTNET40
-        new ComparableComparer< IReal >() )
-#else
-        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
-#endif
+    new LTE< IReal >( from.Count, new ComparableComparer< IReal >() )
             .Require( sliceIndex, new Parameter( "sliceIndex" ) );
     new NonNull().Require( sliceCount, new Parameter( "sliceCount" ) );
-    new GTE< IInteger >(
-        Integer.From( 0 ),
-#if DOTNET40
-        new ComparableComparer< IReal >() )
-#else
-        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
-#endif
+    new GTE< IReal >( Integer.From( 0 ), new ComparableComparer< IReal >() )
             .Require( sliceCount, new Parameter( "sliceCount" ) );
     new LTE< IInteger >(
         from.Count.Minus( sliceIndex ),
-#if DOTNET40
         new ComparableComparer< IReal >() )
-#else
-        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
-#endif
             .Require( sliceCount, new Parameter( "sliceCount" ) );
     this.From = from;
     this.SliceIndex = sliceIndex;
