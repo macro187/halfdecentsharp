@@ -36,6 +36,61 @@ OrderedCollectionR
 
 
 public static
+    bool
+SequenceEqual<
+    T
+>(
+    this IOrderedCollectionR< T >   dis,
+    IOrderedCollectionR< T >        that
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( that, new Parameter( "that" ) );
+    return dis.SequenceEqual< T >(
+        that, new ObjectComparer().Contravary< object, T >() );
+}
+
+
+public static
+    bool
+SequenceEqual<
+    T,
+    TEquatable
+>(
+    this IOrderedCollectionR< T >   dis,
+    IOrderedCollectionR< T >        that
+)
+    where T : TEquatable
+    where TEquatable : IEquatable< TEquatable >
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( that, new Parameter( "that" ) );
+    return dis.SequenceEqual(
+        that,
+        new EquatableComparer< TEquatable >().Contravary< TEquatable, T >() );
+}
+
+
+public static
+    bool
+SequenceEqual<
+    T
+>(
+    this IOrderedCollectionR< T >   dis,
+    IOrderedCollectionR< T >        that,
+    IEqualityComparer< T >          comparer
+)
+{
+    new NonNull().Require( dis, new Parameter( "dis" ) );
+    new NonNull().Require( that, new Parameter( "that" ) );
+    new NonNull().Require( comparer, new Parameter( "comparer" ) );
+
+    if( !dis.Count.Equals( that.Count ) ) return false;
+    return dis.Stream().SequenceEqual( that.Stream(), comparer );
+}
+
+
+public static
     IOrderedCollectionR< T >
 Covary<
     TFrom,

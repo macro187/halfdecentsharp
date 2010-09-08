@@ -677,6 +677,26 @@ Test_IOrderedCollectionR_T_SplitWhere()
 }
 
 
+[Test( "IOrderedCollectionR< T >.SequenceEqual() and friends" )]
+public static
+void
+Test_IOrderedCollectionR_T_SequenceEqual()
+{
+    Assert(
+        "abc".AsHalfdecentCollection().SequenceEqual(
+            "abc".AsHalfdecentCollection() ) );
+    Assert( !
+        "abc".AsHalfdecentCollection().SequenceEqual(
+            "def".AsHalfdecentCollection() ) );
+    Assert( !
+        "abc".AsHalfdecentCollection().SequenceEqual(
+            "abcd".AsHalfdecentCollection() ) );
+    Assert( !
+        "abcd".AsHalfdecentCollection().SequenceEqual(
+            "abc".AsHalfdecentCollection() ) );
+}
+
+
 
 
 } // type
