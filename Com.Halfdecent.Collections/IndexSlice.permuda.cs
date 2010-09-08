@@ -56,16 +56,28 @@ IndexSlice/*PERMUDA*/(
     new NonNull().Require( from, new Parameter( "from" ) );
     new NonNull().Require( sliceIndex, new Parameter( "sliceIndex" ) );
     new GTE< IReal >( Integer.From( 0 ), new ComparableComparer< IReal >() )
+#if !DOTNET40
+        .Contravary< IReal, IInteger >()
+#endif
             .Require( sliceIndex, new Parameter( "sliceIndex" ) );
     new LTE< IReal >( from.Count, new ComparableComparer< IReal >() )
+#if !DOTNET40
+        .Contravary< IReal, IInteger >()
+#endif
             .Require( sliceIndex, new Parameter( "sliceIndex" ) );
     new NonNull().Require( sliceCount, new Parameter( "sliceCount" ) );
     new GTE< IReal >( Integer.From( 0 ), new ComparableComparer< IReal >() )
+#if !DOTNET40
+        .Contravary< IReal, IInteger >()
+#endif
             .Require( sliceCount, new Parameter( "sliceCount" ) );
-    new LTE< IInteger >(
+    new LTE< IReal >(
         from.Count.Minus( sliceIndex ),
         new ComparableComparer< IReal >() )
-            .Require( sliceCount, new Parameter( "sliceCount" ) );
+#if !DOTNET40
+            .Contravary< IReal, IInteger >()
+#endif
+                .Require( sliceCount, new Parameter( "sliceCount" ) );
     this.From = from;
     this.SliceIndex = sliceIndex;
     this.SliceCount = sliceCount;
