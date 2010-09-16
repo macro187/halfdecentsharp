@@ -8,8 +8,8 @@
 --------------------------------------------------------------------------------
 
 
-    Copyright (c) 2009 Ron MacNeil
-    <macro187 AT users DOT sourceforge DOT net>
+    Copyright (c) 2009, 2010
+    Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 
     Permission to use, copy, modify, and distribute this software for any
     purpose with or without fee is hereby granted, provided that the above
@@ -29,7 +29,47 @@
 
 x.  Introduction
 
-    TODO
+    Halfdecent Sharp is a suite of tools and libraries for .NET software
+    development.  The tools aim to be small, task-specific, cross-platform,
+    and suited for use from the command line and scripts.  The libraries aim
+    to improve on - and in some cases replace - those in the base class
+    library.
+
+
+x.  Tools
+
+    -   Resbian, an embedded resource compiler
+    -   Traitor, a C# source code preprocessor implementing simple traits
+        (see http://en.wikipedia.org/wiki/Trait_%28computer_science%29)
+    -   Permuda, a C# source code preprocessor that generates permutations
+        of templated code
+
+
+x.  Libraries
+
+    TODO Introduction to the libraries, philosophy, common aspects, etc.
+
+    - Com.Halfdecent
+    - Com.Halfdecent.Globalisation
+    - Com.Halfdecent.Resources
+    - Com.Halfdecent.Exceptions
+    - Com.Halfdecent.Meta
+    - Com.Halfdecent.RTypes
+    - Com.Halfdecent.Numerics
+    - Com.Halfdecent.Streams
+    - Com.Halfdecent.Cursors
+    - Com.Halfdecent.Collections
+    - Com.Halfdecent.TextTree
+    - Com.Halfdecent.Testing
+
+
+x.  Requirements
+
+    -   Microsoft .NET Framework 3.5 or later, or Mono 2.0 or later
+    -   A Unix shell and standard command-line tools
+    -   GNU Make, at least 3.80 but preferably newer
+    -   Makery build system, available from SVN at
+        http://makery.sourceforge.net/
 
 
 x.  Building
