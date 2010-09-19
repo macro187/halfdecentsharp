@@ -29,25 +29,113 @@
 
 x.  Introduction
 
-    Halfdecent Sharp is a suite of tools and libraries for .NET software
-    development.  The tools aim to be small, task-specific, cross-platform,
-    and suited for use from the command line and scripts.  The libraries aim
-    to improve on - and in some cases replace - those in the base class
-    library.
+    Halfdecent Sharp is a suite of libraries and tools for .NET software
+    development.  The libraries aim to apply certain object-oriented design
+    principles to existing functionality in the Base Class Library, and then
+    to extend that functionality according to the same principles.  The
+    tools aim to be small, task-specific, cross-platform, and suited for use
+    from the command line and scripts.
 
 
-x.  Tools
+x.  Design Principles
 
-    -   Resbian, an embedded resource compiler
-    -   Traitor, a C# source code preprocessor implementing simple traits
-        (see http://en.wikipedia.org/wiki/Trait_%28computer_science%29)
-    -   Permuda, a C# source code preprocessor that generates permutations
-        of templated code
+    -   Use the Type System
+
+        Aggressively push concepts into the static type system, allowing the
+        compiler to help verify their implementation and usage.
+
+
+    -   Abstract Types [1]
+
+        Prefer defining and referencing abstract types.
+
+
+    -   Single Responsibility [2]
+
+        Make types "fine-grained" with each capturing a single aspect, idea,
+        or responsibility reduced to its purest form.  Aggressively factor
+        common aspects out into separate types.
+
+
+    -   Nouns over Verbs
+
+        "Even the simplest procedural logic is hard for humans to verify,
+        but quite complex data structures are fairly easy to model and
+        reason about... It follows that where you see a choice between
+        complexity in data structures and complexity in code, choose the
+        former. In evolving a design, you should actively seek ways to shift
+        complexity from code to data." [3]
+
+        Minimise algorithms and procedures.  Prefer introducing new types
+        over new algorithms.  Maximise algorithm reusability by implementing
+        them in terms of the most general types possible.
+
+
+    -   Resist Optimisation
+
+        "Rule 1. You can't tell where a program is going to spend its time.
+        Bottlenecks occur in surprising places, so don't try to second guess
+        and put in a speed hack until you've proven that's where the
+        bottleneck is.
+
+        Rule 2. Measure. Don't tune for speed until you've measured, and
+        even then don't unless one part of the code overwhelms the rest.
+
+        Rule 3. Fancy algorithms are slow when n is small, and n is usually
+        small. Fancy algorithms have big constants. Until you know that n is
+        frequently going to be big, don't get fancy. (Even if n does get
+        big, use Rule 2 first.)
+
+        Rule 4. Fancy algorithms are buggier than simple ones, and they're
+        much harder to implement. Use simple algorithms as well as simple
+        data structures." [3]
+
+        "When in doubt, use brute force." [3]
+
+        Worry about making things simple and understandable, not fast.
+        Don't prevent future optimisation, but don't do it yet.
+
+
+    -   Source Code Centric
+
+        Prefer source code over binaries.  Resist additional complexity in
+        the name of binary compatibility, library versioning or related
+        concerns.  Assume users of the libraries will refer to its source
+        code regularly in addition to (or in lieu of) other forms of
+        documentation.  Assume users of the libraries are familiar with
+        version control systems.
+
+
+    -   Universal
+
+        Assume use on various CLR implementations, various operating
+        systems, various CPU architectures, in software for end users from
+        various countries speaking various languages.
+
+
+    -   Be Polite
+
+        Allow piecemeal, gradual adoption of the library.  Don't force users
+        to accept the entire worldview at once.  Interoperate with the Base
+        Class Library where possible, even the parts of it that this library
+        replaces.  Avoid seizing control of the program - the user uses the
+        library, not the other way around.  Be a library, not a "framework".
+        Reduce workload, not control.
+
+
+    These design principles happen to be more or less in line with an
+    accepted set of object-oriented design principles called SOLID [4].
+    There are also parallels to be found with The Art of UNIX Programming
+    [5].
+
+    [1] http://en.wikipedia.org/wiki/Abstract_type
+    [2] http://en.wikipedia.org/wiki/Single_responsibility_principle
+    [3] http://www.faqs.org/docs/artu/ch01s06.html
+    [4] http://en.wikipedia.org/wiki/Solid_%28object-oriented_design%29
+    [5] http://www.faqs.org/docs/artu/
 
 
 x.  Libraries
-
-    TODO Introduction to the libraries, philosophy, common aspects, etc.
 
     - Com.Halfdecent
     - Com.Halfdecent.Globalisation
@@ -61,6 +149,15 @@ x.  Libraries
     - Com.Halfdecent.Collections
     - Com.Halfdecent.TextTree
     - Com.Halfdecent.Testing
+
+
+x.  Tools
+
+    -   Resbian, an embedded resource compiler
+    -   Traitor, a C# source code preprocessor implementing simple traits
+        (see http://en.wikipedia.org/wiki/Trait_%28computer_science%29)
+    -   Permuda, a C# source code preprocessor that generates permutations
+        of templated code
 
 
 x.  Requirements
