@@ -154,28 +154,50 @@ x.  Libraries
 x.  Tools
 
     -   Resbian, an embedded resource compiler
+
     -   Traitor, a C# source code preprocessor implementing simple traits
         (see http://en.wikipedia.org/wiki/Trait_%28computer_science%29)
+
     -   Permuda, a C# source code preprocessor that generates permutations
         of templated code
 
 
 x.  Requirements
 
-    -   Microsoft .NET Framework 3.5 or later, or Mono 2.0 or later
-    -   A Unix shell and standard command-line tools
-    -   GNU Make, at least 3.80 but preferably newer
+    -   Microsoft .NET Framework 3.5 or newer, or Mono 2.0 or newer
+
+    -   A Unix shell and standard command-line tools (currently on Windows
+        this means cygwin, see the Makery documentation for more details)
+
+    -   GNU Make 3.80 or newer
+
     -   Makery build system, available from SVN at
         http://makery.sourceforge.net/
 
 
-x.  Building
+x.  Quick Start
 
-    TODO
+    1.  Check out a copy of the Halfdecent Sharp code
 
+    2.  Check out a copy of Makery
 
-x.  Doxygen Documentation
+    3.  $ export MAKERY="/path/to/makery/makery"
 
-    TODO
+    4.  $ echo "PROJ_PATHS += /path/to/halfdecentsharp/halfdecentsharp" >
+        ~/.makeryrc.mk
+
+    5.  $ cd one/of/the/libraries/
+
+    6.  $ make build
+
+    7.  $ make doxygen
+
+    8.  Look in out/ for your binaries and documentation
+
+    9.  $ make test
+
+    10. Watch tests run
+
+    11. $ make cleanall
 
 
