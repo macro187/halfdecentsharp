@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,14 +18,142 @@
 
 
 // =============================================================================
-/// System-level enhancements
-///
-/// @section abstract_types Abstract Types
-///
-///     http://en.wikipedia.org/wiki/Abstract_type
+/// Enhancements to the BCL's <tt>System</tt> namespace
 ///
 ///
-/// @section abstract_type_pattern Abstract Type Pattern
+/// @section tuples Tuples
+///
+///     @subsection problems Problems
+///
+///         -   No tuples in BCL prior to .NET 4.0
+///         -   BCL tuples aren't abstract
+///         -   BCL tuples are classes, which incur runtime allocation and GC
+///             overhead and may not be suitable in performance-sensitive
+///             situations
+///
+///     @subsection solution Solution
+///
+///         -   Abstract type: <tt>ITuple<T1,T2></tt>
+///         -   Abstract operations: <tt>Tuple</tt>
+///         -   Struct-based implementation: <tt>Tuple<T1,T2></tt>
+///         -   Interoperability with BCL tuples:
+///             <tt>SystemTuple.AsHalfdecentTuple<T1,T2>()</tt> and
+///             <tt>Tuple.AsSystemTuple<T1,T2>()</tt>
+///
+///
+/// @section intervals Intervals
+///
+///     @subsection problems Problems
+///
+///         -   No intervals in BCL
+///
+///     @subsection solution Solution
+///
+///         -   Abstract type: <tt>IInterval<T></tt>
+///         -   Abstract operations: <tt>Interval</tt>
+///         -   Implementation: <tt>Interval<T></tt>
+///
+///
+/// @section comparison Comparison
+///
+///     @subsection problems Problems
+///
+///         Existing comparison patterns do not adequately support abstract
+///         types and suffer from other design shortcomings.
+///
+///         -   C# comparison operators (<tt>==, !=, <, ></tt> and friends)
+///             aren't suitable for abstract types because they don't work on
+///             interfaces.
+///
+///         -   <tt>System.Object.Equals()</tt> and
+///             <tt>System.Object.GetHashCode()</tt> aren't suitable for
+///             abstract types because they allow only one kind of comparison
+///             per concrete class when classes may implement any number of
+///             abstract types, each, possibly, with its own kind of comparison.
+///
+///         -   <tt>System.IEquatable<T></tt> and <tt>System.IComparable<T></tt>
+///             aren't suitable for abstract types because, while they permit
+///             more than one kind of comparison per class, they don't similarly
+///             allow for the multiple matching hash code implementations that
+///             are required. <sup>1</sup>
+///
+///         -   In all of the existing mechanisms, only one of the two items'
+///             comparison implementations is consulted.  This is a problem
+///             because the other item's implementation may be more precise,
+///             resulting in a situation where getting the correct result
+///             depends on which of the two items' comparion methods is called.
+///             Knowing which item has the more specific comparison is
+///             impossible, except in the unlikely case that both items' exact
+///             runtime types are known.
+///
+///         -   <tt>System.Collections.Generic.IComparer<T></tt> does not imply
+///             <tt>System.Collections.Generic.IEqulityComparer<T></tt> even
+///             though its functionality is a superset.
+///
+///         -   The BCL comparers are not themselves equatable, so you cannot
+///             determine whether two comparers represent the same kind of
+///             comparison.
+///
+///         -   <tt>System.Collections.Generic.Comparer<T></tt> provides no
+///             support for creating ad hoc comparers out of <tt>.Equals()</tt>
+///             and <tt>.GetHashCode()</tt> delegates.
+///
+///         <small>
+///         <sup>1</sup> For a detailed explanation of the connection between
+///         <tt>GetHashCode()</tt> and <tt>Equals()</tt>, consult the
+///         <tt>System.Object.GetHashCode()</tt> section of your Base Class
+///         Library documentation
+///         </small>
+///
+///
+///     @subsection solution Solution
+///
+///         Replacement comparison patterns and types that allow correct
+///         comparison implementations for abstract types.
+///
+///         -   Replacement <tt>IEquatable<T></tt> interface defines an
+///             <tt>IEquatable<T>.GetHashCode()</tt> to go with
+///             <tt>IEquatable<T>.Equals()</tt>.
+///
+///         -   Replacement <tt>IEquatable<T></tt> and <tt>IComparable<T></tt>
+///             interfaces define directional comparison methods which are
+///             called on both items during comparison in such a way that the
+///             most precise (and therefore correct) result is always obtained.
+///
+///         -   <tt>ComparisonDisagreementException</tt>, an exception
+///             indicating that the two directional comparisons involved in a
+///             comparison were in complete disagreement, indicating a bug in
+///             one or both.
+///
+///         -   <tt>Comparable</tt>, an extension methods library for
+///             <tt>IComparable<T></tt> providing convenience methods such as
+///             <tt>Comparable.GT()</tt>, <tt>Comparable.LT()</tt>, etc.
+///
+///         -   Replacement <tt>IEqualityComparer<T></tt> and
+///             <tt>IComparer<T></tt>, with the latter implying the former.
+///
+///         -   Replacement <tt>IEqualityComparer<T></tt> and
+///             <tt>IComparer<T></tt> are themselves equatable.
+///
+///         -   Replacement <tt>Comparer<T></tt> which supports ad hoc comparers
+///             made from <tt>.Equals()</tt> and <tt>.GetHashCode()</tt>
+///             delegates.
+///
+///         -   <tt>ObjectComparer</tt>, an interop equality comparer that just
+///             uses <tt>object.Equals()</tt> and,<tt>object.GetHashCode()</tt>.
+///
+///         -   TODO: <tt>System.Object.Equals()</tt> and
+///             <tt>System.Object.GetHashCode()</tt> are effectively obsolete.
+///             What should the pattern be for them?  Leave as default?  Throw
+///             an exception?
+///
+///
+/// @section abstracttypes Abstract Types
+///
+///     TODO:
+///
+///     This library establishes a pattern for defining abstract types in
+///     C#.
 ///
 ///     eg. <tt>TheType<T></tt>
 ///
@@ -99,76 +227,6 @@
 ///         Present if applicable.
 ///
 ///
-/// @section equality Equality
-///
-///     @subsection insufficient The Usual Equality Patterns Are Insufficient
-///
-///         The <tt>==</tt> and <tt>!=</tt> C# operators are useless for the
-///         same reason all operators are:  They can't apply to interfaces.
-///
-///         <tt>System.Object.Equals()</tt> and
-///         <tt>System.Object.GetHashCode()</tt> aren't good enough because
-///         they allow for only one definition of equality per class when
-///         classes can implement any number of interfaces, each, possibly,
-///         with it's own definition of equality.
-///
-///         <tt>System.Collections.Generic.IEquatable<T></tt> is insufficient
-///         because, while it allows for multiple definitions of equality per
-///         class, it doesn't similarly allow for matching
-///         <tt>GetHashCode()</tt> definitions that are required. <sup>1</sup>
-///         In fact, implementing
-///         <tt>System.Collections.Generic.IEquatable<T></tt> makes matters
-///         worse by making it easier to accidentally use mismatched
-///         <tt>Equals()</tt> and <tt>GetHashCode()</tt> implementations
-///         together, for example via the default Base Class Library
-///         collections equality comparer which uses
-///         <tt>System.Collections.Generic.IEquatable<T>.Equals()</tt> (if
-///         available) with <tt>System.Object.GetHashCode()</tt> <sup>2</sup>.
-///
-///         Common equality <em>implementations</em> are also often not
-///         suitable for abstract types, as they often involve the unnecessary
-///         requirement that both items be of the exact same class to be
-///         considered equal (for example, <tt>a.GetType() == b.GetType()</tt>
-///         or similar).  This precludes objects of unrelated classes from ever
-///         being equal even if both are semantically equal under a
-///         commonly-implemented interface.  Furthermore, relying on both
-///         objects' being of the same class creates an artificial guarantee
-///         that they share the same <tt>.Equals()</tt> implementation, which
-///         shields from the reality that equality is not a one-sided
-///         operation; It requires agreement by both objects that they are
-///         equal to each other.
-///
-///         <small>
-///         <sup>1</sup> For a detailed explanation of the connection between
-///         <tt>GetHashCode()</tt> and <tt>Equals()</tt>, consult the
-///         <tt>System.Object.GetHashCode()</tt> section of your Base Class
-///         Library documentation
-///         </small>
-///
-///         <small>
-///         <sup>2</sup> <tt>System.Collections.Generic.IEquatable<T></tt>
-///         doesn't provide <tt>GetHashCode()</tt> so, presumably, the
-///         <tt>System.Object.GetHashCode()</tt> implementation is used.  Check
-///         your Base Class Library's documentation (or, better yet, it's
-///         source code) to determine the exact behaviour.
-///         </small>
-///
-///
-///     @subsection pattern Equality Pattern for Abstract Types
-///
-///         This library provides <tt>Com.Halfdecent.IEquatable<T></tt>, which
-///         addresses the above issues.  It defines a unidirectional equality
-///         checking method for implementers to override, a matching
-///         <tt>GetHashCode()</tt>, and an <tt>Equals()</tt> that gives both
-///         objects their say in whether they are equal or not.
-///
-///         TODO: Introduce <tt>IEqualityComparer<T></tt> and friends
-///
-///         TODO: What's the pattern for object.Equals() and
-///         object.GetHashCode()?  Leave as default?  Always false?
-///         InvalidOperationException (or similar)?
-///
-///
 ///     @subsection abstract_operations Abstract Operations
 ///
 ///         TODO:
@@ -176,6 +234,7 @@
 ///         generic types instead of interface types directly.
 ///         Constrained generic types use constrained virtcall which
 ///         avoids boxing overhead if T is a value type.
+///
 ///
 // =============================================================================
 
