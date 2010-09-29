@@ -58,8 +58,9 @@
 ///
 ///     @subsection problems Problems
 ///
-///         Existing comparison patterns do not adequately support abstract
-///         types and suffer from other design shortcomings.
+///         Implementing comparison correctly is confusing, tedious, and
+///         error-prone.  Furthermore, existing comparison patterns suffer from
+///         design flaws and break down quickly when subtyping is involved.
 ///
 ///         -   C# comparison operators (<tt>==, !=, <, ></tt> and friends)
 ///             aren't suitable for abstract types because they don't work on
@@ -108,8 +109,8 @@
 ///
 ///     @subsection solution Solution
 ///
-///         Replacement comparison patterns and types that allow correct
-///         comparison implementations for abstract types.
+///         Replacement comparison patterns and types that fix design flaws and
+///         work correctly with abstract types and subtypes.
 ///
 ///         -   Replacement <tt>IEquatable<T></tt> interface defines an
 ///             <tt>IEquatable<T>.GetHashCode()</tt> to go with
@@ -150,15 +151,13 @@
 ///
 /// @section abstracttypes Abstract Types
 ///
-///     TODO:
+///     This library establishes a pattern for abstract types in C#.
 ///
-///     This library establishes a pattern for defining abstract types in
-///     C#.
+///     The following illustrates a generic type with a single type parameter.
+///     Non-generic types or generic types with more than one type parameter are
+///     similar.
 ///
-///     eg. <tt>TheType<T></tt>
-///
-///
-///     @subsection the_type The Type
+///     @subsection type The Type
 ///
 ///         <tt>interface ITheType<T></tt>
 ///
@@ -171,7 +170,7 @@
 ///         properties, return types, etc.
 ///
 ///
-///     @subsection abstract_operations Abstract Operations
+///     @subsection operations Abstract Operations
 ///
 ///         <tt>static class TheType</tt>
 ///
@@ -202,7 +201,7 @@
 ///         orderable.
 ///
 ///
-///     @subsection default_implmentation Default Implementation
+///     @subsection implmentation Default Implementation
 ///
 ///         <tt>class TheType<T></tt>
 ///
@@ -216,7 +215,7 @@
 ///         not generic (because the name ends up the same).
 ///
 ///
-///     @subsection base_class Base Class
+///     @subsection baseclass Base Class
 ///
 ///         <tt>abstract class TheTypeBase<T></tt>
 ///
@@ -227,7 +226,7 @@
 ///         Present if applicable.
 ///
 ///
-///     @subsection abstract_operations Abstract Operations
+///     @subsection constrainedgenerictypes Use of Constrained Generic Types
 ///
 ///         TODO:
 ///         Explain why abstract operations should use constrained
