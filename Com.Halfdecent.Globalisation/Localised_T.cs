@@ -37,6 +37,12 @@ Com.Halfdecent.Globalisation
 /// will be transparently "boxed" into a <tt>Localised< T ></tt> as the
 /// invariant (and only) variation of the item via an implicit conversion
 /// operator.
+///
+/// According to the abstract type pattern outlined in <tt>Com.Halfdecent</tt>,
+/// this type would be an interface.  But C# operators don't work with them, and
+/// implicit operators are the basis for the transparent boxing behaviour
+/// outlined above, so a compromise was made and, as a result, this type is an
+/// abstract class.
 // =============================================================================
 
 public abstract class
