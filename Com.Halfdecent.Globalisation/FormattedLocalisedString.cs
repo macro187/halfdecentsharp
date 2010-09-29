@@ -91,9 +91,9 @@ ForCulture(
     string s;
     CultureInfo cc = Thread.CurrentThread.CurrentCulture;
     CultureInfo cuic = Thread.CurrentThread.CurrentUICulture;
-    Thread.CurrentThread.CurrentCulture = culture;
-    Thread.CurrentThread.CurrentUICulture = culture;
     try {
+        Thread.CurrentThread.CurrentCulture = culture;
+        Thread.CurrentThread.CurrentUICulture = culture;
         s = String.Format( culture, this.Format, this.Args );
     } finally {
         Thread.CurrentThread.CurrentUICulture = cuic;
