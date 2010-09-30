@@ -115,7 +115,8 @@ _R<
 
     // Fail early if a version for the invariant culture doesn't exist
     try {
-        if( (object)( r[ CultureInfo.InvariantCulture ] ) == null ) {}
+        if( object.ReferenceEquals(
+            r.In( CultureInfo.InvariantCulture ), null ) ) {}
     // TODO Create and throw a more specific exception from
     //      ExceptionBase< T >, and catch only that here
     } catch( Exception e ) {

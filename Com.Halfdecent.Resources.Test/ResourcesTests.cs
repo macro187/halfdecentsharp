@@ -122,7 +122,7 @@ Test_Resource__R()
     Assert( ls != null );
 
     Print( "...and it works" );
-    Assert( ls[ en_AU ] == "Hello (en-AU)" );
+    Assert( ls.In( en_AU ) == "Hello (en-AU)" );
 
 
     Print( "ResourceMissingException if missing (other resources exist)" );
@@ -162,13 +162,13 @@ Test_Resource__S()
     Assert( ls != null );
 
     Print( "Exact culture variation is correct" );
-    Assert( ls[ en_AU ] == "Hello (en-AU)" );
+    Assert( ls.In( en_AU ) == "Hello (en-AU)" );
 
     Print( "Neutral culture variation is correct" );
-    Assert( ls[ en_CA ] == "Hello (en)" );
+    Assert( ls.In( en_CA ) == "Hello (en)" );
 
     Print( "Invariant culture variation is correct" );
-    Assert( ls[ fr_FR ] == "Hello (invariant)" );
+    Assert( ls.In( fr_FR ) == "Hello (invariant)" );
 
     Print( "Can retrieve without resource translations" );
     ls = Resource._S( typeof( NoRes ), "Hello (code)" );
@@ -177,10 +177,10 @@ Test_Resource__S()
     Assert( ls != null );
 
     Print( "Value is always the original untranslated string" );
-    Assert( ls[ en_AU ] == "Hello (code)" );
-    Assert( ls[ en_CA ] == "Hello (code)" );
-    Assert( ls[ fr_FR ] == "Hello (code)" );
-    Assert( ls[ ja_JP ] == "Hello (code)" );
+    Assert( ls.In( en_AU ) == "Hello (code)" );
+    Assert( ls.In( en_CA ) == "Hello (code)" );
+    Assert( ls.In( fr_FR ) == "Hello (code)" );
+    Assert( ls.In( ja_JP ) == "Hello (code)" );
 
 
     Print( "NOTE: CAN'T AUTOMATICALLY CHECK THE FOLLOWING, PLEASE VERIFY" );
@@ -188,15 +188,15 @@ Test_Resource__S()
 
     ls = Resource._S( typeof( TestRes ), "Today is {0:f}", DateTime.Now );
     Print( "Today's Date" );
-    Print( "en-AU: " + ls[ en_AU ] );
-    Print( "fr-FR: " + ls[ fr_FR ] );
-    Print( "ja-JP: " + ls[ ja_JP ] );
+    Print( "en-AU: " + ls.In( en_AU ) );
+    Print( "fr-FR: " + ls.In( fr_FR ) );
+    Print( "ja-JP: " + ls.In( ja_JP ) );
 
     ls = Resource._S( typeof( TestRes ), "Pi is {0:f}", 3.14 );
     Print( "A Big Number" );
-    Print( "en-AU: " + ls[ en_AU ] );
-    Print( "fr-FR: " + ls[ fr_FR ] );
-    Print( "ja-JP: " + ls[ ja_JP ] );
+    Print( "en-AU: " + ls.In( en_AU ) );
+    Print( "fr-FR: " + ls.In( fr_FR ) );
+    Print( "ja-JP: " + ls.In( ja_JP ) );
 }
 
 

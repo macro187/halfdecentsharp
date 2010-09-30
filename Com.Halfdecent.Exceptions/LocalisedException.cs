@@ -62,7 +62,7 @@ LocalisedException(
     Localised< string > message,
     Exception           innerException
 )
-    : base( message, innerException )
+    : base( (string)message, innerException )
 {
     this.message = message;
 }
@@ -89,7 +89,7 @@ protected override
 string
 ShimMessage
 {
-    get { return this.Message; }
+    get { return this.Message.InCurrent(); }
 }
 
 

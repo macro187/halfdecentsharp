@@ -94,7 +94,7 @@ ForCulture(
     try {
         Thread.CurrentThread.CurrentCulture = culture;
         Thread.CurrentThread.CurrentUICulture = culture;
-        s = String.Format( culture, this.Format, this.Args );
+        s = String.Format( culture, this.Format.In( culture ), this.Args );
     } finally {
         Thread.CurrentThread.CurrentUICulture = cuic;
         Thread.CurrentThread.CurrentCulture = cc;

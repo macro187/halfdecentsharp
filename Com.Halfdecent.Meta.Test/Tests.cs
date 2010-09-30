@@ -77,10 +77,10 @@ Test_ValueException()
         LocalisedString.Format( e.MessageFormat, reference ).ToString() );
     Print( "Check .Message" );
     Assert(
-        e.Message ==
+        e.Message.InCurrent() ==
         LocalisedString.Format(
             e.MessageFormat,
-            e.ValueReference.ToString() ).ToString() );
+            e.ValueReference.ToString() ).InCurrent() );
     Print( "Check .InnerException" );
     Assert( e.InnerException == null );
 
@@ -94,10 +94,10 @@ Test_ValueException()
         LocalisedString.Format( e.MessageFormat, reference ).ToString() );
     Print( "Check .Message" );
     Assert(
-        e.Message ==
+        e.Message.InCurrent() ==
         LocalisedString.Format(
             e.MessageFormat,
-            e.ValueReference.ToString() ).ToString() );
+            e.ValueReference.ToString() ).InCurrent() );
     Print( "Check .InnerException" );
     Assert( e.InnerException == innerException );
 }
@@ -132,11 +132,11 @@ Test_ValueArgumentException()
     Assert( ve.ValueReference == param );
     Print( "IValueException.SayMessage" );
     Assert(
-        ve.SayMessage( "ref" ) ==
+        ve.SayMessage( "ref" ).InCurrent() ==
         string.Format( format, "ref" ) );
     Print( "ILocalisedException.Message" );
     Assert(
-        le.Message ==
+        le.Message.InCurrent() ==
         string.Format( format, param.ToString() ) );
     Print( "ArgumentException.ParamName" );
     Assert( ae.ParamName == param.Name );
@@ -152,11 +152,11 @@ Test_ValueArgumentException()
     Assert( ve.ValueReference == param );
     Print( "IValueException.SayMessage" );
     Assert(
-        ve.SayMessage( "ref" ) ==
+        ve.SayMessage( "ref" ).InCurrent() ==
         string.Format( format, "ref" ) );
     Print( "ILocalisedException.Message" );
     Assert(
-        le.Message ==
+        le.Message.InCurrent() ==
         string.Format( format, param.ToString() ) );
     Print( "ArgumentException.ParamName" );
     Assert( ae.ParamName == param.Name );
@@ -200,11 +200,11 @@ Test_ValueArgumentNullException()
     Assert( ve.ValueReference == param );
     Print( "IValueException.SayMessage" );
     Assert(
-        ve.SayMessage( "ref" ) ==
+        ve.SayMessage( "ref" ).InCurrent() ==
         string.Format( format, "ref" ) );
     Print( "ILocalisedException.Message" );
     Assert(
-        le.Message ==
+        le.Message.InCurrent() ==
         string.Format( format, param.ToString() ) );
     Print( "ArgumentNullException.ParamName" );
     Assert( ane.ParamName == param.Name );
@@ -220,11 +220,11 @@ Test_ValueArgumentNullException()
     Assert( ve.ValueReference == param );
     Print( "IValueException.SayMessage" );
     Assert(
-        ve.SayMessage( "ref" ) ==
+        ve.SayMessage( "ref" ).InCurrent() ==
         string.Format( format, "ref" ) );
     Print( "ILocalisedException.Message" );
     Assert(
-        le.Message ==
+        le.Message.InCurrent() ==
         string.Format( format, param.ToString() ) );
     Print( "ArgumentNullException.ParamName" );
     Assert( ane.ParamName == param.Name );
@@ -269,11 +269,11 @@ Test_ValueArgumentOutOfRangeException()
     Assert( ve.ValueReference == param );
     Print( "IValueException.SayMessage" );
     Assert(
-        ve.SayMessage( "ref" ) ==
+        ve.SayMessage( "ref" ).InCurrent() ==
         string.Format( format, "ref" ) );
     Print( "ILocalisedException.Message" );
     Assert(
-        le.Message ==
+        le.Message.InCurrent() ==
         string.Format( format, param.ToString() ) );
     Print( "ArgumentOutOfRangeException.ParamName" );
     Assert( aoore.ParamName == param.Name );
@@ -289,11 +289,11 @@ Test_ValueArgumentOutOfRangeException()
     Assert( ve.ValueReference == param );
     Print( "IValueException.SayMessage" );
     Assert(
-        ve.SayMessage( "ref" ) ==
+        ve.SayMessage( "ref" ).InCurrent() ==
         string.Format( format, "ref" ) );
     Print( "ILocalisedException.Message" );
     Assert(
-        le.Message ==
+        le.Message.InCurrent() ==
         string.Format( format, param.ToString() ) );
     Print( "ArgumentOutOfRangeException.ParamName" );
     Assert( aoore.ParamName == param.Name );
@@ -311,11 +311,11 @@ Test_ValueArgumentOutOfRangeException()
     Assert( ve.ValueReference == param );
     Print( "IValueException.SayMessage" );
     Assert(
-        ve.SayMessage( "ref" ) ==
+        ve.SayMessage( "ref" ).InCurrent() ==
         string.Format( format, "ref" ) );
     Print( "ILocalisedException.Message" );
     Assert(
-        le.Message ==
+        le.Message.InCurrent() ==
         string.Format( format, param.ToString() ) );
     Print( "ArgumentOutOfRangeException.ParamName" );
     Assert( aoore.ParamName == param.Name );

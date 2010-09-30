@@ -79,7 +79,7 @@ ForCulture(
     CultureInfo culture
 )
 {
-    return this.From[ culture ];
+    return this.From.In( culture );
 }
 
 

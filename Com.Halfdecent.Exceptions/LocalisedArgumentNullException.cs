@@ -86,7 +86,7 @@ LocalisedArgumentNullException(
 )
     // Have to use this constructor and override ParamName because there's no
     // base constructor that takes all 3 parameters (!)
-    : base( message, innerException )
+    : base( (string)message, innerException )
 {
     this.paramname = paramName;
     this.message = message;
@@ -119,7 +119,7 @@ protected override
 string
 ShimMessage
 {
-    get { return this.Message; }
+    get { return this.Message.InCurrent(); }
 }
 
 

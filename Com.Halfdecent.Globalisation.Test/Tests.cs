@@ -59,6 +59,16 @@ Test_Creation()
 }
 
 
+[Test( "Localised<T>.InCurrent()" )]
+public static
+void
+Test_InCurrent()
+{
+    Localised<string> ls = new SingleValueLocalised<string>( "Hello" );
+    Assert( WantString( ls.InCurrent() ) == "Hello" );
+}
+
+
 [Test( "Localised<T> implicit conversions" )]
 public static
 void
@@ -67,7 +77,7 @@ Test_Conversions()
     Localised<string> ls = new SingleValueLocalised<string>( "Hello" );
 
     Print( "Localised<string> can be passed to a function expecting a string" );
-    Assert( WantString( ls ) == "Hello" );
+    Assert( WantString( ls.InCurrent() ) == "Hello" );
 
     Print(
         "A string can be passed to a function expecting a Localised<string>" );
@@ -100,7 +110,7 @@ public static
 string
 WantLocalised( Localised<string> ls )
 {
-    return ls;
+    return ls.InCurrent();
 }
 
 

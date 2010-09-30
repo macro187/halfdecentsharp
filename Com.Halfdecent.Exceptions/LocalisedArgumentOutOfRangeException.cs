@@ -98,7 +98,7 @@ LocalisedArgumentOutOfRangeException(
 )
     // Have to use this constructor and override ParamName and ActualValue
     // because there's no base constructor that takes all 4 parameters (!)
-    : base( message, innerException )
+    : base( (string)message, innerException )
 {
     this.message = message;
     this.paramname = paramName;
@@ -132,7 +132,7 @@ protected override
 string
 ShimMessage
 {
-    get { return this.Message; }
+    get { return this.Message.InCurrent(); }
 }
 
 

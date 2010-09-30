@@ -73,19 +73,31 @@ Localised<
 /// bug.
 ///
 public
-T
-this[
+    T
+In(
     CultureInfo culture
-]
+)
 {
-    get
-    {
-        if( culture == null ) throw new ArgumentNullException( "culture" );
-        T result = this.ForCulture( culture );
-        if( (object)result == null ) throw new Exception(
-            "Bug in Localised< T > subclass: ForCulture() returned null" );
-        return result;
-    }
+    if( culture == null ) throw new ArgumentNullException( "culture" );
+    T result = this.ForCulture( culture );
+    if( object.ReferenceEquals( result, null ) )
+        throw new Exception( string.Format(
+            "Bug in {0}: ForCulture() returned null",
+            this.GetType().FullName ) );
+    return result;
+}
+
+
+
+/// Produce the value of the localisable item in the current language/culture
+///
+/// As indicated by <tt>System.Globalization.CultureInfo.CurrentCulture</tt>.
+///
+public
+    T
+InCurrent()
+{
+    return this.In( CultureInfo.CurrentCulture );
 }
 
 
@@ -119,7 +131,7 @@ public override
     string
 ToString()
 {
-    return this[ CultureInfo.CurrentCulture ].ToString();
+    return this.InCurrent().ToString();
 }
 
 
@@ -128,19 +140,22 @@ ToString()
 // Operators
 // -----------------------------------------------------------------------------
 
-/// Implicit conversion to <tt>T</tt>
+/// Explicit conversion to <tt>T</tt>
 ///
 /// "Unboxes" the <tt>Localised< T ></tt> to the variation most appropriate
 /// for the current culture (via <tt>ForCurrentCulture()</tt>)
 ///
+/// This conversion is explicit because it loses information, specifically
+/// variations for all other cultures
+///
 public static
-implicit operator T(
+explicit operator T(
     Localised< T > localised
 )
 {
     return localised == null
         ? default( T )
-        : localised[ CultureInfo.CurrentCulture ];
+        : localised.InCurrent();
 }
 
 
