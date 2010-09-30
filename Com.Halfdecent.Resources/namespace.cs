@@ -40,8 +40,11 @@
 ///         -   <tt>Resource._S()</tt>, for localisable strings that
 ///             <em>may</em> have localised variations in resources
 ///
-///         -   <tt>ResourceMissingException</tt>, for when a resource that is
-///             expected to be there isn't
+///         -   <tt>ResourceMissingException</tt>, for when an embedded resource
+///             is expected to be there, but isn't
+///
+///         -   <tt>ResourceTypeMismatchException</tt>, for when an embedded
+///             resource is not of the expected type
 ///
 ///         The API methods return lazy
 ///         <tt>Com.Halfdecent.Globalisation.Localised<T></tt>'s that do the
