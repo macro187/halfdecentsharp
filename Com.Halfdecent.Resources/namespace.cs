@@ -23,19 +23,42 @@
 ///
 /// @section problem Problem
 ///
-///     TODO
+///     Provide a convenient, easy-to-understand way to make use of localisable
+///     embedded resources.
 ///
 ///
 /// @section solution Solution
 ///
-///     TODO
+///     @subsection api Static API
+///
+///         A terse, easy-to-understand API for referencing resources that "does
+///         the right thing":
+///
+///         -   <tt>Resource._R<T>()</tt>, for getting resources of any type by
+///             name
+///
+///         -   <tt>Resource._S()</tt>, for localisable strings that
+///             <em>may</em> have localised variations in resources
+///
+///         -   <tt>ResourceMissingException</tt>, for when a resource that is
+///             expected to be there isn't
+///
+///         The API methods return lazy
+///         <tt>Com.Halfdecent.Globalisation.Localised<T></tt>'s that do the
+///         resource retrieval only when actually used, and only for the
+///         language(s) required.
+///
+///     @subsection oneliner One-liner
+///
+///         An optional one-line code snippet that makes a private <tt>_S()</tt>
+///         that only accesses resources belonging to that class.
 ///
 ///
-/// @section overview Overview of Localisable Resources in .NET
+/// @section reference Embedded Resources in .NET Reference
 ///
 ///     The processes, mechanisms, and terminology surrounding embedded
-///     resources in .NET are complicated and sparsely documented.  Following is
-///     a breakdown of how embedded resources work in .NET.
+///     resources are complicated and sparsely documented.  Collected here for
+///     reference is a survey of how embedded resources work.
 ///
 ///     @subsection resource Resource
 ///
