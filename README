@@ -37,6 +37,72 @@ x.  Introduction
     from the command line and scripts.
 
 
+x.  Libraries
+
+    - Com.Halfdecent
+    - Com.Halfdecent.Globalisation
+    - Com.Halfdecent.Resources
+    - Com.Halfdecent.Exceptions
+    - Com.Halfdecent.Meta
+    - Com.Halfdecent.RTypes
+    - Com.Halfdecent.Numerics
+    - Com.Halfdecent.Streams
+    - Com.Halfdecent.Cursors
+    - Com.Halfdecent.Collections
+    - Com.Halfdecent.TextTree
+    - Com.Halfdecent.Testing
+
+
+x.  Tools
+
+    -   Resbian, an embedded resource compiler
+
+    -   Traitor, a C# source code preprocessor implementing simple traits
+        (see http://en.wikipedia.org/wiki/Trait_%28computer_science%29)
+
+    -   Permuda, a C# source code preprocessor that generates permutations
+        of templated code
+
+
+x.  Requirements
+
+    -   Microsoft .NET Framework 3.5 or newer, or Mono 2.0 or newer
+
+    -   A Unix shell and standard command-line tools (currently on Windows
+        this means cygwin, see the Makery documentation for more details)
+
+    -   GNU Make 3.80 or newer
+
+    -   Makery build system, available from SVN at
+        http://makery.sourceforge.net/
+
+
+x.  Quick Start
+
+    1.  Check out a copy of the Halfdecent Sharp code
+
+    2.  Check out a copy of Makery
+
+    3.  $ export MAKERY="/path/to/makery/makery"
+
+    4.  $ echo "PROJ_PATHS += /path/to/halfdecentsharp/halfdecentsharp" >
+        ~/.makeryrc.mk
+
+    5.  $ cd one/of/the/libraries/
+
+    6.  $ make build
+
+    7.  $ make doxygen
+
+    8.  Look in out/ for your binaries and documentation
+
+    9.  $ make test
+
+    10. Watch tests run
+
+    11. $ make cleanall
+
+
 x.  Design Principles
 
     -   Use the Type System
@@ -133,71 +199,5 @@ x.  Design Principles
     [3] http://www.faqs.org/docs/artu/ch01s06.html
     [4] http://en.wikipedia.org/wiki/Solid_%28object-oriented_design%29
     [5] http://www.faqs.org/docs/artu/
-
-
-x.  Libraries
-
-    - Com.Halfdecent
-    - Com.Halfdecent.Globalisation
-    - Com.Halfdecent.Resources
-    - Com.Halfdecent.Exceptions
-    - Com.Halfdecent.Meta
-    - Com.Halfdecent.RTypes
-    - Com.Halfdecent.Numerics
-    - Com.Halfdecent.Streams
-    - Com.Halfdecent.Cursors
-    - Com.Halfdecent.Collections
-    - Com.Halfdecent.TextTree
-    - Com.Halfdecent.Testing
-
-
-x.  Tools
-
-    -   Resbian, an embedded resource compiler
-
-    -   Traitor, a C# source code preprocessor implementing simple traits
-        (see http://en.wikipedia.org/wiki/Trait_%28computer_science%29)
-
-    -   Permuda, a C# source code preprocessor that generates permutations
-        of templated code
-
-
-x.  Requirements
-
-    -   Microsoft .NET Framework 3.5 or newer, or Mono 2.0 or newer
-
-    -   A Unix shell and standard command-line tools (currently on Windows
-        this means cygwin, see the Makery documentation for more details)
-
-    -   GNU Make 3.80 or newer
-
-    -   Makery build system, available from SVN at
-        http://makery.sourceforge.net/
-
-
-x.  Quick Start
-
-    1.  Check out a copy of the Halfdecent Sharp code
-
-    2.  Check out a copy of Makery
-
-    3.  $ export MAKERY="/path/to/makery/makery"
-
-    4.  $ echo "PROJ_PATHS += /path/to/halfdecentsharp/halfdecentsharp" >
-        ~/.makeryrc.mk
-
-    5.  $ cd one/of/the/libraries/
-
-    6.  $ make build
-
-    7.  $ make doxygen
-
-    8.  Look in out/ for your binaries and documentation
-
-    9.  $ make test
-
-    10. Watch tests run
-
-    11. $ make cleanall
 
 
