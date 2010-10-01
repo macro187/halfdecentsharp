@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,7 +18,6 @@
 
 using System;
 using System.Globalization;
-using System.Threading;
 
 
 namespace
@@ -27,12 +26,18 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// Localised, lazy-evaluated result of <tt>LocalisedString.Format()</tt>
+/// Lazily-evaluated <tt>Localised<T></tt>
+///
+/// In other words, a <tt>Localised<T></tt> whose
+/// <tt>Localised<T>.ForCulture()</tt> method is specified as a delegate rather
+/// than by subclassing.
 // =============================================================================
 
 public class
-FormattedLocalisedString
-    : Localised< string >
+LazyLocalised<
+    T
+>
+    : Localised< T >
 {
 
 
@@ -41,40 +46,24 @@ FormattedLocalisedString
 // Constructors
 // -----------------------------------------------------------------------------
 
-internal
-FormattedLocalisedString(
-    Localised< string > format,
-    params object[]     args
+public
+LazyLocalised(
+    Func< CultureInfo, T > forCulture
 )
 {
-    if( format == null ) throw new ArgumentNullException( "format" );
-    if( args == null ) throw new ArgumentNullException( "args" );
-    this.Format = format;
-    this.Args = args;
+    if( forCulture == null ) throw new ArgumentNullException( "forCulture" );
+    this.forculture = forCulture;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Private
 // -----------------------------------------------------------------------------
 
-public
-Localised< string >
-Format
-{
-    get;
-    private set;
-}
-
-
-public
-object[]
-Args
-{
-    get;
-    private set;
-}
+private
+    Func< CultureInfo, T >
+forculture;
 
 
 
@@ -83,23 +72,12 @@ Args
 // -----------------------------------------------------------------------------
 
 protected override
-    string
+    T
 ForCulture(
     CultureInfo culture
 )
 {
-    string s;
-    CultureInfo cc = Thread.CurrentThread.CurrentCulture;
-    CultureInfo cuic = Thread.CurrentThread.CurrentUICulture;
-    try {
-        Thread.CurrentThread.CurrentCulture = culture;
-        Thread.CurrentThread.CurrentUICulture = culture;
-        s = String.Format( culture, this.Format.In( culture ), this.Args );
-    } finally {
-        Thread.CurrentThread.CurrentUICulture = cuic;
-        Thread.CurrentThread.CurrentCulture = cc;
-    }
-    return s;
+    return this.forculture( culture );
 }
 
 

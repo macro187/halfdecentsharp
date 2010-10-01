@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2010
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -25,7 +26,7 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// A <tt>Localised< T > with a single value for all cultures
+/// A <tt>Localised<T></tt> whose value is the same in all cultures
 // =============================================================================
 
 public class

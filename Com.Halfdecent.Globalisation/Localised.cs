@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using System.Globalization;
 
 
@@ -26,61 +25,31 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// <tt>Localised<T></tt> proxy
+/// See <tt>Localised<T></tt>
 // =============================================================================
 
-public class
-LocalisedProxy<
-    TFrom,
-    TTo
->
-    : Localised< TTo >
-    where TFrom : TTo
+public interface
+ILocalised
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Methods
 // -----------------------------------------------------------------------------
 
-public
-LocalisedProxy(
-    Localised< TFrom > from
-)
-{
-    if( from == null ) throw new ArgumentNullException( "from" );
-    this.From = from;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-Localised< TFrom >
-From
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Localised< TTo >
-// -----------------------------------------------------------------------------
-
-protected override
-    TTo
-ForCulture(
+/// See <tt>Localised<T>.In()</tt>
+///
+    object
+In(
     CultureInfo culture
-)
-{
-    return this.From.In( culture );
-}
+);
+
+
+/// See <tt>Localised<T>.InCurrent()</tt>
+///
+    object
+InCurrent();
 
 
 

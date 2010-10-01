@@ -25,24 +25,29 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// Represents localised variations of an item collectively as one
+/// Language/cultural variations of an item boxed up as one
 ///
-/// A <tt>Localised< T ></tt> can be used anywhere a <tt>T</tt> is called for.
-/// When this is done, it transparently "flattens" or "unboxes" to an
-/// unlocalised value of T appropriate for the current culture via an
-/// implicit conversion operator.
+/// (TODO intro)
 ///
-/// The opposite is also true.  That is, a <tt>T</tt> can be used anywhere a
-/// <tt>Localised< T ></tt> is called for.  When this is done, the <tt>T</tt>
-/// will be transparently "boxed" into a <tt>Localised< T ></tt> as the
-/// invariant (and only) variation of the item via an implicit conversion
-/// operator.
+/// A <tt>T</tt> can be used anywhere a <tt>Localised< T ></tt> is called for,
+/// and it will be transparently "boxed" as the only variation.
+///
+/// In the other direction, a <tt>Localised< T ></tt> can be "unboxed" into a
+/// <tt>T</tt> for the current (or a specifed) language/culture.
+/// Because this process effectively "loses" the variations for all all other
+/// languages, it is not transparent and must be done explicitly using the
+/// <tt>Localised<T>.In()</tt> method, <tt>Localised<T>.InCurrent()</tt> method,
+/// or explicit cast to <tt>T</tt> operator.
 ///
 /// According to the abstract type pattern outlined in <tt>Com.Halfdecent</tt>,
-/// this type would be an interface.  But C# operators don't work with them, and
-/// implicit operators are the basis for the transparent boxing behaviour
-/// outlined above, so a compromise was made and, as a result, this type is an
-/// abstract class.
+/// this type should be an interface.  However, C# operators don't work with
+/// interfaces and, since implicit operators are the basis for the transparent
+/// boxing behaviour outlined above, an exception was made.
+///
+/// This type can be thought of as a monad. <sup>[1]</sup>
+///
+/// <sup>[1]</sup>
+/// <tt>http://en.wikipedia.org/wiki/Monad_%28functional_programming%29</tt>
 // =============================================================================
 
 public abstract class
@@ -50,12 +55,13 @@ Localised<
     T
     ///< The type of underlying values
 >
+    : ILocalised
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Indexer
+// Methods
 // -----------------------------------------------------------------------------
 
 /// Retrieve the most applicable variation for a specified culture
@@ -98,6 +104,27 @@ public
 InCurrent()
 {
     return this.In( CultureInfo.CurrentCulture );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// ILocalised
+// -----------------------------------------------------------------------------
+
+    object
+ILocalised.In(
+    CultureInfo culture
+)
+{
+    return this.In( culture );
+}
+
+
+    object
+ILocalised.InCurrent()
+{
+    return this.InCurrent();
 }
 
 

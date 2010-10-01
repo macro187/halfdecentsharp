@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2010
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -16,7 +17,9 @@
 
 
 using System;
+using System.Linq;
 using System.Globalization;
+using System.Threading;
 
 
 namespace
@@ -25,7 +28,14 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// Utilities for working with <tt>Localised< string ></tt>s
+/// %Localised string manipulation routines
+///
+/// These methods are modelled after the string manipulation methods in the Base
+/// Class Library.  The <tt>Localised< string ></tt>s they return evaluate their
+/// arguments and perform their operations lazily, and can do so repeatedly for
+/// different languages/cultures.  This means that multiple operations
+/// effectively queue up, with the entire series of operations evaluating (and
+/// reevaluating) as necessary in different languages.
 // =============================================================================
 
 public static class
@@ -38,27 +48,28 @@ LocalisedString
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Localisation-aware equivalent of <tt>String.Format()</tt>
-///
-/// Because any <tt>args</tt> that are themselves <tt>Localised< T ></tt>s
-/// will also lazy-evalute, this method can be used to build up entire
-/// trees of objects that will be flattened down via
-/// <tt>System.String.Format()</tt> on-demand in a culture-sensitive fashion.
+/// Localised-aware version of <tt>System.String.Format()</tt>
 ///
 public static
     Localised< string >
-    /// @returns
-    /// A <tt>Localised< string ></tt> subclass that performs the
-    /// <tt>System.String.Format()</tt> operation on-demand in a
-    /// culture-sensitive fashion
 Format(
     Localised< string > format,
-    ///< (see <tt>System.String</tt>)
     params object[]     args
-    ///< (see <tt>System.String.Format( string, object[] )</tt>)
 )
 {
-    return new FormattedLocalisedString( format, args );
+    if( format == null ) throw new ArgumentNullException( "format" );
+    if( args == null ) throw new ArgumentNullException( "args" );
+
+    return new LazyLocalised< string >(
+        (lang) =>
+            String.Format(
+                lang,
+                format.In( lang ),
+                args.Select( (arg) =>
+                    arg is ILocalised
+                        ? ((ILocalised)arg).In( lang )
+                        : arg )
+                    .ToArray() ) );
 }
 
 

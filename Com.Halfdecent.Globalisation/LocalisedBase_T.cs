@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2010
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -26,7 +27,8 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// Base class for implementing <tt>Localised< T ></tt>
+/// Base class for implementing <tt>Localised<T></tt> with a culture fallback
+/// mechanism
 // =============================================================================
 
 public abstract class
@@ -42,13 +44,10 @@ LocalisedBase<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Parent culture fallback algorithm
+/// Culture fallback algorithm: Parent culture(s)
 ///
 public static
     IEnumerable< CultureInfo >
-    /// @returns
-    /// - Must not be <tt>null</tt>
-    /// - Yielded items must not be <tt>null</tt>
 ParentFallbacksFor(
     CultureInfo culture
 )
@@ -62,6 +61,8 @@ ParentFallbacksFor(
 }
 
 
+// Culture fallback algorithm: Similar culture(s)
+//
 // TODO Fallback algorithm which also checks other regions with the same
 //      language in some prioritised order eg:
 //
@@ -70,7 +71,7 @@ ParentFallbacksFor(
 //
 //public static
 //    IEnumerable< CultureInfo >
-//PrioritisedRegionFallbacksFor(
+//SimilarFallbacksFor(
 //    CultureInfo culture
 //)
 //{
