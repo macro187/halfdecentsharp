@@ -69,7 +69,7 @@ Test_InCurrent()
 }
 
 
-[Test( "Localised<T> implicit conversions" )]
+[Test( "T to Localised<T> implicit conversions" )]
 public static
 void
 Test_Conversions()
@@ -114,55 +114,6 @@ WantLocalised( Localised<string> ls )
 }
 
 
-/* TODO update
- 
-[Test( "InMemoryLocalised<T> assignment and retrieval of localised values" )]
-public static
-void
-Test_AssignmentRetrieval()
-{
-    CultureInfo     fr = CultureInfo.GetCultureInfo( "fr" );
-    CultureInfo     fr_CA = CultureInfo.GetCultureInfo( "fr-CA" );
-    CultureInfo     ja = CultureInfo.GetCultureInfo( "ja" );
-    CultureInfo     ja_JP = CultureInfo.GetCultureInfo( "ja-JP" );
-    CultureInfo     en_AU = CultureInfo.GetCultureInfo( "en-AU" );
-
-
-    Print( "Create an InMemoryLocalised<string>" );
-    Localised<string> ls = new InMemoryLocalised<string>( "(invariant)" );
-
-
-    Print( "Assign various localised values" );
-    ls[ fr ] = "Bonjour";
-    ls[ ja ] = "Konnichiwa";
-    ls[ ja_JP ] = "Konnichiwa from Japan";
-
-
-    CultureInfo ci = Thread.CurrentThread.CurrentCulture;
-    try {
-
-
-        Print( "Correct value when exact culture is available" );
-        Thread.CurrentThread.CurrentCulture = ja_JP;
-        Assert( ls == "Konnichiwa from Japan" );
-
-
-        Print( "Correct value when only neutral is available" );
-        Thread.CurrentThread.CurrentCulture = fr_CA;
-        Assert( ls == "Bonjour" );
-
-
-        Print( "Correct value when only invariant is available" );
-        Thread.CurrentThread.CurrentCulture = en_AU;
-        Assert( ls == "(invariant)" );
-
-
-    } finally {
-        Thread.CurrentThread.CurrentCulture = ci;
-    }
-}
-
-
 [Test( "LocalisedString.Format()" )]
 public static
 void
@@ -171,159 +122,25 @@ Test_LocalisedString_Format()
     CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
     CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
-    Print( "Create a localised format string" );
-    Localised<string> format = new InMemoryLocalised<string>( "..." );
-    format[en] = "It's {0} : {1}";
-    format[fr] = "C'est {0} : {1}";
+    Localised<string> format = new LazyLocalised<string>( lang =>
+        lang.Equals( fr )
+            ? "Bonjour, {0}"
+            : "Hello, {0}" );
 
-    Print( "Create a couple of Localised<string>s" );
-    Localised<string> a = new InMemoryLocalised<string>( "..." );
-    a[en] = "a(english)";
-    a[fr] = "a(french)";
+    Localised<string> name = new LazyLocalised<string>( lang =>
+        lang.Equals( fr )
+            ? "Pierre"
+            : "John" );
 
-    Localised<string> b = new InMemoryLocalised<string>( "..." );
-    b[en] = "b(english)";
-    b[fr] = "b(french)";
+    Print( "Format() a greeting from localised parts" );
+    Localised<string> greeting = LocalisedString.Format( format, name );
 
-    Print( "LocalisedString.Format() them according to the localised " +
-        "format string, into a new Localised<string>" );
-    Localised<string> both = LocalisedString.Format(
-        format,
-        a, b
-    );
+    Print( "Make sure it's right in english" );
+    Assert( greeting.In( en ) == "Hello, John" );
 
-    Print( "Check that the resultant Localised<string> appears correctly in " +
-        "different cultures" );
-    Assert( both[en] == "It's a(english) : b(english)" );
-    Assert( both[fr] == "C'est a(french) : b(french)" );
+    Print( "Make sure it's right in french" );
+    Assert( greeting.In( fr ) == "Bonjour, Pierre" );
 }
-
-
-[Test( "LocalisedExceptionBase" )]
-public static
-void
-Test_LocalisedExceptionBase()
-{
-    TestException te = new TestException();
-
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
-    CultureInfo current;
-
-    Print( "Message" );
-    ILocalisedException le = te;
-    Assert( le.Message[ en ] == "Test Exception" );
-    Assert( le.Message[ fr ] == "Le Test Exception" );
-
-    Print( "Message (via Exception.Message)" );
-    Exception e = te;
-    current = Thread.CurrentThread.CurrentCulture;
-    try {
-        Thread.CurrentThread.CurrentCulture = en;
-        Assert( e.Message == "Test Exception" );
-        Thread.CurrentThread.CurrentCulture = fr;
-        Assert( e.Message == "Le Test Exception" );
-    } finally {
-        Thread.CurrentThread.CurrentCulture = current;
-    }
-}
-
-
-[Test( "SimpleLocalisedExceptionBase" )]
-public static
-void
-Test_SimpleLocalisedExceptionBase()
-{
-    SimpleTestException te = new SimpleTestException();
-
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
-    CultureInfo current;
-
-    Print( "Message" );
-    ILocalisedException le = te;
-    Assert( le.Message[ en ] == "Simple Test Exception" );
-    Assert( le.Message[ fr ] == "Le Simple Test Exception" );
-
-    Print( "Message (via Exception.Message)" );
-    Exception e = te;
-    current = Thread.CurrentThread.CurrentCulture;
-    try {
-        Thread.CurrentThread.CurrentCulture = en;
-        Assert( e.Message == "Simple Test Exception" );
-        Thread.CurrentThread.CurrentCulture = fr;
-        Assert( e.Message == "Le Simple Test Exception" );
-    } finally {
-        Thread.CurrentThread.CurrentCulture = current;
-    }
-}
-
-
-public class
-TestException
-    : LocalisedExceptionBase
-{
-
-public
-TestException()
-    : this( null )
-{
-}
-
-public
-TestException(
-    Exception innerException
-)
-    : base( innerException )
-{
-}
-
-override public
-Localised< string >
-Message
-{
-    get
-    {
-        Localised< string > message =
-            new InMemoryLocalised< string >( "Test Exception" );
-        CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-        CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
-        message[ en ] = "Test Exception";
-        message[ fr ] = "Le Test Exception";
-        return message;
-    }
-}
-
-} // TestException
-
-
-public class
-SimpleTestException
-    : SimpleLocalisedExceptionBase
-{
-
-static
-SimpleTestException()
-{
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
-    MESSAGE[ en ] = "Simple Test Exception";
-    MESSAGE[ fr ] = "Le Simple Test Exception";
-}
-
-static private
-Localised< string >
-MESSAGE = new InMemoryLocalised< string >( "Simple Test Exception" );
-
-public
-SimpleTestException()
-    : base( MESSAGE )
-{
-}
-
-} // SimpleTestException
-
-*/
 
 
 
