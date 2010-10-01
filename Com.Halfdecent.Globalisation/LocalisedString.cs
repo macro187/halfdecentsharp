@@ -61,7 +61,7 @@ Format(
     if( args == null ) throw new ArgumentNullException( "args" );
 
     return new LazyLocalised< string >(
-        (lang) =>
+        lang =>
             String.Format(
                 lang,
                 format.In( lang ),
@@ -70,6 +70,50 @@ Format(
                         ? ((ILocalised)arg).In( lang )
                         : arg )
                     .ToArray() ) );
+}
+
+
+/// Localised-aware version of <tt>System.String.Concat()</tt>
+///
+public static
+    Localised< string >
+Concat(
+    Localised< string > a,
+    Localised< string > b
+)
+{
+    a = a ?? new SingleValueLocalised< string >( "" );
+    b = b ?? new SingleValueLocalised< string >( "" );
+    return new LazyLocalised< string >(
+        lang => string.Concat( a.In( lang ), b.In( lang ) ) );
+}
+
+
+/// Localised-aware version of <tt>System.String.ToLower()</tt>
+///
+public static
+    Localised< string >
+ToLower(
+    this Localised< string > s
+)
+{
+    if( s == null ) throw new ArgumentNullException( "s" );
+    return new LazyLocalised< string >(
+        lang => s.In( lang ).ToLower( lang ) );
+}
+
+
+/// Localised-aware version of <tt>System.String.ToUpper()</tt>
+///
+public static
+    Localised< string >
+ToUpper(
+    this Localised< string > s
+)
+{
+    if( s == null ) throw new ArgumentNullException( "s" );
+    return new LazyLocalised< string >(
+        lang => s.In( lang ).ToUpper( lang ) );
 }
 
 

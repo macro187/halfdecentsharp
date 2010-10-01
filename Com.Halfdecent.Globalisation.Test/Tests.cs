@@ -143,6 +143,83 @@ Test_LocalisedString_Format()
 }
 
 
+[Test( "LocalisedString.Concat()" )]
+public static
+void
+Test_LocalisedString_Concat()
+{
+    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+
+    Localised<string> a = new LazyLocalised<string>( lang =>
+        lang.Equals( fr )
+            ? "Un"
+            : "One" );
+
+    Localised<string> b = new LazyLocalised<string>( lang =>
+        lang.Equals( fr )
+            ? "Deux"
+            : "Two" );
+
+    Print( "Concat() a couple of Localised<string>s" );
+    Localised<string> ab = LocalisedString.Concat( a, b );
+
+    Print( "Make sure it's right in english" );
+    Assert( ab.In( en ) == "OneTwo" );
+
+    Print( "Make sure it's right in french" );
+    Assert( ab.In( fr ) == "UnDeux" );
+}
+
+
+// TODO Use examples where the lowercasing is performed differently
+//
+[Test( "LocalisedString.ToLower()" )]
+public static
+void
+Test_LocalisedString_ToLower()
+{
+    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+
+    Localised<string> s = new LazyLocalised<string>( lang =>
+        lang.Equals( fr )
+            ? "Bonjour"
+            : "Hello" )
+        .ToLower();
+
+    Print( "Make sure it's right in english" );
+    Assert( s.In( en ) == "hello" );
+
+    Print( "Make sure it's right in french" );
+    Assert( s.In( fr ) == "bonjour" );
+}
+
+
+// TODO Use examples where the uppercasing is performed differently
+//
+[Test( "LocalisedString.ToUpper()" )]
+public static
+void
+Test_LocalisedString_ToUpper()
+{
+    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+
+    Localised<string> s = new LazyLocalised<string>( lang =>
+        lang.Equals( fr )
+            ? "Bonjour"
+            : "Hello" )
+        .ToUpper();
+
+    Print( "Make sure it's right in english" );
+    Assert( s.In( en ) == "HELLO" );
+
+    Print( "Make sure it's right in french" );
+    Assert( s.In( fr ) == "BONJOUR" );
+}
+
+
 
 
 } // type
