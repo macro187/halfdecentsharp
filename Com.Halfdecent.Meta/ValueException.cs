@@ -45,6 +45,7 @@ ValueException
 public
 ValueException(
     Value valueReference
+    ///< Reference to the value that caused the exception
 )
     : this( valueReference, null, null )
 {
@@ -54,7 +55,11 @@ ValueException(
 public
 ValueException(
     Value               valueReference,
+    ///< Reference to the value that caused the exception
     Localised< string > messageFormat
+    ///< Format string used to <tt>SayMessage()</tt>
+    ///
+    ///  {0} - Natural language referring to the problematic value
 )
     : this( valueReference, messageFormat, null )
 {
@@ -64,8 +69,14 @@ ValueException(
 public
 ValueException(
     Value               valueReference,
+    ///< Reference to the value that caused the exception
     Localised< string > messageFormat,
+    ///< Format string used to <tt>SayMessage()</tt>
+    ///
+    ///  {0} - Natural language referring to the problematic value
     Exception           innerException
+    ///< Another exception that is the underlying cause of this one, or
+    ///  <tt>null</tt> if there is no such underlying cause
 )
     : base( null, innerException )
 {

@@ -76,6 +76,8 @@ ValueArgumentNullException(
     ///
     ///  {0} - Natural language referring to the problematic parameter
     Exception           innerException
+    ///< Another exception that is the underlying cause of this one, or
+    ///  <tt>null</tt> if there is no such underlying cause
 )
     : base(
         parameter != null ? parameter.Name : "",

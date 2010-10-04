@@ -94,6 +94,8 @@ ValueArgumentOutOfRangeException(
     object              actualValue,
     ///< Value of the parameter that caused the exception
     Exception           innerException
+    ///< Another exception that is the underlying cause of this one, or
+    ///  <tt>null</tt> if there is no such underlying cause
 )
     : base(
         parameter != null ? parameter.Name : "",

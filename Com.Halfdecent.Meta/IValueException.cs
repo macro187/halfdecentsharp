@@ -41,6 +41,14 @@ IValueException
 /// Generate natural language describing the problem, using specified
 /// natural language to refer to the problematic value
 ///
+/// Problematic values take on additional meaning as exceptions makes their way
+/// back up the call stack.  For example, a value known as "the 's' parameter"
+/// low down in the stack may take on additional meaning as "the 'firstName'
+/// parameter" further up, and may ultimately be known to the end-user as "my
+/// first name".   This method separates the description of the problem from the
+/// language used to refer to the problematic value, allowing it to be re-used
+/// in different contexts.
+///
 Localised< string >
 SayMessage(
     Localised< string > reference
