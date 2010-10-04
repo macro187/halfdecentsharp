@@ -22,8 +22,10 @@
 ///
 /// @section problem Problem
 ///
-///     Exception messages are not
-///     <tt>Com.Halfdecent.Globalisation.Localised<string></tt>.
+///     Exception messages are not localisable (ie.
+///     <tt>Com.Halfdecent.Globalisation.Localised<string></tt>).  This is a
+///     general shortcoming that prevents use of exception messages in
+///     user-visible ways.
 ///
 ///
 /// @section solution Solution
