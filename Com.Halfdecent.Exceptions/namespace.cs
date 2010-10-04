@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,7 +18,23 @@
 
 
 // =============================================================================
-/// Exceptions
+/// Localisable exceptions
+///
+/// @section problem Problem
+///
+///     Exception messages are not
+///     <tt>Com.Halfdecent.Globalisation.Localised<string></tt>.
+///
+///
+/// @section solution Solution
+///
+///     -   <tt>ILocalisedException</tt> interface with a
+///         <tt>Localised<string></tt> <tt>.Message</tt>.
+///
+///     -   Subclasses of the main Base Class Library
+///         exceptions implementing <tt>ILocalisedException</tt>.
+///
+///
 // =============================================================================
 
 namespace
