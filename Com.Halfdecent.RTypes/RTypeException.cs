@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -28,8 +28,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// A value was found not to be of a particular RType when it was required to
-/// be
+/// A value failed an rtype check
 // =============================================================================
 
 public class
@@ -43,6 +42,9 @@ RTypeException
 // Constructors
 // -----------------------------------------------------------------------------
 
+/// Initialise a new rtype exception with a reference to the offending value and
+/// the rtype that it failed
+///
 public
 RTypeException(
     Value   valueReference,
@@ -53,6 +55,9 @@ RTypeException(
 }
 
 
+/// Initialise a new rtype exception with a reference to the offending value,
+/// the rtype that it failed, and another underlying exception
+///
 public
 RTypeException(
     Value       valueReference,
@@ -75,6 +80,8 @@ RTypeException(
 // Properties
 // -----------------------------------------------------------------------------
 
+/// The rtype that the value failed
+///
 public
 IRType
 RType
