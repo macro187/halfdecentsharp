@@ -17,7 +17,44 @@
 
 
 // =============================================================================
-/// TODO
+/// Cursors
+///
+///
+/// @section introduction Introduction
+///
+///     This library deals with cursors in the abstract "moveable pointer to an
+///     item" sense.
+///
+///
+/// @section problem Problem
+///
+///     -   The Base Class Library offers just <tt>IEnumerator<T></tt>, a
+///         forward-only, read-only cursor
+///
+///     -   No cursors that can go backwards
+///
+///     -   No cursors that can replace the items they point to
+///
+///     -   No cursors that can insert items where they point
+///
+///     -   No cursors that can remove the items they point to
+///
+///
+/// @section solution Solution
+///
+///     -   Forward-only cursor:  <tt>ICursor</tt>
+///
+///     -   Forward and backward cursor:  <tt>IBidirectionalCursor</tt>
+///
+///     -   Fine-grained cursor subtypes that can read, change, insert, or
+///         remove items, and subtypes for all possible combinations
+///
+///     -   Explicit variance where appropriate via extension methods and
+///         proxies
+///
+///     -   Implicit C# 4.0 variance where appropriate
+///
+///
 // =============================================================================
 
 namespace
