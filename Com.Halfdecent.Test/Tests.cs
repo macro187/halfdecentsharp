@@ -274,6 +274,42 @@ Test_ObjectComparer_T()
 }
 
 
+[Test( "ReferenceComparer" )]
+public static
+void
+Test_ReferenceComparer_T()
+{
+    Print( "Equality" );
+    Assert(
+        new ReferenceComparer().Equals(
+        new ReferenceComparer() ) );
+    Assert(
+        new ReferenceComparer().GetHashCode() ==
+        new ReferenceComparer().GetHashCode() );
+    Assert( !(
+        new ReferenceComparer().Equals(
+        new EquatableComparer< A >() ) ) );
+
+    IEqualityComparer<object> c = new ReferenceComparer();
+
+    object o = new object();
+    object p = new object();
+
+    Print( "Works properly on System.Object" );
+    Assert( c.Equals( o, o ) );
+    Assert( !c.Equals( o, p ) );
+
+    string s = new string( 'a', 1 );
+    string t = new string( 'a', 1 );
+
+    Print( "Works properly on System.String even if they're the same" );
+    Assert( c.Equals( s, s ) );
+    Assert( !c.Equals( s, t ) );
+
+    // Don't bother with GetHashCode() because it doesn't work properly anyway
+}
+
+
 public interface I : IComparable< I > {}
 public interface II : I {}
 public interface J : IComparable< J > {}
