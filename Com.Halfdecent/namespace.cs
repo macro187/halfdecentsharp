@@ -88,7 +88,7 @@
 ///             runtime types are known.
 ///
 ///         -   <tt>System.Collections.Generic.IComparer<T></tt> does not imply
-///             <tt>System.Collections.Generic.IEqulityComparer<T></tt> even
+///             <tt>System.Collections.Generic.IEqualityComparer<T></tt> even
 ///             though its functionality is a superset.
 ///
 ///         -   The BCL comparers are not themselves equatable, so you cannot
@@ -185,20 +185,15 @@
 ///         is not generic (because the name ends up the same).
 ///
 ///
-///     @subsection comparer Comparer
+///     @subsection baseclass Base Class
 ///
-///         <tt>class TheTypeComparer<T></tt>
+///         <tt>abstract class TheTypeBase<T></tt>
 ///
-///         <tt>TheTypeComparer_T.cs</tt>
+///         <tt>TheTypeBase_T.cs</tt>
 ///
-///         Present if the abstract type introduces it's own kind of equality.
+///         Base class to assist in implementing ITheType<T>.
 ///
-///         Implements IEqualityComparer<ITheType<T>> in terms of
-///         ITheType<T>.Equals( ITheType<T> ) and ITheType<T>.GetHashCode()
-///         (see "Equality" section below).
-///
-///         Implements IComparer<ITheType<T>> if the abstract type is
-///         orderable.
+///         Present if applicable.
 ///
 ///
 ///     @subsection implmentation Default Implementation
@@ -213,17 +208,6 @@
 ///
 ///         Combined with the "Abstract Operations" class above if the type is
 ///         not generic (because the name ends up the same).
-///
-///
-///     @subsection baseclass Base Class
-///
-///         <tt>abstract class TheTypeBase<T></tt>
-///
-///         <tt>TheTypeBase_T.cs</tt>
-///
-///         Base class to assist in implementing ITheType<T>.
-///
-///         Present if applicable.
 ///
 ///
 ///     @subsection constrainedgenerictypes Use of Constrained Generic Types
