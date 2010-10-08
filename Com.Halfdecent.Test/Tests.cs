@@ -47,10 +47,10 @@ Main()
 
 
 
-[Test( "EnumerableUtils" )]
+[Test( "SystemEnumerable" )]
 public static
 void
-Test_EnumerableUtils()
+Test_SystemEnumerable()
 {
     Print( ".Append()" );
     Assert(
@@ -73,10 +73,10 @@ Test_EnumerableUtils()
 }
 
 
-[Test( "ExceptionUtils" )]
+[Test( "SystemException" )]
 public static
 void
-Test_ExceptionUtils()
+Test_SystemException()
 {
     System.Exception e = new System.Exception();
     System.Exception f = new System.Exception( "", e );
@@ -94,14 +94,14 @@ Test_ExceptionUtils()
 }
 
 
-[Test( "ObjectUtils" )]
+[Test( "SystemObject" )]
 public static
 void
-Test_ObjectUtils()
+Test_SystemObject()
 {
     Print( ".ToString()" );
-    Assert( ObjectUtils.ToString( null ) == "null" );
-    Assert( ObjectUtils.ToString( "notnull" ) == "notnull" );
+    Assert( SystemObject.ToString( null ) == "null" );
+    Assert( SystemObject.ToString( "notnull" ) == "notnull" );
 }
 
 

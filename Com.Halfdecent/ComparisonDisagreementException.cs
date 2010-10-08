@@ -63,10 +63,10 @@ ComparisonDisagreementException(
             "IComparable<T>.CompareTo() implementations",
             comparableType.FullName,
             thisType.FullName,
-            ObjectUtils.ToString( thisValue ),
+            SystemObject.ToString( thisValue ),
             thisResult,
             thatType.FullName,
-            ObjectUtils.ToString( thatValue ),
+            SystemObject.ToString( thatValue ),
             thatResult ) )
 {
 }
