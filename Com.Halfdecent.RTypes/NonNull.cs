@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2010
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -62,7 +63,7 @@ GetComponents()
 {
     return
         base.GetComponents()
-        .Append( new NEQ<object>( null, new ObjectComparer() ) );
+        .Append( new NEQ<object>( null, new ReferenceComparer() ) );
 }
 
 

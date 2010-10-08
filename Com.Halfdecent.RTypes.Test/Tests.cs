@@ -569,10 +569,10 @@ Test_IsEqualToOrMoreSpecificThan()
         new NonNull().IsEqualToOrMoreSpecificThan(
             new NonNull() ) );
 
-    Print( "NonNull <= NEQ<object>( null, new ObjectComparer() )" );
+    Print( "NonNull <= NEQ<object>( null, new ReferenceComparer() )" );
     Assert(
         new NonNull().IsEqualToOrMoreSpecificThan(
-            new NEQ<object>( null, new ObjectComparer() ) ) );
+            new NEQ<object>( null, new ReferenceComparer() ) ) );
 
     Print( "NonBlankString !<= EQ<object>( \"foo\", new ObjectComparer() )" );
     Assert( !(
