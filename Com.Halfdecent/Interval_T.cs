@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -25,7 +25,6 @@ Com.Halfdecent
 /// <tt>IInterval</tt> implementation
 // =============================================================================
 
-// TODO: Could this be a struct?
 public sealed class
 Interval<
     T
@@ -34,27 +33,10 @@ Interval<
 {
 
 
-
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Create an interval between one value and another, both inclusive
-///
-public
-Interval(
-    T               from,
-    T               to,
-    IComparer< T >  comparer
-)
-    : this( from, true, to, true, comparer )
-{
-}
-
-
-/// Create an interval between one value and another, specifying whether each
-/// is inclusive
-///
 public
 Interval(
     T               from,

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -34,6 +34,68 @@ Interval
 // -----------------------------------------------------------------------------
 // Static Methods
 // -----------------------------------------------------------------------------
+
+/// Create an interval of comparable items that includes both endpoints
+///
+/// Using the default implementation (<tt>Interval<T></tt>)
+///
+public static
+    IInterval< T >
+Create<
+    T
+>(
+    T from,
+    T to
+)
+    where T : System.IComparable< T >
+{
+    return Create( from, true, to, true );
+}
+
+
+/// Create an interval of comparable items with specified inclusion/exclusion
+/// of endpoints
+///
+/// Using the default implementation (<tt>Interval<T></tt>)
+///
+public static
+    IInterval< T >
+Create<
+    T
+>(
+    T    from,
+    bool fromInclusive,
+    T    to,
+    bool toInclusive
+)
+    where T : System.IComparable< T >
+{
+    return Create(
+        from, fromInclusive, to, toInclusive,
+        new SystemComparableComparer< T >() );
+}
+
+
+/// Create an interval with specified inclusion/exclusion of endpoints, ordered
+/// by a specified comparer
+///
+/// Using the default implementation (<tt>Interval<T></tt>)
+///
+public static
+    IInterval< T >
+Create<
+    T
+>(
+    T               from,
+    bool            fromInclusive,
+    T               to,
+    bool            toInclusive,
+    IComparer< T >  comparer
+)
+{
+    return new Interval< T >( from, fromInclusive, to, toInclusive, comparer );
+}
+
 
 /// <tt>IInterval<T>.DirectionalEquals()</tt> implementation
 ///

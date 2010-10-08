@@ -534,27 +534,17 @@ Test_ComparerProxy_T()
 public static void
 Test_Interval()
 {
-    IComparer< int > c = new Comparer< int >(
-        ( a, b ) => a.CompareTo( b ),
-        ( a ) => a.GetHashCode() );
-
     int smaller = 1;
     int from = 5;
     int between = 7;
     int to = 10;
     int bigger = 15;
 
-    IInterval< int > inc =
-        new Interval< int >( from, to, c );
-    IInterval< int > exc =
-        new Interval< int >( from, false, to, false, c );
-    IInterval< int > frominc =
-        new Interval< int >( from, true, to, false, c );
-    IInterval< int > toinc =
-        new Interval< int >( from, false, to, true, c );
-
-    IInterval< int > anotherinc =
-        new Interval< int >( from, to, c );
+    IInterval< int > inc = Interval.Create( from, to );
+    IInterval< int > exc = Interval.Create( from, false, to, false );
+    IInterval< int > frominc = Interval.Create( from, true, to, false );
+    IInterval< int > toinc = Interval.Create( from, false, to, true );
+    IInterval< int > anotherinc = Interval.Create( from, to );
 
     Print( "Both Inclusive" );
     Assert( !inc.Contains( smaller ) );
