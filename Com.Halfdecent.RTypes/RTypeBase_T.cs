@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -31,9 +31,9 @@ Com.Halfdecent.RTypes
 ///
 /// @section implementing Implementing
 ///
-///     This base class offers three mechanisms for implementing RType logic,
-///     any number of which can be used simultaneously.  In decreasing order of
-///     preference, they are:
+///     There are three mechanisms for implementing RType logic, any number of
+///     which can be used simultaneously.  In decreasing order of preference,
+///     they are:
 ///
 ///     -#  <tt>GetComponents()</tt>, other RTypes to apply to the item
 ///
@@ -51,6 +51,40 @@ Com.Halfdecent.RTypes
 ///     In short, try to compose new RTypes from existing ones using the first
 ///     two mechanisms.  Only resort to a hand-written <tt>Predicate()</tt>
 ///     when the required logic doesn't exist anywhere else.
+///
+///     RType implementations should be <tt>sealed</tt>.  RTypes should be
+///     re-used by composition (i.e. <tt>GetComponents()</tt>), not by
+///     subclassing.
+///
+///
+/// @section patterns Patterns
+///
+///     Suggested patterns for implementing the different kinds of rtype logic
+///
+///
+///     @subsection getcomponents <tt>.GetComponents()</tt>
+///
+///         <code>
+///         using Com.Halfdecent;
+///         //...
+///         return
+///                base.GetComponents()
+///                .Append( new FooRType() )
+///                .Append( new BarRType() );
+///         </code>
+///
+///
+///     @subsection checkmembers <tt>.CheckMembers()</tt>
+///
+///         <code>
+///         return
+///             base.CheckMembers( item, itemReference )
+///             ?? new FooRType().Check(
+///                 item.Prop, itemReference.Property( "Prop" ) )
+///             ?? new BarRType().Check(
+///                 item[2], itemReference.Indexer( 2 ) );
+///         </code>
+///
 // =============================================================================
 
 public abstract class

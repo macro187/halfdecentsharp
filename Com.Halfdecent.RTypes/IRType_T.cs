@@ -27,6 +27,26 @@ Com.Halfdecent.RTypes
 
 // =============================================================================
 /// Reusable, composable value condition
+///
+/// @section logic Logic
+///
+///     Condition logic is expressed in any combination of 3 different ways:
+///
+///     -   Through the composition of existing rtypes:
+///         <tt>.GetComponents()</tt>
+///
+///     -   Through the application of existing rtypes to parts of items:
+///         <tt>.CheckMembers()</tt>
+///
+///     -   Through hand-written logic: <tt>.Predicate()</tt>
+///
+///
+/// @section nulls Null Values
+///
+///     RTypes allow <tt>null</tt> values to pass.  The only exception is
+///     <tt>NonNull</tt>, which is specifically designed to disallow them 
+///
+///
 // =============================================================================
 
 public interface
@@ -42,42 +62,19 @@ IRType<
 // Methods
 // -----------------------------------------------------------------------------
 
-/// RType logic as a list of other RTypes to be applied to the item
+/// Logic expressed as a list of existing rtypes to compose
 ///
     SCG.IEnumerable< IRType< T > >
 GetComponents();
 
 
-/// RType logic by applying RType checks to parts of the item
-///
-/// @section implementing Implementing
-///
-///     The <tt>??</tt> operator is a nice way to implement this method if
-///     there is more than one check:
-///
-///     <code>
-///     public override
-///     RTypeException
-///     CheckMembers(
-///         T       item,
-///         Value   itemReference
-///     )
-///     {
-///         return
-///             new SomeRType().Check(
-///                 item.Prop, itemReference.Property( "Prop" ) ) ??
-///             new AnotherRType().Check(
-///                 item[2], itemReference.Indexer( 2 ) ) ??
-///             new YetAnotherRType().Check(
-///                 item.Prop2, itemReference.Property( "Prop2" ) );
-///     }
-///     </code>
+/// Logic expressed as the application of existing rtypes to parts of the item
 ///
     RTypeException
     /// @returns
-    /// <tt>null</tt>, if all member rtype checks passed
+    /// <tt>null</tt> if all member checks pass
     /// - OR -
-    /// An <tt>RTypeException</tt> with details, if a member rtype check
+    /// An <tt>RTypeException</tt> with details of the first member check that
     /// failed
 CheckMembers(
     T       item,
@@ -85,11 +82,9 @@ CheckMembers(
 );
 
 
-/// RType logic as a method
+/// Logic expressed as a function "from scratch"
 ///
     bool
-    /// @returns
-    /// Whether <tt>item</tt> conforms
 Predicate(
     T item
 );
