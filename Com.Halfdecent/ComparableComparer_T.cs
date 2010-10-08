@@ -48,7 +48,12 @@ Compare(
     T that
 )
 {
-    return Comparable.CompareTo( dis, that );
+    // Handle nulls according to System.IComparable.CompareTo() rules
+    if( object.ReferenceEquals( dis, null ) &&
+        object.ReferenceEquals( that, null ) ) return 0;
+    if( object.ReferenceEquals( dis, null ) ) return -1;
+    if( object.ReferenceEquals( that, null ) ) return 1;
+    return dis.CompareTo( that );
 }
 
 
