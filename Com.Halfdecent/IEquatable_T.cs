@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -26,15 +26,15 @@ Com.Halfdecent
 ///
 /// @section implementing Implementing
 ///
-///     -#  Implement <tt>Equals()</tt> using <tt>Equatable.Equals<T>()</tt>,
-///         which handles <tt>null</tt> and checks both items'
-///         <tt>DirectionalEquals()</tt> for you.  Should not be
-///         <tt>virtual</tt> as this should not change.
-///         .
+///     -#  Implement <tt>System.IEquatable<T>.Equals()</tt> using
+///     <tt>Equatable.Equals<T>()</tt>, which handles <tt>null</tt> and checks
+///     both items' <tt>DirectionalEquals()</tt> for you.  Should not be
+///     <tt>virtual</tt> as this should not change.
+///
 ///     -#  Implement <tt>DirectionalEquals()</tt> with your new equality
 ///         implementation.  If you expect subclasses, this should be
 ///         <tt>virtual</tt> so they can refine as necessary.
-///         .
+///
 ///     -#  Implement <tt>GetHashCode()</tt> to provide hash codes
 ///         compatible<sup>1</sup> with your <tt>DirectionalEquals()</tt>
 ///         implementation.  This will require an explicit interface member
@@ -103,6 +103,7 @@ IEquatable<
     T
     ///< The type
 >
+    : System.IEquatable< T >
 {
 
 
@@ -110,19 +111,6 @@ IEquatable<
 // -----------------------------------------------------------------------------
 // Methods
 // -----------------------------------------------------------------------------
-
-/// Determine whether this and another item are equal
-///
-/// That is, <tt>this</tt> and <tt>that</tt> <tt>DirectionalEquals()</tt> each
-/// other.
-///
-/// This method should be implemented using <tt>Equatable.Equals<T>()</tt>.
-///
-    bool
-Equals(
-    T that
-);
-
 
 /// Determine whether this item considers itself equal to another
 ///

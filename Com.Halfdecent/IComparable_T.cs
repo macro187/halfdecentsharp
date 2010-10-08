@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -23,22 +23,6 @@ Com.Halfdecent
 
 // =============================================================================
 /// A type that introduces a new definition of ordering
-// =============================================================================
-
-public interface
-IComparable<
-    T
->
-    : IEquatable< T >
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Determine whether this item is less than, equal to, or greater than another
 ///
 /// Both items are asked how they compare to each other through their
 /// respective <tt>DirectionalCompareTo()</tt> methods.  The final result is
@@ -49,22 +33,23 @@ IComparable<
 ///     the latter is assumed to be more specific and is used
 /// -   If the items return opposite results, an exception is thrown
 ///
-/// This method should be implemented using <tt>Comparable.CompareTo<T>()</tt>.
-///
-/// @exception ComparisonDisagreementException
-/// The items completely disagree on how they compare to one another
-///
-    int
-    /// @returns
-    /// A positive integer if <tt>this</tt> is greater than <tt>that</tt>
-    /// - OR -
-    /// 0 if the items are equal to one another
-    /// - OR -
-    /// A negative integer if <tt>this</tt> is less than <tt>that</tt>
-CompareTo(
-    T that
-);
+/// Use <tt>Comparable.CompareTo()</tt> to implement
+/// <tt>System.IComparable<T>.CompareTo()</tt>.
+// =============================================================================
 
+public interface
+IComparable<
+    T
+>
+    : IEquatable< T >
+    , System.IComparable< T >
+{
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
 
 /// Determine whether this item considers itself less than, equal to, or
 /// greater than another
