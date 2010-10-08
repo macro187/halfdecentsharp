@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -78,7 +78,7 @@ Test_EQ_T()
     t = new EQ<object>( 1, new ObjectComparer() );
 
     Print( "Null passes" );
-    t.Require< object, object >( null, new Literal() );
+    t.Require( (object)null, new Literal() );
 
     Print( "Equal passes" );
     t.Require( 1, new Literal() );
@@ -90,7 +90,7 @@ Test_EQ_T()
     t = new EQ<object>( null, new ObjectComparer() );
 
     Print( "With null CompareTo, null passes" );
-    t.Require< object, object >( null, new Literal() );
+    t.Require( (object)null, new Literal() );
 
     Print( "With null CompareTo, non-null fails" );
     Expect< RTypeException >(
@@ -128,7 +128,7 @@ Test_NEQ_T()
     t = new NEQ<object>( 1, new ObjectComparer() );
 
     Print( "Null passes" );
-    t.Require< object, object >( null, new Literal() );
+    t.Require( null, new Literal() );
 
     Print( "Inequal passes" );
     t.Require( 2, new Literal() );
@@ -144,7 +144,7 @@ Test_NEQ_T()
 
     Print( "With null CompareTo, null fails" );
     Expect< RTypeException >(
-        () => t.Require< object, object >( null, new Literal() ) );
+        () => t.Require( null, new Literal() ) );
 }
 
 
@@ -242,11 +242,11 @@ Test_NonNull()
         .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
 
     Print( "Non-null passes" );
-    new NonNull().Require( new object(), new Literal() );
+    NonNull.Require( new object(), new Literal() );
 
     Print( "Null fails" );
     Expect< RTypeException >(
-        () => new NonNull().Require< object, object >( null, new Literal() ) );
+        () => NonNull.Require( null, new Literal() ) );
 }
 
 
@@ -267,7 +267,7 @@ Test_NonBlankString()
         .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
 
     Print( "Null passes" );
-    new NonBlankString().Require< string, string >( null, new Literal() );
+    new NonBlankString().Require( null, new Literal() );
 
     Print( "Non-blank string passes" );
     new NonBlankString().Require( "Not blank", new Literal() );
@@ -307,7 +307,7 @@ Test_GT_T()
     IRType<I> t = new GT<I>( equal, new ComparableComparer<I>() );
 
     Print( "null passes" );
-    t.Require< I, I >( null, new Literal() );
+    t.Require( null, new Literal() );
 
     Print( "Bigger passes" );
     t.Require( bigger, new Local( "bigger" ) );
@@ -351,7 +351,7 @@ Test_GTE_T()
     IRType<I> t = new GTE<I>( equal, new ComparableComparer<I>() );
 
     Print( "null passes" );
-    t.Require< I, I >( null, new Literal() );
+    t.Require( null, new Literal() );
 
     Print( "Bigger passes" );
     t.Require( bigger, new Local( "bigger" ) );
@@ -394,7 +394,7 @@ Test_LT_T()
     IRType<I> t = new LT<I>( equal, new ComparableComparer<I>() );
 
     Print( "null passes" );
-    t.Require< I, I >( null, new Literal() );
+    t.Require( null, new Literal() );
 
     Print( "Bigger fails" );
     Expect< RTypeException >( () =>
@@ -438,7 +438,7 @@ Test_LTE_T()
     IRType<I> t = new LTE<I>( equal, new ComparableComparer<I>() );
 
     Print( "null passes" );
-    t.Require< I, I >( null, new Literal() );
+    t.Require( null, new Literal() );
 
     Print( "Bigger fails" );
     Expect< RTypeException >( () =>

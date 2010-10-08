@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -46,13 +46,11 @@ RType
 public static
     bool
 Is<
-    T,
-    U
+    T
 >(
     this IRType< T >    dis,
-    U                   item
+    T                   item
 )
-    where U : T
 {
     if( dis == null )
         throw new ValueArgumentNullException( new Parameter( "dis" ) );
@@ -60,8 +58,33 @@ Is<
 }
 
 
-/// Determine whether an item conforms to this RType, with details if it does
-/// not
+/// Require that an item conform to this RType
+///
+/// @exception RTypeException
+/// <tt>item</tt> does not conform to this RType
+///
+public static
+    void
+Require<
+    T
+>(
+    this IRType< T >    dis,
+    T                   item,
+    Value               itemReference
+)
+{
+    if( dis == null )
+        throw new ValueArgumentNullException( new Parameter( "dis" ) );
+    RTypeException rte = dis.Check( item, itemReference );
+    if( rte != null ) throw rte;
+}
+
+
+/// Type-check a value against this rtype
+///
+/// Uses <tt>GetComponents()</tt>, <tt>CheckMembers()</tt>, and
+/// <tt>Predicate()</tt> to determine if the value conforms, providing a
+/// detailed <tt>RTypeException</tt> if it doesn't
 ///
 public static
     RTypeException
@@ -71,16 +94,12 @@ public static
     /// An <tt>RTypeException</tt> with details, if <tt>item</tt> does not
     /// conform to this RType
 Check<
-    T,
-    U
+    T
 >(
     this IRType< T >    dis,
-    U                   item,
-    ///< Item to check
+    T                   item,
     Value               itemReference
-    ///< Reference to <tt>item</tt> from the caller's perspective
 )
-    where U : T
 {
     if( dis == null )
         throw new ValueArgumentNullException( new Parameter( "dis" ) );
@@ -109,32 +128,6 @@ Check<
         return new RTypeException( itemReference, dis.GetUnderlying() );
 
     return null;
-}
-
-
-/// Require that an item conform to this RType
-///
-/// @exception RTypeException
-/// <tt>item</tt> does not conform to this RType
-///
-public static
-    void
-Require<
-    T,
-    U
->(
-    this IRType< T >    dis,
-    U                   item,
-    ///< Item to check
-    Value               itemReference
-    ///< Reference to <tt>item</tt> from the caller's perspective
-)
-    where U : T
-{
-    if( dis == null )
-        throw new ValueArgumentNullException( new Parameter( "dis" ) );
-    RTypeException rte = dis.Check( item, itemReference );
-    if( rte != null ) throw rte;
 }
 
 
