@@ -84,7 +84,7 @@ Equals(
         object.ReferenceEquals( that, null ) ) return true;
     if( object.ReferenceEquals( dis, null ) ||
         object.ReferenceEquals( that, null ) ) return false;
-    return dis.Equals( that );
+    return dis.CompareTo( that ) == 0;
 }
 
 
