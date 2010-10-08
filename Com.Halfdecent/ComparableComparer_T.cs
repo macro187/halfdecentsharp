@@ -80,6 +80,7 @@ GetHashCode(
 {
     if( object.ReferenceEquals( item, null ) )
         throw new System.ArgumentNullException( "item" );
+    // Note: This is IEquatable<T>.GetHashCode()
     return item.GetHashCode();
 }
 
