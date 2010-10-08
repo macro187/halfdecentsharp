@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -26,11 +26,85 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
+/// Static methods for <tt>GTE<T></tt>
+// =============================================================================
+
+public static class
+GTE
+{
+
+
+/// According to a specified ordering
+///
+public static
+    void
+Require<
+    T
+>(
+    T       compareTo,
+    T       item,
+    Value   itemReference
+)
+    where T : System.IComparable< T >
+{
+    Create( compareTo ).Require( item, itemReference );
+}
+
+
+/// According to a specified comparer
+///
+public static
+    void
+Require<
+    T
+>(
+    T               compareTo,
+    IComparer< T >  comparer,
+    T               item,
+    Value           itemReference
+)
+{
+    Create( compareTo, comparer ).Require( item, itemReference );
+}
+
+
+public static
+    GTE< T >
+Create<
+    T
+>(
+    T compareTo
+)
+    where T : System.IComparable< T >
+{
+    return Create( compareTo, new SystemComparableComparer< T >() );
+}
+
+
+public static
+    GTE< T >
+Create<
+    T
+>(
+    T               compareTo,
+    IComparer< T >  comparer
+)
+{
+    return new GTE< T >( compareTo, comparer );
+}
+
+
+
+} // type
+
+
+
+// =============================================================================
 /// RType: Greater than or equal to a particular value, according to a
 /// particular ordering
 // =============================================================================
 
-public class
+public sealed class
 GTE<
     T
 >
@@ -46,9 +120,7 @@ GTE<
 public
 GTE(
     T               compareTo,
-    ///< The value to compare to
     IComparer< T >  comparer
-    ///< The ordering to use
 )
     : base(
         _S( "{{0}} is greater than or equal to {0}",

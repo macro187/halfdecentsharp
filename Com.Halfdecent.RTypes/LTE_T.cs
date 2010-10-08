@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -26,11 +26,85 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
+/// Static methods for <tt>LTE<T></tt>
+// =============================================================================
+
+public static class
+LTE
+{
+
+
+/// According to a specified ordering
+///
+public static
+    void
+Require<
+    T
+>(
+    T       compareTo,
+    T       item,
+    Value   itemReference
+)
+    where T : System.IComparable< T >
+{
+    Create( compareTo ).Require( item, itemReference );
+}
+
+
+/// According to a specified comparer
+///
+public static
+    void
+Require<
+    T
+>(
+    T               compareTo,
+    IComparer< T >  comparer,
+    T               item,
+    Value           itemReference
+)
+{
+    Create( compareTo, comparer ).Require( item, itemReference );
+}
+
+
+public static
+    LTE< T >
+Create<
+    T
+>(
+    T compareTo
+)
+    where T : System.IComparable< T >
+{
+    return Create( compareTo, new SystemComparableComparer< T >() );
+}
+
+
+public static
+    LTE< T >
+Create<
+    T
+>(
+    T               compareTo,
+    IComparer< T >  comparer
+)
+{
+    return new LTE< T >( compareTo, comparer );
+}
+
+
+
+} // type
+
+
+
+// =============================================================================
 /// RType: Less than or equal to a particular value, according to a
 /// particular ordering
 // =============================================================================
 
-public class
+public sealed class
 LTE<
     T
 >

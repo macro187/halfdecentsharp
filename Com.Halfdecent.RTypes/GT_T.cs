@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -27,10 +27,84 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
+/// Static methods for <tt>GT<T></tt>
+// =============================================================================
+
+public static class
+GT
+{
+
+
+/// According to a specified ordering
+///
+public static
+    void
+Require<
+    T
+>(
+    T       compareTo,
+    T       item,
+    Value   itemReference
+)
+    where T : System.IComparable< T >
+{
+    Create( compareTo ).Require( item, itemReference );
+}
+
+
+/// According to a specified comparer
+///
+public static
+    void
+Require<
+    T
+>(
+    T               compareTo,
+    IComparer< T >  comparer,
+    T               item,
+    Value           itemReference
+)
+{
+    Create( compareTo, comparer ).Require( item, itemReference );
+}
+
+
+public static
+    GT< T >
+Create<
+    T
+>(
+    T compareTo
+)
+    where T : System.IComparable< T >
+{
+    return Create( compareTo, new SystemComparableComparer< T >() );
+}
+
+
+public static
+    GT< T >
+Create<
+    T
+>(
+    T               compareTo,
+    IComparer< T >  comparer
+)
+{
+    return new GT< T >( compareTo, comparer );
+}
+
+
+
+} // type
+
+
+
+// =============================================================================
 /// RType: Greater than a particular value, according to a particular ordering
 // =============================================================================
 
-public class
+public sealed class
 GT<
     T
 >
@@ -46,9 +120,7 @@ GT<
 public
 GT(
     T               compareTo,
-    ///< The value to compare to
     IComparer< T >  comparer
-    ///< The ordering to use
 )
     : base(
         _S( "{{0}} is greater than {0}",
@@ -103,10 +175,8 @@ public override
     SCG.IEnumerable< IRType< T > >
 GetComponents()
 {
-    return
-        base.GetComponents()
-        .Append( new GTE<T>( this.CompareTo, this.Comparer ) )
-        .Append( new NEQ<T>( this.CompareTo, this.Comparer ) );
+    yield return GTE.Create( this.CompareTo, this.Comparer );
+    yield return NEQ.Create( this.CompareTo, this.Comparer );
 }
 
 

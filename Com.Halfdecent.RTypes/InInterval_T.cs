@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -28,7 +28,51 @@ Com.Halfdecent.RTypes
 {
 
 
-public class
+// =============================================================================
+/// Static methods for <tt>InInterval<T></tt>
+// =============================================================================
+
+public static class
+InInterval
+{
+
+
+public static
+    void
+Require<
+    T
+>(
+    IInterval< T >  interval,
+    T               item,
+    Value           itemReference
+)
+{
+    Create( interval ).Require( item, itemReference );
+}
+
+
+public static
+    InInterval< T >
+Create<
+    T
+>(
+    IInterval< T > interval
+)
+{
+    return new InInterval< T >( interval );
+}
+
+
+
+} // type
+
+
+
+// =============================================================================
+/// RType: Within a particular interval
+// =============================================================================
+
+public sealed class
 InInterval<
     T
 >
@@ -75,20 +119,15 @@ public override
     SCG.IEnumerable< IRType< T > >
 GetComponents()
 {
-    return
-        base.GetComponents()
-        .Append(
-            this.Interval.FromInclusive ?
-                new GTE< T >( this.Interval.From, this.Interval.Comparer )
-                    as IRType< T > :
-                new GT< T >( this.Interval.From, this.Interval.Comparer )
-                    as IRType< T > )
-        .Append(
-            this.Interval.ToInclusive ?
-                new LTE< T >( this.Interval.To, this.Interval.Comparer )
-                    as IRType< T > :
-                new LT< T >( this.Interval.To, this.Interval.Comparer )
-                    as IRType< T > );
+    if( this.Interval.FromInclusive )
+        yield return GTE.Create( this.Interval.From, this.Interval.Comparer );
+    else
+        yield return GT.Create( this.Interval.From, this.Interval.Comparer );
+
+    if( this.Interval.ToInclusive )
+        yield return LTE.Create( this.Interval.To, this.Interval.Comparer );
+    else
+        yield return LT.Create( this.Interval.To, this.Interval.Comparer );
 }
 
 

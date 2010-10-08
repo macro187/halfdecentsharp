@@ -73,28 +73,23 @@ Test_EQ_T()
         new EQ<object>( 1, new ObjectComparer() ).Equals(
         new EQ<object>( null, new ObjectComparer() ) ) );
 
-    IRType<object> t;
-
-    t = new EQ<object>( 1, new ObjectComparer() );
-
     Print( "Null passes" );
-    t.Require( (object)null, new Literal() );
+    EQ.Require( (object)1, new ObjectComparer(), (object)null, new Literal() );
 
     Print( "Equal passes" );
-    t.Require( 1, new Literal() );
+    EQ.Require( 1, 1, new Literal() );
 
     Print( "Inequal fails" );
     Expect< RTypeException >(
-        () => t.Require( 2, new Literal() ) );
-
-    t = new EQ<object>( null, new ObjectComparer() );
+        () => EQ.Require( 1, 2, new Literal() ) );
 
     Print( "With null CompareTo, null passes" );
-    t.Require( (object)null, new Literal() );
+    EQ.Require( null, new ObjectComparer(), null, new Literal() );
 
     Print( "With null CompareTo, non-null fails" );
     Expect< RTypeException >(
-        () => t.Require( new object(), new Literal() ) );
+        () => EQ.Require(
+            null, new ObjectComparer(), new object(), new Literal() ) );
 }
 
 
@@ -123,28 +118,22 @@ Test_NEQ_T()
         new NEQ<object>( 1, new ObjectComparer() ).GetHashCode() ==
         new NEQ<object>( null, new ObjectComparer() ).GetHashCode() ) );
 
-    IRType<object> t;
-
-    t = new NEQ<object>( 1, new ObjectComparer() );
-
     Print( "Null passes" );
-    t.Require( null, new Literal() );
+    NEQ.Require( (object)1, new ObjectComparer(), null, new Literal() );
 
     Print( "Inequal passes" );
-    t.Require( 2, new Literal() );
+    NEQ.Require( 1, 2, new Literal() );
 
     Print( "Equal fails" );
     Expect< RTypeException >(
-        () => t.Require( 1, new Literal() ) );
-
-    t = new NEQ<object>( null, new ObjectComparer() );
+        () => NEQ.Require( 1, 1, new Literal() ) );
 
     Print( "With null CompareTo, non-null passes" );
-    t.Require( new object(), new Literal() );
+    NEQ.Require( null, new ObjectComparer(), new object(), new Literal() );
 
     Print( "With null CompareTo, null fails" );
     Expect< RTypeException >(
-        () => t.Require( null, new Literal() ) );
+        () => NEQ.Require( null, new ObjectComparer(), null, new Literal() ) );
 }
 
 
@@ -267,14 +256,14 @@ Test_NonBlankString()
         .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
 
     Print( "Null passes" );
-    new NonBlankString().Require( null, new Literal() );
+    NonBlankString.Require( null, new Literal() );
 
     Print( "Non-blank string passes" );
-    new NonBlankString().Require( "Not blank", new Literal() );
+    NonBlankString.Require( "Not blank", new Literal() );
 
     Print( "Blank string fails" );
     Expect< RTypeException >(
-        () => new NonBlankString().Require( "", new Literal() ) );
+        () => NonBlankString.Require( "", new Literal() ) );
 }
 
 
@@ -300,25 +289,23 @@ Test_GT_T()
 
     Print( "Null arguments to constructor throw ArgumentNullException" );
     Expect< System.ArgumentNullException >( () =>
-        new GT<I>( null, new ComparableComparer<I>() ) );
+        GT.Create( null, new ComparableComparer<I>() ) );
     Expect< System.ArgumentNullException >( () =>
-        new GT<I>( bigger, null ) );
-
-    IRType<I> t = new GT<I>( equal, new ComparableComparer<I>() );
+        GT.Create( bigger, null ) );
 
     Print( "null passes" );
-    t.Require( null, new Literal() );
+    GT.Require( equal, null, new Literal() );
 
     Print( "Bigger passes" );
-    t.Require( bigger, new Local( "bigger" ) );
+    GT.Require<I>( equal, bigger, new Local( "bigger" ) );
 
     Print( "Equal fails" );
     Expect< RTypeException >( () =>
-        t.Require( equal, new Local( "equal" ) ) );
+        GT.Require( equal, equal, new Local( "equal" ) ) );
 
     Print( "Smaller fails" );
     Expect< RTypeException >( () =>
-        t.Require( smaller, new Local( "smaller" ) ) );
+        GT.Require( equal, smaller, new Local( "smaller" ) ) );
 }
 
 
@@ -333,35 +320,33 @@ Test_GTE_T()
 
     Print( "Equality" );
     Assert(
-        new GTE<I>( equal, new ComparableComparer<I>() ).Equals(
-        new GTE<I>( equal, new ComparableComparer<I>() ) ) );
+        GTE.Create( equal, new ComparableComparer<I>() ).Equals(
+        GTE.Create( equal, new ComparableComparer<I>() ) ) );
     Assert(
-        new GTE<I>( equal, new ComparableComparer<I>() ).GetHashCode() ==
-        new GTE<I>( equal, new ComparableComparer<I>() ).GetHashCode() );
+        GTE.Create( equal, new ComparableComparer<I>() ).GetHashCode() ==
+        GTE.Create( equal, new ComparableComparer<I>() ).GetHashCode() );
     Assert( !
-        new GTE<I>( bigger, new ComparableComparer<I>() ).Equals(
-        new GTE<I>( smaller, new ComparableComparer<I>() ) ) );
+        GTE.Create( bigger, new ComparableComparer<I>() ).Equals(
+        GTE.Create( smaller, new ComparableComparer<I>() ) ) );
 
     Print( "Null arguments to constructor throw ArgumentNullException" );
     Expect< System.ArgumentNullException >( () =>
-        new GTE<I>( null, new ComparableComparer<I>() ) );
+        GTE.Create( null, new ComparableComparer<I>() ) );
     Expect< System.ArgumentNullException >( () =>
-        new GTE<I>( bigger, null ) );
-
-    IRType<I> t = new GTE<I>( equal, new ComparableComparer<I>() );
+        GTE.Create( bigger, null ) );
 
     Print( "null passes" );
-    t.Require( null, new Literal() );
+    GTE.Require( equal, null, new Literal() );
 
     Print( "Bigger passes" );
-    t.Require( bigger, new Local( "bigger" ) );
+    GTE.Require( equal, bigger, new Local( "bigger" ) );
 
     Print( "Equal passes" );
-    t.Require( equal, new Local( "equal" ) );
+    GTE.Require( equal, equal, new Local( "equal" ) );
 
     Print( "Smaller fails" );
     Expect< RTypeException >( () =>
-        t.Require( smaller, new Local( "smaller" ) ) );
+        GTE.Require( equal, smaller, new Local( "smaller" ) ) );
 }
 
 
@@ -387,25 +372,23 @@ Test_LT_T()
 
     Print( "Null arguments to constructor throw ArgumentNullException" );
     Expect< System.ArgumentNullException >( () =>
-        new LT<I>( null, new ComparableComparer<I>() ) );
+        LT.Create( null, new ComparableComparer<I>() ) );
     Expect< System.ArgumentNullException >( () =>
-        new LT<I>( bigger, null ) );
-
-    IRType<I> t = new LT<I>( equal, new ComparableComparer<I>() );
+        LT.Create( bigger, null ) );
 
     Print( "null passes" );
-    t.Require( null, new Literal() );
+    LT.Require( equal, null, new Literal() );
 
     Print( "Bigger fails" );
     Expect< RTypeException >( () =>
-        t.Require( bigger, new Local( "bigger" ) ) );
+        LT.Require( equal, bigger, new Local( "bigger" ) ) );
 
     Print( "Equal fails" );
     Expect< RTypeException >( () =>
-        t.Require( equal, new Local( "equal" ) ) );
+        LT.Require( equal, equal, new Local( "equal" ) ) );
 
     Print( "Smaller passes" );
-    t.Require( smaller, new Local( "smaller" ) );
+    LT.Require( equal, smaller, new Local( "smaller" ) );
 }
 
 
@@ -431,24 +414,22 @@ Test_LTE_T()
 
     Print( "Null arguments to constructor throw ArgumentNullException" );
     Expect< System.ArgumentNullException >( () =>
-        new LTE<I>( null, new ComparableComparer<I>() ) );
+        LTE.Create( null, new ComparableComparer<I>() ) );
     Expect< System.ArgumentNullException >( () =>
-        new LTE<I>( bigger, null ) );
-
-    IRType<I> t = new LTE<I>( equal, new ComparableComparer<I>() );
+        LTE.Create( bigger, null ) );
 
     Print( "null passes" );
-    t.Require( null, new Literal() );
+    LTE.Require( equal, null, new Literal() );
 
     Print( "Bigger fails" );
     Expect< RTypeException >( () =>
-        t.Require( bigger, new Local( "bigger" ) ) );
+        LTE.Require( equal, bigger, new Local( "bigger" ) ) );
 
     Print( "Equal passes" );
-    t.Require( equal, new Local( "equal" ) );
+    LTE.Require( equal, equal, new Local( "equal" ) );
 
     Print( "Smaller passes" );
-    t.Require( smaller, new Local( "smaller" ) );
+    LTE.Require( equal, smaller, new Local( "smaller" ) );
 }
 
 
@@ -597,22 +578,14 @@ Test_InInterval_T()
     Value _to       = new Local( "to" );
     Value _gt       = new Local( "gt" );
 
-    IComparer< int > c = new Comparer< int >(
-        ( a, b ) => a.CompareTo( b ),
-        ( a ) => a.GetHashCode() );
-
     IRType< int > rtinc =
-        new InInterval< int >(
-            new Interval< int >( from, true, to, true, c ) );
+        InInterval.Create( Interval.Create( from, true, to, true ) );
     IRType< int > rtexc =
-        new InInterval< int >(
-            new Interval< int >( from, false, to, false, c ) );
+        InInterval.Create( Interval.Create( from, false, to, false ) );
     IRType< int > rtfrominc =
-        new InInterval< int >(
-            new Interval< int >( from, true, to, false, c ) );
+        InInterval.Create( Interval.Create( from, true, to, false ) );
     IRType< int > rttoinc =
-        new InInterval< int >(
-            new Interval< int >( from, false, to, true, c ) );
+        InInterval.Create( Interval.Create( from, false, to, true ) );
 
     IRType< int > rt;
     string id = "...";
@@ -674,9 +647,9 @@ Test_InInterval_T()
         rt.Require( gt, _gt ) );
 
     Print( ".Equals() and .GetHashCode()" );
-    IRType< int > t1 = new InInterval< int >( new Interval< int >( 1, 10, c ) );
-    IRType< int > t2 = new InInterval< int >( new Interval< int >( 1, 10, c ) );
-    IRType< int > t3 = new InInterval< int >( new Interval< int >( 1, 20, c ) );
+    IRType< int > t1 = InInterval.Create( Interval.Create( 1, 10 ) );
+    IRType< int > t2 = InInterval.Create( Interval.Create( 1, 10 ) );
+    IRType< int > t3 = InInterval.Create( Interval.Create( 1, 20 ) );
     Assert( t1.Equals( t2 ) );
     Assert( !( t1.Equals( t3 ) ) );
     Assert( t1.GetHashCode() == t2.GetHashCode() );

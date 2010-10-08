@@ -30,10 +30,46 @@ Com.Halfdecent.RTypes
 /// RType: A non-blank string
 // =============================================================================
 
-public class
+public sealed class
 NonBlankString
     : SimpleTextRTypeBase< string >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+public static
+    void
+Require(
+    string  item,
+    Value   itemReference
+)
+{
+    ((IRType<string>)Create()).Require( item, itemReference );
+}
+
+
+public static
+    NonBlankString
+Create()
+{
+    return instance;
+}
+
+
+private static
+    NonBlankString
+instance = new NonBlankString();
+
+
+private static
+    IRType< string >[]
+components = new IRType< string >[] {
+    NEQ.Create( string.Empty )
+};
 
 
 
@@ -60,11 +96,7 @@ public override
     SCG.IEnumerable< IRType< string > >
 GetComponents()
 {
-    return
-        base.GetComponents()
-        .Append(
-            new NEQ<object>( string.Empty, new ObjectComparer() )
-            .Contravary< object, string >() );
+    return components;
 }
 
 

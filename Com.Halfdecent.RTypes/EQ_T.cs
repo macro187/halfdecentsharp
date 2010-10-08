@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -27,13 +27,87 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
+/// Static methods for <tt>EQ<T></tt>
+// =============================================================================
+
+public static class
+EQ
+{
+
+
+/// According to a particular definition of equality
+///
+public static
+    void
+Require<
+    T
+>(
+    T       compareTo,
+    T       item,
+    Value   itemReference
+)
+    where T : System.IEquatable< T >
+{
+    Create( compareTo ).Require( item, itemReference );
+}
+
+
+/// According to a particular comparer
+///
+public static
+    void
+Require<
+    T
+>(
+    T                       compareTo,
+    IEqualityComparer< T >  comparer,
+    T                       item,
+    Value                   itemReference
+)
+{
+    Create( compareTo, comparer ).Require( item, itemReference );
+}
+
+
+public static
+    EQ< T >
+Create<
+    T
+>(
+    T compareTo
+)
+    where T : System.IEquatable< T >
+{
+    return Create( compareTo, new SystemEquatableComparer< T >() );
+}
+
+
+public static
+    EQ< T >
+Create<
+    T
+>(
+    T                       compareTo,
+    IEqualityComparer< T >  comparer
+)
+{
+    return new EQ< T >( compareTo, comparer );
+}
+
+
+
+} // type
+
+
+
+// =============================================================================
 /// RType: Equal to a particular value, according to a particular definition of
 /// equality
 ///
-/// <tt>null</tt> values always pass.
+/// <tt>null</tt> values always pass
 // =============================================================================
 
-public class
+public sealed class
 EQ<
     T
 >

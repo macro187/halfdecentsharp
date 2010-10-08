@@ -31,10 +31,47 @@ Com.Halfdecent.RTypes
 /// RType: Not <tt>null</tt>
 // =============================================================================
 
-public class
+public sealed class
 NonNull
     : SimpleTextRTypeBase< object >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+public static
+    void
+Require(
+    object  item,
+    Value   itemReference
+)
+{
+    ((IRType< object >)Create()).Require( item, itemReference );
+}
+
+
+public static
+    NonNull
+Create()
+{
+    return instance;
+}
+
+
+private static
+    NonNull
+instance = new NonNull();
+
+
+private static
+IRType< object >[]
+components
+= new IRType< object >[] {
+    NEQ.Create( null, new ReferenceComparer() )
+};
 
 
 
@@ -61,9 +98,7 @@ public override
     SCG.IEnumerable< IRType< object > >
 GetComponents()
 {
-    return
-        base.GetComponents()
-        .Append( new NEQ<object>( null, new ReferenceComparer() ) );
+    return components;
 }
 
 
