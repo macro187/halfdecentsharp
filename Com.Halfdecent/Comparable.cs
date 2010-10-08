@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -96,7 +96,11 @@ LTE<
 // Static Methods
 // -----------------------------------------------------------------------------
 
-/// <tt>IComparable<T>.CompareTo()</tt> implementation
+/// Implementation of <tt>System.IComparable<T>.CompareTo()</tt> in terms of
+/// <tt>IComparable<T></tt>
+///
+/// @exception ComparisonDisagreementException
+/// The items completely disagree on how they compare to one another
 ///
 public static
     int

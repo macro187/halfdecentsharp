@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -31,7 +31,8 @@ Equatable
 
 
 
-/// <tt>IEquatable<T>.Equals()</tt> implementation
+/// Implementation of <tt>System.IEquatable<T>.Equals()</tt> in terms of
+/// <tt>IEquatable<T></tt>
 ///
 public static
     bool
