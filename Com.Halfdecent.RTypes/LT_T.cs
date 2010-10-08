@@ -52,11 +52,11 @@ LT(
 )
     : base(
         _S( "{{0}} is less than {0}",
-            ObjectUtils.ToString( compareTo ) ),
+            SystemObject.ToString( compareTo ) ),
         _S( "{{0}} is greater than or equal to {0}",
-            ObjectUtils.ToString( compareTo ) ),
+            SystemObject.ToString( compareTo ) ),
         _S( "{{0}} must be less than {0}",
-            ObjectUtils.ToString( compareTo ) ) )
+            SystemObject.ToString( compareTo ) ) )
 {
     if( compareTo == null )
         throw new ValueArgumentNullException( new Parameter( "compareTo" ) );

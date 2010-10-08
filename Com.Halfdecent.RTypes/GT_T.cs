@@ -52,11 +52,11 @@ GT(
 )
     : base(
         _S( "{{0}} is greater than {0}",
-            ObjectUtils.ToString( compareTo ) ),
+            SystemObject.ToString( compareTo ) ),
         _S( "{{0}} is less than or equal to {0}",
-            ObjectUtils.ToString( compareTo ) ),
+            SystemObject.ToString( compareTo ) ),
         _S( "{{0}} must be greater than {0}",
-            ObjectUtils.ToString( compareTo ) ) )
+            SystemObject.ToString( compareTo ) ) )
 {
     if( compareTo == null )
         throw new ValueArgumentNullException( new Parameter( "compareTo" ) );

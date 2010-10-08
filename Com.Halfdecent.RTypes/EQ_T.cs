@@ -52,9 +52,9 @@ EQ(
     IEqualityComparer< T >  comparer
 )
     : base(
-        _S( "{{0}} is equal to {0}", ObjectUtils.ToString( compareTo ) ),
-        _S( "{{0}} isn't equal to {0}", ObjectUtils.ToString( compareTo ) ),
-        _S( "{{0}} must be equal to {0}", ObjectUtils.ToString( compareTo ) ) )
+        _S( "{{0}} is equal to {0}", SystemObject.ToString( compareTo ) ),
+        _S( "{{0}} isn't equal to {0}", SystemObject.ToString( compareTo ) ),
+        _S( "{{0}} must be equal to {0}", SystemObject.ToString( compareTo ) ) )
 {
     if( comparer == null )
         throw new ValueArgumentNullException( new Parameter( "comparer" ) );

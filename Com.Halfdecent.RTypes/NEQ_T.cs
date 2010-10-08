@@ -53,11 +53,11 @@ NEQ(
 )
     : base(
         _S( "{{0}} is not equal to {0}",
-            ObjectUtils.ToString( compareTo ) ),
+            SystemObject.ToString( compareTo ) ),
         _S( "{{0}} is equal to {0}",
-            ObjectUtils.ToString( compareTo ) ),
+            SystemObject.ToString( compareTo ) ),
         _S( "{{0}} must not be equal to {0}",
-            ObjectUtils.ToString( compareTo ) ) )
+            SystemObject.ToString( compareTo ) ) )
 {
     if( comparer == null )
         throw new ValueArgumentNullException( new Parameter( "comparer" ) );
