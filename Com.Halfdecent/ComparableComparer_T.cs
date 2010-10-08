@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -64,7 +64,11 @@ Equals(
     T that
 )
 {
-    return Equatable.Equals( dis, that );
+    if( object.ReferenceEquals( dis, null ) &&
+        object.ReferenceEquals( that, null ) ) return true;
+    if( object.ReferenceEquals( dis, null ) ||
+        object.ReferenceEquals( that, null ) ) return false;
+    return dis.Equals( that );
 }
 
 
