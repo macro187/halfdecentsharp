@@ -32,10 +32,37 @@ Com.Halfdecent.Collections
 /// TODO
 // =============================================================================
 
-public class
+public sealed class
 ExistingOrNextPositionIn
     : SimpleTextRTypeBase< IInteger >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+public static
+    void
+Require(
+    ICollection collection,
+    IInteger    item,
+    Value       itemReference
+)
+{
+    Create( collection ).Require( item, itemReference );
+}
+
+
+public static
+    IRType< IInteger >
+Create(
+    ICollection collection
+)
+{
+    return new ExistingOrNextPositionIn( collection );
+}
 
 
 
@@ -52,7 +79,7 @@ ExistingOrNextPositionIn(
         _S( "{0} is not an existing or the next position in the collection" ),
         _S( "{0} must be an existing or the next position in the collection" ) )
 {
-    new NonNull().Require( collection, new Parameter( "collection" ) );
+    NonNull.Require( collection, new Parameter( "collection" ) );
     this.Collection = collection;
 }
 
@@ -80,16 +107,12 @@ public override
     SCG.IEnumerable< IRType< IInteger > >
 GetComponents()
 {
-    return
-        base.GetComponents()
-        .Append( new GTE< IInteger >(
-            Integer.From( 0 ),
-            new ComparableComparer< IReal >()
-                .Contravary< IReal, IInteger >() ) )
-        .Append( new LTE< IInteger >(
-            this.Collection.Count,
-            new ComparableComparer< IReal >()
-                .Contravary< IReal, IInteger >() ) );
+    yield return
+        GTE.Create< IReal >( Integer.From( 0 ) )
+        .Contravary< IReal, IInteger >();
+    yield return
+        LTE.Create< IReal >( this.Collection.Count )
+        .Contravary< IReal, IInteger >();
 }
 
 

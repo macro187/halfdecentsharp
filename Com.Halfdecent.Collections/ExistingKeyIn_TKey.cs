@@ -27,10 +27,52 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
+/// Static methods for <tt>ExistingKeyIn<TKey,T></tt>
+// =============================================================================
+
+public static class
+ExistingKeyIn
+{
+
+
+public static
+    void
+Require<
+    TKey,
+    T
+>(
+    IKeyedCollectionR< TKey, T >    collection,
+    TKey                            item,
+    Value                           itemReference
+)
+{
+    Create( collection ).Require( item, itemReference );
+}
+
+
+public static
+    IRType< TKey >
+Create<
+    TKey,
+    T
+>(
+    IKeyedCollectionR< TKey, T > collection
+)
+{
+    return new ExistingKeyIn< TKey, T >( collection );
+}
+
+
+
+} // type
+
+
+
+// =============================================================================
 /// TODO
 // =============================================================================
 
-public class
+public sealed class
 ExistingKeyIn<
     TKey,
     T
@@ -53,7 +95,7 @@ ExistingKeyIn(
         _S( "{0} is not the key of an item in the collection" ),
         _S( "{0} must be the key of an item in the collection" ) )
 {
-    new NonNull().Require( collection, new Parameter( "collection" ) );
+    NonNull.Require( collection, new Parameter( "collection" ) );
     this.Collection = collection;
 }
 

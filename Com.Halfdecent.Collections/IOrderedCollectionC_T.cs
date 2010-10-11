@@ -67,23 +67,9 @@ Replace(
     T           replacement
 )
 {
-    new NonNull().Require( key, new Parameter( "key" ) );
-    new GTE< IInteger >(
-        Integer.From( 0 ),
-#if DOTNET40
-        new ComparableComparer< IReal >() )
-#else
-        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
-#endif
-            .Require( key, new Parameter( "key" ) );
-    new LTE< IInteger >(
-        this.Count,
-#if DOTNET40
-        new ComparableComparer< IReal >() )
-#else
-        new ComparableComparer< IReal >().Contravary< IReal, IInteger >() )
-#endif
-            .Require( key, new Parameter( "key" ) );
+    NonNull.Require( key, new Parameter( "key" ) );
+    GTE.Require< IReal >( Integer.From( 0 ), key, new Parameter( "key" ) );
+    LTE.Require< IReal >( this.Count, key, new Parameter( "key" ) );
     this.From.Replace( this.Trans( key ), replacement );
 }
 #endif

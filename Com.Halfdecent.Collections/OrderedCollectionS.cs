@@ -39,7 +39,7 @@ RemoveFirst(
     this IOrderedCollectionS dis
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     dis.RemoveFirst( Integer.From( 1 ) );
 }
 
@@ -51,11 +51,9 @@ RemoveFirst(
     IInteger                    count
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new GTE< IReal >( Integer.From( 0 ), new ComparableComparer< IReal >() )
-        .Require( count, new Parameter( "count" ) );
-    new LTE< IReal >( dis.Count, new ComparableComparer< IReal >() )
-        .Require( count, new Parameter( "count" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    GTE.Require< IReal >( Integer.From( 0 ), count, new Parameter( "count" ) );
+    LTE.Require< IReal >( dis.Count, count, new Parameter( "count" ) );
 
     while( count.GT( Integer.From( 0 ) ) ) {
         dis.Remove( Integer.From( 0 ) );
@@ -70,7 +68,7 @@ RemoveLast(
     this IOrderedCollectionS dis
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     dis.RemoveLast( Integer.From( 1 ) );
 }
 
@@ -82,11 +80,9 @@ RemoveLast(
     IInteger                    count
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new GTE< IReal >( Integer.From( 0 ), new ComparableComparer< IReal >() )
-        .Require( count, new Parameter( "count" ) );
-    new LTE< IReal >( dis.Count, new ComparableComparer< IReal >() )
-        .Require( count, new Parameter( "count" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    GTE.Require< IReal >( Integer.From( 0 ), count, new Parameter( "count" ) );
+    LTE.Require< IReal >( dis.Count, count, new Parameter( "count" ) );
 
     while( count.GT( Integer.From( 0 ) ) ) {
         dis.Remove( dis.Count.Minus( Integer.From( 1 ) ) );

@@ -67,9 +67,8 @@ Add(
     T           item
 )
 {
-    new NonNull().Require( key, new Parameter( "key" ) );
-    new ExistingOrNextPositionIn( this )
-        .Require( key, new Parameter( "key" ) );
+    NonNull.Require( key, new Parameter( "key" ) );
+    ExistingOrNextPositionIn.Require( this, key, new Parameter( "key" ) );
     this.From.Add( this.Trans( key ), item );
     this.SliceCount = this.SliceCount.Plus( Integer.From( 1 ) );
 }

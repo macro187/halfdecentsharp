@@ -54,7 +54,7 @@ StreamKeys<
     this IKeyedCollectionR< TKey, T > col
 )
 {
-    new NonNull().Require( col, new Parameter( "col" ) );
+    NonNull.Require( col, new Parameter( "col" ) );
     return
         col.StreamPairs()
         .AsEnumerable()
@@ -82,7 +82,7 @@ GetAndReplaceAllViaUniqueKeyedCollection<
     TKey                                key
 )
 {
-    new NonNull().Require( col, new Parameter( "col" ) );
+    NonNull.Require( col, new Parameter( "col" ) );
     return new Filter< T, T >(
         ( get, put, drop ) =>
             GetAndReplaceAllViaUniqueKeyedCollectionFilter(
@@ -124,7 +124,7 @@ GetAndRemoveAllViaUniqueKeyedCollection<
     TKey                                key
 )
 {
-    new NonNull().Require( col, new Parameter( "col" ) );
+    NonNull.Require( col, new Parameter( "col" ) );
     return
         GetAndRemoveAllViaUniqueKeyedCollectionIterator( col, key )
         .AsStream();
@@ -161,7 +161,7 @@ StreamViaUniqueKeyedCollection<
     TKey                                key
 )
 {
-    new NonNull().Require( col, new Parameter( "col" ) );
+    NonNull.Require( col, new Parameter( "col" ) );
     return
         StreamViaUniqueKeyedCollectionIterator( col, key )
         .AsStream();

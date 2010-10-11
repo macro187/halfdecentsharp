@@ -59,8 +59,8 @@ GetAndReplaceWhereViaUniqueKeyedCollection<
     Predicate< T >                      where
 )
 {
-    new NonNull().Require( col, new Parameter( "col" ) );
-    new NonNull().Require( where, new Parameter( "where" ) );
+    NonNull.Require( col, new Parameter( "col" ) );
+    NonNull.Require( where, new Parameter( "where" ) );
     return
         new Filter< T, T >(
             ( get, put, drop ) =>
@@ -111,8 +111,8 @@ GetAndRemoveWhereViaUniqueKeyedCollection<
     Predicate< T >                      where
 )
 {
-    new NonNull().Require( col, new Parameter( "col" ) );
-    new NonNull().Require( where, new Parameter( "where" ) );
+    NonNull.Require( col, new Parameter( "col" ) );
+    NonNull.Require( where, new Parameter( "where" ) );
     return
         GetAndRemoveWhereViaUniqueKeyedCollectionIterator( col, where )
         .AsStream();
@@ -156,7 +156,7 @@ StreamViaKeyedCollection<
     IKeyedCollectionR< TKey, T > col
 )
 {
-    new NonNull().Require( col, new Parameter( "col" ) );
+    NonNull.Require( col, new Parameter( "col" ) );
     return
         col.StreamPairs()
         .AsEnumerable()
@@ -178,7 +178,7 @@ AddViaOrderedCollection<
     T                           item
 )
 {
-    new NonNull().Require( col, new Parameter( "col" ) );
+    NonNull.Require( col, new Parameter( "col" ) );
     col.Add( col.Count, item );
 }
 

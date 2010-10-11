@@ -48,7 +48,7 @@ AsHalfdecentCollection<
     this SCG.IList< T > dis
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     return new CollectionFromSystemListAdapter< T >( dis );
 }
 

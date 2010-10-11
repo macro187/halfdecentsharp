@@ -135,7 +135,7 @@ OptimisedCreateInternalListFrom(
     ICollectionR< T > from
 )
 {
-    new NonNull().Require( from, new Parameter( "from" ) );
+    NonNull.Require( from, new Parameter( "from" ) );
     SCG.List< T > l;
 
     // Optimise initial capacity if the source collection's .Count is
