@@ -53,7 +53,7 @@ Push<
     T               item
 )
 {
-    new NonNull().Require( sink, new Parameter( "sink" ) );
+    NonNull.Require( sink, new Parameter( "sink" ) );
     if( !sink.TryPush( item ) )
         throw new FullException( new This() );
 }
@@ -69,7 +69,7 @@ Contravary<
 )
     where TTo : TFrom
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     return new SinkProxy< TFrom, TTo >( dis );
 }
 

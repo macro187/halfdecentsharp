@@ -64,7 +64,7 @@ Filter(
     bool                dropInputItems
 )
 {
-    new NonNull().Require( "func", new Parameter( "func" ) );
+    NonNull.Require( "func", new Parameter( "func" ) );
     this.Func = func;
     this.DropInputItems = dropInputItems;
     this.Kernel = this.DefaultKernel;
@@ -78,7 +78,7 @@ Filter(
     FilterKernel< TIn, TOut > kernel
 )
 {
-    new NonNull().Require( "kernel", new Parameter( "kernel" ) );
+    NonNull.Require( "kernel", new Parameter( "kernel" ) );
     this.Kernel = kernel;
 }
 

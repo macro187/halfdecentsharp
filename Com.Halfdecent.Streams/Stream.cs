@@ -54,7 +54,7 @@ Append<
     T                   item
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     return dis.Concat( new Stream< T >( item ) );
 }
 
@@ -71,7 +71,7 @@ Concat<
     IStream< T >        stream
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     return
         dis.AsEnumerable().Concat(
             stream.AsEnumerable() )
@@ -95,7 +95,7 @@ TryPull<
     ///  An undefined and unusable value, if there were no more items
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     ITuple< bool, T > t = dis.TryPull();
     item = t.B;
     return t.A;
@@ -115,7 +115,7 @@ Pull<
     this IStream< T > stream
 )
 {
-    new NonNull().Require( stream, new Parameter( "stream" ) );
+    NonNull.Require( stream, new Parameter( "stream" ) );
     T r;
     if( !stream.TryPull( out r ) )
         throw new EmptyException( new This() );
@@ -167,9 +167,9 @@ SequenceEqual<
     ///< Equality comparer to use
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new NonNull().Require( that, new Parameter( "that" ) );
-    new NonNull().Require( comparer, new Parameter( "comparer" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.Require( comparer, new Parameter( "comparer" ) );
 
     T a, b;
     bool havea, haveb;
@@ -208,8 +208,8 @@ EmptyTo<
     ISink< T >          sink
 )
 {
-    new NonNull().Require( stream, new Parameter( "stream" ) );
-    new NonNull().Require( sink, new Parameter( "sink" ) );
+    NonNull.Require( stream, new Parameter( "stream" ) );
+    NonNull.Require( sink, new Parameter( "sink" ) );
     T item;
     while( stream.TryPull( out item ) )
         sink.Push( item );
@@ -226,7 +226,7 @@ AsEnumerable<
     this IStream< T > dis
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     return
         new SystemEnumerableFromSystemEnumeratorAdapter< T >(
             new StreamToSystemEnumeratorAdapter< T >( dis ) );

@@ -49,7 +49,7 @@ SystemEnumerableFromSystemEnumeratorAdapter(
     IEnumerator< T > enumerator
 )
 {
-    new NonNull().Require( enumerator, new Parameter( "enumerator" ) );
+    NonNull.Require( enumerator, new Parameter( "enumerator" ) );
     this.enumerator = enumerator;
 }
 
