@@ -42,7 +42,7 @@ CursorGProxy(
     ICursorG< TFrom > from
 )
 {
-    new NonNull().Require( from, new Parameter( "from" ) );
+    NonNull.Require( from, new Parameter( "from" ) );
     this.From = from;
 }
 
