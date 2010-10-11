@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,6 +18,7 @@
 
 using SCG = System.Collections.Generic;
 using Com.Halfdecent;
+using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
@@ -30,10 +31,46 @@ Com.Halfdecent.Numerics
 /// RType: Not zero
 // =============================================================================
 
-public class
+public sealed class
 NonZero
     : SimpleTextRTypeBase< IReal >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+public static
+    void
+Require(
+    IReal item,
+    Value itemReference
+)
+{
+    ((IRType< IReal >)Create()).Require( item, itemReference );
+}
+
+
+public static
+    NonZero
+Create()
+{
+    return instance;
+}
+
+
+private static
+    NonZero
+instance = new NonZero();
+
+
+private static
+    IRType< IReal >[]
+components = new IRType< IReal >[] {
+    NEQ.Create( Real.From( 0 ) )
+};
 
 
 
@@ -60,12 +97,7 @@ public override
     SCG.IEnumerable< IRType< IReal > >
 GetComponents()
 {
-    return
-        base.GetComponents()
-        .Append(
-            new NEQ< IReal >(
-                Real.From( 0m ),
-                new EquatableComparer< IReal >() ) );
+    return components;
 }
 
 

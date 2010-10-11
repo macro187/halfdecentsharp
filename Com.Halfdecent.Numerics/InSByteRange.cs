@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,7 +18,7 @@
 
 using SCG = System.Collections.Generic;
 using Com.Halfdecent;
-using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
@@ -31,10 +31,49 @@ Com.Halfdecent.Numerics
 /// RType: In range of <tt>System.SByte</tt>
 // =============================================================================
 
-public class
+public sealed class
 InSByteRange
     : SimpleTextRTypeBase< IReal >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+public static
+    void
+Require(
+    IReal item,
+    Value itemReference
+)
+{
+    ((IRType< IReal >)Create()).Require( item, itemReference );
+}
+
+
+public static
+    InSByteRange
+Create()
+{
+    return instance;
+}
+
+
+private static
+    InSByteRange
+instance = new InSByteRange();
+
+
+private static
+    IRType< IReal >[]
+components = new IRType< IReal >[] {
+    InInterval.Create(
+        Interval.Create(
+            Real.From( System.SByte.MinValue ),
+            Real.From( System.SByte.MaxValue ) ) )
+};
 
 
 
@@ -61,14 +100,7 @@ public override
 SCG.IEnumerable< IRType< IReal > >
 GetComponents()
 {
-    return
-        base.GetComponents()
-        .Append(
-            new InInterval< IReal >(
-                new Interval< IReal >(
-                    Real.From( System.SByte.MinValue ),
-                    Real.From( System.SByte.MaxValue ),
-                    new ComparableComparer< IReal >() ) ) );
+    return components;
 }
 
 

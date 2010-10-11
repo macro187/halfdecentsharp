@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
@@ -29,10 +29,39 @@ Com.Halfdecent.Numerics
 /// RType: Real with no fractional amount
 // =============================================================================
 
-public class
+public sealed class
 NonFractional
     : SimpleTextRTypeBase< IReal >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+public static
+    void
+Require(
+    IReal item,
+    Value itemReference
+)
+{
+    ((IRType< IReal >)Create()).Require( item, itemReference );
+}
+
+
+public static
+    NonFractional
+Create()
+{
+    return instance;
+}
+
+
+private static
+    NonFractional
+instance = new NonFractional();
 
 
 

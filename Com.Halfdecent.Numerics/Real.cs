@@ -60,7 +60,7 @@ DirectionalCompareTo(
     IReal that
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     if( object.ReferenceEquals( that, null ) ) return 1;
     return dis.GetValue().CompareTo( that.GetValue() );
 }
@@ -75,7 +75,7 @@ DirectionalEquals(
     IReal that
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     if( object.ReferenceEquals( that, null ) ) return false;
     return dis.GetValue() == that.GetValue();
 }
@@ -89,7 +89,7 @@ GetHashCode(
     IReal dis
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     return dis.GetValue().GetHashCode();
 }
 
@@ -108,8 +108,8 @@ Plus(
     IReal       that
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new NonNull().Require( that, new Parameter( "that" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( that, new Parameter( "that" ) );
     return new DecimalReal( dis.GetValue() + that.GetValue() );
 }
 
@@ -123,8 +123,8 @@ Minus(
     IReal       that
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new NonNull().Require( that, new Parameter( "that" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( that, new Parameter( "that" ) );
     return new DecimalReal( dis.GetValue() - that.GetValue() );
 }
 
@@ -138,8 +138,8 @@ Times(
     IReal       that
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new NonNull().Require( that, new Parameter( "that" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( that, new Parameter( "that" ) );
     return new DecimalReal( dis.GetValue() * that.GetValue() );
 }
 
@@ -154,8 +154,8 @@ DividedBy(
     ///< - <tt>NonZero</tt>
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new NonNull().Require( that, new Parameter( "that" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( that, new Parameter( "that" ) );
     return new DecimalReal( dis.GetValue() / that.GetValue() );
 }
 
@@ -169,7 +169,7 @@ Truncate(
     this IReal dis
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
     return new DecimalInteger( decimal.Truncate( dis.GetValue() ) );
 }
 

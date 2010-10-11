@@ -65,8 +65,8 @@ Plus(
     IInteger        that
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new NonNull().Require( that, new Parameter( "that" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( that, new Parameter( "that" ) );
     return ((IReal)dis).Plus( that ).Truncate();
 }
 
@@ -80,8 +80,8 @@ Minus(
     IInteger        that
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new NonNull().Require( that, new Parameter( "that" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( that, new Parameter( "that" ) );
     return ((IReal)dis).Minus( that ).Truncate();
 }
 
@@ -95,8 +95,8 @@ Times(
     IInteger        that
 )
 {
-    new NonNull().Require( dis, new Parameter( "dis" ) );
-    new NonNull().Require( that, new Parameter( "that" ) );
+    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.Require( that, new Parameter( "that" ) );
     return ((IReal)dis).Times( that ).Truncate();
 }
 
