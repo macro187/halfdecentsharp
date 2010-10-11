@@ -46,7 +46,7 @@ DataToken(
 )
     : base()
 {
-    new NonNull().Require( data, new Parameter( "data" ) );
+    NonNull.Require( data, new Parameter( "data" ) );
     this.Data = data;
 }
 
