@@ -54,7 +54,7 @@ Require(
 
 
 public static
-    InUInt32Range
+    IRType< IReal >
 Create()
 {
     return instance;

@@ -54,7 +54,7 @@ Require(
 
 
 public static
-    InByteRange
+    IRType< IReal >
 Create()
 {
     return instance;

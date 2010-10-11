@@ -70,7 +70,7 @@ Require<
 
 
 public static
-    EQ< T >
+    IRType< T >
 Create<
     T
 >(
@@ -83,7 +83,7 @@ Create<
 
 
 public static
-    EQ< T >
+    IRType< T >
 Create<
     T
 >(

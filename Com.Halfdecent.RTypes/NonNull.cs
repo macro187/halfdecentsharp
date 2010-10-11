@@ -54,7 +54,7 @@ Require(
 
 
 public static
-    NonNull
+    IRType< object >
 Create()
 {
     return instance;

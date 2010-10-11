@@ -52,7 +52,7 @@ Require<
 
 
 public static
-    InInterval< T >
+    IRType< T >
 Create<
     T
 >(

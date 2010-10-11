@@ -70,7 +70,7 @@ Require<
 
 
 public static
-    GT< T >
+    IRType< T >
 Create<
     T
 >(
@@ -83,7 +83,7 @@ Create<
 
 
 public static
-    GT< T >
+    IRType< T >
 Create<
     T
 >(
@@ -93,7 +93,6 @@ Create<
 {
     return new GT< T >( compareTo, comparer );
 }
-
 
 
 } // type

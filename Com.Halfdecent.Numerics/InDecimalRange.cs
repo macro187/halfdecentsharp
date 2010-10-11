@@ -54,7 +54,7 @@ Require(
 
 
 public static
-    InDecimalRange
+    IRType< IReal > 
 Create()
 {
     return instance;

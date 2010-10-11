@@ -54,7 +54,7 @@ Require(
 
 
 public static
-    NonZero
+    IRType< IReal >
 Create()
 {
     return instance;

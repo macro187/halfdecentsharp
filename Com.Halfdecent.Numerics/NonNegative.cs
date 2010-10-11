@@ -50,7 +50,7 @@ Require(
 
 
 public static
-    NonNegative
+    IRType< IReal >
 Create()
 {
     return instance;

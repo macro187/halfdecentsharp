@@ -52,7 +52,7 @@ Require(
 
 
 public static
-    NonFractional
+    IRType< IReal >
 Create()
 {
     return instance;

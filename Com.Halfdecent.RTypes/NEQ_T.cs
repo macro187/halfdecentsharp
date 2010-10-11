@@ -70,7 +70,7 @@ Require<
 
 
 public static
-    NEQ< T >
+    IRType< T >
 Create<
     T
 >(
@@ -83,7 +83,7 @@ Create<
 
 
 public static
-    NEQ< T >
+    IRType< T >
 Create<
     T
 >(

@@ -53,7 +53,7 @@ Require(
 
 
 public static
-    NonBlankString
+    IRType< string > 
 Create()
 {
     return instance;

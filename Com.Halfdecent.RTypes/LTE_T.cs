@@ -69,7 +69,7 @@ Require<
 
 
 public static
-    LTE< T >
+    IRType< T >
 Create<
     T
 >(
@@ -82,7 +82,7 @@ Create<
 
 
 public static
-    LTE< T >
+    IRType< T >
 Create<
     T
 >(
