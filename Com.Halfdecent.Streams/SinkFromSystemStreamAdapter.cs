@@ -42,7 +42,7 @@ SinkFromSystemStreamAdapter(
     System.IO.Stream from
 )
 {
-    new NonNull().Check( from, new Parameter( "from" ) );
+    NonNull.Require( from, new Parameter( "from" ) );
     if( !from.CanWrite ) throw new ValueArgumentException(
         new Parameter( "from" ),
         _S("{0} is not a writeable stream") );
