@@ -31,6 +31,22 @@ Tuple
 
 
 
+/// Create a tuple
+///
+public static
+    ITuple< T1, T2 >
+Create<
+    T1,
+    T2
+>(
+    T1 a,
+    T2 b
+)
+{
+    return new Tuple< T1, T2 >( a, b );
+}
+
+
 /// Assign the tuple values to the specifed variables
 ///
 public static
