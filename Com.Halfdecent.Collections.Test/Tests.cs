@@ -51,7 +51,7 @@ Main()
 }
 
 
-[Test( "OrderedCollectionFromSystemListAdapter()" )]
+[Test( "CollectionFromSystemListAdapter()" )]
 public static
 void
 Test_CollectionFromSystemListAdapter()
@@ -171,10 +171,10 @@ Test_CollectionFromSystemListAdapter()
 }
 
 
-[Test( "OrderedCollectionFromStringAdapter()" )]
+[Test( "CollectionFromStringAdapter()" )]
 public static
 void
-Test_OrderedCollectionFromStringAdapter()
+Test_CollectionFromStringAdapter()
 {
     Print( "Create" );
     var c =
@@ -344,6 +344,52 @@ Test_CollectionFromSystemStringBuilderAdapter()
     Assert( ts.TryPull( out tup ) );
     Assert( tup.A.Equals( Integer.From( 5 ) ) );  Assert( tup.B == 'f' );
     Assert( !ts.TryPull( out tup ) );
+}
+
+
+[Test( "CollectionFromSystemDictionaryAdapter()" )]
+public static
+void
+Test_CollectionFromSystemDictionaryAdapter()
+{
+    Print( "Adapt a new dictionary" );
+    IUniqueKeyedCollectionRCSG< string, int > c =
+        new SCG.Dictionary< string, int >()
+        .AsHalfdecentCollection();
+
+    Print( "Check that it's empty" );
+    Assert( c.Count.Equals( Integer.From( 0 ) ) );
+
+    Print( ".Add() and check" );
+    c.Add( "1", 1 );
+    Assert( c.Count.Equals( Integer.From( 1 ) ) );
+    Assert( c.Contains( "1" ) );
+    Assert( c.Get( "1" ) == 1 );
+
+    Print( ".Add() and check" );
+    c.Add( "2", 2 );
+    Assert( c.Count.Equals( Integer.From( 2 ) ) );
+    Assert( c.Contains( "2" ) );
+    Assert( c.Get( "2" ) == 2 );
+
+    Print( ".Add() and check" );
+    c.Add( "3", 3 );
+    Assert( c.Count.Equals( Integer.From( 3 ) ) );
+    Assert( c.Contains( "3" ) );
+    Assert( c.Get( "3" ) == 3 );
+
+    Print( ".Replace() and check" );
+    c.Replace( "2", 22 );
+    Assert( c.Count.Equals( Integer.From( 3 ) ) );
+    Assert( c.Contains( "2" ) );
+    Assert( c.Get( "2" ) == 22 );
+
+    Print( ".Remove() and check" );
+    c.Remove( "2" );
+    Assert( c.Count.Equals( Integer.From( 2 ) ) );
+    Assert( !c.Contains( "2" ) );
+    Expect< RTypeException >( () =>
+        c.Get( "2" ) );
 }
 
 
