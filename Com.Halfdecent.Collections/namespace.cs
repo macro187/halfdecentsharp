@@ -172,6 +172,8 @@
 ///
 ///         -   <tt>SystemIList.AsHalfdecentCollection<T>()</tt>
 ///
+///         -   <tt>SystemDictionary.AsHalfdecentCollection<T>()</tt>
+///
 ///         -   <tt>SystemString.AsHalfdecentCollection()</tt>
 ///
 ///         -   <tt>SystemStringBuilder.AsHalfdecentCollection()</tt>
