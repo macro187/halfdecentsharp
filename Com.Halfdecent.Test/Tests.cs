@@ -76,10 +76,8 @@ Test_SystemEnumerable()
 
     Print( ".Covary< TTo >()" );
     Assert(
-        new int[]{ 1, 2, 3 }
-        .Covary< int, object >()
-        .SequenceEqual(
-            new object[]{ 1, 2, 3 } ) );
+        SystemEnumerable.Create( 1, 2, 3 ).Covary< int, object >()
+        .SequenceEqual( SystemEnumerable.Create< object >( 1, 2, 3 ) ) );
 }
 
 
@@ -88,19 +86,14 @@ public static
 void
 Test_SystemException()
 {
+    Print( ".Chain()" );
     System.Exception e = new System.Exception();
     System.Exception f = new System.Exception( "", e );
     System.Exception g = new System.Exception( "", f );
     System.Exception h = new System.Exception( "", g );
-    Print( ".Chain()" );
     Assert(
         h.Chain()
-        .SequenceEqual(
-            Enumerable.Empty< System.Exception >()
-            .Append( h )
-            .Append( g )
-            .Append( f )
-            .Append( e ) ) );
+        .SequenceEqual( SystemEnumerable.Create( h, g, f, e ) ) );
 }
 
 
