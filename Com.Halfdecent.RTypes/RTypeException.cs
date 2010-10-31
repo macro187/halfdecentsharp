@@ -18,7 +18,6 @@
 
 using System;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Exceptions;
 using Com.Halfdecent.Meta;
 
 

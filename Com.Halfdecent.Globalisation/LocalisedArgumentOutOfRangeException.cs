@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,22 +17,21 @@
 
 
 using System;
-using Com.Halfdecent.Globalisation;
 
 
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.Globalisation
 {
 
 
 // =============================================================================
-/// A <tt>System.FormatException</tt> that is also a
+/// A <tt>System.ArgumentOutOfRangeException</tt> that is also an
 /// <tt>ILocalisedException</tt>
 // =============================================================================
 
 public class
-LocalisedFormatException
-    : FormatExceptionShim
+LocalisedArgumentOutOfRangeException
+    : ArgumentOutOfRangeExceptionShim
     , ILocalisedException
 {
 
@@ -43,29 +42,66 @@ LocalisedFormatException
 // -----------------------------------------------------------------------------
 
 public
-LocalisedFormatException()
-    : this( null, null )
+LocalisedArgumentOutOfRangeException()
+    : this( null, null, null, null )
 {
 }
 
 
 public
-LocalisedFormatException(
-    Localised< string > message
+LocalisedArgumentOutOfRangeException(
+    string paramName
 )
-    : this( message, null )
+    : this( paramName, null, null, null )
 {
 }
 
 
 public
-LocalisedFormatException(
+LocalisedArgumentOutOfRangeException(
     Localised< string > message,
     Exception           innerException
 )
+    : this( null, null, message, innerException )
+{
+}
+
+
+public
+LocalisedArgumentOutOfRangeException(
+    string              paramName,
+    Localised< string > message
+)
+    : this( paramName, null, message, null )
+{
+}
+
+
+public
+LocalisedArgumentOutOfRangeException(
+    string              paramName,
+    object              actualValue,
+    Localised< string > message
+)
+    : this( paramName, actualValue, message, null )
+{
+}
+
+
+public
+LocalisedArgumentOutOfRangeException(
+    string              paramName,
+    object              actualValue,
+    Localised< string > message,
+    Exception           innerException
+)
+    // Have to use this constructor and override ParamName and ActualValue
+    // because there's no base constructor that takes all 4 parameters (!)
     : base( (string)message, innerException )
 {
     this.message = message;
+    this.paramname = paramName;
+    this.actualvalue = actualValue;
 }
 
 
@@ -86,12 +122,51 @@ Localised< string >
 message;
 
 
+
+// -----------------------------------------------------------------------------
+// ArgumentOutOfRangeExceptionShim
+// -----------------------------------------------------------------------------
+
 protected override
 string
 ShimMessage
 {
     get { return this.Message.InCurrent(); }
 }
+
+
+
+// -----------------------------------------------------------------------------
+// ArgumentOutOfRangeException
+// -----------------------------------------------------------------------------
+
+public override
+object
+ActualValue
+{
+    get { return this.actualvalue; }
+}
+
+private
+object
+actualvalue;
+
+
+
+// -----------------------------------------------------------------------------
+// ArgumentException
+// -----------------------------------------------------------------------------
+
+public override
+string
+ParamName
+{
+    get { return this.paramname; }
+}
+
+private
+string
+paramname;
 
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,32 +16,79 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Globalisation;
+using System;
 
 
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.Globalisation
 {
 
 
 // =============================================================================
-/// An <tt>Exception</tt> with localised messaging
+/// A <tt>System.Exception</tt> that is also an <tt>ILocalisedException</tt>
 // =============================================================================
 
-public interface
-ILocalisedException
+public class
+LocalisedException
+    : ExceptionShim
+    , ILocalisedException
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Constructors
 // -----------------------------------------------------------------------------
 
+public
+LocalisedException()
+    : this( null, null )
+{
+}
+
+
+public
+LocalisedException(
+    Localised< string > message
+)
+    : this( message, null )
+{
+}
+
+
+public
+LocalisedException(
+    Localised< string > message,
+    Exception           innerException
+)
+    : base( (string)message, innerException )
+{
+    this.message = message;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// ILocalisedException
+// -----------------------------------------------------------------------------
+
+new public virtual
 Localised< string >
 Message
 {
-    get;
+    get { return this.message ?? this.BaseMessage; }
+}
+
+private
+Localised< string >
+message;
+
+
+protected override
+string
+ShimMessage
+{
+    get { return this.Message.InCurrent(); }
 }
 
 

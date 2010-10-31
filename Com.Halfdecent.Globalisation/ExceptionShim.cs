@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,23 +17,22 @@
 
 
 using System;
-using Com.Halfdecent.Globalisation;
 
 
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.Globalisation
 {
 
 
 // =============================================================================
-/// A <tt>System.ArgumentException</tt> that is also an
-/// <tt>ILocalisedException</tt>
+/// INTERNAL: Shim that "renames" <tt>Message</tt> to <tt>BaseMessage</tt>,
+/// enabling <tt>Message</tt> to be, effectively, both overridden and shadowed
+/// in a subclass
 // =============================================================================
 
-public class
-LocalisedArgumentException
-    : ArgumentExceptionShim
-    , ILocalisedException
+public abstract class
+ExceptionShim
+    : Exception
 {
 
 
@@ -42,81 +41,47 @@ LocalisedArgumentException
 // Constructors
 // -----------------------------------------------------------------------------
 
-public
-LocalisedArgumentException()
-    : this( null, null, null )
-{
-}
-
-
-public
-LocalisedArgumentException(
-    Localised< string > message
+internal
+ExceptionShim(
+    string      message,
+    Exception   innerException
 )
-    : this( message, null, null )
+    : base( message, innerException )
 {
-}
-
-
-public
-LocalisedArgumentException(
-    Localised< string > message,
-    Exception           innerException
-)
-    : this( message, null, innerException )
-{
-}
-
-
-public
-LocalisedArgumentException(
-    Localised< string > message,
-    string              paramName
-)
-    : this( message, paramName, null )
-{
-}
-
-
-public
-LocalisedArgumentException(
-    Localised< string > message,
-    string              paramName,
-    Exception           innerException
-)
-    : base( (string)message, paramName, innerException )
-{
-    this.message = message;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// ILocalisedException
+// Properties
 // -----------------------------------------------------------------------------
 
-new public virtual
-Localised< string >
+override public
+string
 Message
 {
-    get { return this.message ?? this.BaseMessage; }
+    get { return this.ShimMessage; }
 }
 
-private
-Localised< string >
-message;
-
 
 
 // -----------------------------------------------------------------------------
-// ArgumentExceptionShim
+// Protected
 // -----------------------------------------------------------------------------
 
-protected override
+abstract protected
 string
 ShimMessage
 {
-    get { return this.Message.InCurrent(); }
+    get;
+}
+
+
+protected
+string
+BaseMessage
+{
+    get { return base.Message; }
 }
 
 

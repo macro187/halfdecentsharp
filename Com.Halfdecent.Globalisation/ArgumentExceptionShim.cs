@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -20,7 +20,7 @@ using System;
 
 
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.Globalisation
 {
 
 
@@ -31,8 +31,8 @@ Com.Halfdecent.Exceptions
 // =============================================================================
 
 public abstract class
-ExceptionShim
-    : Exception
+ArgumentExceptionShim
+    : ArgumentException
 {
 
 
@@ -42,11 +42,12 @@ ExceptionShim
 // -----------------------------------------------------------------------------
 
 internal
-ExceptionShim(
+ArgumentExceptionShim(
     string      message,
+    string      paramName,
     Exception   innerException
 )
-    : base( message, innerException )
+    : base( message, paramName, innerException )
 {
 }
 

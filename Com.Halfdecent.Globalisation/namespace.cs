@@ -34,69 +34,55 @@
 ///     <tt>"en-AU" &lt; "en" &lt; ""</tt>.
 ///
 ///
-/// @section problem Problem
+/// @section problems Problems
 ///
-///     Like flossing, making code localisable is often something that is done
-///     as an afterthought, when it's already too late to be effective.  There
-///     is a proliferation of existing localisable string programming patterns
-///     and, even though they sort of work, they tend to share some negative
-///     characteristics.
+///     @subsection existingstringpatterns Existing String Patterns
 ///
-///     -   Making a string localisable demands immediate,
-///         concentration-breaking work for the programmer (eg. Add the string
-///         to a table, (re)generate accessor classes and embedded resources,
-///         change literals to some kind of localised string references, etc.)
+///         There is a proliferation of existing localisable string programming
+///         patterns and, even though they sort of work, they tend to share
+///         some negative characteristics.  They usually require housekeeping
+///         work such as adding strings to a table, (re)generating accessor
+///         classes and embedded resources, changing string literals to
+///         localised string references of some kind, etc.  Often, they trade
+///         readable string literals for opaque, single-word references.
 ///
-///     -   Clear, human-readable literals become opaque references (often
-///         single-word lookup keys)
+///     @subsection nolocalisedtypes No Localised Types
 ///
-///     -   Localisable and non-localisable items are the same type, so it can
-///         be unclear at first glance which of the two a given piece of code is
-///         intended to work with, and it prevents the compiler from helping to
-///         reinforce the difference
+///         In existing patterns, localisable and non-localisable items are the
+///         same type, so it can be unclear at first glance which of the two a
+///         given piece of code is intended to work with, and it prevents the
+///         compiler from helping to reinforce the difference.  They can't
+///         carry additional localisable behaviour with them.
 ///
-///     -   Furthermore, because localisable items are no different from
-///         regular ones, they can't carry additional localisable behaviour with
-///         them, for example the ability to translate themselves to other
-///         languages in real-time as UICulture changes
+///     @subsection exceptions Exceptions Are Not Localisable
 ///
-///     -   The whole thing feels "flimsy", seems "bolted-on", or leaves a bad
-///         "code smell" <sup>[1]</sup>
-///
-///     (TODO: Try to do a good survey of existing localisation patterns rather
-///     than just trashing them all at once, even though they might deserve it)
-///
-///     The underlying problem starts with the lack of a "logical" localisable
-///     item type providing a way to refer to all variations of a localised
-///     asset collectively as one.  We'd like these items to transparently adapt
-///     themselves to different cultural contexts with little or no extra work
-///     on our part.
-///
-///     Overall, we want a way to write code that is localisable from the
-///     outset, with minimal programming overhead, so that we actually do it.
-///
-///     <small>
-///     <sup>[1]</sup> <tt>http://en.wikipedia.org/wiki/Code_smell</tt>
-///     </small>
+///         Exception messages are not localisable, preventing their use in
+///         user-visible situations.
 ///
 ///
-/// @section solution Solution
-///
-///     (TODO: Localised<T> might be a monad, so revisit this once I have a
-///     solid understanding of them)
+/// @section solutions Solutions
 ///
 ///     <tt>Localised<T></tt> is a logical item having one or more cultural
 ///     variations and which transparently changes according to the current (or
 ///     a specified) culture.
 ///
-///     <tt>LocalisedBase<T></tt> provides a starting point for implementing
-///     <tt>Localised<T></tt>. It helps implement the semantics correctly and
-///     supports different culture fallback algorithms.
+///     <tt>FallbackLocalised<T></tt> helps with localised items where
+///     variations may not exist for all cultures.
 ///
-///     <tt>LocalisedString</tt> composes localised strings using the familiar
-///     <tt>System.String.Format()</tt> pattern.  The resulting composite
-///     strings lazily compose themselves, and can transparently re-compose
-///     themselves in other languages.
+///     <tt>LocalisedString</tt> provides localised string manipulation and
+///     composition using familiar patterns.  The results of these operations
+///     are lazily evaluated <tt>Localised<string></tt> objects that can
+///     re-evaluate themselves in multiple languages 
+///
+///     <tt>ILocalisedException</tt> is an exception whose <tt>.Message</tt> is
+///     a <tt>Localised<string></tt>.  Subclasses of common Base Class Library
+///     exceptions implementing <tt>ILocalisedException</tt> are provided,
+///     including <tt>LocalisedException</tt>,
+///     <tt>LocalisedArgumentException</tt>,
+///     <tt>LocalisedArgumentNullException</tt>,
+///     <tt>LocalisedArgumentOutOfRangeException</tt>,
+///     <tt>LocalisedInvalidOperationException</tt>, and
+///     <tt>LocalisedFormatException</tt>.
 ///
 ///
 // =============================================================================
@@ -105,5 +91,4 @@ namespace
 Com.Halfdecent.Globalisation
 {
 }
-
 

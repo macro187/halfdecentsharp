@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,23 +17,22 @@
 
 
 using System;
-using Com.Halfdecent.Globalisation;
 
 
 namespace
-Com.Halfdecent.Exceptions
+Com.Halfdecent.Globalisation
 {
 
 
 // =============================================================================
-/// A <tt>System.ArgumentNullException</tt> that is also an
-/// <tt>ILocalisedException</tt>
+/// INTERNAL: Shim that "renames" <tt>Message</tt> to <tt>BaseMessage</tt>,
+/// enabling <tt>Message</tt> to be, effectively, both overridden and shadowed
+/// in a subclass
 // =============================================================================
 
-public class
-LocalisedArgumentNullException
-    : ArgumentNullExceptionShim
-    , ILocalisedException
+public abstract class
+InvalidOperationExceptionShim
+    : InvalidOperationException
 {
 
 
@@ -42,102 +41,48 @@ LocalisedArgumentNullException
 // Constructors
 // -----------------------------------------------------------------------------
 
-public
-LocalisedArgumentNullException()
-    : this( null, null, null )
-{
-}
-
-
-public
-LocalisedArgumentNullException(
-    string paramName
+internal
+InvalidOperationExceptionShim(
+    string      message,
+    Exception   innerException
 )
-    : this( paramName, null, null )
+    : base( message, innerException )
 {
-}
-
-
-public
-LocalisedArgumentNullException(
-    Localised< string > message,
-    Exception           innerException
-)
-    : this( null, message, innerException )
-{
-}
-
-
-public
-LocalisedArgumentNullException(
-    string              paramName,
-    Localised< string > message
-)
-    : this( paramName, message, null )
-{
-}
-
-
-public
-LocalisedArgumentNullException(
-    string              paramName,
-    Localised< string > message,
-    Exception           innerException
-)
-    // Have to use this constructor and override ParamName because there's no
-    // base constructor that takes all 3 parameters (!)
-    : base( (string)message, innerException )
-{
-    this.paramname = paramName;
-    this.message = message;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// ILocalisedException
+// Properties
 // -----------------------------------------------------------------------------
 
-new public virtual
-Localised< string >
+override public
+string
 Message
 {
-    get { return this.message ?? this.BaseMessage; }
+    get { return this.ShimMessage; }
 }
 
-private
-Localised< string >
-message;
-
 
 
 // -----------------------------------------------------------------------------
-// ArgumentNullExceptionShim
+// Protected
 // -----------------------------------------------------------------------------
 
-protected override
+abstract protected
 string
 ShimMessage
 {
-    get { return this.Message.InCurrent(); }
+    get;
 }
 
 
-
-// -----------------------------------------------------------------------------
-// ArgumentNullException
-// -----------------------------------------------------------------------------
-
-public override
+protected
 string
-ParamName
+BaseMessage
 {
-    get { return this.paramname; }
+    get { return base.Message; }
 }
-
-private
-string
-paramname;
 
 
 

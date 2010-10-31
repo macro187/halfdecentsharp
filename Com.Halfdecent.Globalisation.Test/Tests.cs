@@ -191,6 +191,70 @@ Test_LocalisedString_ToUpper()
 }
 
 
+[Test( "Localised Exceptions" )]
+public static
+void
+Test_LocalisedExceptions()
+{
+    Exception           ie = new Exception();
+    Localised< string > m = new Localised< string >( "message" );
+    string              pn = "paramname";
+    object              av = new object();
+
+    Print( "LocalisedException" );
+    try {
+        throw new LocalisedException( m, ie );
+    } catch( LocalisedException e ) {
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
+    }
+
+    Print( "LocalisedArgumentException" );
+    try {
+        throw new LocalisedArgumentException( m, pn, ie );
+    } catch( LocalisedArgumentException e ) {
+        Assert( e.Message == m );
+        Assert( e.ParamName == pn );
+        Assert( e.InnerException == ie );
+    }
+
+    Print( "LocalisedArgumentNullException" );
+    try {
+        throw new LocalisedArgumentNullException( pn, m, ie );
+    } catch( LocalisedArgumentNullException e ) {
+        Assert( e.ParamName == pn );
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
+    }
+
+    Print( "LocalisedArgumentOutOfRangeException" );
+    try {
+        throw new LocalisedArgumentOutOfRangeException( pn, av, m, ie );
+    } catch( LocalisedArgumentOutOfRangeException e ) {
+        Assert( e.ParamName == pn );
+        Assert( e.ActualValue == av );
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
+    }
+
+    Print( "LocalisedFormatException" );
+    try {
+        throw new LocalisedFormatException( m, ie );
+    } catch( LocalisedFormatException e ) {
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
+    }
+
+    Print( "LocalisedInvalidOperationException" );
+    try {
+        throw new LocalisedInvalidOperationException( m, ie );
+    } catch( LocalisedInvalidOperationException e ) {
+        Assert( e.Message == m );
+        Assert( e.InnerException == ie );
+    }
+}
+
+
 
 
 } // type
