@@ -23,6 +23,11 @@ Com.Halfdecent.TextTree
 
 // =============================================================================
 /// A TextTree lexer token
+///
+/// @section equality Equality
+///
+///     Contextual information such as line numbers is not considered in token
+///     equality
 // =============================================================================
 
 public abstract class
@@ -37,7 +42,31 @@ Token
 
 internal
 Token()
+    : this( 0 )
 {
+}
+
+
+internal
+Token(
+    int lineNumber
+)
+{
+    this.LineNumber = lineNumber;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+int
+LineNumber
+{
+    get;
+    private set;
 }
 
 

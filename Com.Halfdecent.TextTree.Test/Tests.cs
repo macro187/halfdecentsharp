@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System.Linq;
 using Com.Halfdecent.Testing;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.TextTree;
@@ -72,31 +73,65 @@ public static
 void
 Test_OutputTokenStreams()
 {
-    Assert(
+    IStream< Token > tokens =
         tree1
         .AsStream()
         .PipeTo( new TextLineSplitter() )
-        .PipeTo( new Lexer() )
-        .SequenceEqual(
-            new Stream< Token >(
-                new DataToken( "a" ),
-                new IndentToken(),
-                new DataToken( "aa" ),
-                new DataToken( "ab" ),
-                new DeindentToken(),
-                new IndentToken(),
-                new DeindentToken(),
-                new DataToken( "b" ),
-                new IndentToken(),
-                new DataToken( "ba" ),
-                new DataToken( "bb" ) ) ) );
+        .PipeTo( new Lexer() );
+
+    Token t;
+
+    t = tokens.Pull();
+    Assert( new DataToken( "a" ).Equals( t ) );
+    Assert( t.LineNumber == 1 );
+
+    t = tokens.Pull();
+    Assert( new IndentToken().Equals( t ) );
+    Assert( t.LineNumber == 2 );
+
+    t = tokens.Pull();
+    Assert( new DataToken( "aa" ).Equals( t ) );
+    Assert( t.LineNumber == 2 );
+
+    t = tokens.Pull();
+    Assert( new DataToken( "ab" ).Equals( t ) );
+    Assert( t.LineNumber == 3 );
+
+    t = tokens.Pull();
+    Assert( new DeindentToken().Equals( t ) );
+    Assert( t.LineNumber == 4 );
+
+    t = tokens.Pull();
+    Assert( new IndentToken().Equals( t ) );
+    Assert( t.LineNumber == 5 );
+
+    t = tokens.Pull();
+    Assert( new DeindentToken().Equals( t ) );
+    Assert( t.LineNumber == 6 );
+
+    t = tokens.Pull();
+    Assert( new DataToken( "b" ).Equals( t ) );
+    Assert( t.LineNumber == 7 );
+
+    t = tokens.Pull();
+    Assert( new IndentToken().Equals( t ) );
+    Assert( t.LineNumber == 8 );
+
+    t = tokens.Pull();
+    Assert( new DataToken( "ba" ).Equals( t ) );
+    Assert( t.LineNumber == 8 );
+
+    t = tokens.Pull();
+    Assert( new DataToken( "bb" ).Equals( t ) );
+    Assert( t.LineNumber == 9 );
+
+    Assert( !tokens.TryPull( out t ) );
 }
 
 
 private static string
 tree1 =
-@"
-a
+@"a
     aa
     ab
 

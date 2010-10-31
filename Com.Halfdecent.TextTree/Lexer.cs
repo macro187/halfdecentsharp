@@ -48,12 +48,14 @@ Process()
 {
     IOrderedCollectionRCSG< char > indent = new ArrayList< char >();
     IOrderedCollectionRCSG< IInteger > stops = new ArrayList< IInteger >();
+    int linenum = 0;
 
     for( ;; ) {
 
         // Get the next line
         yield return false;
         string line = this.GetItem();
+        linenum++;
 
         // Split the indent and data apart
         IOrderedCollectionR< char > newindent;
@@ -70,7 +72,7 @@ Process()
                     stops.Count.Minus( Integer.From( 1 ) ) ) );
             stops.RemoveLast();
 
-            this.PutItem( new DeindentToken() ); 
+            this.PutItem( new DeindentToken( linenum ) );
             yield return true;
         }
 
@@ -84,7 +86,7 @@ Process()
                     stops.Count.Minus( Integer.From( 1 ) ) ) );
             stops.RemoveLast();
 
-            this.PutItem( new DeindentToken() ); 
+            this.PutItem( new DeindentToken( linenum ) );
             yield return true;
         }
 
@@ -98,7 +100,7 @@ Process()
                 .EmptyTo(
                     indent.AsSink() );
 
-            this.PutItem( new IndentToken() ); 
+            this.PutItem( new IndentToken( linenum ) );
             yield return true;
         }
 
@@ -108,7 +110,8 @@ Process()
 
         this.PutItem(
             new DataToken(
-                new string( data.Stream().AsEnumerable().ToArray() ) ) );
+                new string( data.Stream().AsEnumerable().ToArray() ),
+                linenum ) );
         yield return true;
     }
 }

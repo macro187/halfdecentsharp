@@ -44,7 +44,17 @@ public
 DataToken(
     string data
 )
-    : base()
+    : this( data, 0 )
+{
+}
+
+
+public
+DataToken(
+    string data,
+    int    lineNumber
+)
+    : base( lineNumber )
 {
     NonNull.Require( data, new Parameter( "data" ) );
     this.Data = data;

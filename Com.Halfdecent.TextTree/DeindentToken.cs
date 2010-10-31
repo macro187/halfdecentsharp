@@ -38,7 +38,16 @@ DeindentToken
 
 public
 DeindentToken()
-    : base()
+    : this( 0 )
+{
+}
+
+
+public
+DeindentToken(
+    int lineNumber
+)
+    : base( lineNumber )
 {
 }
 

@@ -38,7 +38,16 @@ IndentToken
 
 public
 IndentToken()
-    : base()
+    : this( 0 )
+{
+}
+
+
+public
+IndentToken(
+    int lineNumber
+)
+    : base( lineNumber )
 {
 }
 
