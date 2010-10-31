@@ -122,9 +122,67 @@ public static
 void
 Test_SystemObject()
 {
+    bool ok;
+
     Print( ".ToString()" );
     Assert( SystemObject.ToString( null ) == "null" );
     Assert( SystemObject.ToString( "notnull" ) == "notnull" );
+
+
+    Print( ".IsAnd()" );
+    Assert(
+        "abc".IsAnd< string >( s => s == "abc" ) );
+    Assert( !(
+        "abc".IsAnd< string >( s => s == "def" ) ) );
+    Assert( !(
+        "abc".IsAnd< System.Exception >( e => true ) ) );
+    Expect< System.ArgumentNullException >( () =>
+        "abc".IsAnd< string >( null ) );
+
+
+    Print( ".IfIsDo()" );
+
+    ok = false;
+    "abc".IfIsDo< string >( s => { ok = true; } );
+    Assert( ok );
+
+    ok = true;
+    "abc".IfIsDo< System.Exception >( e => { ok = false; } );
+    Assert( ok );
+
+    Expect< System.ArgumentNullException >( () =>
+        "abc".IfIsDo< string >( null ) );
+
+
+    Print( ".IfIsAndDo()" );
+
+    ok = false;
+    "abc".IfIsAndDo< string >(
+        s => s == "abc",
+        s => { ok = true; } );
+    Assert( ok );
+
+    ok = true;
+    "abc".IfIsAndDo< string >(
+        s => s == "def",
+        s => { ok = false; } );
+    Assert( ok );
+
+    ok = true;
+    "abc".IfIsAndDo< System.Exception >(
+        e => true,
+        e => { ok = false; } );
+    Assert( ok );
+
+    Expect< System.ArgumentNullException >( () =>
+        "abc".IfIsAndDo< string >(
+            s => true,
+            null ) );
+
+    Expect< System.ArgumentNullException >( () =>
+        "abc".IfIsAndDo< string >(
+            null,
+            s => {} ) );
 }
 
 

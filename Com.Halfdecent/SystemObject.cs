@@ -31,6 +31,10 @@ SystemObject
 
 
 
+// -----------------------------------------------------------------------------
+// Static Methods
+// -----------------------------------------------------------------------------
+
 /// Generate a string representation of the object
 ///
 /// Also handles <tt>null</tt>
@@ -43,6 +47,77 @@ ToString(
 {
     if( obj == null ) return "null";
     return obj.ToString();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+public static
+    bool
+IsAnd<
+    T
+>(
+    this object             dis,
+    System.Func< T, bool >  predicate
+)
+    where T : class
+{
+    if( object.ReferenceEquals( dis, null ) )
+        throw new System.ArgumentNullException( "dis" );
+    if( object.ReferenceEquals( predicate, null ) )
+        throw new System.ArgumentNullException( "predicate" );
+    T t = dis as T;
+    if( object.ReferenceEquals( t, null ) ) return false;
+    return predicate( t );
+}
+
+
+public static
+    bool
+IfIsDo<
+    T
+>(
+    this object         dis,
+    System.Action< T >  action
+)
+    where T : class
+{
+    if( object.ReferenceEquals( dis, null ) )
+        throw new System.ArgumentNullException( "dis" );
+    if( object.ReferenceEquals( action, null ) )
+        throw new System.ArgumentNullException( "action" );
+    T t = dis as T;
+    if( object.ReferenceEquals( t, null ) ) return false;
+    action( t );
+    return true;
+}
+
+
+public static
+    bool
+IfIsAndDo<
+    T
+>(
+    this object             dis,
+    System.Predicate< T >   predicate,
+    System.Action< T >      action
+)
+    where T : class
+{
+    if( object.ReferenceEquals( dis, null ) )
+        throw new System.ArgumentNullException( "dis" );
+    if( object.ReferenceEquals( predicate, null ) )
+        throw new System.ArgumentNullException( "predicate" );
+    if( object.ReferenceEquals( action, null ) )
+        throw new System.ArgumentNullException( "action" );
+    T t = dis as T;
+    if( object.ReferenceEquals( t, null ) ) return false;
+    if( !predicate( t ) ) return false;
+    action( t );
+    return true;
 }
 
 
