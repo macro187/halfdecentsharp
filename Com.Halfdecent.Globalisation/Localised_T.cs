@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2010
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -44,10 +45,6 @@ Com.Halfdecent.Globalisation
 /// interfaces and, since implicit operators are the basis for the transparent
 /// boxing behaviour outlined above, an exception was made.
 ///
-/// This type can be thought of as a monad. <sup>[1]</sup>
-///
-/// <sup>[1]</sup>
-/// <tt>http://en.wikipedia.org/wiki/Monad_%28functional_programming%29</tt>
 // =============================================================================
 
 public abstract class
@@ -173,16 +170,15 @@ ToString()
 /// for the current culture (via <tt>ForCurrentCulture()</tt>)
 ///
 /// This conversion is explicit because it loses information, specifically
-/// variations for all other cultures
+/// the variations for all other cultures
 ///
 public static
 explicit operator T(
     Localised< T > localised
 )
 {
-    return localised == null
-        ? default( T )
-        : localised.InCurrent();
+    if( object.ReferenceEquals( localised, null ) ) return default( T );
+    return localised.InCurrent();
 }
 
 
@@ -196,9 +192,8 @@ implicit operator Localised< T >(
     T value
 )
 {
-    return (object)value == null
-        ? null
-        : new SingleValueLocalised< T >( value );
+    if( object.ReferenceEquals( value, null ) ) return null;
+    return new SingleValueLocalised< T >( value );
 }
 
 

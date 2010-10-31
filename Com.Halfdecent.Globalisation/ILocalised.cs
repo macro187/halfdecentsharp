@@ -25,7 +25,7 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// See <tt>Localised<T></tt>
+/// Non-generic interface to <tt>Localised<T></tt>
 // =============================================================================
 
 public interface
