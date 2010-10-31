@@ -17,8 +17,8 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 
 namespace
@@ -37,25 +37,32 @@ SystemEnumerable
 
 
 // -----------------------------------------------------------------------------
-// Extension Methods
+// Static Methods
 // -----------------------------------------------------------------------------
 
-/// Generate an enumerable that yields a single instance of this item
+/// Create an enumerable yielding a specified sequence of items
 ///
 public static
     IEnumerable< T >
-AsSingleItemEnumerable<
+Create<
     T
 >(
-    this T item
+    params T[] items
 )
 {
-    yield return item;
+    if( object.ReferenceEquals( items, null ) )
+        throw new ArgumentNullException( "items" );
+    return items;
 }
 
 
-/// Generate an enumerable yielding all items in this one plus the specified
-/// item
+
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+/// Create an enumerable consiting of the items in this one plus a specified
+/// sequence of additional items
 ///
 public static
     IEnumerable< T >
@@ -63,13 +70,14 @@ Append<
     T
 >(
     this IEnumerable< T >   enumerable,
-    T                       newItem
+    params T[]              items
 )
 {
     if( object.ReferenceEquals( enumerable, null ) )
         throw new ArgumentNullException( "enumerable" );
-    foreach( T item in enumerable ) yield return item;
-    yield return newItem;
+    if( object.ReferenceEquals( items, null ) )
+        throw new ArgumentNullException( "items" );
+    return enumerable.Concat( items );
 }
 
 

@@ -52,11 +52,27 @@ public static
 void
 Test_SystemEnumerable()
 {
+    Print( "Create()" );
+    Assert(
+        SystemEnumerable.Create<int>()
+        .SequenceEqual( new int[]{} ) );
+    Assert(
+        SystemEnumerable.Create( 1 )
+        .SequenceEqual( new int[]{ 1 } ) );
+    Assert(
+        SystemEnumerable.Create( 1, 2 )
+        .SequenceEqual( new int[]{ 1, 2 } ) );
+
     Print( ".Append()" );
     Assert(
-        new int[]{ 1, 2, 3 }
-        .Append( 4 )
-        .SequenceEqual( new int[]{ 1, 2, 3, 4 } ) );
+        SystemEnumerable.Create<int>().Append( 1, 2 ,3 )
+        .SequenceEqual( SystemEnumerable.Create( 1, 2, 3 ) ) );
+    Assert(
+        SystemEnumerable.Create( 1 ).Append( 2 ,3 )
+        .SequenceEqual( SystemEnumerable.Create( 1, 2, 3 ) ) );
+    Assert(
+        SystemEnumerable.Create( 1, 2, 3 ).Append()
+        .SequenceEqual( SystemEnumerable.Create( 1, 2, 3 ) ) );
 
     Print( ".Covary< TTo >()" );
     Assert(
@@ -64,12 +80,6 @@ Test_SystemEnumerable()
         .Covary< int, object >()
         .SequenceEqual(
             new object[]{ 1, 2, 3 } ) );
-
-    Print( ".AsSingleItemEnumerable()" );
-    Assert(
-        1.AsSingleItemEnumerable()
-        .SequenceEqual(
-            new int[]{ 1 } ) );
 }
 
 

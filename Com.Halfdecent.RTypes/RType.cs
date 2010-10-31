@@ -147,7 +147,7 @@ IsEqualToOrMoreSpecificThan<
     if( that == null )
         throw new ValueArgumentNullException( new Parameter( "that" ) );
     return
-        dis.AsSingleItemEnumerable()
+        SystemEnumerable.Create( dis )
         .Concat( dis.AllComponentsDepthFirst() )
         .OfType< IRType >()
         .Contains( that, new EquatableComparer< IRType >() );
@@ -169,7 +169,7 @@ AllComponentsDepthFirst<
     return
         dis.GetComponents()
         .SelectMany( c =>
-            c.AsSingleItemEnumerable()
+            SystemEnumerable.Create( c )
             .Concat( c.AllComponentsDepthFirst() ) );
 }
 
