@@ -39,7 +39,7 @@
 ///     Like flossing, making code localisable is often something that is done
 ///     as an afterthought, when it's already too late to be effective.  There
 ///     is a proliferation of existing localisable string programming patterns
-///     and, even thought they sort of work, they tend to share some negative
+///     and, even though they sort of work, they tend to share some negative
 ///     characteristics.
 ///
 ///     -   Making a string localisable demands immediate,
