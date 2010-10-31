@@ -40,6 +40,16 @@ ResourceMissingException
 // Constructors
 // -----------------------------------------------------------------------------
 
+public
+ResourceMissingException(
+    Type        type,
+    string      name
+)
+    : this( type, name, null )
+{
+}
+
+
 /// Initialise a <tt>ResourceMissingException</tt>
 ///
 /// @exception ArgumentNullException

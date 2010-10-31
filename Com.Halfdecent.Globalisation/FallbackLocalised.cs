@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -27,21 +27,16 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// Base class for implementing <tt>Localised<T></tt> with a culture fallback
-/// mechanism
+/// <tt>FallbackLocalised<T></tt> library
 // =============================================================================
 
-public abstract class
-LocalisedBase<
-    T
->
-    : Localised< T >
+public static class
+FallbackLocalised
 {
 
 
-
 // -----------------------------------------------------------------------------
-// Methods
+// Culture Fallback Algorithms
 // -----------------------------------------------------------------------------
 
 /// Culture fallback algorithm: Parent culture(s)
@@ -77,75 +72,6 @@ ParentFallbacksFor(
 //{
 //    yield return ...;
 //}
-
-
-
-// -----------------------------------------------------------------------------
-// Protected
-// -----------------------------------------------------------------------------
-
-protected virtual
-    bool
-TryDefault(
-    out T value
-)
-{
-    value = default( T );
-    return false;
-}
-
-
-protected virtual
-    bool
-TryFor(
-    CultureInfo culture,
-    out T       value
-)
-{
-    value = default( T );
-    return false;
-}
-
-
-protected virtual
-    IEnumerable< CultureInfo >
-FallbacksFor(
-    CultureInfo culture
-)
-{
-    yield break;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Localised< T >
-// -----------------------------------------------------------------------------
-
-protected override
-    T
-ForCulture(
-    CultureInfo culture
-)
-{
-    T r;
-
-    if( this.TryFor( culture, out r ) ) return r;
-
-    foreach( CultureInfo fb in this.FallbacksFor( culture ) ) {
-        // TODO BugException
-        if( fb == null ) throw new Exception( "null fallback culture" );
-        if( this.TryFor( fb, out r ) ) return r;
-    }
-
-    if( this.TryDefault( out r ) ) return r;
-
-    // TODO BugException
-    throw new Exception( String.Format(
-        "Bug in LocalisedBase< T > subclass: No value produced for culture" +
-        " '{0}' by exact culture, fallback cultures, or TryDefault()",
-        culture.Name ) );
-}
 
 
 

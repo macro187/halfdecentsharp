@@ -75,7 +75,7 @@ From
 
 protected override
     TTo
-ForCulture(
+ProtectedIn(
     CultureInfo culture
 )
 {

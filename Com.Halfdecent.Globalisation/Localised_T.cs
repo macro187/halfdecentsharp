@@ -47,7 +47,7 @@ Com.Halfdecent.Globalisation
 ///
 // =============================================================================
 
-public abstract class
+public class
 Localised<
     T
     ///< The type of underlying values
@@ -58,22 +58,80 @@ Localised<
 
 
 // -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+public
+Localised(
+    T singleValue
+    ///< A single value to be used for all cultures
+)
+    : this( culture => singleValue )
+{
+    if( object.ReferenceEquals( singleValue, null ) )
+        throw new ArgumentNullException( "singleValue" );
+}
+
+
+public
+Localised(
+    Func< CultureInfo, T > inFunc
+    ///< Function from a non-null culture to a non-null value
+)
+{
+    if( object.ReferenceEquals( inFunc, null ) )
+        throw new ArgumentNullException( "inFunc" );
+    this.InFunc = inFunc;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private
+Func< CultureInfo, T >
+InFunc = null;
+
+
+
+// -----------------------------------------------------------------------------
+// Protected
+// -----------------------------------------------------------------------------
+
+protected
+Localised()
+{
+}
+
+
+protected virtual
+    T
+ProtectedIn(
+    CultureInfo culture
+)
+{
+    if( this.InFunc != null ) return this.InFunc( culture );
+    throw new NotImplementedException();
+}
+
+
+
+// -----------------------------------------------------------------------------
 // Methods
 // -----------------------------------------------------------------------------
 
 /// Retrieve the most applicable variation for a specified culture
 ///
-/// If a variation is not available for the exact culture specified, the
-/// "closest" available variant will be provided.  A useful value for some
-/// culture or another will always be available;  This indexer never returns
-/// <tt>null</tt>.
+/// If a variation is not available for the exact culture specified, some
+/// "close" variant will be provided.
 ///
 /// @exception ArgumentNullException
 /// The specified <tt>culture</tt> is <tt>null</tt>
 ///
 /// @exception Exception
-/// The underlying implementation generated a <tt>null</tt> value, which is a
-/// bug.
+/// <tt>this.InFunc</tt> yielded a <tt>null</tt> value
 ///
 public
     T
@@ -82,11 +140,9 @@ In(
 )
 {
     if( culture == null ) throw new ArgumentNullException( "culture" );
-    T result = this.ForCulture( culture );
+    T result = this.ProtectedIn( culture );
     if( object.ReferenceEquals( result, null ) )
-        throw new Exception( string.Format(
-            "Bug in {0}: ForCulture() returned null",
-            this.GetType().FullName ) );
+        throw new Exception( "Bug: InFunc/ProtectedIn() returned null" );
     return result;
 }
 
@@ -123,25 +179,6 @@ ILocalised.InCurrent()
 {
     return this.InCurrent();
 }
-
-
-
-// -----------------------------------------------------------------------------
-// Protected
-// -----------------------------------------------------------------------------
-
-/// Variation retrieval implementation
-///
-protected abstract
-    T
-    /// @returns
-    /// A variation for the specified <tt>culture</tt>
-    /// - Must never be <tt>null</tt>
-ForCulture(
-    CultureInfo culture
-    ///< The culture for which a variation is desired
-    ///  - Will never be <tt>null</tt>
-);
 
 
 
@@ -193,7 +230,7 @@ implicit operator Localised< T >(
 )
 {
     if( object.ReferenceEquals( value, null ) ) return null;
-    return new SingleValueLocalised< T >( value );
+    return new Localised< T >( value );
 }
 
 

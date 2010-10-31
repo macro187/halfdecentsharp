@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009, 2010
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -15,11 +16,11 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using System.Globalization;
 using System.Resources;
 using System.Collections.Generic;
 using System.IO;
+using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 
 
@@ -42,7 +43,7 @@ public class
 LocalisedResource<
     T
 >
-    : LocalisedBase< T >
+    : FallbackLocalised< T >
 {
 
 
@@ -53,13 +54,13 @@ LocalisedResource<
 
 internal
 LocalisedResource(
-    Type    type,
-    string  name
+    System.Type type,
+    string      name
 )
 {
-    if( type == null ) throw new ArgumentNullException( "type" );
-    if( name == null ) throw new ArgumentNullException( "name" );
-    if( name == "" ) throw new ArgumentException( "Is blank", "name" );
+    if( type == null ) throw new System.ArgumentNullException( "type" );
+    if( name == null ) throw new System.ArgumentNullException( "name" );
+    if( name == "" ) throw new System.ArgumentException( "Is blank", "name" );
     this.type = type;
     this.name = name;
 }
@@ -71,7 +72,7 @@ LocalisedResource(
 // -----------------------------------------------------------------------------
 
 private
-Type
+System.Type
 type;
 
 
@@ -91,16 +92,16 @@ InternalResourceManager
 {
     public
     InternalResourceManager(
-        Type type
+        System.Type type
     )
         : base( type )
     {
-        if( type == null ) throw new ArgumentNullException( "type" );
+        if( type == null ) throw new System.ArgumentNullException( "type" );
         this.sourcetype = type;
     }
 
     private
-    Type
+    System.Type
     sourcetype;
 
     protected override
@@ -111,7 +112,8 @@ InternalResourceManager
         bool        tryParents
     )
     {
-        if( culture == null ) throw new ArgumentNullException( "culture" );
+        if( culture == null )
+            throw new System.ArgumentNullException( "culture" );
 
         Stream s = null;
         try {
@@ -134,14 +136,21 @@ InternalResourceManager
 // -----------------------------------------------------------------------------
 
 protected override
-    bool
-TryFor(
-    CultureInfo culture,
-    out T       value
+    IEnumerable< CultureInfo >
+FallbacksFor(
+    CultureInfo culture
 )
 {
-    value = default( T );
+    return FallbackLocalised.ParentFallbacksFor( culture );
+}
 
+
+protected override
+    ITuple< bool, T >
+TryIn(
+    CultureInfo culture
+)
+{
     if( this.manager == null )
         this.manager = new InternalResourceManager( this.type );
 
@@ -161,14 +170,14 @@ TryFor(
     } catch( MissingManifestResourceException ) {
         set = null;
     }
-    if( set == null ) return false;
+    if( set == null ) return Tuple.Create( false, default( T ) );
 
     // Once we have a ResourceSet, GetObject() will give us the embedded
     // resource as an object, or null if it doesn't have anything under the
     // given name
     //
     object obj = set.GetObject( this.name );
-    if( obj == null ) return false;
+    if( obj == null ) return Tuple.Create( false, default( T ) );
 
     // Blow up if it's not of the expected type
     //
@@ -180,18 +189,15 @@ TryFor(
             this.name,
             culture.Name );
 
-    value = (T)obj;
-    return true;
+    return Tuple.Create( true, (T)obj );
 }
 
 
 protected override
-    IEnumerable< CultureInfo >
-FallbacksFor(
-    CultureInfo culture
-)
+    T
+Default()
 {
-    return LocalisedBase< T >.ParentFallbacksFor( culture );
+    throw new ResourceMissingException( this.type, this.name );
 }
 
 

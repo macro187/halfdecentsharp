@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007, 2008
+// Copyright (c) 2007, 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -46,71 +46,42 @@ Main()
 }
 
 
-[Test( "Localised<T> creation" )]
+[Test( "Localised<T>" )]
 public static
 void
-Test_Creation()
+Test_Localised()
 {
-    Print( "Create SingleValueLocalised<string>" );
-    Localised<string> ls = new SingleValueLocalised<string>( "Hello" );
+    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
+    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    Localised< string > ls;
 
-    Print( "Created object is not null" );
-    Assert( ls != null );
-}
+    Print( "Create single value" );
+    ls = new Localised< string >( "all" );
 
+    Print( "Check In()" );
+    Assert( ls.In( en ) == "all" );
+    Assert( ls.In( fr ) == "all" );
 
-[Test( "Localised<T>.InCurrent()" )]
-public static
-void
-Test_InCurrent()
-{
-    Localised<string> ls = new SingleValueLocalised<string>( "Hello" );
-    Assert( WantString( ls.InCurrent() ) == "Hello" );
-}
+    Print( "Check InCurrent()" );
+    Assert( ls.InCurrent() == "all" );
 
+    Print( "Check explicit conversion to T" );
+    Assert( ((string)ls) == "all" );
 
-[Test( "T to Localised<T> implicit conversions" )]
-public static
-void
-Test_Conversions()
-{
-    Localised<string> ls = new SingleValueLocalised<string>( "Hello" );
+    Print( "Create multi value" );
+    ls = new Localised< string >( lang =>
+        lang.Equals( en ) ? "english" :
+        lang.Equals( fr ) ? "french" :
+        "default" );
 
-    Print( "Localised<string> can be passed to a function expecting a string" );
-    Assert( WantString( ls.InCurrent() ) == "Hello" );
+    Print( "Check In()" );
+    Assert( ls.In( en ) == "english" );
+    Assert( ls.In( fr ) == "french" );
 
-    Print(
-        "A string can be passed to a function expecting a Localised<string>" );
-    Assert( WantLocalised( "Hello" ) == "Hello" );
-}
-
-
-[Test( "LocalisedProxy< TFrom, TTO>" )]
-public static
-void
-Test_LocalisedProxy()
-{
-    Localised< string > s = new SingleValueLocalised< string >( "hello" );
-    Localised< object > o = new LocalisedProxy< string, object >( s );
-
-    Print( "Correct value comes through adapter" );
-    Assert( o.ToString() == "hello" );
-}
-
-
-public static
-string
-WantString( string s )
-{
-    return s;
-}
-
-
-public static
-string
-WantLocalised( Localised<string> ls )
-{
-    return ls.InCurrent();
+    Print( "Check via Covary()" );
+    Localised< object> lo = ls.Covary< string, object >();
+    Assert( lo.In( en ).ToString() == "english" );
+    Assert( lo.In( fr ).ToString() == "french" );
 }
 
 
@@ -122,12 +93,12 @@ Test_LocalisedString_Format()
     CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
     CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
-    Localised<string> format = new LazyLocalised<string>( lang =>
+    Localised<string> format = new Localised<string>( lang =>
         lang.Equals( fr )
             ? "Bonjour, {0}"
             : "Hello, {0}" );
 
-    Localised<string> name = new LazyLocalised<string>( lang =>
+    Localised<string> name = new Localised<string>( lang =>
         lang.Equals( fr )
             ? "Pierre"
             : "John" );
@@ -151,12 +122,12 @@ Test_LocalisedString_Concat()
     CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
     CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
-    Localised<string> a = new LazyLocalised<string>( lang =>
+    Localised<string> a = new Localised<string>( lang =>
         lang.Equals( fr )
             ? "Un"
             : "One" );
 
-    Localised<string> b = new LazyLocalised<string>( lang =>
+    Localised<string> b = new Localised<string>( lang =>
         lang.Equals( fr )
             ? "Deux"
             : "Two" );
@@ -182,7 +153,7 @@ Test_LocalisedString_ToLower()
     CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
     CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
-    Localised<string> s = new LazyLocalised<string>( lang =>
+    Localised<string> s = new Localised<string>( lang =>
         lang.Equals( fr )
             ? "Bonjour"
             : "Hello" )
@@ -206,7 +177,7 @@ Test_LocalisedString_ToUpper()
     CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
     CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
-    Localised<string> s = new LazyLocalised<string>( lang =>
+    Localised<string> s = new Localised<string>( lang =>
         lang.Equals( fr )
             ? "Bonjour"
             : "Hello" )

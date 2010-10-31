@@ -19,7 +19,6 @@
 using System;
 using System.Linq;
 using System.Globalization;
-using System.Threading;
 
 
 namespace
@@ -60,7 +59,7 @@ Format(
     if( format == null ) throw new ArgumentNullException( "format" );
     if( args == null ) throw new ArgumentNullException( "args" );
 
-    return new LazyLocalised< string >(
+    return new Localised< string >(
         lang =>
             String.Format(
                 lang,
@@ -82,9 +81,9 @@ Concat(
     Localised< string > b
 )
 {
-    a = a ?? new SingleValueLocalised< string >( "" );
-    b = b ?? new SingleValueLocalised< string >( "" );
-    return new LazyLocalised< string >(
+    a = a ?? new Localised< string >( "" );
+    b = b ?? new Localised< string >( "" );
+    return new Localised< string >(
         lang => string.Concat( a.In( lang ), b.In( lang ) ) );
 }
 
@@ -98,7 +97,7 @@ ToLower(
 )
 {
     if( s == null ) throw new ArgumentNullException( "s" );
-    return new LazyLocalised< string >(
+    return new Localised< string >(
         lang => s.In( lang ).ToLower( lang ) );
 }
 
@@ -112,7 +111,7 @@ ToUpper(
 )
 {
     if( s == null ) throw new ArgumentNullException( "s" );
-    return new LazyLocalised< string >(
+    return new Localised< string >(
         lang => s.In( lang ).ToUpper( lang ) );
 }
 

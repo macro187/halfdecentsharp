@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,64 +16,36 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Globalization;
-
-
 namespace
 Com.Halfdecent.Globalisation
 {
 
 
 // =============================================================================
-/// A <tt>Localised<T></tt> whose value is the same in all cultures
+/// <tt>Localised<T></tt> library
 // =============================================================================
 
-public class
-SingleValueLocalised<
-    T
->
-    : Localised< T >
+public static class
+Localised
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Extension Methods
 // -----------------------------------------------------------------------------
 
-public
-SingleValueLocalised(
-    T value
+public static
+    Localised< TTo >
+Covary<
+    TFrom,
+    TTo
+>(
+    this Localised< TFrom > dis
 )
+    where TFrom : TTo
 {
-    if( value == null ) throw new ArgumentNullException( "value" );
-    this.value = value;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Private
-// -----------------------------------------------------------------------------
-
-private
-T
-value;
-
-
-
-// -----------------------------------------------------------------------------
-// Localised< T >
-// -----------------------------------------------------------------------------
-
-protected override
-    T
-ForCulture(
-    CultureInfo culture
-)
-{
-    return this.value;
+    return new LocalisedProxy< TFrom, TTo >( dis );
 }
 
 

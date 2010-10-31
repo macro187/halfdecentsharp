@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2010
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -26,7 +27,7 @@ Com.Halfdecent.Resources
 
 
 // =============================================================================
-/// A <tt>Localised< string ></tt> that represents a (possibly) localised
+/// A <tt>Localised<string></tt> that represents a (possibly) localised
 /// string
 // =============================================================================
 
@@ -77,31 +78,22 @@ LocalisedStringResource(
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Private
 // -----------------------------------------------------------------------------
 
-public
-string
-Untranslated
-{
-    get;
-    private set;
-}
+private string Untranslated;
 
 
 
 // -----------------------------------------------------------------------------
-// LocalisedBase< T >
+// FallbackLocalised< T >
 // -----------------------------------------------------------------------------
 
 protected override
-    bool
-TryDefault(
-    out string value
-)
+    string
+Default()
 {
-    value = this.Untranslated;
-    return true;
+    return this.Untranslated;
 }
 
 
