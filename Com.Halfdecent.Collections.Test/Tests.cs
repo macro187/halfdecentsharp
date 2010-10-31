@@ -393,6 +393,41 @@ Test_CollectionFromSystemDictionaryAdapter()
 }
 
 
+[Test( "IUniqueKeyedCollectionRSG.AsImplicitUniqueKeyedCollection()" )]
+public static
+void
+Test_IUniqueKeyedCollectionRSG_AsImplicitUniqueKeyedCollection()
+{
+    Print( "Make an implicit collection out of an explicit one" );
+    IImplicitUniqueKeyedCollectionRSG< string, int > c
+        = new SCG.Dictionary< string, int >()
+        .AsHalfdecentCollection()
+        .AsImplicitUniqueKeyedCollection( i => i.ToString() );
+
+    Print( "Add() an item and check" );
+    c.Add( 1 );
+    Assert( c.Count.Equals( Integer.From( 1 ) ) );
+    Assert( c.Contains( "1" ) );
+    Assert( c.Get( "1" ) == 1 );
+
+    Print( "Add() another item and check" );
+    c.Add( 2 );
+    Assert( c.Count.Equals( Integer.From( 2 ) ) );
+    Assert( c.Contains( "2" ) );
+    Assert( c.Get( "2" ) == 2 );
+
+    Print( "Remove() an item and check" );
+    c.Remove( "1" );
+    Assert( c.Count.Equals( Integer.From( 1 ) ) );
+    Assert( c.Contains( "2" ) );
+    Assert( c.Get( "2" ) == 2 );
+
+    Print( "Add() item with duplicate key throws RTypeException" );
+    Expect< RTypeException >( () =>
+        c.Add( 2 ) );
+}
+
+
 [Test( "OrderedCollectionR" )]
 public static
 void
