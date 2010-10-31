@@ -67,6 +67,19 @@ ValueException(
 
 public
 ValueException(
+    Value       valueReference,
+    ///< Reference to the value that caused the exception
+    Exception   innerException
+    ///< Another exception that is the underlying cause of this one, or
+    ///  <tt>null</tt> if there is no such underlying cause
+)
+    : this( valueReference, null, innerException )
+{
+}
+
+
+public
+ValueException(
     Value               valueReference,
     ///< Reference to the value that caused the exception
     Localised< string > messageFormat,

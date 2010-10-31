@@ -46,6 +46,141 @@ Main()
 }
 
 
+[Test( "Literal" )]
+public static
+void
+Test_Literal()
+{
+    Print( ".ToString()" );
+    Print( new Literal().ToString() );
+    Print( ".Equals()" );
+    Assert( !(
+        new Literal().Equals(
+        new Literal() ) ) );
+}
+
+
+[Test( "Local" )]
+public static
+void
+Test_Local()
+{
+    Print( ".ToString()" );
+    Print( new Local( "apple" ).ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new Local( "apple" ).Equals(
+        new Local( "apple" ) ) );
+    Assert( !(
+        new Local( "apple" ).Equals(
+        new Local( "orange" ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new Local( "apple" ).GetHashCode().Equals(
+        new Local( "apple" ).GetHashCode() ) );
+}
+
+
+[Test( "Parameter" )]
+public static
+void
+Test_Parameter()
+{
+    Print( ".ToString()" );
+    Print( new Parameter( "apple" ).ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new Parameter( "apple" ).Equals(
+        new Parameter( "apple" ) ) );
+    Assert( !(
+        new Parameter( "apple" ).Equals(
+        new Local( "apple" ) ) ) );
+    Assert( !(
+        new Parameter( "apple" ).Equals(
+        new Parameter( "orange" ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new Parameter( "apple" ).GetHashCode().Equals(
+        new Parameter( "apple" ).GetHashCode() ) );
+}
+
+
+[Test( "Property" )]
+public static
+void
+Test_Property()
+{
+    Print( ".ToString()" );
+    Print( new Local( "foo" ).Property( "Apple" ).ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new Local( "foo" ).Property( "Apple" ).Equals(
+        new Local( "foo" ).Property( "Apple" ) ) );
+    Assert( !(
+        new Local( "foo" ).Property( "Apple" ).Equals(
+        new Local( "foo" ).Property( "Orange" ) ) ) );
+    Assert( !(
+        new Local( "foo" ).Property( "Apple" ).Equals(
+        new Local( "bar" ).Property( "Apple" ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new Local( "foo" ).Property( "Apple" ).GetHashCode().Equals(
+        new Local( "foo" ).Property( "Apple" ).GetHashCode() ) );
+}
+
+
+[Test( "Indexer" )]
+public static
+void
+Test_Indexer()
+{
+    Print( ".ToString()" );
+    Print( new Local( "foo" ).Indexer( 0 ).ToString() );
+    Print( new Local( "foo" ).Indexer( "stringindex" ).ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new Local( "foo" ).Indexer( 0 ).Equals(
+        new Local( "foo" ).Indexer( 0 ) ) );
+    Assert(
+        new Local( "foo" ).Indexer( "apple" ).Equals(
+        new Local( "foo" ).Indexer( "apple" ) ) );
+    Assert( !(
+        new Local( "foo" ).Indexer( 0 ).Equals(
+        new Local( "foo" ).Indexer( 1 ) ) ) );
+    Assert( !(
+        new Local( "foo" ).Indexer( "apple" ).Equals(
+        new Local( "foo" ).Indexer( "orange" ) ) ) );
+    Assert( !(
+        new Local( "foo" ).Indexer( 0 ).Equals(
+        new Local( "bar" ).Indexer( 0 ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new Local( "foo" ).Indexer( 0 ).GetHashCode().Equals(
+        new Local( "foo" ).Indexer( 0 ).GetHashCode() ) );
+}
+
+
+[Test( "This" )]
+public static
+void
+Test_This()
+{
+    Print( ".ToString()" );
+    Print( new This().ToString() );
+    Print( ".Equals()" );
+    Assert(
+        new This().Equals(
+        new This() ) );
+    Assert( !(
+        new This().Equals(
+        new Parameter( "this" ) ) ) );
+    Print( ".GetHashCode()" );
+    Assert(
+        new This().GetHashCode().Equals(
+        new This().GetHashCode() ) );
+}
+
+
 [Test( "ValueException" )]
 public static
 void
@@ -331,138 +466,27 @@ Test_ValueArgumentOutOfRangeException()
 }
 
 
-[Test( "Literal" )]
+[Test( "ValueMapException" )]
 public static
 void
-Test_Literal()
+Test_ValueMapException()
 {
-    Print( ".ToString()" );
-    Print( new Literal().ToString() );
-    Print( ".Equals()" );
-    Assert( !(
-        new Literal().Equals(
-        new Literal() ) ) );
-}
+    Value valuehere = new Local( "valuehere" );
+    Value valuethere = new Local( "valuethere" );
+    Localised< string > msg = "{0} is a problem";
 
+    Print( "Create a mapped value exception chain" );
+    ValueMapException e =
+        new ValueMapException( valuehere,
+        new ValueException( valuethere, msg ) );
 
-[Test( "Local" )]
-public static
-void
-Test_Local()
-{
-    Print( ".ToString()" );
-    Print( new Local( "apple" ).ToString() );
-    Print( ".Equals()" );
-    Assert(
-        new Local( "apple" ).Equals(
-        new Local( "apple" ) ) );
-    Assert( !(
-        new Local( "apple" ).Equals(
-        new Local( "orange" ) ) ) );
-    Print( ".GetHashCode()" );
-    Assert(
-        new Local( "apple" ).GetHashCode().Equals(
-        new Local( "apple" ).GetHashCode() ) );
-}
+    Print( "Check .ValueReference" );
+    Assert( e.ValueReference.Equals( valuehere ) );
 
-
-[Test( "Parameter" )]
-public static
-void
-Test_Parameter()
-{
-    Print( ".ToString()" );
-    Print( new Parameter( "apple" ).ToString() );
-    Print( ".Equals()" );
+    Print( "Check that .SayMessage() comes from the underlying exception" );
     Assert(
-        new Parameter( "apple" ).Equals(
-        new Parameter( "apple" ) ) );
-    Assert( !(
-        new Parameter( "apple" ).Equals(
-        new Local( "apple" ) ) ) );
-    Assert( !(
-        new Parameter( "apple" ).Equals(
-        new Parameter( "orange" ) ) ) );
-    Print( ".GetHashCode()" );
-    Assert(
-        new Parameter( "apple" ).GetHashCode().Equals(
-        new Parameter( "apple" ).GetHashCode() ) );
-}
-
-
-[Test( "Property" )]
-public static
-void
-Test_Property()
-{
-    Print( ".ToString()" );
-    Print( new Local( "foo" ).Property( "Apple" ).ToString() );
-    Print( ".Equals()" );
-    Assert(
-        new Local( "foo" ).Property( "Apple" ).Equals(
-        new Local( "foo" ).Property( "Apple" ) ) );
-    Assert( !(
-        new Local( "foo" ).Property( "Apple" ).Equals(
-        new Local( "foo" ).Property( "Orange" ) ) ) );
-    Assert( !(
-        new Local( "foo" ).Property( "Apple" ).Equals(
-        new Local( "bar" ).Property( "Apple" ) ) ) );
-    Print( ".GetHashCode()" );
-    Assert(
-        new Local( "foo" ).Property( "Apple" ).GetHashCode().Equals(
-        new Local( "foo" ).Property( "Apple" ).GetHashCode() ) );
-}
-
-
-[Test( "Indexer" )]
-public static
-void
-Test_Indexer()
-{
-    Print( ".ToString()" );
-    Print( new Local( "foo" ).Indexer( 0 ).ToString() );
-    Print( new Local( "foo" ).Indexer( "stringindex" ).ToString() );
-    Print( ".Equals()" );
-    Assert(
-        new Local( "foo" ).Indexer( 0 ).Equals(
-        new Local( "foo" ).Indexer( 0 ) ) );
-    Assert(
-        new Local( "foo" ).Indexer( "apple" ).Equals(
-        new Local( "foo" ).Indexer( "apple" ) ) );
-    Assert( !(
-        new Local( "foo" ).Indexer( 0 ).Equals(
-        new Local( "foo" ).Indexer( 1 ) ) ) );
-    Assert( !(
-        new Local( "foo" ).Indexer( "apple" ).Equals(
-        new Local( "foo" ).Indexer( "orange" ) ) ) );
-    Assert( !(
-        new Local( "foo" ).Indexer( 0 ).Equals(
-        new Local( "bar" ).Indexer( 0 ) ) ) );
-    Print( ".GetHashCode()" );
-    Assert(
-        new Local( "foo" ).Indexer( 0 ).GetHashCode().Equals(
-        new Local( "foo" ).Indexer( 0 ).GetHashCode() ) );
-}
-
-
-[Test( "This" )]
-public static
-void
-Test_This()
-{
-    Print( ".ToString()" );
-    Print( new This().ToString() );
-    Print( ".Equals()" );
-    Assert(
-        new This().Equals(
-        new This() ) );
-    Assert( !(
-        new This().Equals(
-        new Parameter( "this" ) ) ) );
-    Print( ".GetHashCode()" );
-    Assert(
-        new This().GetHashCode().Equals(
-        new This().GetHashCode() ) );
+        e.SayMessage( "xxx" ).InCurrent()
+        == LocalisedString.Format( msg, "xxx" ).InCurrent() );
 }
 
 
