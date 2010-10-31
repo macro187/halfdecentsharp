@@ -78,6 +78,26 @@ Test_SystemEnumerable()
     Assert(
         SystemEnumerable.Create( 1, 2, 3 ).Covary< int, object >()
         .SequenceEqual( SystemEnumerable.Create< object >( 1, 2, 3 ) ) );
+
+    Print( ".StartsWith()" );
+    Assert(
+        Enumerable.Empty< int >()
+        .StartsWith( Enumerable.Empty< int >() ) );
+    Assert(
+        SystemEnumerable.Create( 1, 2, 3 )
+        .StartsWith( Enumerable.Empty< int >() ) );
+    Assert(
+        SystemEnumerable.Create( 1, 2, 3 )
+        .StartsWith( SystemEnumerable.Create( 1, 2 ) ) );
+    Assert(
+        !SystemEnumerable.Create( 1, 2, 3 )
+        .StartsWith( SystemEnumerable.Create( 1, 9 ) ) );
+    Assert(
+        !Enumerable.Empty< int >()
+        .StartsWith( SystemEnumerable.Create( 1 ) ) );
+    Assert(
+        !SystemEnumerable.Create( 1, 2 )
+        .StartsWith( SystemEnumerable.Create( 1, 2, 3 ) ) );
 }
 
 
