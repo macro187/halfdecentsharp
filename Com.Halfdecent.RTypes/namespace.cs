@@ -36,19 +36,13 @@
 ///
 ///     -   Failure exceptions may or may not be specific to the check, making
 ///         it difficult to tell programatically exactly what the problem was
-///         (e.g. <tt>ArgumentNullException</tt> vs. <tt>ArgumentException</tt>)
 ///
-///     -   Failure exceptions may or may not carry the
-///         <tt>System.Exception.Source</tt> reference to the problematic value,
-///         and even if they do, it's just a free-form string
+///     -   If the exception is not specific to the check, it may or may not
+///         include specific messaging
 ///
-///     -   In the non-specific failure exception case, specific messaging may
-///         or may not be specified
+///     -   ...re-written at each check, leading to inconsistency
 ///
-///     -   ...and if it is, it's re-written each time, usually inconsistently
-///
-///     -   Overall, the repetition and inconsistency of the messaging makes it
-///         more work to localise
+///     -   ...and more localisation work
 ///
 ///     -   Failure exceptions only provide a message stating that the condition
 ///         was not met (e.g. "The value was not valid").  Other kinds of
@@ -57,26 +51,36 @@
 ///         <em>requesting</em> that a condition be met (e.g.  "The value must
 ///         be valid").
 ///
+///     -   At first glance, <tt>System.Exception.Source</tt> may sound like
+///         a potentially-useful reference to the problematic value, but it's
+///         not, it's just a reference to the assembly where the exception
+///         originated
+///
 ///
 /// @section solution Solution
 ///
-///     -   RTypes (<tt>RType</tt> and <tt>RType<T></tt>), reusable,
-///         composable units of value checking logic and associated messaging
+///     -   <tt>RType</tt> / <tt>RType<T></tt>, reusable units of value
+///         checking logic plus associated natural language messaging
 ///
-///     -   Base classes for implementing rtypes:  <tt>RTypeBase<T></tt>,
-///         <tt>SimpleTextRTypeBase<T></tt>
+///     -   <tt>CompositeRType<T></tt>, a new RType composed of one or more
+///         other RTypes in a logical conjunction ("and")
 ///
-///     -   <tt>RTypeException</tt>, the exception that results when rtype
-///         checks fail.  The exception carries an exact reference to the
-///         problematic value.  It also carries a reference to the exact
-///         <tt>RType</tt> representing the failed condition.  Composite rtype
-///         structure is reflected in the <tt>InnerException</tt> chain,
-///         allowing drill-down to the exact reason for the failure.
+///     -   <tt>MemberRType<T,TMember></tt>, a new RType representing the
+///         application of another RType to a particular member
+///
+///     -   <tt>RTypeException</tt>, the exception that occurs when an RType
+///         check fails.  Carries a reference to the exact failed
+///         <tt>RType</tt>.  Furthermore, the structure of failed composite
+///         RTypes is reflected in the <tt>InnerException</tt> chain, with inner
+///         RTypeExceptions -- recursive if necessary -- leading to the exact
+///         component RType that failed.  A reference to the exact value that
+///         failed the check is communicated through the
+///         <tt>Com.Halfdecent.Meta.ValueReferenceException</tt> mechanism.
 ///
 ///     -   A suite of drop-in rtype replacements for common value checks:
-///         <tt>NonNull</tt>, <tt>NonBlankString</tt>, <tt>NEQ<T></tt>,
-///         <tt>LT<T></tt>, <tt>LTE<T></tt>, <tt>GT<T></tt>, <tt>GTE<T></tt>,
-///         and <tt>InInterval<T></tt>.
+///         <tt>EQ<T></tt>, <tt>NEQ<T></tt>, <tt>NonNull</tt>,
+///         <tt>NonBlankString</tt>, <tt>LT<T></tt>, <tt>LTE<T></tt>,
+///         <tt>GT<T></tt>, <tt>GTE<T></tt>, and <tt>InInterval<T></tt>.
 ///
 ///
 /// @section discussion Discussion
@@ -85,25 +89,22 @@
 ///     values of some static type, effectively acting as a runtime-only subtype
 ///     <sup>[2]</sup>.  Hence the name "rtype".
 ///
-///     The motivation behind RTypes is not just to clean up how argument
-///     checking is done.  It's larger than that.  It's an attempt to allow
-///     programmers to think of more problems as type problems than .NET's
-///     static type system allows, by emulating a kind of "dependent types with
-///     multiple inheritance" <sup>[3] [4]</sup>.  We're taking those procedural
-///     checks, reifying them into reusable, composable units, and using them in
-///     a declarative way that feels almost like an extension of the static type
-///     system.
+///     From the programmer's perspective, the RType mechanism should feel
+///     almost declarative, like an extension of the static type system.  It
+///     should permit programmers to think of more problems as type problems
+///     than .NET's static type system allows, by emulating a kind of "dependent
+///     types with multiple inheritance" <sup>[3] [4]</sup>.
 ///
 ///     For example, instead of separately thinking:
 ///
-///     -   I have a parameter called "foo" of type integer
-///     -   (some other stuff)
-///     -   I need some code to check that foo is greater than 5
-///     -   I need some code check that foo is less than 10
+///         -   Parameter "foo" of type integer
+///         -   (...)
+///         -   Check that foo is greater than 5
+///         -   Check that foo is less than 10
 ///
-///     ...the programmer can think more like:
+///     ...the programmer can just think:
 ///
-///     -   I have parameter called "foo" of type "Integer Between 5 and 10"
+///         -   Parameter "foo" of type "integer between 5 and 10"
 ///
 ///
 /// @section notes Notes
