@@ -54,7 +54,7 @@ FullException(
     Exception innerException
 )
     : base(
-        _S("There is no room for any more items in {0}"),
+        r => _S("There is no room for any more items in {0}", r),
         innerException )
 {
 }

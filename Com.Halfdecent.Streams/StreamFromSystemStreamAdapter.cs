@@ -46,7 +46,7 @@ StreamFromSystemStreamAdapter(
     if( !from.CanRead )
         throw new ValueReferenceException(
             new Frame().Parameter( "from" ),
-            new ValueException( _S("{0} is not a readable stream") ) );
+            new ValueException( r => _S("{0} is not a readable stream", r) ) );
     this.From = from;
 }
 

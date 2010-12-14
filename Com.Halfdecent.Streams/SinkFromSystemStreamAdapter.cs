@@ -46,7 +46,7 @@ SinkFromSystemStreamAdapter(
     if( !from.CanWrite )
         throw new ValueReferenceException(
             new Frame().Parameter( "from" ),
-            new ValueException( _S("{0} is not a writeable stream") ) );
+            new ValueException( r => _S("{0} is not a writeable stream", r) ) );
     this.From = from;
 }
 

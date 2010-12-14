@@ -54,7 +54,7 @@ EmptyException(
     Exception innerException
 )
     : base(
-        _S("{0} contains no more items"),
+        r => _S("{0} contains no more items", r),
         innerException )
 {
 }
