@@ -55,8 +55,12 @@ ToString(
 // Extension Methods
 // -----------------------------------------------------------------------------
 
+/// Determine if an object is a specified type and meets specified criteria
+///
 public static
     bool
+    /// @returns
+    /// Whether the object was the specified type and met the specified criteria
 IsAnd<
     T
 >(
@@ -75,8 +79,13 @@ IsAnd<
 }
 
 
+/// Perform an action with an object if it is a specified type
+///
 public static
     bool
+    /// @returns
+    /// Whether the object was the specified type and, therefore, whether the
+    /// specified action was performed
 IfIsDo<
     T
 >(
@@ -96,8 +105,14 @@ IfIsDo<
 }
 
 
+/// Perform an action with an object if it is a specified type and meets
+/// specified criteria
+///
 public static
     bool
+    /// @returns
+    /// Whether the object was the specified type and met the specified criteria
+    /// and, therefore, whether the specified action was performed
 IfIsAndDo<
     T
 >(
