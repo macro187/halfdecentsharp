@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -60,7 +60,7 @@ DirectionalCompareTo(
     IReal that
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.CheckParameter( dis, "dis" );
     if( object.ReferenceEquals( that, null ) ) return 1;
     return dis.GetValue().CompareTo( that.GetValue() );
 }
@@ -75,7 +75,7 @@ DirectionalEquals(
     IReal that
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.CheckParameter( dis, "dis" );
     if( object.ReferenceEquals( that, null ) ) return false;
     return dis.GetValue() == that.GetValue();
 }
@@ -89,7 +89,7 @@ GetHashCode(
     IReal dis
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.CheckParameter( dis, "dis" );
     return dis.GetValue().GetHashCode();
 }
 
@@ -108,8 +108,8 @@ Plus(
     IReal       that
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
     return new DecimalReal( dis.GetValue() + that.GetValue() );
 }
 
@@ -123,8 +123,8 @@ Minus(
     IReal       that
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
     return new DecimalReal( dis.GetValue() - that.GetValue() );
 }
 
@@ -138,8 +138,8 @@ Times(
     IReal       that
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
     return new DecimalReal( dis.GetValue() * that.GetValue() );
 }
 
@@ -154,8 +154,8 @@ DividedBy(
     ///< - <tt>NonZero</tt>
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
     return new DecimalReal( dis.GetValue() / that.GetValue() );
 }
 
@@ -169,7 +169,7 @@ Truncate(
     this IReal dis
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.CheckParameter( dis, "dis" );
     return new DecimalInteger( decimal.Truncate( dis.GetValue() ) );
 }
 

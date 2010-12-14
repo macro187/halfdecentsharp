@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
@@ -33,7 +32,7 @@ Com.Halfdecent.Numerics
 
 public sealed class
 NonZero
-    : SimpleTextRTypeBase< IReal >
+    : CompositeRType< IReal >
 {
 
 
@@ -44,17 +43,33 @@ NonZero
 
 public static
     void
-Require(
-    IReal item,
-    Value itemReference
+CheckParameter(
+    IReal   item,
+    string  paramName
 )
 {
-    ((IRType< IReal >)Create()).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Down().Parameter( "item" ),
+        () => Check( item ) );
+}
+
+
+public static new
+    void
+Check(
+    IReal item
+)
+{
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create().Check( item ) );
 }
 
 
 public static
-    IRType< IReal >
+    RType< IReal >
 Create()
 {
     return instance;
@@ -66,13 +81,6 @@ private static
 instance = new NonZero();
 
 
-private static
-    IRType< IReal >[]
-components = new IRType< IReal >[] {
-    NEQ.Create( Real.From( 0 ) )
-};
-
-
 
 // -----------------------------------------------------------------------------
 // Constructors
@@ -81,23 +89,12 @@ components = new IRType< IReal >[] {
 public
 NonZero()
     : base(
-        _S("{0} is not zero"),
-        _S("{0} is zero"),
-        _S("{0} must not be zero") )
+        SystemEnumerable.Create(
+            NEQ.Create( Real.From( 0 ) ) ),
+        r => _S("{0} is not zero", r),
+        r => _S("{0} is zero", r),
+        r => _S("{0} must not be zero", r) )
 {
-}
-
-
-
-// -----------------------------------------------------------------------------
-// RTypeBase< IReal >
-// -----------------------------------------------------------------------------
-
-public override
-    SCG.IEnumerable< IRType< IReal > >
-GetComponents()
-{
-    return components;
 }
 
 

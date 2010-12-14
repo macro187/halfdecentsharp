@@ -1,3 +1,7 @@
+#region PERMUDA
+// combos Byte SByte Int16 UInt16 Int32 UInt32 Int64 UInt64 Decimal
+// filename In/*PERMUDA*/Range.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -28,12 +32,12 @@ Com.Halfdecent.Numerics
 
 
 // =============================================================================
-/// RType: In range of <tt>System.Int64</tt>
+/// RType: In range of <tt>System./*PERMUDA*/</tt>
 // =============================================================================
 
 public sealed class
-InInt64Range
-    : SimpleTextRTypeBase< IReal >
+In/*PERMUDA*/Range
+    : CompositeRType< IReal >
 {
 
 
@@ -44,17 +48,33 @@ InInt64Range
 
 public static
     void
-Require(
-    IReal item,
-    Value itemReference
+CheckParameter(
+    IReal   item,
+    string  paramName
 )
 {
-    ((IRType< IReal >)Create()).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Down().Parameter( "item" ),
+        () => Check( item ) );
+}
+
+
+public static new
+    void
+Check(
+    IReal item
+)
+{
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create().Check( item ) );
 }
 
 
 public static
-    IRType< IReal > 
+    RType< IReal >
 Create()
 {
     return instance;
@@ -62,18 +82,8 @@ Create()
 
 
 private static
-    InInt64Range
-instance = new InInt64Range();
-
-
-private static
-    IRType< IReal >[]
-components = new IRType< IReal >[] {
-    InInterval.Create(
-        Interval.Create(
-            Real.From( System.Int64.MinValue ),
-            Real.From( System.Int64.MaxValue ) ) )
-};
+    In/*PERMUDA*/Range
+instance = new In/*PERMUDA*/Range();
 
 
 
@@ -82,25 +92,17 @@ components = new IRType< IReal >[] {
 // -----------------------------------------------------------------------------
 
 public
-InInt64Range()
+In/*PERMUDA*/Range()
     : base(
-        _S("{0} is in range of System.Int64"),
-        _S("{0} is not in range of System.Int64"),
-        _S("{0} must be in range of System.Int64") )
+        SystemEnumerable.Create(
+            InInterval.Create(
+                Interval.Create(
+                    Real.From( System./*PERMUDA*/.MinValue ),
+                    Real.From( System./*PERMUDA*/.MaxValue ) ) ) ),
+        r => _S("{0} is in range of System./*PERMUDA*/", r),
+        r => _S("{0} is not in range of System./*PERMUDA*/", r),
+        r => _S("{0} must be in range of System./*PERMUDA*/", r) )
 {
-}
-
-
-
-// -----------------------------------------------------------------------------
-// RTypeBase< IReal >
-// -----------------------------------------------------------------------------
-
-public override
-SCG.IEnumerable< IRType< IReal > >
-GetComponents()
-{
-    return components;
 }
 
 

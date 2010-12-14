@@ -29,7 +29,7 @@ Com.Halfdecent.Numerics
 
 public sealed class
 NonNegative
-    : SimpleTextRTypeBase< IReal >
+    : CompositeRType< IReal >
 {
 
 
@@ -40,17 +40,33 @@ NonNegative
 
 public static
     void
-Require(
-    IReal item,
-    Value itemReference
+CheckParameter(
+    IReal   item,
+    string  paramName
 )
 {
-    ((IRType< IReal >)Create()).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Down().Parameter( "item" ),
+        () => Check( item ) );
+}
+
+
+public static new
+    void
+Check(
+    IReal item
+)
+{
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create().Check( item ) );
 }
 
 
 public static
-    IRType< IReal >
+    RType< IReal >
 Create()
 {
     return instance;
@@ -62,13 +78,6 @@ private static
 instance = new NonNegative();
 
 
-private static
-    IRType< IReal >[]
-components = new IRType< IReal >[] {
-    GTE.Create( Real.From( 0 ) )
-};
-
-
 
 // -----------------------------------------------------------------------------
 // Constructors
@@ -77,23 +86,12 @@ components = new IRType< IReal >[] {
 public
 NonNegative()
     : base(
-        _S("{0} is not negative"),
-        _S("{0} is negative"),
-        _S("{0} must not be negative") )
+        SystemEnumerable.Create(
+            GTE.Create( Real.From( 0 ) ) ),
+        r => _S("{0} is not negative",r),
+        r => _S("{0} is negative", r),
+        r => _S("{0} must not be negative", r) )
 {
-}
-
-
-
-// -----------------------------------------------------------------------------
-// RTypeBase< IReal >
-// -----------------------------------------------------------------------------
-
-public override
-    SCG.IEnumerable< IRType< IReal > >
-GetComponents()
-{
-    return components;
 }
 
 

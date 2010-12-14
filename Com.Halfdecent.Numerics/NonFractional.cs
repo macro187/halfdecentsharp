@@ -31,7 +31,7 @@ Com.Halfdecent.Numerics
 
 public sealed class
 NonFractional
-    : SimpleTextRTypeBase< IReal >
+    : RType< IReal >
 {
 
 
@@ -42,17 +42,33 @@ NonFractional
 
 public static
     void
-Require(
-    IReal item,
-    Value itemReference
+CheckParameter(
+    IReal   item,
+    string  paramName
 )
 {
-    ((IRType< IReal >)Create()).Require( item, itemReference );
+    ValueReferenceException.Map(
+        r => r.Up().Parameter( paramName ),
+        r => r.Down().Parameter( "item" ),
+        () => Check( item ) );
+}
+
+
+public static new
+    void
+Check(
+    IReal item
+)
+{
+    ValueReferenceException.Map(
+        r => r.Parameter( "item" ),
+        r => r.Down().Parameter( "item" ),
+        () => Create().Check( item ) );
 }
 
 
 public static
-    IRType< IReal >
+    RType< IReal >
 Create()
 {
     return instance;
@@ -72,26 +88,13 @@ instance = new NonFractional();
 public
 NonFractional()
     : base(
-        _S("{0} is not fractional"),
-        _S("{0} is fractional"),
-        _S("{0} must not be fractional") )
+        item =>
+            (object)item == null ||
+            item.Equals( item.Truncate() ),
+        r => _S("{0} is not fractional", r),
+        r => _S("{0} is fractional", r),
+        r => _S("{0} must not be fractional", r) )
 {
-}
-
-
-
-// -----------------------------------------------------------------------------
-// RTypeBase< IReal >
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Predicate(
-    IReal item
-)
-{
-    if( item == null ) return true;
-    return item.Equals( item.Truncate() );
 }
 
 

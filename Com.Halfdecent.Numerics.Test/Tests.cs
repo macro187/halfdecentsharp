@@ -151,6 +151,242 @@ Test_DecimalInteger()
 }
 
 
+[Test( "NonZero" )]
+public static void
+Test_NonZero()
+{
+    RType t = new NonZero();
+    RType u = new NonZero();
+
+    Print( ".Equals() and GetHashCode()" );
+    Assert( t.Equals( t ) );
+    Assert( t.Equals( u ) );
+    Assert( t.GetHashCode() == u.GetHashCode() );
+
+    Print( "Null passes" );
+    NonZero.Check( null );
+
+    Print( "Negative passes" );
+    NonZero.Check( Real.From( -5m ) );
+
+    Print( "Positive passes" );
+    NonZero.Check( Real.From( 5m ) );
+
+    Print( "Zero fails" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( new NonZero() ) ),
+        () => NonZero.Check( Real.From( 0m ) ) );
+
+    Print( "CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( new NonZero() ) ),
+        () => NonZero.CheckParameter( Real.From( 0m ), "param" ) );
+}
+
+
+[Test( "NonNegative" )]
+public static void
+Test_NonNegative()
+{
+    RType t = new NonNegative();
+    RType u = new NonNegative();
+
+    Print( ".Equals() and GetHashCode()" );
+    Assert( t.Equals( t ) );
+    Assert( t.Equals( u ) );
+    Assert( t.GetHashCode() == u.GetHashCode() );
+
+    Print( "Null passes" );
+    NonNegative.Check( null );
+
+    Print( "Negative fails" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( new NonNegative() ) ),
+        () => NonNegative.Check( Real.From( -5m ) ) );
+
+    Print( "Zero passes" );
+    NonNegative.Check( Real.From( 0m ) );
+
+    Print( "Positive passes" );
+    NonNegative.Check( Real.From( 5m ) );
+}
+
+
+[Test( "NonFractional" )]
+public static void
+Test_NonFractional()
+{
+    RType t = new NonFractional();
+    RType u = new NonFractional();
+
+    Print( ".Equals() and GetHashCode()" );
+    Assert( t.Equals( t ) );
+    Assert( t.Equals( u ) );
+    Assert( t.GetHashCode() == u.GetHashCode() );
+
+    Print( "Null passes" );
+    NonFractional.Check( null );
+
+    Print( "Not fractional passes" );
+    NonFractional.Check( Real.From( 5m ) );
+
+    Print( "Fractional fails" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( new NonFractional() ) ),
+        () => NonFractional.Check( Real.From( 5.5m ) ) );
+
+    Print( "Negative not fractional passes" );
+    NonFractional.Check( Real.From( -5m ) );
+
+    Print( "Negative fractional fails" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( new NonFractional() ) ),
+        () => NonFractional.Check( Real.From( -5.5m ) ) );
+
+    Print( ".CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( new NonFractional() ) ),
+        () => NonFractional.CheckParameter( Real.From( -5.5m ), "param" ) );
+}
+
+
+[Test( "InByteRange" )]
+public static void
+Test_InByteRange()
+{
+    Test_InRange(
+        new InByteRange(),
+        Real.From( System.Byte.MinValue ),
+        Real.From( System.Byte.MaxValue ),
+        false );
+}
+[Test( "InSByteRange" )]
+public static void
+Test_InSByteRange()
+{
+    Test_InRange(
+        new InSByteRange(),
+        Real.From( System.SByte.MinValue ),
+        Real.From( System.SByte.MaxValue ),
+        false );
+}
+[Test( "InInt16Range" )]
+public static void
+Test_InInt16Range()
+{
+    Test_InRange(
+        new InInt16Range(),
+        Real.From( System.Int16.MinValue ),
+        Real.From( System.Int16.MaxValue ),
+        false );
+}
+[Test( "InUInt16Range" )]
+public static void
+Test_InUInt16Range()
+{
+    Test_InRange(
+        new InUInt16Range(),
+        Real.From( System.UInt16.MinValue ),
+        Real.From( System.UInt16.MaxValue ),
+        false );
+}
+[Test( "InInt32Range" )]
+public static void
+Test_InInt32Range()
+{
+    Test_InRange(
+        new InInt32Range(),
+        Real.From( System.Int32.MinValue ),
+        Real.From( System.Int32.MaxValue ),
+        false );
+}
+[Test( "InUInt32Range" )]
+public static void
+Test_InUInt32Range()
+{
+    Test_InRange(
+        new InUInt32Range(),
+        Real.From( System.UInt32.MinValue ),
+        Real.From( System.UInt32.MaxValue ),
+        false );
+}
+[Test( "InInt64Range" )]
+public static void
+Test_InInt64Range()
+{
+    Test_InRange(
+        new InInt64Range(),
+        Real.From( System.Int64.MinValue ),
+        Real.From( System.Int64.MaxValue ),
+        false );
+}
+[Test( "InUInt64Range" )]
+public static void
+Test_InUInt64Range()
+{
+    Test_InRange(
+        new InUInt64Range(),
+        Real.From( System.UInt64.MinValue ),
+        Real.From( System.UInt64.MaxValue ),
+        false );
+}
+[Test( "InDecimalRange" )]
+public static void
+Test_InDecimalRange()
+{
+    Test_InRange(
+        new InDecimalRange(),
+        Real.From( System.Decimal.MinValue ),
+        Real.From( System.Decimal.MaxValue ),
+        true );
+}
+
+public static void
+Test_InRange(
+    RType< IReal >  t,
+    IReal           min,
+    IReal           max,
+    bool            skipout
+)
+{
+    Print( "null passes" );
+    t.Check( null );
+    Print( "Smaller fails" );
+    if( !skipout )
+        Expect(
+            e => RTypeException.Match( e,
+                (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+                rt => rt.Equals( t ) ),
+            () => t.Check( min.Minus( Real.From( 1m ) ) ) );
+    Print( "Min passes" );
+    t.Check( min );
+    Print( "In range passes" );
+    t.Check( Real.From( 10 ) );
+    Print( "Max passes" );
+    t.Check( max );
+    Print( "Bigger fails" );
+    if( !skipout )
+        Expect(
+            e => RTypeException.Match( e,
+                (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+                rt => rt.Equals( t ) ),
+            () => t.Check( max.Plus( Real.From( 1m ) ) ) );
+}
+
+
+/*
 [Test( "InUInt64Range" )]
 public static void
 Test_InUInt64Range()
@@ -337,37 +573,6 @@ Test_InInt16Range()
 }
 
 
-[Test( "InByteRange" )]
-public static void
-Test_InByteRange()
-{
-    IReal smaller = Real.From( System.Byte.MinValue - 1m );
-    IReal min = Real.From( System.Byte.MinValue );
-    IReal inrange = Real.From( 10 );
-    IReal max = Real.From( System.Byte.MaxValue );
-    IReal bigger = Real.From( System.Byte.MaxValue + 1m );
-    Value _smaller = new Local( "smaller" );
-    Value _min = new Local( "min" );
-    Value _inrange = new Local( "inrange" );
-    Value _max = new Local( "max" );
-    Value _bigger = new Local( "bigger" );
-    Print( "null passes" );
-    InByteRange.Require( null, new Literal() );
-    Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        InByteRange.Require( smaller, _smaller ) );
-    Print( "Min passes" );
-    InByteRange.Require( min, _min );
-    Print( "In range passes" );
-    InByteRange.Require( inrange, _inrange );
-    Print( "Max passes" );
-    InByteRange.Require( max, _max );
-    Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        InByteRange.Require( bigger, _bigger ) );
-}
-
-
 [Test( "InSByteRange" )]
 public static void
 Test_InSByteRange()
@@ -420,93 +625,9 @@ Test_InDecimalRange()
 }
 
 
-[Test( "NonFractional" )]
-public static void
-Test_NonFractional()
-{
-    NonFractional t = new NonFractional();
-    NonFractional u = new NonFractional();
-
-    Print( ".Equals() and GetHashCode()" );
-    Assert( t.Equals( t ) );
-    Assert( t.Equals( u ) );
-    Assert( t.GetHashCode() == u.GetHashCode() );
-
-    Print( "Null passes" );
-    NonFractional.Require( null, new Literal() );
-
-    Print( "Not fractional passes" );
-    NonFractional.Require( Real.From( 5m ), new Literal() );
-
-    Print( "Fractional fails" );
-    Expect< RTypeException >( delegate() {
-        NonFractional.Require( Real.From( 5.5m ), new Literal() );
-    } );
-
-    Print( "Negative not fractional passes" );
-    NonFractional.Require( Real.From( -5m ), new Literal() );
-
-    Print( "Negative fractional fails" );
-    Expect< RTypeException >( delegate() {
-        NonFractional.Require( Real.From( -5.5m ), new Literal() );
-    } );
-}
 
 
-[Test( "NonZero" )]
-public static void
-Test_NonZero()
-{
-    NonZero t = new NonZero();
-    NonZero u = new NonZero();
-
-    Print( ".Equals() and GetHashCode()" );
-    Assert( t.Equals( t ) );
-    Assert( t.Equals( u ) );
-    Assert( t.GetHashCode() == u.GetHashCode() );
-
-    Print( "Null passes" );
-    NonZero.Require( null, new Literal() );
-
-    Print( "Negative passes" );
-    NonZero.Require( Real.From( -5m ), new Literal() );
-
-    Print( "Positive passes" );
-    NonZero.Require( Real.From( 5m ), new Literal() );
-
-    Print( "Zero fails" );
-    Expect< RTypeException >( delegate() {
-        NonZero.Require( Real.From( 0m ), new Literal() );
-    } );
-}
-
-
-[Test( "NonNegative" )]
-public static void
-Test_NonNegative()
-{
-    NonNegative t = new NonNegative();
-    NonNegative u = new NonNegative();
-
-    Print( ".Equals() and GetHashCode()" );
-    Assert( t.Equals( t ) );
-    Assert( t.Equals( u ) );
-    Assert( t.GetHashCode() == u.GetHashCode() );
-
-    Print( "Null passes" );
-    NonNegative.Require( null, new Literal() );
-
-    Print( "Negative fails" );
-    Expect< RTypeException >( delegate() {
-        NonNegative.Require( Real.From( -5m ), new Literal() );
-    } );
-
-    Print( "Zero passes" );
-    NonNegative.Require( Real.From( 0m ), new Literal() );
-
-    Print( "Positive passes" );
-    NonNegative.Require( Real.From( 5m ), new Literal() );
-}
+*/
 
 
 

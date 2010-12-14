@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -65,8 +65,8 @@ Plus(
     IInteger        that
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
     return ((IReal)dis).Plus( that ).Truncate();
 }
 
@@ -80,8 +80,8 @@ Minus(
     IInteger        that
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
     return ((IReal)dis).Minus( that ).Truncate();
 }
 
@@ -95,8 +95,8 @@ Times(
     IInteger        that
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
     return ((IReal)dis).Times( that ).Truncate();
 }
 
