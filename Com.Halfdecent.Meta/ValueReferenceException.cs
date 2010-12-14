@@ -223,6 +223,28 @@ Match<
 }
 
 
+public static
+    bool
+Match<
+    TException
+>(
+    System.Exception                            e,
+    System.Func< ValueReference, Frame, bool >  referencePredicate
+)
+    where TException : System.Exception
+{
+    if( object.ReferenceEquals( e, null ) )
+        throw new LocalisedArgumentNullException( "e" );
+    if( object.ReferenceEquals( referencePredicate, null ) )
+        throw new LocalisedArgumentNullException( "referencePredicate" );
+
+    return Match<
+        TException >(
+        e,
+        (vre,f) => referencePredicate( vre, f.Up() ),
+        ex => true );
+}
+
 
 
 // -----------------------------------------------------------------------------

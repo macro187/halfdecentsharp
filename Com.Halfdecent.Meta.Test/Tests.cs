@@ -342,65 +342,96 @@ Test_ValueReferenceException()
     object foo = new object();
     object bar = new object();
 
-    Print( ".Match()" );
+    Print( "void Match( pred, pred, action ), match" );
     success = false;
     try {
         ThrowOne( new object() );
     } catch( Exception ex ) {
         ValueReferenceException.Match< Exception >( ex,
-            (vr,f) =>
-                vr.Equals( f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
+            (vr,f) => vr.Equals(
+                f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
             e => e.Message == "fake exception",
             (vr, f, e ) => success = true );
     }
     Assert( success );
 
+    Print( "void Match( pred, pred, action ), value reference mismatch" );
     success = false;
     try {
         ThrowOne( new object() );
     } catch( Exception ex ) {
         success = true;
         ValueReferenceException.Match< Exception >( ex,
-            (vr,f) =>
-                vr.Equals( f.Down().Parameter( "arg1" ).Property( "WRONG" ) ),
+            (vr,f) => vr.Equals(
+                f.Down().Parameter( "arg1" ).Property( "WRONG" ) ),
             e => e.Message == "fake exception",
             (vr, f, e ) => success = false );
     }
     Assert( success );
 
+    Print( "void Match( pred, pred, action ), exception mismatch" );
     success = false;
     try {
         ThrowOne( new object() );
     } catch( Exception ex ) {
         success = true;
         ValueReferenceException.Match< Exception >( ex,
-            (vr,f) =>
-                vr.Equals( f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
+            (vr,f) => vr.Equals(
+                f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
             e => e.Message == "WRONG",
             (vr, f, e ) => success = false );
     }
     Assert( success );
 
+    Print( "bool Match( pred, pred ), match" );
     success = false;
     try {
         ThrowOne( new object() );
     } catch( Exception ex ) {
         success = ValueReferenceException.Match< Exception >( ex,
-            (vr,f) =>
-                vr.Equals( f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
+            (vr,f) => vr.Equals(
+                f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
             e => e.Message == "fake exception" );
     }
     Assert( success );
 
+    Print( "bool Match( pred, pred ), value reference mismatch" );
     success = false;
     try {
         ThrowOne( new object() );
     } catch( Exception ex ) {
         success = true;
         success = !( ValueReferenceException.Match< Exception >( ex,
-            (vr,f) =>
-                vr.Equals( f.Down().Parameter( "arg1" ).Property( "WRONG" ) ),
+            (vr,f) => vr.Equals(
+                f.Down().Parameter( "arg1" ).Property( "WRONG" ) ),
             e => e.Message == "fake exception" ) );
+    }
+    Assert( success );
+
+    Print( "bool Match( pred ), match" );
+    success = false;
+    try {
+        ThrowOne( new object() );
+    } catch( Exception ex ) {
+        success = ValueReferenceException.Match<
+            Exception >(
+            ex,
+            (vr,f) => vr.Equals(
+                f.Down().Parameter( "arg1" ).Property( "Prop1" ) ) );
+    }
+    Assert( success );
+
+    Print( "bool Match( pred ), value reference mismatch" );
+    success = false;
+    try {
+        ThrowOne( new object() );
+    } catch( Exception ex ) {
+        success = true;
+        success = !( ValueReferenceException.Match<
+            Exception >(
+            ex,
+            (vr,f) => vr.Equals(
+                f.Down().Parameter( "arg1" ).Property( "WRONG" ) ) ) );
     }
     Assert( success );
 
