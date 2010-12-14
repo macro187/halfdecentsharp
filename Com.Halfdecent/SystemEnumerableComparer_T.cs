@@ -153,10 +153,6 @@ Equals(
 }
 
 
-// NOTE Would ideally override GetHashCode() with NotSupportedException too,
-//      but difficult to 'override' and 'new' the same member
-
-
 
 
 } // type

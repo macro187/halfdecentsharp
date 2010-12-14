@@ -93,9 +93,7 @@ DirectionalEquals(
     IEqualityComparer that
 )
 {
-    return
-        that != null &&
-        that.GetUnderlying().GetType() == this.GetType();
+    return that.Is< EquatableComparer< T > >();
 }
 
 
@@ -103,7 +101,7 @@ public override
     int
 GetHashCode()
 {
-    return this.GetType().GetHashCode();
+    return typeof( EquatableComparer< T > ).GetHashCode();
 }
 
 
@@ -118,10 +116,7 @@ Equals(
     object that
 )
 {
-    return
-        that != null &&
-        that is IEqualityComparer &&
-        this.Equals( (IEqualityComparer)that );
+    throw new System.NotSupportedException();
 }
 
 

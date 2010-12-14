@@ -135,8 +135,9 @@ DirectionalEquals(
 }
 
 
+public override
     int
-IEquatable< IInterval< T > >.GetHashCode()
+GetHashCode()
 {
     return Interval.GetHashCode( this  );
 }
@@ -153,18 +154,7 @@ Equals(
     object that
 )
 {
-    return
-        that != null &&
-        that is IInterval< T > &&
-        this.Equals( (IInterval< T >)that );
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return ((IEquatable< IInterval< T > >)this).GetHashCode();
+    throw new System.NotSupportedException();
 }
 
 

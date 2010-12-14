@@ -195,13 +195,12 @@ DirectionalEquals(
     IEqualityComparer that
 )
 {
-    if( that == null ) return false;
-    if( that.GetUnderlying().GetType() != this.GetType() ) return false;
-    Comparer<T> c = (Comparer<T>)that;
-    return
-        c.CompareFunction == this.CompareFunction &&
-        c.EqualsFunction == this.EqualsFunction &&
-        c.GetHashCodeFunction == this.GetHashCodeFunction;
+    return that.IsAnd<
+        Comparer< T > >(
+        c =>
+            c.CompareFunction == this.CompareFunction &&
+            c.EqualsFunction == this.EqualsFunction &&
+            c.GetHashCodeFunction == this.GetHashCodeFunction );
 }
 
 
@@ -210,7 +209,7 @@ public override
 GetHashCode()
 {
     return
-        this.GetType().GetHashCode() ^
+        typeof( Comparer< T > ).GetHashCode() ^
         this.CompareFunction.GetHashCode() ^
         this.EqualsFunction.GetHashCode() ^
         this.GetHashCodeFunction.GetHashCode();
@@ -228,10 +227,7 @@ Equals(
     object that
 )
 {
-    return
-        that != null &&
-        that is IEqualityComparer &&
-        this.Equals( (IEqualityComparer)that );
+    throw new System.NotSupportedException();
 }
 
 

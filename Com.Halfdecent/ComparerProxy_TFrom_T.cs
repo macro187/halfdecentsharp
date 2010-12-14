@@ -170,10 +170,7 @@ Equals(
     object that
 )
 {
-    return
-        that != null &&
-        that is IEqualityComparer &&
-        this.Equals( (IEqualityComparer)that );
+    throw new System.NotSupportedException();
 }
 
 
