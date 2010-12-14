@@ -17,6 +17,7 @@
 
 
 using System.Linq;
+using SCG = System.Collections.Generic;
 
 
 namespace
@@ -159,12 +160,9 @@ IsAndDo<
     if( object.ReferenceEquals( action, null ) )
         throw new System.ArgumentNullException( "action" );
 
-    foreach(
-        object obj
-        in SystemEnumerable.Create(
-            dis,
-            obj => obj is IProxy ? ((IProxy)obj).Underlying : null )
-    ) {
+    if( dis == null ) return false;
+
+    foreach( object obj in dis.ProxyChain() ) {
         if( !( obj is T ) ) continue;
         T t = (T)obj;
         if( !predicate( t ) ) continue;
@@ -175,7 +173,7 @@ IsAndDo<
 }
 
 
-/// Look through any proxies, recursively, to the underlying object
+/// Look through any number of proxies to the underlying object
 ///
 public static
     object
@@ -184,11 +182,22 @@ GetUnderlying(
 )
 {
     if( dis == null ) throw new System.ArgumentNullException( "dis" );
-    return
-        SystemEnumerable.Create(
-            dis, 
-            obj => obj is IProxy ? ((IProxy)obj).Underlying : null )
-        .Last();
+    return dis.ProxyChain().Last();
+}
+
+
+/// Iterate through this object and any proxies, recursively
+///
+public static
+    SCG.IEnumerable< object >
+ProxyChain(
+    this object dis
+)
+{
+    if( dis == null ) throw new System.ArgumentNullException( "dis" );
+    return SystemEnumerable.Recurse(
+        dis, 
+        obj => obj is IProxy ? ((IProxy)obj).Underlying : null );
 }
 
 

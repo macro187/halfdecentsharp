@@ -57,12 +57,14 @@ Create<
 }
 
 
-/// Create an enumerable by recursively applying a function, starting with a
-/// seed item, until that function returns <tt>null</tt>
+/// Create an enumerable by recursively applying a function to its own result,
+/// starting with a seed item, until <tt>null</tt> is encountered
+///
+/// Useful for descending through recursive data structures
 ///
 public static
     IEnumerable< T >
-Create<
+Recurse<
     T
 >(
     T                   seed,
@@ -71,7 +73,7 @@ Create<
 {
     for(
         T item = seed;
-        !object.ReferenceEquals( item, null );
+        item != null;
         item = func( item )
     )
         yield return item;

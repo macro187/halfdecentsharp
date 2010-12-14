@@ -39,13 +39,13 @@ SystemException
 ///
 public static
     IEnumerable< Exception >
-Chain(
+ExceptionChain(
     this Exception e
 )
 {
     if( object.ReferenceEquals( e, null ) )
         throw new ArgumentNullException( "e" );
-    return SystemEnumerable.Create( e, ex => ex.InnerException );
+    return SystemEnumerable.Recurse( e, ex => ex.InnerException );
 }
 
 

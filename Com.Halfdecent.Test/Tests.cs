@@ -246,13 +246,13 @@ public static
 void
 Test_SystemException()
 {
-    Print( ".Chain()" );
+    Print( ".ExceptionChain()" );
     System.Exception e = new System.Exception();
     System.Exception f = new System.Exception( "", e );
     System.Exception g = new System.Exception( "", f );
     System.Exception h = new System.Exception( "", g );
     Assert(
-        h.Chain()
+        h.ExceptionChain()
         .SequenceEqual( SystemEnumerable.Create( h, g, f, e ) ) );
 }
 

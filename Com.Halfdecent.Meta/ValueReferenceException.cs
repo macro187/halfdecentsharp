@@ -125,7 +125,7 @@ Map<
         return func();
 
     } catch( System.Exception e ) {
-        ValueReferenceException vre = e.Chain()
+        ValueReferenceException vre = e.ExceptionChain()
             .OfType< ValueReferenceException >().FirstOrDefault();
         if( vre == null ) throw e;
 
@@ -184,7 +184,7 @@ Match<
     Frame f = new Frame().Up();
     if( !referencePredicate( vre.ValueReference, f ) ) return;
     TException ex =
-        e.Chain()
+        e.ExceptionChain()
         .Where( exx => !(exx is ValueReferenceException) )
         .FirstOrDefault()
         as TException;
