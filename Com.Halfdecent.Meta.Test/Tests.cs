@@ -227,7 +227,7 @@ Test_ValueException()
 
     Print( ".SayMessage(), specified message" );
     Assert(
-        new ValueException( "{0} yyy" )
+        new ValueException( r => LocalisedString.Format( "{0} yyy", r ) )
             .SayMessage( "xxx" )
             .InCurrent()
         == "xxx yyy" );
@@ -241,7 +241,8 @@ Test_ValueException()
 
     Print( ".Message, specified message" );
     Assert(
-        new ValueException( "{0} yyy" ).Message.InCurrent()
+        new ValueException( r => LocalisedString.Format( "{0} yyy", r ) )
+            .Message.InCurrent()
         == LocalisedString.Format(
             "{0} yyy", ValueException.UNSPECIFIED_VALUE ).InCurrent() );
 }
@@ -275,10 +276,12 @@ Test_ValueArgumentException()
 
     Print( ".SayMessage(), specified message" );
     Assert(
-        new ValueArgumentException( "arg", "{0} yyy" )
-            .SayMessage( "xxx" )
-            .InCurrent()
-        == "xxx yyy" );
+        new ValueArgumentException(
+            "arg",
+            r => LocalisedString.Format( "{0} yyy", r ) )
+                .SayMessage( "xxx" )
+                .InCurrent()
+            == "xxx yyy" );
 
     Print( ".Message, unspecified message" );
     Assert( new ValueArgumentException( "arg" ).Message.InCurrent()
@@ -291,7 +294,10 @@ Test_ValueArgumentException()
 
     Print( ".Message, specified message" );
     Assert(
-        new ValueArgumentException( "arg", "{0} yyy" ).Message.InCurrent()
+        new ValueArgumentException(
+            "arg",
+            r => LocalisedString.Format( "{0} yyy", r ) )
+            .Message.InCurrent()
         == LocalisedString.Format(
             "{0} yyy",
             LocalisedString.Format(

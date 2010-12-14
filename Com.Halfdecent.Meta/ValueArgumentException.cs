@@ -66,9 +66,9 @@ ValueArgumentException(
 public
 ValueArgumentException(
     string              paramName,
-    Localised< string > messageFormat
+    Func< Localised<string>, Localised<string> > sayMessageFunc
 )
-    : this( paramName, messageFormat, null )
+    : this( paramName, sayMessageFunc, null )
 {
 }
 
@@ -89,9 +89,9 @@ ValueArgumentException(
     ///< The name of the problematic parameter
     ///  - Must not be null
     ///  - Must not be blank
-    Localised< string > messageFormat,
-    ///< Natural language format describing the problem
-    ///  {0} - Natural language referring to the problematic value
+    Func< Localised<string>, Localised<string> > sayMessageFunc,
+    ///< Function describing the problem in terms of a natural language
+    ///  reference to the problematic value
     Exception           innerException
     ///< The underlying cause of this exception, or <tt>null</tt> if there is
     ///  no underlying cause
@@ -103,8 +103,10 @@ ValueArgumentException(
     if( paramName == "" )
         throw new LocalisedArgumentException(
             "paramName is null", "paramName" );
-    this.MessageFormat
-        = messageFormat ?? ValueException.UNSPECIFIED_PROBLEM_FORMAT;
+    this.SayMessageFunc
+        = sayMessageFunc
+        ?? (r => LocalisedString.Format(
+            ValueException.UNSPECIFIED_PROBLEM_FORMAT, r ) );
 }
 
 
@@ -114,8 +116,8 @@ ValueArgumentException(
 // -----------------------------------------------------------------------------
 
 private
-Localised< string >
-MessageFormat;
+Func< Localised<string>, Localised<string> >
+SayMessageFunc;
 
 
 
@@ -131,7 +133,7 @@ SayMessage(
 {
     if( object.ReferenceEquals( reference, null ) )
         throw new LocalisedArgumentNullException( "reference" );
-    return LocalisedString.Format( this.MessageFormat, reference );
+    return this.SayMessageFunc( reference );
 }
 
 
@@ -144,8 +146,11 @@ public override
 Localised< string >
 Message
 {
-    get { return this.SayMessage(
-        LocalisedString.Format( ARGUMENT_FORMAT, this.ParamName ) ); }
+    get
+    {
+        return this.SayMessage(
+            LocalisedString.Format( ARGUMENT_FORMAT, this.ParamName ) );
+    }
 }
 
 

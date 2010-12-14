@@ -71,9 +71,9 @@ ValueException()
 
 public
 ValueException(
-    Localised< string > messageFormat
+    Func< Localised<string>, Localised<string> > sayMessageFunc
 )
-    : this( messageFormat, null )
+    : this( sayMessageFunc, null )
 {
 }
 
@@ -89,16 +89,18 @@ ValueException(
 
 public
 ValueException(
-    Localised< string > messageFormat,
-    ///< Natural language format describing the problem
-    ///  {0} - Natural language referring to the problematic value
+    Func< Localised<string>, Localised<string> > sayMessageFunc,
+    ///< Function describing the problem in terms of a natural language
+    ///  reference to the problematic value
     Exception           innerException
     ///< The underlying cause of this exception, or <tt>null</tt> if there is
     ///  no underlying cause
 )
     : base( null, innerException )
 {
-    this.MessageFormat = messageFormat ?? UNSPECIFIED_PROBLEM_FORMAT;
+    this.SayMessageFunc
+        = sayMessageFunc
+        ?? ( r => LocalisedString.Format( UNSPECIFIED_PROBLEM_FORMAT, r ) );
 }
 
 
@@ -108,8 +110,8 @@ ValueException(
 // -----------------------------------------------------------------------------
 
 private
-Localised< string >
-MessageFormat;
+Func< Localised<string>, Localised<string> >
+SayMessageFunc;
 
 
 
@@ -125,7 +127,7 @@ SayMessage(
 {
     if( object.ReferenceEquals( reference, null ) )
         throw new LocalisedArgumentNullException( "reference" );
-    return LocalisedString.Format( this.MessageFormat, reference );
+    return this.SayMessageFunc( reference );
 }
 
 
