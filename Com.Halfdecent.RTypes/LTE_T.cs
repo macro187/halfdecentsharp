@@ -17,6 +17,7 @@
 
 
 using Com.Halfdecent;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
 
@@ -34,20 +35,22 @@ LTE
 {
 
 
-/// According to a specified ordering
+/// According to IComparable
 ///
 public static
     void
-Require<
+Check<
     T
 >(
-    T       compareTo,
-    T       item,
-    Value   itemReference
+    T compareTo,
+    T item
 )
     where T : System.IComparable< T >
 {
-    Create( compareTo ).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create( compareTo ).Check( item ) );
 }
 
 
@@ -55,21 +58,23 @@ Require<
 ///
 public static
     void
-Require<
+Check<
     T
 >(
     T               compareTo,
     IComparer< T >  comparer,
-    T               item,
-    Value           itemReference
+    T               item
 )
 {
-    Create( compareTo, comparer ).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create( compareTo, comparer ).Check( item ) );
 }
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -82,7 +87,7 @@ Create<
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -100,15 +105,15 @@ Create<
 
 
 // =============================================================================
-/// RType: Less than or equal to a particular value, according to a
-/// particular ordering
+/// RType: Less than or equal to a particular value, according to a particular
+/// ordering
 // =============================================================================
 
 public sealed class
 LTE<
     T
 >
-    : SimpleTextRTypeBase< T >
+    : RType< T >
 {
 
 
@@ -120,22 +125,23 @@ LTE<
 public
 LTE(
     T               compareTo,
-    ///< The value to compare to
     IComparer< T >  comparer
-    ///< The ordering to use
 )
     : base(
-        _S( "{{0}} is less than or equal to {0}",
-            SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} is greater than {0}",
-            SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} must be less than or equal to {0}",
-            SystemObject.ToString( compareTo ) ) )
+        item =>
+            item == null ? true
+            : comparer.Compare( item, compareTo ) <= 0,
+        ls => _S( "{0} is less than or equal to {1}",
+            ls, SystemObject.ToString( compareTo ) ),
+        ls => _S( "{0} is greater than {1}",
+            ls, SystemObject.ToString( compareTo ) ),
+        ls => _S( "{0} must be less than or equal to {1}",
+            ls, SystemObject.ToString( compareTo ) ) )
 {
     if( compareTo == null )
-        throw new ValueArgumentNullException( new Parameter( "compareTo" ) );
+        throw new LocalisedArgumentNullException( "compareTo" );
     if( comparer == null )
-        throw new ValueArgumentNullException( new Parameter( "comparer" ) );
+        throw new LocalisedArgumentNullException( "comparer" );
     this.CompareTo = compareTo;
     this.Comparer = comparer;
 }
@@ -170,36 +176,22 @@ Comparer
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Predicate(
-    T item
-)
-{
-    if( object.ReferenceEquals( item, null ) ) return true;
-    return this.Comparer.Compare( item, this.CompareTo ) <= 0;
-}
-
-
-
-// -----------------------------------------------------------------------------
 // IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
 DirectionalEquals(
-    IRType that
+    RType that
 )
 {
-    if( !base.DirectionalEquals( that ) ) return false;
-    LTE<T> gt = (LTE<T>)( that.GetUnderlying() );
     return
-        gt.Comparer.Equals( this.Comparer ) &&
-        this.Comparer.Equals( gt.CompareTo, this.CompareTo );
+        base.DirectionalEquals( that )
+        && that.IsAnd<
+            LTE< T > >(
+            lte =>
+                lte.Comparer.Equals( this.Comparer ) &&
+                this.Comparer.Equals( lte.CompareTo, this.CompareTo ) );
 }
 
 

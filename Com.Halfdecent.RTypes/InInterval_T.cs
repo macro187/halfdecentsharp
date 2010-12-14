@@ -39,20 +39,22 @@ InInterval
 
 public static
     void
-Require<
+Check<
     T
 >(
     IInterval< T >  interval,
-    T               item,
-    Value           itemReference
+    T               item
 )
 {
-    Create( interval ).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create( interval ).Check( item ) );
 }
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -76,7 +78,7 @@ public sealed class
 InInterval<
     T
 >
-    : RTypeBase< T >
+    : CompositeRType< T >
 {
 
 
@@ -89,9 +91,18 @@ public
 InInterval(
     IInterval< T > interval
 )
+    : base(
+        SystemEnumerable.Create(
+            interval.FromInclusive
+                ? GTE.Create( interval.From, interval.Comparer )
+                : GT.Create( interval.From, interval.Comparer ),
+            interval.ToInclusive
+                ? LTE.Create( interval.To, interval.Comparer )
+                : LT.Create( interval.To, interval.Comparer ) ),
+        null, null, null )
 {
-    if( object.ReferenceEquals( interval, null ) )
-        throw new ValueArgumentNullException( new Parameter( "interval" ) );
+    if( interval == null )
+        throw new LocalisedArgumentNullException( "interval" );
     this.Interval = interval;
 }
 
@@ -101,35 +112,15 @@ InInterval(
 // Properties
 // -----------------------------------------------------------------------------
 
-public
+private
 IInterval< T >
-Interval
-{
-    get;
-    private set;
-}
+Interval;
 
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
+// RType
 // -----------------------------------------------------------------------------
-
-public override
-    SCG.IEnumerable< IRType< T > >
-GetComponents()
-{
-    if( this.Interval.FromInclusive )
-        yield return GTE.Create( this.Interval.From, this.Interval.Comparer );
-    else
-        yield return GT.Create( this.Interval.From, this.Interval.Comparer );
-
-    if( this.Interval.ToInclusive )
-        yield return LTE.Create( this.Interval.To, this.Interval.Comparer );
-    else
-        yield return LT.Create( this.Interval.To, this.Interval.Comparer );
-}
-
 
 public override
     Localised< string >
@@ -137,13 +128,13 @@ SayIs(
     Localised< string > reference
 )
 {
-    if( object.ReferenceEquals( reference, null ) )
-        throw new ValueArgumentNullException( new Parameter( "reference" ) );
+    if( reference == null )
+        throw new LocalisedArgumentNullException( "reference" );
     if( this.Interval.FromInclusive && this.Interval.ToInclusive )
         return _S( "{0} is between {1} and {2}, inclusive",
             reference,
-            this.Interval.From.ToString(),
-            this.Interval.To.ToString() );
+            this.Interval.From,
+            this.Interval.To );
     else if( !this.Interval.FromInclusive && !this.Interval.ToInclusive )
         return _S( "{0} is between {1} and {2}, exclusive",
             reference,
@@ -168,13 +159,13 @@ SayIsNot(
     Localised< string > reference
 )
 {
-    if( object.ReferenceEquals( reference, null ) )
-        throw new ValueArgumentNullException( new Parameter( "reference" ) );
+    if( reference == null )
+        throw new LocalisedArgumentNullException( "reference" );
     if( this.Interval.FromInclusive && this.Interval.ToInclusive )
         return _S( "{0} is not between {1} and {2}, inclusive",
             reference,
-            this.Interval.From.ToString(),
-            this.Interval.To.ToString() );
+            this.Interval.From,
+            this.Interval.To );
     else if( !this.Interval.FromInclusive && !this.Interval.ToInclusive )
         return _S( "{0} is not between {1} and {2}, exclusive",
             reference,
@@ -199,13 +190,13 @@ SayMustBe(
     Localised< string > reference
 )
 {
-    if( object.ReferenceEquals( reference, null ) )
-        throw new ValueArgumentNullException( new Parameter( "reference" ) );
+    if( reference == null )
+        throw new LocalisedArgumentNullException( "reference" );
     if( this.Interval.FromInclusive && this.Interval.ToInclusive )
         return _S( "{0} must be between {1} and {2}, inclusive",
             reference,
-            this.Interval.From.ToString(),
-            this.Interval.To.ToString() );
+            this.Interval.From,
+            this.Interval.To );
     else if( !this.Interval.FromInclusive && !this.Interval.ToInclusive )
         return _S( "{0} must be between {1} and {2}, exclusive",
             reference,
@@ -221,28 +212,6 @@ SayMustBe(
             reference,
             this.Interval.From,
             this.Interval.To );
-}
-
-
-public override
-    bool
-DirectionalEquals(
-    IRType that
-)
-{
-    return
-        base.DirectionalEquals( that ) &&
-        ((InInterval<T>)that.GetUnderlying()).Interval.Equals( this.Interval );
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return
-        base.GetHashCode() ^
-        this.Interval.GetHashCode();
 }
 
 

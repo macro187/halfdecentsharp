@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
+using System.Linq;
 using SCG = System.Collections.Generic;
-using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
@@ -28,44 +28,16 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// RType: Not <tt>null</tt>
+/// A condition of values of a particular type, expressed as a predicate
 // =============================================================================
 
-public sealed class
-NonNull
-    : CompositeRType< object >
+
+public abstract class
+RType<
+    T
+>
+    : RType
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Static
-// -----------------------------------------------------------------------------
-
-public static new
-    void
-Check(
-    object item
-)
-{
-    ValueReferenceException.Map(
-        f => f.Parameter( "item" ),
-        f => f.Down().Parameter( "item" ),
-        () => Create().Check( item ) );
-}
-
-
-public static
-    RType< object >
-Create()
-{
-    return instance;
-}
-
-
-private static
-    NonNull
-instance = new NonNull();
 
 
 
@@ -73,15 +45,73 @@ instance = new NonNull();
 // Constructors
 // -----------------------------------------------------------------------------
 
-public
-NonNull()
-    : base(
-        SystemEnumerable.Create(
-            NEQ.Create( null, new ReferenceComparer() ) ),
-        ls => _S("{0} is non-null", ls),
-        ls => _S("{0} is null", ls),
-        ls => _S("{0} must not be null", ls) )
+protected
+RType(
+    System.Predicate< T >                                   isFunc,
+    System.Func< Localised< string >, Localised< string > > sayIsFunc,
+    System.Func< Localised< string >, Localised< string > > sayIsNotFunc,
+    System.Func< Localised< string >, Localised< string > > sayMustBeFunc
+)
+    : base( sayIsFunc, sayIsNotFunc, sayMustBeFunc )
 {
+    this.IsFunc = isFunc;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+private
+System.Predicate< T >
+IsFunc;
+
+
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Determine whether an item meets this RType
+///
+public virtual
+    bool
+Is(
+    T item
+)
+{
+    if( this.IsFunc != null ) return this.IsFunc( item );
+    return true;
+}
+
+
+/// Require that an item meet this RType
+///
+/// @exception RTypeException
+/// <tt>item</tt> does not meet to this RType
+///
+public virtual
+    void
+Check(
+    T item
+)
+{
+    if( !this.Is( item ) )
+        throw new ValueReferenceException(
+            new Frame().Parameter( "item" ),
+            new RTypeException( this ) );
+}
+
+
+public
+    RType< TTo >
+Contravary<
+    TTo
+>()
+    where TTo : T
+{
+    return new RTypeProxy< T, TTo >( this );
 }
 
 

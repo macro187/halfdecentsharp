@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
@@ -38,38 +37,152 @@ RTypeException
 
 
 // -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+public static
+    void
+Match(
+    System.Exception
+        ex,
+    System.Func< ValueReference, Frame, bool >
+        valueReferencePredicate,
+    System.Predicate< RType >
+        rTypePredicate,
+    System.Action< ValueReference, Frame, RTypeException >
+        action
+)
+{
+    if( ex == null )
+        throw new LocalisedArgumentNullException( "ex" );
+    if( valueReferencePredicate == null )
+        throw new LocalisedArgumentNullException( "valueReferencePredicate" );
+    if( rTypePredicate == null )
+        throw new LocalisedArgumentNullException( "rTypePredicate" );
+    if( action == null )
+        throw new LocalisedArgumentNullException( "action" );
+
+    ValueReferenceException.Match<
+        RTypeException >(
+        ex,
+        (vr,f) => valueReferencePredicate( vr, f.Up() ),
+        rte => rTypePredicate( rte.RType ),
+        (vr,f,rte) => action( vr, f.Up(), rte ) );
+}
+
+
+public static
+    bool
+Match(
+    System.Exception
+        ex,
+    System.Func< ValueReference, Frame, bool >
+        valueReferencePredicate,
+    System.Predicate< RType >
+        rTypePredicate
+)
+{
+    if( ex == null )
+        throw new LocalisedArgumentNullException( "ex" );
+    if( valueReferencePredicate == null )
+        throw new LocalisedArgumentNullException( "valueReferencePredicate" );
+    if( rTypePredicate == null )
+        throw new LocalisedArgumentNullException( "rTypePredicate" );
+
+    bool result = false;
+    RTypeException.Match(
+        ex,
+        (vr,f) => valueReferencePredicate( vr, f.Up() ),
+        rTypePredicate,
+        (vr,f,rte) => result = true );
+    return result;
+}
+
+
+public static
+    void
+Match<
+    TRType
+>(
+    System.Exception
+        ex,
+    System.Func< ValueReference, Frame, bool >
+        valueReferencePredicate,
+    System.Action< ValueReference, Frame, TRType, RTypeException >
+        action
+)
+    where TRType : RType
+{
+    if( ex == null )
+        throw new LocalisedArgumentNullException( "ex" );
+    if( valueReferencePredicate == null )
+        throw new LocalisedArgumentNullException( "valueReferencePredicate" );
+    if( action == null )
+        throw new LocalisedArgumentNullException( "action" );
+
+    ValueReferenceException.Match<
+        RTypeException >(
+        ex,
+        (vr,f) => valueReferencePredicate( vr, f.Up() ),
+        rte => rte.RType is TRType,
+        (vr,f,rte) => action( vr, f.Up(), (TRType)(rte.RType), rte ) );
+}
+
+
+public static
+    bool
+Match<
+    TRType
+>(
+    System.Exception
+        ex,
+    System.Func< ValueReference, Frame, bool >
+        valueReferencePredicate
+)
+    where TRType : RType
+{
+    if( ex == null )
+        throw new LocalisedArgumentNullException( "ex" );
+    if( valueReferencePredicate == null )
+        throw new LocalisedArgumentNullException( "valueReferencePredicate" );
+
+    return ValueReferenceException.Match<
+        RTypeException >(
+        ex,
+        (vr,f) => valueReferencePredicate( vr, f.Up() ),
+        rte => rte.RType is TRType );
+}
+
+
+
+// -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new rtype exception with a reference to the offending value and
-/// the rtype that it failed
+/// Initialise a new rtype exception with a reference to the rtype that was not
+/// met
 ///
 public
 RTypeException(
-    Value   valueReference,
-    IRType  rtype
+    RType rtype
 )
-    : this( valueReference, rtype, null )
+    : this( rtype, null )
 {
 }
 
 
-/// Initialise a new rtype exception with a reference to the offending value,
-/// the rtype that it failed, and another underlying exception
+/// Initialise a new rtype exception with references to the rtype that was not
+/// met and the underlying exception
 ///
 public
 RTypeException(
-    Value       valueReference,
-    IRType      rtype,
-    Exception   innerException
+    RType               rtype,
+    System.Exception    innerException
 )
-    : base( valueReference, null, innerException )
+    : base( null, innerException )
 {
-    if( valueReference == null )
-        throw new ValueArgumentNullException(
-            new Parameter( "valueReference" ) );
     if( rtype == null )
-        throw new ValueArgumentNullException( new Parameter( "rtype" ) );
+        throw new LocalisedArgumentNullException( "rtype" );
     this.RType = rtype;
 }
 
@@ -79,10 +192,10 @@ RTypeException(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// The rtype that the value failed
+/// The rtype that was not met
 ///
 public
-IRType
+RType
 RType
 {
     get;
@@ -102,7 +215,7 @@ SayMessage(
 )
 {
     if( reference == null )
-        throw new ValueArgumentNullException( new Parameter( "reference" ) );
+        throw new LocalisedArgumentNullException( "reference" );
     return this.RType.SayIsNot( reference );
 }
 

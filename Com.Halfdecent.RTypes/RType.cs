@@ -16,10 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
-using System.Linq;
 using Com.Halfdecent;
-using Com.Halfdecent.Meta;
+using Com.Halfdecent.Globalisation;
 
 
 namespace
@@ -28,12 +26,56 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// <tt>IRType</tt> and <tt>IRType<T></tt> Library
+/// A condition of values
+///
+/// @section equality Equality
+///
+///     Default RType equality is that rtypes of the same underlying runtime
+///     type are equal
+///
 // =============================================================================
 
-public static class
+public abstract class
 RType
+    : IEquatable< RType >
 {
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+protected
+RType(
+    System.Func< Localised< string >, Localised< string > > sayIsFunc,
+    System.Func< Localised< string >, Localised< string > > sayIsNotFunc,
+    System.Func< Localised< string >, Localised< string > > sayMustBeFunc
+)
+{
+    this.SayIsFunc = sayIsFunc;
+    this.SayIsNotFunc = sayIsNotFunc;
+    this.SayMustBeFunc = sayMustBeFunc;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+private
+System.Func< Localised< string >, Localised< string > >
+SayIsFunc;
+
+
+private
+System.Func< Localised< string >, Localised< string > >
+SayIsNotFunc;
+
+
+private
+System.Func< Localised< string >, Localised< string > >
+SayMustBeFunc;
 
 
 
@@ -41,158 +83,122 @@ RType
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Determine whether an item conforms to this RType
+/// Generate natural language stating that an item <em>is</em> of this RType
 ///
-public static
+public virtual
+    Localised< string >
+SayIs(
+    Localised< string > reference
+    ///< Natural language reference to the item
+    ///  - Must not be <tt>null</tt>
+)
+{
+    if( object.ReferenceEquals( this.SayIsFunc, null ) )
+        throw new BugException(
+            new LocalisedInvalidOperationException(
+                _S("SayIs() not overridden and .SayIsFunc is null") ) );
+    if( object.ReferenceEquals( reference, null ) )
+        throw new LocalisedArgumentNullException( "reference" );
+
+    return this.SayIsFunc( reference );
+}
+
+
+/// Generate natural language stating that an item <em>is not</em> of this RType
+///
+public virtual
+    Localised< string >
+SayIsNot(
+    Localised< string > reference
+    ///< Natural language reference to the item
+    ///  - Must not be <tt>null</tt>
+)
+{
+    if( object.ReferenceEquals( this.SayIsNotFunc, null ) )
+        throw new BugException(
+            new LocalisedInvalidOperationException(
+                _S("SayIsNot() not overridden and .SayIsNotFunc is null") ) );
+    if( object.ReferenceEquals( reference, null ) )
+        throw new LocalisedArgumentNullException( "reference" );
+
+    return this.SayIsNotFunc( reference );
+}
+
+
+/// Generate natural language stating that and item <em>is required to be</em>
+/// of this RType
+///
+public virtual
+    Localised< string >
+SayMustBe(
+    Localised< string > reference
+    ///< Natural language reference to the item
+    ///  - Must not be <tt>null</tt>
+)
+{
+    if( object.ReferenceEquals( this.SayMustBeFunc, null ) )
+        throw new BugException(
+            new LocalisedInvalidOperationException(
+                _S("SayMustBe() not overridden and .SayMustBeFunc is null") ) );
+    if( object.ReferenceEquals( reference, null ) )
+        throw new LocalisedArgumentNullException( "reference" );
+
+    return this.SayMustBeFunc( reference );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEquatable< RType >
+// -----------------------------------------------------------------------------
+
+public
     bool
-Is<
-    T
->(
-    this IRType< T >    dis,
-    T                   item
+Equals(
+    RType that
 )
 {
-    if( dis == null )
-        throw new ValueArgumentNullException( new Parameter( "dis" ) );
-    return dis.Check( item, new Parameter( "item" ) ) == null;
+    return Equatable.Equals( this, that );
 }
 
 
-/// Require that an item conform to this RType
-///
-/// @exception RTypeException
-/// <tt>item</tt> does not conform to this RType
-///
-public static
-    void
-Require<
-    T
->(
-    this IRType< T >    dis,
-    T                   item,
-    Value               itemReference
-)
-{
-    if( dis == null )
-        throw new ValueArgumentNullException( new Parameter( "dis" ) );
-    RTypeException rte = dis.Check( item, itemReference );
-    if( rte != null ) throw rte;
-}
-
-
-/// Type-check a value against this rtype
-///
-/// Uses <tt>GetComponents()</tt>, <tt>CheckMembers()</tt>, and
-/// <tt>Predicate()</tt> to determine if the value conforms, providing a
-/// detailed <tt>RTypeException</tt> if it doesn't
-///
-public static
-    RTypeException
-    /// @returns
-    /// <tt>null</tt>, if <tt>item</tt> conforms to this RType
-    /// - OR -
-    /// An <tt>RTypeException</tt> with details, if <tt>item</tt> does not
-    /// conform to this RType
-Check<
-    T
->(
-    this IRType< T >    dis,
-    T                   item,
-    Value               itemReference
-)
-{
-    if( dis == null )
-        throw new ValueArgumentNullException( new Parameter( "dis" ) );
-    if( itemReference == null )
-        throw new ValueArgumentNullException(
-            new Parameter( "itemReference" ) );
-
-    RTypeException rte;
-
-    // GetComponents()
-    foreach( IRType< T > c in dis.GetComponents() ) {
-        rte = c.Check( item, itemReference );
-        if( rte != null )
-            return new RTypeException(
-                itemReference, dis.GetUnderlying(), rte );
-    }
-
-    // CheckMembers()
-    rte = dis.CheckMembers( item, itemReference );
-    if( rte != null )
-        return new RTypeException(
-            itemReference, dis.GetUnderlying(), rte );
-
-    // Predicate()
-    if( !dis.Predicate( item ) )
-        return new RTypeException( itemReference, dis.GetUnderlying() );
-
-    return null;
-}
-
-
-/// Determine whether this RType is the same or more specific than another
-///
-public static
+public virtual
     bool
-IsEqualToOrMoreSpecificThan<
-    T
->(
-    this IRType< T >    dis,
-    IRType              that
+DirectionalEquals(
+    RType that
 )
 {
-    if( dis == null )
-        throw new ValueArgumentNullException( new Parameter( "dis" ) );
-    if( that == null )
-        throw new ValueArgumentNullException( new Parameter( "that" ) );
-    return
-        SystemEnumerable.Create( dis )
-        .Concat( dis.AllComponentsDepthFirst() )
-        .OfType< IRType >()
-        .Contains( that, new EquatableComparer< IRType >() );
+    if( (object)that == null ) return false;
+    return that.GetUnderlying().GetType() == this.GetUnderlying().GetType();
 }
 
 
-/// <tt>GetComponents()</tt>, recursive, depth first
-///
-public static
-    SCG.IEnumerable< IRType< T > >
-AllComponentsDepthFirst<
-    T
->(
-    this IRType< T > dis
-)
+public override
+    int
+GetHashCode()
 {
-    if( dis == null )
-        throw new ValueArgumentNullException( new Parameter( "dis" ) );
-    return
-        dis.GetComponents()
-        .SelectMany( c =>
-            SystemEnumerable.Create( c )
-            .Concat( c.AllComponentsDepthFirst() ) );
-}
-
-
-/// Contravary to an RType of a more specific type of item
-///
-public static
-    IRType< TTo >
-Contravary<
-    T,
-    TTo
->(
-    this IRType< T > dis
-)
-    where TTo : T
-{
-    if( dis == null )
-        throw new ValueArgumentNullException( new Parameter( "dis" ) );
-    return new RTypeProxy< T, TTo >( dis );
+    return this.GetUnderlying().GetType().GetHashCode();
 }
 
 
 
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
+
+public override sealed
+    bool
+Equals(
+    object that
+)
+{
+    throw new System.NotSupportedException();
+}
+
+
+
+
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

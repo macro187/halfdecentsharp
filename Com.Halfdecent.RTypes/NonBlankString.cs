@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -32,7 +32,7 @@ Com.Halfdecent.RTypes
 
 public sealed class
 NonBlankString
-    : SimpleTextRTypeBase< string >
+    : CompositeRType< string >
 {
 
 
@@ -41,19 +41,21 @@ NonBlankString
 // Static
 // -----------------------------------------------------------------------------
 
-public static
+public static new
     void
-Require(
-    string  item,
-    Value   itemReference
+Check(
+    string item
 )
 {
-    ((IRType<string>)Create()).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create().Check( item ) );
 }
 
 
 public static
-    IRType< string > 
+    RType< string > 
 Create()
 {
     return instance;
@@ -65,13 +67,6 @@ private static
 instance = new NonBlankString();
 
 
-private static
-    IRType< string >[]
-components = new IRType< string >[] {
-    NEQ.Create( string.Empty )
-};
-
-
 
 // -----------------------------------------------------------------------------
 // Constructors
@@ -80,23 +75,12 @@ components = new IRType< string >[] {
 public
 NonBlankString()
     : base(
-        _S("{0} is not blank"),
-        _S("{0} is blank"),
-        _S("{0} must not be blank") )
+        SystemEnumerable.Create(
+            NEQ.Create( "" ) ),
+        ls => _S("{0} is not blank", ls),
+        ls => _S("{0} is blank", ls),
+        ls => _S("{0} must not be blank", ls) )
 {
-}
-
-
-
-// -----------------------------------------------------------------------------
-// RTypeBase< string >
-// -----------------------------------------------------------------------------
-
-public override
-    SCG.IEnumerable< IRType< string > >
-GetComponents()
-{
-    return components;
 }
 
 

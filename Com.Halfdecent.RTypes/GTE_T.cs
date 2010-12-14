@@ -17,6 +17,7 @@
 
 
 using Com.Halfdecent;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
 
@@ -34,20 +35,22 @@ GTE
 {
 
 
-/// According to a specified ordering
+/// According to IComparable
 ///
 public static
     void
-Require<
+Check<
     T
 >(
-    T       compareTo,
-    T       item,
-    Value   itemReference
+    T compareTo,
+    T item
 )
     where T : System.IComparable< T >
 {
-    Create( compareTo ).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create( compareTo ).Check( item ) );
 }
 
 
@@ -55,21 +58,23 @@ Require<
 ///
 public static
     void
-Require<
+Check<
     T
 >(
     T               compareTo,
     IComparer< T >  comparer,
-    T               item,
-    Value           itemReference
+    T               item
 )
 {
-    Create( compareTo, comparer ).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create( compareTo, comparer ).Check( item ) );
 }
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -82,7 +87,7 @@ Create<
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -108,7 +113,7 @@ public sealed class
 GTE<
     T
 >
-    : SimpleTextRTypeBase< T >
+    : RType< T >
 {
 
 
@@ -123,17 +128,20 @@ GTE(
     IComparer< T >  comparer
 )
     : base(
-        _S( "{{0}} is greater than or equal to {0}",
-            SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} is less than {0}",
-            SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} must be greater than or equal to {0}",
-            SystemObject.ToString( compareTo ) ) )
+        item =>
+            item == null ? true
+            : comparer.Compare( item, compareTo ) >= 0,
+        ls => _S( "{0} is greater than or equal to {1}",
+            ls, SystemObject.ToString( compareTo ) ),
+        ls => _S( "{0} is less than {1}",
+            ls, SystemObject.ToString( compareTo ) ),
+        ls => _S( "{0} must be greater than or equal to {1}",
+            ls, SystemObject.ToString( compareTo ) ) )
 {
     if( compareTo == null )
-        throw new ValueArgumentNullException( new Parameter( "compareTo" ) );
+        throw new LocalisedArgumentNullException( "compareTo" );
     if( comparer == null )
-        throw new ValueArgumentNullException( new Parameter( "comparer" ) );
+        throw new LocalisedArgumentNullException( "comparer" );
     this.CompareTo = compareTo;
     this.Comparer = comparer;
 }
@@ -168,36 +176,22 @@ Comparer
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Predicate(
-    T item
-)
-{
-    if( object.ReferenceEquals( item, null ) ) return true;
-    return this.Comparer.Compare( item, this.CompareTo ) >= 0;
-}
-
-
-
-// -----------------------------------------------------------------------------
 // IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
 DirectionalEquals(
-    IRType that
+    RType that
 )
 {
-    if( !base.DirectionalEquals( that ) ) return false;
-    GTE<T> gt = (GTE<T>)( that.GetUnderlying() );
     return
-        gt.Comparer.Equals( this.Comparer ) &&
-        this.Comparer.Equals( gt.CompareTo, this.CompareTo );
+        base.DirectionalEquals( that )
+        && that.IsAnd<
+            GTE< T > >(
+            gte =>
+                gte.Comparer.Equals( this.Comparer ) &&
+                this.Comparer.Equals( gte.CompareTo, this.CompareTo ) );
 }
 
 

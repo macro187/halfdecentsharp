@@ -60,7 +60,7 @@
 ///
 /// @section solution Solution
 ///
-///     -   RTypes (<tt>IRType</tt> and <tt>IRType<T></tt>), reusable,
+///     -   RTypes (<tt>RType</tt> and <tt>RType<T></tt>), reusable,
 ///         composable units of value checking logic and associated messaging
 ///
 ///     -   Base classes for implementing rtypes:  <tt>RTypeBase<T></tt>,
@@ -69,7 +69,7 @@
 ///     -   <tt>RTypeException</tt>, the exception that results when rtype
 ///         checks fail.  The exception carries an exact reference to the
 ///         problematic value.  It also carries a reference to the exact
-///         <tt>IRType</tt> representing the failed condition.  Composite rtype
+///         <tt>RType</tt> representing the failed condition.  Composite rtype
 ///         structure is reflected in the <tt>InnerException</tt> chain,
 ///         allowing drill-down to the exact reason for the failure.
 ///

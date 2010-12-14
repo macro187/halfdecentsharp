@@ -16,10 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
-using System.Linq;
+using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
-using Com.Halfdecent.Meta;
 
 
 namespace
@@ -28,7 +26,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// IRType< T > contravariant proxy
+/// RType<T> contravariant proxy
 // =============================================================================
 
 public class
@@ -36,7 +34,9 @@ RTypeProxy<
     TFrom,
     TTo
 >
-    : IRType< TTo >
+    : RType< TTo >
+    , IProxy
+
     where TTo : TFrom
 {
 
@@ -48,11 +48,16 @@ RTypeProxy<
 
 public
 RTypeProxy(
-    IRType< TFrom > from
+    RType< TFrom > from
 )
+    : base(
+        item => from.Is( item ),
+        from.SayIs,
+        from.SayIsNot,
+        from.SayMustBe )
 {
-    if( from == null )
-        throw new ValueArgumentNullException( new Parameter( "from" ) );
+    if( object.ReferenceEquals( from, null ) )
+        throw new LocalisedArgumentNullException( "from" );
     this.From = from;
 }
 
@@ -62,91 +67,9 @@ RTypeProxy(
 // Properties
 // -----------------------------------------------------------------------------
 
-public
-    IRType< TFrom >
-From
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IRType< T >
-// -----------------------------------------------------------------------------
-
-public
-    SCG.IEnumerable< IRType< TTo > >
-GetComponents()
-{
-    return this.From.GetComponents()
-        .Select( c => c.Contravary< TFrom, TTo >() );
-}
-
-
-public
-    RTypeException
-CheckMembers(
-    TTo     item,
-    Value   itemReference
-)
-{
-    return this.From.CheckMembers( item, itemReference );
-}
-
-
-public
-    bool
-Predicate(
-    TTo item
-)
-{
-    return this.From.Predicate( item );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IRType
-// -----------------------------------------------------------------------------
-
-public virtual
-    IRType
-GetUnderlying()
-{
-    return this.From.GetUnderlying();
-}
-
-
-public
-    Localised< string >
-SayIs(
-    Localised< string > reference
-)
-{
-    return this.From.SayIs( reference );
-}
-
-
-public
-    Localised< string >
-SayIsNot(
-    Localised< string > reference
-)
-{
-    return this.From.SayIsNot( reference );
-}
-
-
-public
-    Localised< string >
-SayMustBe(
-    Localised< string > reference
-)
-{
-    return this.From.SayMustBe( reference );
-}
+private
+RType< TFrom >
+From;
 
 
 
@@ -154,20 +77,10 @@ SayMustBe(
 // IEquatable< RType >
 // -----------------------------------------------------------------------------
 
-public
-    bool
-Equals(
-    IRType that
-)
-{
-    return this.From.Equals( that );
-}
-
-
-public
+public override
     bool
 DirectionalEquals(
-    IRType that
+    RType that
 )
 {
     return this.From.DirectionalEquals( that );
@@ -184,19 +97,13 @@ GetHashCode()
 
 
 // -----------------------------------------------------------------------------
-// System.Object
+// IProxy
 // -----------------------------------------------------------------------------
 
-public override
-    bool
-Equals(
-    object that
-)
+    object
+IProxy.Underlying
 {
-    return
-        that != null &&
-        that is IRType &&
-        this.Equals( (IRType)that );
+    get { return this.From; }
 }
 
 

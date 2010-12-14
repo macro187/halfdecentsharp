@@ -27,7 +27,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// Static methods for <tt>EQ<T></tt>
+/// <tt>EQ<T></tt> Library
 // =============================================================================
 
 public static class
@@ -35,42 +35,48 @@ EQ
 {
 
 
-/// According to a particular definition of equality
+/// According to <tt>System.IEquatable<T></tt>
 ///
 public static
     void
-Require<
+Check<
     T
 >(
-    T       compareTo,
-    T       item,
-    Value   itemReference
+    T compareTo,
+    T item
 )
     where T : System.IEquatable< T >
 {
-    Create( compareTo ).Require( item, itemReference );
+    RType< T > rt = Create( compareTo );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => rt.Check( item ) );
 }
 
 
-/// According to a particular comparer
+/// According to a particular equality comparer
 ///
 public static
     void
-Require<
+Check<
     T
 >(
     T                       compareTo,
     IEqualityComparer< T >  comparer,
-    T                       item,
-    Value                   itemReference
+    T                       item
 )
 {
-    Create( compareTo, comparer ).Require( item, itemReference );
+    RType< T > rt = Create( compareTo, comparer );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => rt.Check( item ) );
 }
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -83,7 +89,7 @@ Create<
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -101,8 +107,8 @@ Create<
 
 
 // =============================================================================
-/// RType: Equal to a particular value, according to a particular definition of
-/// equality
+/// RType: Equal to a particular value according to a particular equality
+/// comparer
 ///
 /// <tt>null</tt> values always pass
 // =============================================================================
@@ -111,7 +117,7 @@ public sealed class
 EQ<
     T
 >
-    : SimpleTextRTypeBase< T >
+    : RType< T >
 {
 
 
@@ -126,16 +132,19 @@ EQ(
     IEqualityComparer< T >  comparer
 )
     : base(
-        _S( "{{0}} is equal to {0}", SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} isn't equal to {0}", SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} must be equal to {0}", SystemObject.ToString( compareTo ) ) )
+        item =>
+            (object)item == null ?
+                true :
+                comparer.Equals( compareTo, item ),
+        r => _S( "{0} is equal to {1}", r, compareTo ),
+        r => _S( "{0} isn't equal to {1}", r, compareTo ),
+        r => _S( "{0} must be equal to {1}", r, compareTo ) )
 {
     if( comparer == null )
-        throw new ValueArgumentNullException( new Parameter( "comparer" ) );
+        throw new LocalisedArgumentNullException( "comparer" );
     this.CompareTo = compareTo;
     this.Comparer = comparer;
 }
-
 
 
 // -----------------------------------------------------------------------------
@@ -166,38 +175,22 @@ Comparer
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< object >
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Predicate(
-    T item
-)
-{
-    if( this.CompareTo == null ) return ( item == null );
-    if( item == null ) return true;
-    return this.Comparer.Equals( item, this.CompareTo );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IComparable< IRType >
+// IComparable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
 DirectionalEquals(
-    IRType that
+    RType that
 )
 {
-    if( !base.DirectionalEquals( that ) ) return false;
-    EQ<T> eq = that.GetUnderlying() as EQ<T>;
-    if( eq == null ) return false;
     return
-        eq.Comparer.Equals( this.Comparer ) &&
-        this.Comparer.Equals( eq.CompareTo, this.CompareTo );
+        base.DirectionalEquals( that )
+        && that.IsAnd<
+            EQ< T > >(
+            eq =>
+                eq.Comparer.Equals( this.Comparer ) &&
+                this.Comparer.Equals( eq.CompareTo, this.CompareTo ) );
 }
 
 

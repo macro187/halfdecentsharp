@@ -35,20 +35,22 @@ GT
 {
 
 
-/// According to a specified ordering
+/// According to IComparable
 ///
 public static
     void
-Require<
+Check<
     T
 >(
-    T       compareTo,
-    T       item,
-    Value   itemReference
+    T compareTo,
+    T item
 )
     where T : System.IComparable< T >
 {
-    Create( compareTo ).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create( compareTo ).Check( item ) );
 }
 
 
@@ -56,21 +58,23 @@ Require<
 ///
 public static
     void
-Require<
+Check<
     T
 >(
     T               compareTo,
     IComparer< T >  comparer,
-    T               item,
-    Value           itemReference
+    T               item
 )
 {
-    Create( compareTo, comparer ).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create( compareTo, comparer ).Check( item ) );
 }
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -83,7 +87,7 @@ Create<
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -93,6 +97,7 @@ Create<
 {
     return new GT< T >( compareTo, comparer );
 }
+
 
 
 } // type
@@ -107,7 +112,7 @@ public sealed class
 GT<
     T
 >
-    : SimpleTextRTypeBase< T >
+    : CompositeRType< T >
 {
 
 
@@ -122,92 +127,16 @@ GT(
     IComparer< T >  comparer
 )
     : base(
-        _S( "{{0}} is greater than {0}",
-            SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} is less than or equal to {0}",
-            SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} must be greater than {0}",
-            SystemObject.ToString( compareTo ) ) )
-{
-    if( compareTo == null )
-        throw new ValueArgumentNullException( new Parameter( "compareTo" ) );
-    if( comparer == null )
-        throw new ValueArgumentNullException( new Parameter( "comparer" ) );
-    this.CompareTo = compareTo;
-    this.Comparer = comparer;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// The value to compare to
-///
-public
-T
-CompareTo
-{
-    get;
-    private set;
-}
-
-
-/// The ordering to use to make the comparison
-///
-public
-IComparer< T >
-Comparer
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// RTypeBase< T >
-// -----------------------------------------------------------------------------
-
-public override
-    SCG.IEnumerable< IRType< T > >
-GetComponents()
-{
-    yield return GTE.Create( this.CompareTo, this.Comparer );
-    yield return NEQ.Create( this.CompareTo, this.Comparer );
-}
-
-
-
-
-// -----------------------------------------------------------------------------
-// IEquatable< RType >
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-DirectionalEquals(
-    IRType that
-)
-{
-    if( !base.DirectionalEquals( that ) ) return false;
-    GT<T> gt = (GT<T>)( that.GetUnderlying() );
-    return
-        gt.Comparer.Equals( this.Comparer ) &&
-        this.Comparer.Equals( gt.CompareTo, this.CompareTo );
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return
-        base.GetHashCode() ^
-        this.Comparer.GetHashCode() ^
-        this.Comparer.GetHashCode( this.CompareTo );
-}
+        SystemEnumerable.Create(
+            GTE.Create( compareTo, comparer ),
+            NEQ.Create( compareTo, comparer ) ),
+        ls => _S( "{0} is greater than {1}",
+            ls, SystemObject.ToString( compareTo ) ),
+        ls => _S( "{0} is not greater than {1}",
+            ls, SystemObject.ToString( compareTo ) ),
+        ls => _S( "{0} must be greater than {1}",
+            ls, SystemObject.ToString( compareTo ) ) )
+{}
 
 
 

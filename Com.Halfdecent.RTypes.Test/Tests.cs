@@ -20,6 +20,7 @@ using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Testing;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Meta;
 
@@ -48,11 +49,233 @@ Main()
 }
 
 
+private class
+FakeRType
+    : RType< object >
+{
+    public
+    FakeRType()
+        : base (
+            obj => true,
+            r => "fake",
+            r => "fake",
+            r => "fake" )
+    {}
+}
+
+
+private class
+FakeRType2
+    : RType< object >
+{
+    public
+    FakeRType2()
+        : base (
+            obj => true,
+            r => "fake2",
+            r => "fake2",
+            r => "fake2" )
+    {}
+}
+
+
+[Test( "RTypeException" )]
+public static
+void
+Test_RTypeException()
+{
+    bool ok;
+
+    Print( "void Match(), match" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        RTypeException.Match(
+            e,
+            (vr,f) => vr.Equals( f.Local( "local" ) ),
+            rt => rt is FakeRType,
+            (vr,f,rte) => ok = true );
+    }
+    Assert( ok );
+
+    Print( "void Match(), value reference mismatch" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = true;
+        RTypeException.Match(
+            e,
+            (vr,f) => !( vr.Equals( f.Local( "local" ) ) ),
+            rt => rt is FakeRType,
+            (vr,f,rte) => ok = false );
+    }
+    Assert( ok );
+
+    Print( "void Match(), rtype mismatch" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = true;
+        RTypeException.Match(
+            e,
+            (vr,f) => vr.Equals( f.Local( "local" ) ),
+            rt => !( rt is FakeRType ),
+            (vr,f,rte) => ok = false );
+    }
+    Assert( ok );
+
+    Print( "bool Match(), match" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = RTypeException.Match(
+            e,
+            (vr,f) => vr.Equals( f.Local( "local" ) ),
+            rt => rt is FakeRType );
+    }
+    Assert( ok );
+
+    Print( "bool Match(), value reference mismatch" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = true;
+        ok = !( RTypeException.Match(
+            e,
+            (vr,f) => !( vr.Equals( f.Local( "local" ) ) ),
+            rt => rt is FakeRType ) );
+    }
+    Assert( ok );
+
+    Print( "bool Match(), rtype mismatch" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = true;
+        ok = !( RTypeException.Match(
+            e,
+            (vr,f) => vr.Equals( f.Local( "local" ) ),
+            rt => !( rt is FakeRType ) ) );
+    }
+    Assert( ok );
+
+    Print( "void Match<T>(), match" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        RTypeException.Match<
+            FakeRType >(
+            e,
+            (vr,f) => vr.Equals( f.Local( "local" ) ),
+            (vr,f,rt,rte) => ok = true );
+    }
+    Assert( ok );
+
+    Print( "void Match<T>(), value reference mismatch" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = true;
+        RTypeException.Match<
+            FakeRType >(
+            e,
+            (vr,f) => !( vr.Equals( f.Local( "local" ) ) ),
+            (vr,f,rt,rte) => ok = false );
+    }
+    Assert( ok );
+
+    Print( "void Match<T>(), rtype mismatch" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = true;
+        RTypeException.Match<
+            FakeRType2 >(
+            e,
+            (vr,f) => vr.Equals( f.Local( "local" ) ),
+            (vr,f,rt,rte) => ok = false );
+    }
+    Assert( ok );
+
+    Print( "bool Match<T>(), match" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = RTypeException.Match<
+            FakeRType >(
+            e,
+            (vr,f) => vr.Equals( f.Local( "local" ) ) );
+    }
+    Assert( ok );
+
+    Print( "bool Match(), value reference mismatch" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = true;
+        ok = !( RTypeException.Match< FakeRType >(
+            e,
+            (vr,f) => !( vr.Equals( f.Local( "local" ) ) ) ) );
+    }
+    Assert( ok );
+
+    Print( "bool Match(), rtype mismatch" );
+    ok = false;
+    try {
+        throw new ValueReferenceException(
+            new Frame().Local( "local" ),
+            new RTypeException( new FakeRType() ) );
+    } catch( System.Exception e ) {
+        ok = true;
+        ok = !( RTypeException.Match<
+            FakeRType2 >(
+            e,
+            (vr,f) => vr.Equals( f.Local( "local" ) ) ) );
+    }
+    Assert( ok );
+}
+
+
 [Test( "EQ<T>" )]
 public static
 void
 Test_EQ_T()
 {
+    bool ok;
+
     Print( "Equality" );
     Assert(
         new EQ<object>( 1, new ObjectComparer() ).Equals(
@@ -74,22 +297,37 @@ Test_EQ_T()
         new EQ<object>( null, new ObjectComparer() ) ) );
 
     Print( "Null passes" );
-    EQ.Require( (object)1, new ObjectComparer(), (object)null, new Literal() );
+    EQ.Check( (object)1, new ObjectComparer(), (object)null );
 
     Print( "Equal passes" );
-    EQ.Require( 1, 1, new Literal() );
+    EQ.Check( 1, 1 );
 
     Print( "Inequal fails" );
-    Expect< RTypeException >(
-        () => EQ.Require( 1, 2, new Literal() ) );
+    ok = false;
+    try {
+        EQ.Check( 1, 2 );
+    } catch( System.Exception e ) {
+        ok = RTypeException.Match<
+            EQ< int > >(
+            e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ) );
+    }
+    Assert( ok );
 
     Print( "With null CompareTo, null passes" );
-    EQ.Require( null, new ObjectComparer(), null, new Literal() );
+    EQ.Check( null, new ObjectComparer(), null );
 
     Print( "With null CompareTo, non-null fails" );
-    Expect< RTypeException >(
-        () => EQ.Require(
-            null, new ObjectComparer(), new object(), new Literal() ) );
+    ok = false;
+    try {
+        EQ.Check( null, new ObjectComparer(), new object() );
+    } catch( System.Exception e ) {
+        ok = RTypeException.Match<
+            EQ< object > >(
+            e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ) );
+    }
+    Assert( ok );
 }
 
 
@@ -119,98 +357,200 @@ Test_NEQ_T()
         new NEQ<object>( null, new ObjectComparer() ).GetHashCode() ) );
 
     Print( "Null passes" );
-    NEQ.Require( (object)1, new ObjectComparer(), null, new Literal() );
+    NEQ.Check( (object)1, new ObjectComparer(), null );
 
     Print( "Inequal passes" );
-    NEQ.Require( 1, 2, new Literal() );
+    NEQ.Check( 1, 2 );
 
     Print( "Equal fails" );
-    Expect< RTypeException >(
-        () => NEQ.Require( 1, 1, new Literal() ) );
+    Expect(
+        e => RTypeException.Match<
+            NEQ< int > >(
+            e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ) ),
+        () => NEQ.Check( 1, 1 ) );
 
     Print( "With null CompareTo, non-null passes" );
-    NEQ.Require( null, new ObjectComparer(), new object(), new Literal() );
+    NEQ.Check( null, new ObjectComparer(), new object() );
 
     Print( "With null CompareTo, null fails" );
-    Expect< RTypeException >(
-        () => NEQ.Require( null, new ObjectComparer(), null, new Literal() ) );
+    Expect(
+        e => RTypeException.Match<
+            NEQ< object > >(
+            e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ) ),
+        () => NEQ.Check( null, new ObjectComparer(), null ) );
 }
 
 
-public interface I : IComparable< I > {}
-public interface II : I {}
-public interface J : IComparable< J > {}
-public class AlwaysBigger : I {
-    // IComparable< I >
-    public int CompareTo( I that ) {
-        return Comparable.CompareTo( this, that );
-    }
-    public int DirectionalCompareTo( I that ) {
-        return 1;
-    }
-    // IEquatable< I >
-    public bool Equals( I that ) {
-        return Equatable.Equals( this, that );
-    }
-    public bool DirectionalEquals(
-        I that
-    ) {
-        return false;
-    }
-    int IEquatable<I>.GetHashCode() {
-        return 1;
-    }
-    // System.Object
-    public override bool Equals( object that ) { throw new System.Exception(); }
-    public override int GetHashCode() { throw new System.Exception(); }
+class
+NotBadOrWrong
+    : CompositeRType< string >
+{
+    public
+    NotBadOrWrong()
+        : base(
+            SystemEnumerable.Create(
+                NEQ.Create( "bad" ),
+                NEQ.Create( "wrong" ) ),
+            ls => LocalisedString.Format( "{0} is NotBadOrWrong", ls ),
+            ls => LocalisedString.Format( "{0} is not NotBadOrWrong", ls ),
+            ls => LocalisedString.Format( "{0} must be NotBadOrWrong", ls ) )
+    {}
 }
-public class AlwaysEqual : I {
-    // IComparable< I >
-    public int CompareTo( I that ) {
-        return Comparable.CompareTo( this, that );
-    }
-    public int DirectionalCompareTo( I that ) {
-        return 0;
-    }
-    // IEquatable< I >
-    public bool Equals( I that ) {
-        return Equatable.Equals( this, that );
-    }
-    public bool DirectionalEquals(
-        I that
-    ) {
-        return true;
-    }
-    int IEquatable<I>.GetHashCode() {
-        return 0;
-    }
-    // System.Object
-    public override bool Equals( object that ) { throw new System.Exception(); }
-    public override int GetHashCode() { throw new System.Exception(); }
+
+
+class
+NotFailOrNope
+    : CompositeRType< string >
+{
+    public
+    NotFailOrNope()
+        : base(
+            SystemEnumerable.Create(
+                NEQ.Create( "fail" ),
+                NEQ.Create( "nope" ) ),
+            ls => LocalisedString.Format( "{0} is NotFailOrNope", ls ),
+            ls => LocalisedString.Format( "{0} is not NotFailOrNope", ls ),
+            ls => LocalisedString.Format( "{0} must be NotFailOrNope", ls ) )
+    {}
 }
-public class AlwaysSmaller : I {
-    // IComparable< I >
-    public int CompareTo( I that ) {
-        return Comparable.CompareTo( this, that );
-    }
-    public int DirectionalCompareTo( I that ) {
-        return -1;
-    }
-    // IEquatable< I >
-    public bool Equals( I that ) {
-        return Equatable.Equals( this, that );
-    }
-    public bool DirectionalEquals(
-        I that
-    ) {
-        return false;
-    }
-    int IEquatable<I>.GetHashCode() {
-        return 0;
-    }
-    // System.Object
-    public override bool Equals( object that ) { throw new System.Exception(); }
-    public override int GetHashCode() { throw new System.Exception(); }
+
+
+class
+NotBadWrongFailOrNope
+    : CompositeRType< string >
+{
+    public
+    NotBadWrongFailOrNope()
+        : base(
+            SystemEnumerable.Create<
+                RType< string > >(
+                new NotBadOrWrong(),
+                new NotFailOrNope() ),
+            ls => LocalisedString.Format(
+                "{0} is NotBadWrongFailOrNope", ls ),
+            ls => LocalisedString.Format(
+                "{0} is not NotBadWrongFailOrNope", ls ),
+            ls => LocalisedString.Format(
+                "{0} must be NotBadWrongFailOrNope", ls ) )
+    {}
+}
+
+
+
+[Test( "CompositeRType<T>" )]
+public static
+void
+Test_CompositeRType_T()
+{
+    RType< string > t = new NotBadOrWrong();
+
+    Print( "Is()" );
+    Assert( t.Is( "ok" ) );
+    Assert( !t.Is( "bad" ) );
+    Assert( !t.Is( "wrong" ) );
+
+    Print( "Is( null )" );
+    Assert( t.Is( null ) );
+
+    Print( "Check()" );
+    t.Check( "ok" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( t ) ),
+        () => t.Check( "bad" ) );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( t ) ),
+        () => t.Check( "wrong" ) );
+
+    Print( "Check( null )" );
+    t.Check( null );
+
+    Print( ".Equals()" );
+    Assert( t.Equals( new NotBadOrWrong() ) );
+    Assert( !t.Equals( new NotFailOrNope() ) );
+
+    Print( "Composite of Composites" );
+    RType< string > c = new NotBadWrongFailOrNope();
+    Assert( c.Is( "ok" ) );
+    Assert( !c.Is( "bad" ) );
+    Assert( !c.Is( "wrong" ) );
+    Assert( !c.Is( "fail" ) );
+    Assert( !c.Is( "nope" ) );
+}
+
+
+class
+FourLong
+    : MemberRType< string, int >
+{
+    public
+    FourLong()
+        : base(
+            s => s.Length,
+            r => r.Property( "Length" ),
+            s => LocalisedString.Format( "the length of {0}", s ),
+            EQ.Create( 4 ) )
+    {}
+}
+
+
+class
+FiveLong
+    : MemberRType< string, int >
+{
+    public
+    FiveLong()
+        : base(
+            s => s.Length,
+            r => r.Property( "Length" ),
+            s => LocalisedString.Format( "the length of {0}", s ),
+            EQ.Create( 5 ) )
+    {}
+}
+
+
+[Test( "MemberRType<T,TMember>" )]
+public static
+void
+Test_MemberRType_T_TMember()
+{
+    RType< string > fourlong = new FourLong();
+    RType< string > fivelong = new FiveLong();
+
+    Print( "Is()" );
+    Assert( fourlong.Is( "1234" ) );
+    Assert( !( fourlong.Is( "12345" ) ) );
+    Assert( fivelong.Is( "12345" ) );
+    Assert( !( fivelong.Is( "1234" ) ) );
+
+    Print( "Is( null )" );
+    Assert( fourlong.Is( null ) );
+
+    Print( "Check()" );
+    fourlong.Check( "1234" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( fourlong ) ),
+        () => fourlong.Check( "12345" ) );
+    fivelong.Check( "12345" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( fivelong ) ),
+        () => fivelong.Check( "1234" ) );
+
+    Print( "Check( null )" );
+    fourlong.Check( null );
+
+    Print( "Equals()" );
+    Assert( fourlong.Equals( fourlong ) );
+    Assert( !( fourlong.Equals( fivelong ) ) );
 }
 
 
@@ -231,11 +571,14 @@ Test_NonNull()
         .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
 
     Print( "Non-null passes" );
-    NonNull.Require( new object(), new Literal() );
+    NonNull.Check( new object() );
 
     Print( "Null fails" );
-    Expect< RTypeException >(
-        () => NonNull.Require( null, new Literal() ) );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( new NonNull() ) ),
+        () => NonNull.Check( null ) );
 }
 
 
@@ -255,57 +598,18 @@ Test_NonBlankString()
         new NonBlankString()
         .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
 
-    Print( "Null passes" );
-    NonBlankString.Require( null, new Literal() );
-
     Print( "Non-blank string passes" );
-    NonBlankString.Require( "Not blank", new Literal() );
+    NonBlankString.Check( "Not blank" );
 
     Print( "Blank string fails" );
-    Expect< RTypeException >(
-        () => NonBlankString.Require( "", new Literal() ) );
-}
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( new NonBlankString() ) ),
+        () => NonBlankString.Check( "" ) );
 
-
-[Test( "GT<T>" )]
-public static
-void
-Test_GT_T()
-{
-    I bigger = new AlwaysBigger();
-    I equal = new AlwaysEqual();
-    I smaller = new AlwaysSmaller();
-
-    Print( "Equality" );
-    Assert(
-        new GT<I>( equal, new ComparableComparer<I>() ).Equals(
-        new GT<I>( equal, new ComparableComparer<I>() ) ) );
-    Assert(
-        new GT<I>( equal, new ComparableComparer<I>() ).GetHashCode() ==
-        new GT<I>( equal, new ComparableComparer<I>() ).GetHashCode() );
-    Assert( !
-        new GT<I>( bigger, new ComparableComparer<I>() ).Equals(
-        new GT<I>( smaller, new ComparableComparer<I>() ) ) );
-
-    Print( "Null arguments to constructor throw ArgumentNullException" );
-    Expect< System.ArgumentNullException >( () =>
-        GT.Create( null, new ComparableComparer<I>() ) );
-    Expect< System.ArgumentNullException >( () =>
-        GT.Create( bigger, null ) );
-
-    Print( "null passes" );
-    GT.Require( equal, null, new Literal() );
-
-    Print( "Bigger passes" );
-    GT.Require<I>( equal, bigger, new Local( "bigger" ) );
-
-    Print( "Equal fails" );
-    Expect< RTypeException >( () =>
-        GT.Require( equal, equal, new Local( "equal" ) ) );
-
-    Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        GT.Require( equal, smaller, new Local( "smaller" ) ) );
+    Print( "Null passes" );
+    NonBlankString.Check( null );
 }
 
 
@@ -314,81 +618,42 @@ public static
 void
 Test_GTE_T()
 {
-    I bigger = new AlwaysBigger();
-    I equal = new AlwaysEqual();
-    I smaller = new AlwaysSmaller();
-
     Print( "Equality" );
     Assert(
-        GTE.Create( equal, new ComparableComparer<I>() ).Equals(
-        GTE.Create( equal, new ComparableComparer<I>() ) ) );
+        GTE.Create( 1 ).Equals(
+        GTE.Create( 1 ) ) );
     Assert(
-        GTE.Create( equal, new ComparableComparer<I>() ).GetHashCode() ==
-        GTE.Create( equal, new ComparableComparer<I>() ).GetHashCode() );
+        GTE.Create( 1 ).GetHashCode() ==
+        GTE.Create( 1 ).GetHashCode() );
     Assert( !
-        GTE.Create( bigger, new ComparableComparer<I>() ).Equals(
-        GTE.Create( smaller, new ComparableComparer<I>() ) ) );
+        GTE.Create( 1 ).Equals(
+        GTE.Create( 2 ) ) );
 
     Print( "Null arguments to constructor throw ArgumentNullException" );
-    Expect< System.ArgumentNullException >( () =>
-        GTE.Create( null, new ComparableComparer<I>() ) );
-    Expect< System.ArgumentNullException >( () =>
-        GTE.Create( bigger, null ) );
+    Expect<
+        System.ArgumentNullException >(
+        () => GTE.Create< string >( null ) );
+    Expect<
+        System.ArgumentNullException >(
+        () => GTE.Create( 0, null ) );
 
     Print( "null passes" );
-    GTE.Require( equal, null, new Literal() );
+    GTE.Check( "a", null );
 
     Print( "Bigger passes" );
-    GTE.Require( equal, bigger, new Local( "bigger" ) );
+    GTE.Check( 1, 2 );
 
     Print( "Equal passes" );
-    GTE.Require( equal, equal, new Local( "equal" ) );
+    GTE.Check( 1, 1 );
 
     Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        GTE.Require( equal, smaller, new Local( "smaller" ) ) );
-}
-
-
-[Test( "LT<T>" )]
-public static
-void
-Test_LT_T()
-{
-    I bigger = new AlwaysBigger();
-    I equal = new AlwaysEqual();
-    I smaller = new AlwaysSmaller();
-
-    Print( "Equality" );
-    Assert(
-        new LT<I>( equal, new ComparableComparer<I>() ).Equals(
-        new LT<I>( equal, new ComparableComparer<I>() ) ) );
-    Assert(
-        new LT<I>( equal, new ComparableComparer<I>() ).GetHashCode() ==
-        new LT<I>( equal, new ComparableComparer<I>() ).GetHashCode() );
-    Assert( !
-        new LT<I>( bigger, new ComparableComparer<I>() ).Equals(
-        new LT<I>( smaller, new ComparableComparer<I>() ) ) );
-
-    Print( "Null arguments to constructor throw ArgumentNullException" );
-    Expect< System.ArgumentNullException >( () =>
-        LT.Create( null, new ComparableComparer<I>() ) );
-    Expect< System.ArgumentNullException >( () =>
-        LT.Create( bigger, null ) );
-
-    Print( "null passes" );
-    LT.Require( equal, null, new Literal() );
-
-    Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        LT.Require( equal, bigger, new Local( "bigger" ) ) );
-
-    Print( "Equal fails" );
-    Expect< RTypeException >( () =>
-        LT.Require( equal, equal, new Local( "equal" ) ) );
-
-    Print( "Smaller passes" );
-    LT.Require( equal, smaller, new Local( "smaller" ) );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.IsAnd<
+                GTE<int> >(
+                gte => gte.CompareTo == 1 ) ),
+        () => GTE.Check( 1, 0 ) );
 }
 
 
@@ -397,39 +662,250 @@ public static
 void
 Test_LTE_T()
 {
-    I bigger = new AlwaysBigger();
-    I equal = new AlwaysEqual();
-    I smaller = new AlwaysSmaller();
-
     Print( "Equality" );
     Assert(
-        new LTE<I>( equal, new ComparableComparer<I>() ).Equals(
-        new LTE<I>( equal, new ComparableComparer<I>() ) ) );
+        LTE.Create( 1 ).Equals(
+        LTE.Create( 1 ) ) );
     Assert(
-        new LTE<I>( equal, new ComparableComparer<I>() ).GetHashCode() ==
-        new LTE<I>( equal, new ComparableComparer<I>() ).GetHashCode() );
+        LTE.Create( 1 ).GetHashCode() ==
+        LTE.Create( 1 ).GetHashCode() );
     Assert( !
-        new LTE<I>( bigger, new ComparableComparer<I>() ).Equals(
-        new LTE<I>( smaller, new ComparableComparer<I>() ) ) );
+        LTE.Create( 1 ).Equals(
+        LTE.Create( 2 ) ) );
 
     Print( "Null arguments to constructor throw ArgumentNullException" );
-    Expect< System.ArgumentNullException >( () =>
-        LTE.Create( null, new ComparableComparer<I>() ) );
-    Expect< System.ArgumentNullException >( () =>
-        LTE.Create( bigger, null ) );
+    Expect<
+        System.ArgumentNullException >(
+        () => LTE.Create< string >( null ) );
+    Expect<
+        System.ArgumentNullException >(
+        () => LTE.Create( 0, null ) );
 
     Print( "null passes" );
-    LTE.Require( equal, null, new Literal() );
+    LTE.Check( "a", null );
 
     Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        LTE.Require( equal, bigger, new Local( "bigger" ) ) );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.IsAnd<
+                LTE<int> >(
+                lte => lte.CompareTo == 1 ) ),
+        () => LTE.Check( 1, 2 ) );
 
     Print( "Equal passes" );
-    LTE.Require( equal, equal, new Local( "equal" ) );
+    LTE.Check( 1, 1 );
 
     Print( "Smaller passes" );
-    LTE.Require( equal, smaller, new Local( "smaller" ) );
+    LTE.Check( 1, 0 );
+}
+
+
+[Test( "GT<T>" )]
+public static
+void
+Test_GT_T()
+{
+    Print( "Equality" );
+    Assert(
+        GT.Create( 1 ).Equals(
+        GT.Create( 1 ) ) );
+    Assert(
+        GT.Create( 1 ).GetHashCode() ==
+        GT.Create( 1 ).GetHashCode() );
+    Assert( !
+        GT.Create( 1 ).Equals(
+        GT.Create( 2 ) ) );
+
+    Print( "null passes" );
+    GT.Check( "a", null );
+
+    Print( "Bigger passes" );
+    GT.Check( 1, 2 );
+
+    Print( "Equal fails" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.IsAnd<
+                GT< int > >(
+                gt => gt.Equals( GT.Create( 1 ) ) ) ),
+        () => GT.Check( 1, 1 ) );
+
+    Print( "Smaller fails" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.IsAnd<
+                GT< int > >(
+                gt => gt.Equals( GT.Create( 1 ) ) ) ),
+        () => GT.Check( 1, 0 ) );
+}
+
+
+[Test( "LT<T>" )]
+public static
+void
+Test_LT_T()
+{
+    Print( "Equality" );
+    Assert(
+        LT.Create( 1 ).Equals(
+        LT.Create( 1 ) ) );
+    Assert(
+        LT.Create( 1 ).GetHashCode() ==
+        LT.Create( 1 ).GetHashCode() );
+    Assert( !
+        LT.Create( 1 ).Equals(
+        LT.Create( 2 ) ) );
+
+    Print( "null passes" );
+    LT.Check( "a", null );
+
+    Print( "Bigger fails" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.IsAnd<
+                LT< int > >(
+                lt => lt.Equals( LT.Create( 1 ) ) ) ),
+        () => LT.Check( 1, 2 ) );
+
+    Print( "Equal fails" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.IsAnd<
+                LT< int > >(
+                lt => lt.Equals( LT.Create( 1 ) ) ) ),
+        () => LT.Check( 1, 1 ) );
+
+    Print( "Smaller passes" );
+    LT.Check( 1, 0 );
+}
+
+
+[Test( "InInterval_T" )]
+public static void
+Test_InInterval_T()
+{
+    int lt          = 3;
+    int from        = 5;
+    int between     = 7;
+    int to          = 10;
+    int gt          = 12;
+
+    RType< int > rtinc =
+        InInterval.Create( Interval.Create( from, true, to, true ) );
+    RType< int > rtexc =
+        InInterval.Create( Interval.Create( from, false, to, false ) );
+    RType< int > rtfrominc =
+        InInterval.Create( Interval.Create( from, true, to, false ) );
+    RType< int > rttoinc =
+        InInterval.Create( Interval.Create( from, false, to, true ) );
+
+    RType< int > rt;
+    string id = "...";
+
+    Print( "Inclusive" );
+    rt = rtinc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( lt ) );
+    rt.Check( from );
+    rt.Check( between );
+    rt.Check( to );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( gt ) );
+
+    Print( "Exclusive" );
+    rt = rtexc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( lt ) );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( from ) );
+    rt.Check( between );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( to ) );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( gt ) );
+
+    Print( "From Inclusive" );
+    rt = rtfrominc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( lt ) );
+    rt.Check( from );
+    rt.Check( between );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( to ) );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( gt ) );
+
+    Print( "To Inclusive" );
+    rt = rttoinc;
+    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
+    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
+    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( lt ) );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( from ) );
+    rt.Check( between );
+    rt.Check( to );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            t => t.Equals( rt ) ),
+        () => rt.Check( gt ) );
+
+    Print( ".Equals() and .GetHashCode()" );
+    RType< int > t1 = InInterval.Create( Interval.Create( 1, 10 ) );
+    RType< int > t2 = InInterval.Create( Interval.Create( 1, 10 ) );
+    RType< int > t3 = InInterval.Create( Interval.Create( 1, 20 ) );
+    Assert( t1.Equals( t2 ) );
+    Assert( !( t1.Equals( t3 ) ) );
+    Assert( t1.GetHashCode() == t2.GetHashCode() );
 }
 
 
@@ -438,17 +914,28 @@ public static
 void
 Test_Contravariance()
 {
-    IRType< object > t = new EQ<object>( "apple", new ObjectComparer() );
-    IRType< object > u = new EQ<object>( "apple", new ObjectComparer() );
-    IRType< object > v = new EQ<object>( "orange", new ObjectComparer() );
-    IRType< string > w = t.Contravary< object, string >();
-    IRType< string > x = u.Contravary< object, string >();
-    IRType< string > y = v.Contravary< object, string >();
+    RType< object > t = new EQ<object>( "apple", new ObjectComparer() );
+    RType< object > u = new EQ<object>( "apple", new ObjectComparer() );
+    RType< object > v = new EQ<object>( "orange", new ObjectComparer() );
+    RType< string > w = t.Contravary< string >();
+    RType< string > x = u.Contravary< string >();
+    RType< string > y = v.Contravary< string >();
 
-    Print( "Contravariant provides same Assert() results as original" );
-    w.Require( "apple", new Literal() );
-    Expect< RTypeException >(
-        () => w.Require( "orange", new Literal() ) );
+    Print( "Contravariant produces the same Check() results as original" );
+    t.Check( "apple" );
+    w.Check( "apple" );
+    Expect(
+        e => RTypeException.Match(
+            e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( t ) ),
+        () => t.Check( "orange" ) );
+    Expect(
+        e => RTypeException.Match(
+            e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( w ) ),
+        () => w.Check( "orange" ) );
 
     Print( "Contravariant .Equals() original and vice-versa" );
     Assert( t.Equals( w ) );
@@ -469,202 +956,6 @@ Test_Contravariance()
     Assert(
         u.Equals( v ) ==
         u.Equals( y ) );
-}
-
-
-private class
-T
-    : SimpleTextRTypeBase< int >
-{
-    public T() : base( "", "", "" ) {}
-    public override SCG.IEnumerable< IRType< int > > GetComponents()
-    {
-        return
-            base.GetComponents()
-            .Append( new NEQ<object>( "T1", new ObjectComparer() )
-                .Contravary< object, int >() )
-            .Append( new NEQ<object>( "T2", new ObjectComparer() )
-                .Contravary< object, int >() );
-    }
-}
-
-private class
-U
-    : SimpleTextRTypeBase< int >
-{
-    public U() : base( "", "", "" ) {}
-    public override SCG.IEnumerable< IRType< int > > GetComponents()
-    {
-        return
-            base.GetComponents()
-            .Append( new T() )
-            .Append( new NEQ<object>( "U2", new ObjectComparer() )
-                .Contravary< object, int >() );
-    }
-}
-
-
-[Test( "AllComponentsDepthFirst()" )]
-public static
-void
-Test_AllComponentsDepthFirst()
-{
-    Print( "No components" );
-    Assert(
-        new NEQ<object>( 4, new ObjectComparer() ).AllComponentsDepthFirst()
-        .SequenceEqual(
-            Enumerable.Empty< IRType< object > >() ) );
-
-    Print( "Flat components" );
-    Assert(
-        new T().AllComponentsDepthFirst()
-        .SequenceEqual(
-            Enumerable.Empty< IRType< int > >()
-            .Append( new NEQ<object>( "T1", new ObjectComparer() )
-                .Contravary< object, int >() )
-            .Append( new NEQ<object>( "T2", new ObjectComparer() )
-                .Contravary< object, int >() ) ) );
-
-    Print( "Nested components" );
-    Assert(
-        new U().AllComponentsDepthFirst()
-        .SequenceEqual(
-            Enumerable.Empty< IRType< int > >()
-            .Append( new T() )
-            .Append( new NEQ<object>( "T1", new ObjectComparer() )
-                .Contravary< object, int >() )
-            .Append( new NEQ<object>( "T2", new ObjectComparer() )
-                .Contravary< object, int >() )
-            .Append( new NEQ<object>( "U2", new ObjectComparer() )
-                .Contravary< object, int >() ) ) );
-}
-
-
-[Test( "IsEqualToOrMoreSpecificThan" )]
-public static
-void
-Test_IsEqualToOrMoreSpecificThan()
-{
-    Print( "NonNull <= NonNull" );
-    Assert(
-        new NonNull().IsEqualToOrMoreSpecificThan(
-            new NonNull() ) );
-
-    Print( "NonNull <= NEQ<object>( null, new ReferenceComparer() )" );
-    Assert(
-        new NonNull().IsEqualToOrMoreSpecificThan(
-            new NEQ<object>( null, new ReferenceComparer() ) ) );
-
-    Print( "NonBlankString !<= EQ<object>( \"foo\", new ObjectComparer() )" );
-    Assert( !(
-        new NonBlankString().IsEqualToOrMoreSpecificThan(
-            new EQ<object>( "foo", new ObjectComparer() ) ) ) );
-}
-
-
-[Test( "InInterval_T" )]
-public static void
-Test_InInterval_T()
-{
-    int lt          = 3;
-    int from        = 5;
-    int between     = 7;
-    int to          = 10;
-    int gt          = 12;
-
-    Value _lt       = new Local( "lt" );
-    Value _from     = new Local( "from" );
-    Value _between  = new Local( "between" );
-    Value _to       = new Local( "to" );
-    Value _gt       = new Local( "gt" );
-
-    IRType< int > rtinc =
-        InInterval.Create( Interval.Create( from, true, to, true ) );
-    IRType< int > rtexc =
-        InInterval.Create( Interval.Create( from, false, to, false ) );
-    IRType< int > rtfrominc =
-        InInterval.Create( Interval.Create( from, true, to, false ) );
-    IRType< int > rttoinc =
-        InInterval.Create( Interval.Create( from, false, to, true ) );
-
-    IRType< int > rt;
-    string id = "...";
-
-    Print( "Inclusive" );
-    rt = rtinc;
-    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
-    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
-    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
-    Expect< RTypeException >( () =>
-        rt.Require( lt, _lt ) );
-    rt.Require( from, _from );
-    rt.Require( between, _between );
-    rt.Require( to, _to );
-    Expect< RTypeException >( () =>
-        rt.Require( gt, _gt ) );
-
-    Print( "Exclusive" );
-    rt = rtexc;
-    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
-    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
-    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
-    Expect< RTypeException >( () =>
-        rt.Require( lt, _lt ) );
-    Expect< RTypeException >( () =>
-        rt.Require( from, _from ) );
-    rt.Require( between, _between );
-    Expect< RTypeException >( () =>
-        rt.Require( to, _to ) );
-    Expect< RTypeException >( () =>
-        rt.Require( gt, _gt ) );
-
-    Print( "From Inclusive" );
-    rt = rtfrominc;
-    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
-    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
-    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
-    Expect< RTypeException >( () =>
-        rt.Require( lt, _lt ) );
-    rt.Require( from, _from );
-    rt.Require( between, _between );
-    Expect< RTypeException >( () =>
-        rt.Require( to, _to ) );
-    Expect< RTypeException >( () =>
-        rt.Require( gt, _gt ) );
-
-    Print( "To Inclusive" );
-    rt = rttoinc;
-    Print( "is     : \"" + rt.SayIs( id ) + "\"" );
-    Print( "is not : \"" + rt.SayIsNot( id ) + "\"" );
-    Print( "must be: \"" + rt.SayMustBe( id ) + "\"" );
-    Expect< RTypeException >( () =>
-        rt.Require( lt, _lt ) );
-    Expect< RTypeException >( () =>
-        rt.Require( from, _from ) );
-    rt.Require( between, _between );
-    rt.Require( to, _to );
-    Expect< RTypeException >( () =>
-        rt.Require( gt, _gt ) );
-
-    Print( ".Equals() and .GetHashCode()" );
-    IRType< int > t1 = InInterval.Create( Interval.Create( 1, 10 ) );
-    IRType< int > t2 = InInterval.Create( Interval.Create( 1, 10 ) );
-    IRType< int > t3 = InInterval.Create( Interval.Create( 1, 20 ) );
-    Assert( t1.Equals( t2 ) );
-    Assert( !( t1.Equals( t3 ) ) );
-    Assert( t1.GetHashCode() == t2.GetHashCode() );
-}
-
-
-[Test( "IRType<T>.Is()" )]
-public static
-void
-Test_IRType_Is()
-{
-    object obj = new object();
-    Assert( new NonNull().Is( obj ) );
-    obj = null;
-    Assert( !( new NonNull().Is( obj ) ) );
 }
 
 

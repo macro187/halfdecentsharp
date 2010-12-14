@@ -27,7 +27,7 @@ Com.Halfdecent.RTypes
 
 
 // =============================================================================
-/// Static methods for <tt>NEQ<T></tt>
+///<tt>NEQ<T></tt> Library
 // =============================================================================
 
 public static class
@@ -35,42 +35,48 @@ NEQ
 {
 
 
-/// According to a particular definition of equality
+/// According to <tt>System.IEquatable<T></tt>
 ///
 public static
     void
-Require<
+Check<
     T
 >(
-    T       compareTo,
-    T       item,
-    Value   itemReference
+    T compareTo,
+    T item
 )
     where T : System.IEquatable< T >
 {
-    Create( compareTo ).Require( item, itemReference );
+    RType< T > rt = Create( compareTo );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => rt.Check( item ) );
 }
 
 
-/// According to a specified equality comparer
+/// According to a particular equality comparer
 ///
 public static
     void
-Require<
+Check<
     T
 >(
     T                       compareTo,
     IEqualityComparer< T >  comparer,
-    T                       item,
-    Value                   itemReference
+    T                       item
 )
 {
-    Create( compareTo, comparer ).Require( item, itemReference );
+    RType< T > rt = Create( compareTo, comparer );
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => rt.Check( item ) );
 }
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -83,7 +89,7 @@ Create<
 
 
 public static
-    IRType< T >
+    RType< T >
 Create<
     T
 >(
@@ -102,17 +108,17 @@ Create<
 
 
 // =============================================================================
-/// RType: Not equal to a particular value, according to a particular
-/// definition of equality
+/// RType: Not equal to a particular value according to a particular equality
+/// comparer
 ///
-/// <tt>null</tt> values always pass unless <tt>CompareTo</tt> is null.
+/// <tt>null</tt> values always pass unless <tt>CompareTo</tt> is <tt>null</tt>.
 // =============================================================================
 
 public sealed class
 NEQ<
     T
 >
-    : SimpleTextRTypeBase< T >
+    : RType< T >
 {
 
 
@@ -127,19 +133,21 @@ NEQ(
     IEqualityComparer< T >  comparer
 )
     : base(
-        _S( "{{0}} is not equal to {0}",
-            SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} is equal to {0}",
-            SystemObject.ToString( compareTo ) ),
-        _S( "{{0}} must not be equal to {0}",
-            SystemObject.ToString( compareTo ) ) )
+        item =>
+            (object)compareTo == null ?
+                item != null :
+                item == null ?
+                    true :
+                    !comparer.Equals( item, compareTo ),
+        r => _S( "{0} is not equal to {1}", r, compareTo ),
+        r => _S( "{0} is equal to {1}", r, compareTo ),
+        r => _S( "{0} must not be equal to {1}", r, compareTo ) )
 {
     if( comparer == null )
-        throw new ValueArgumentNullException( new Parameter( "comparer" ) );
+        throw new LocalisedArgumentNullException( "comparer" );
     this.CompareTo = compareTo;
     this.Comparer = comparer;
 }
-
 
 
 // -----------------------------------------------------------------------------
@@ -170,38 +178,22 @@ Comparer
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< object >
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Predicate(
-    T item
-)
-{
-    if( this.CompareTo == null ) return ( item != null );
-    if( item == null ) return true;
-    return !this.Comparer.Equals( item, this.CompareTo );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IComparable< IRType >
+// IComparable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
 DirectionalEquals(
-    IRType that
+    RType that
 )
 {
-    if( !base.DirectionalEquals( that ) ) return false;
-    NEQ<T> neq = that.GetUnderlying() as NEQ<T>;
-    if( neq == null ) return false;
     return
-        neq.Comparer.Equals( this.Comparer ) &&
-        this.Comparer.Equals( neq.CompareTo, this.CompareTo );
+        base.DirectionalEquals( that )
+        && that.IsAnd<
+            NEQ< T > >(
+            neq =>
+                neq.Comparer.Equals( this.Comparer ) &&
+                this.Comparer.Equals( neq.CompareTo, this.CompareTo ) );
 }
 
 
