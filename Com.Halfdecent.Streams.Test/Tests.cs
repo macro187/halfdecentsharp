@@ -105,8 +105,12 @@ Test_Stream_Pull()
     Assert( i == 3 );
 
     Print( "EmptyException" );
-    Expect< EmptyException >( () =>
-        i = s.Pull() );
+    Expect(
+        e => ValueReferenceException.Match<
+            EmptyException >(
+            e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "stream" ) ) ),
+        () => s.Pull() );
 }
 
 
@@ -218,8 +222,12 @@ Test_Sink_Push()
     Assert( ts.Items[1] == 1 );
     Assert( ts.Items[2] == 2 );
     Print( "FullException if we try to push another" );
-    Expect< FullException >( () =>
-        s.Push( 3 ) );
+    Expect(
+        e => ValueReferenceException.Match<
+            FullException >(
+            e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "sink" ) ) ),
+        () => s.Push( 3 ) );
 }
 
 

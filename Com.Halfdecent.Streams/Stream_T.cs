@@ -81,7 +81,7 @@ Stream(
     SCG.IEnumerable< T > enumerable
 )
 {
-    NonNull.Require( enumerable, new Parameter( "enumerable" ) );
+    NonNull.CheckParameter( enumerable, "enumerable" );
     this.Enumerator = enumerable.GetEnumerator();
 }
 
@@ -94,7 +94,7 @@ Stream(
     SCG.IEnumerator< T > enumerator
 )
 {
-    NonNull.Require( enumerator, new Parameter( "enumerator" ) );
+    NonNull.CheckParameter( enumerator, "enumerator" );
     this.Enumerator = enumerator;
 }
 

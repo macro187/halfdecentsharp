@@ -47,7 +47,7 @@ StreamToSystemEnumeratorAdapter(
     IStream< T > stream
 )
 {
-    NonNull.Require( stream, new Parameter( "stream" ) );
+    NonNull.CheckParameter( stream, "stream" );
     this.Stream = stream;
 }
 

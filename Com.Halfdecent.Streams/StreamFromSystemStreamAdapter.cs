@@ -42,10 +42,11 @@ StreamFromSystemStreamAdapter(
     System.IO.Stream from
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
-    if( !from.CanRead ) throw new ValueArgumentException(
-        new Parameter( "from" ),
-        _S("{0} is not a readable stream") );
+    NonNull.CheckParameter( from, "from" );
+    if( !from.CanRead )
+        throw new ValueReferenceException(
+            new Frame().Parameter( "from" ),
+            new ValueException( _S("{0} is not a readable stream") ) );
     this.From = from;
 }
 

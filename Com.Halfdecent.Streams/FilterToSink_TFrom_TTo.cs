@@ -56,8 +56,8 @@ FilterToSink(
     bool                    disposeS
 )
 {
-    NonNull.Require( f, new Parameter( "f" ) );
-    NonNull.Require( s, new Parameter( "s" ) );
+    NonNull.CheckParameter( f, "f" );
+    NonNull.CheckParameter( s, "s" );
 
     this.F = f;
     this.DisposeF = disposeF;

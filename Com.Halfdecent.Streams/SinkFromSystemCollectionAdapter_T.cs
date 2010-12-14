@@ -48,7 +48,7 @@ SinkFromSystemCollectionAdapter(
     ICollection< T > collection
 )
 {
-    NonNull.Require( collection, new Parameter( "collection" ) );
+    NonNull.CheckParameter( collection, "collection" );
     this.Collection = collection;
 }
 

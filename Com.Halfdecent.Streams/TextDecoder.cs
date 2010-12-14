@@ -42,7 +42,7 @@ TextDecoder(
     System.Text.Encoding encoding
 )
 {
-    NonNull.Require( encoding, new Parameter( "encoding" ) );
+    NonNull.CheckParameter( encoding, "encoding" );
     this.Encoding = encoding;
 }
 

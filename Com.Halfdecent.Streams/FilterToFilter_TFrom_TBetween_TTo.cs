@@ -58,8 +58,8 @@ FilterToFilter(
     bool                        disposeF2
 )
 {
-    NonNull.Require( f1, new Parameter( "f1" ) );
-    NonNull.Require( f2, new Parameter( "f2" ) );
+    NonNull.CheckParameter( f1, "f1" );
+    NonNull.CheckParameter( f2, "f2" );
 
     this.F1 = f1;
     this.DisposeF1 = disposeF1;

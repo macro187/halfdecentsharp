@@ -43,21 +43,17 @@ EmptyException
 // -----------------------------------------------------------------------------
 
 public
-EmptyException(
-    Value streamReference
-)
-    : this( streamReference, null )
+EmptyException()
+    : this( null )
 {
 }
 
 
 public
 EmptyException(
-    Value       streamReference,
-    Exception   innerException
+    Exception innerException
 )
     : base(
-        streamReference,
         _S("{0} contains no more items"),
         innerException )
 {

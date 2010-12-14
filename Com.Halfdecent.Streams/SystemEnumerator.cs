@@ -50,7 +50,7 @@ AsStream<
     this SCG.IEnumerator< T > dis
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.CheckParameter( dis, "dis" );
     return new Stream< T >( dis );
 }
 

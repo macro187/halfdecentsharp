@@ -43,21 +43,17 @@ FullException
 // -----------------------------------------------------------------------------
 
 public
-FullException(
-    Value sinkReference
-)
-    : this( sinkReference, null )
+FullException()
+    : this( null )
 {
 }
 
 
 public
 FullException(
-    Value       sinkReference,
-    Exception   innerException
+    Exception innerException
 )
     : base(
-        sinkReference,
         _S("There is no room for any more items in {0}"),
         innerException )
 {

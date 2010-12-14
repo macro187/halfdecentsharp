@@ -56,8 +56,8 @@ StreamToFilter(
     bool                    disposeF
 )
 {
-    NonNull.Require( s, new Parameter( "s" ) );
-    NonNull.Require( f, new Parameter( "f" ) );
+    NonNull.CheckParameter( s, "s" );
+    NonNull.CheckParameter( f, "f" );
 
     this.S = s;
     this.DisposeS = disposeS;

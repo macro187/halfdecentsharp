@@ -50,7 +50,7 @@ AsSink<
     this SCG.ICollection< T > dis
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.CheckParameter( dis, "dis" );
     return new SinkFromSystemCollectionAdapter< T >( dis );
 }
 
