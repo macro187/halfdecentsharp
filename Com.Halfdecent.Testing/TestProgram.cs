@@ -100,7 +100,7 @@ RunTests()
             tests_failed,
             (tests_failed == 1 ? "" : "s") );
     } else {
-        Console.WriteLine( "All tests passed" );
+        Console.WriteLine( "All {0} tests passed", tests_total );
     }
 
     return tests_failed;
