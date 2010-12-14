@@ -104,7 +104,7 @@ DirectionalEquals(
     return that.IsAnd<
         StackVariable >(
         v =>
-            v.GetType() == this.GetType()
+            v.GetUnderlying().GetType() == this.GetType()
             && v.Name == this.Name );
 }
 
