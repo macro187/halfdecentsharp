@@ -174,21 +174,18 @@ Expect<
 )
     where TExpected : Exception
 {
-    Expect< TExpected >(
-        delegate( TExpected ex ) { return true; },
+    Expect(
+        delegate( Exception e ) { return e is TExpected; },
         action );
 }
 
 
 public static
 void
-Expect<
-    TExpected
->(
-    ExpectPredicate< TExpected >    predicate,
-    ExpectAction                    action
+Expect(
+    ExpectPredicate predicate,
+    ExpectAction    action
 )
-    where TExpected : Exception
 {
     if( predicate == null ) throw new ArgumentNullException( "predicate" );
     if( action == null ) throw new ArgumentNullException( "action" );
@@ -196,23 +193,19 @@ Expect<
     try {
         action();
 
-    } catch( TExpected e ) {
+    } catch( Exception e ) {
+
         if( !predicate( e ) )
-            throw new AssertFailedException( String.Format(
-                "Expected {0} occurred but it didn't match the specified"
-                + " criteria",
-                typeof( TExpected ).Name ) );
+            throw new AssertFailedException(
+                "An exception occurred but it wasn't as expected" );
 
-        Print( "Expected '{0}' occurred:\n{1}",
-            typeof( TExpected ).Name,
+        Print( "Expected exception occurred:\n{1}",
             Indent( DumpException( e ) ) );
-
         return;
     }
 
-    throw new AssertFailedException( String.Format(
-        "Expected {0} but it didn't occur",
-        typeof( TExpected ).Name ) );
+    throw new AssertFailedException(
+        "An exception was expected to occur, but did not" );
 }
 
 public delegate
@@ -221,10 +214,8 @@ ExpectAction();
 
 public delegate
     bool
-ExpectPredicate<
-    T
->(
-    T item
+ExpectPredicate(
+    Exception e
 );
 
 
