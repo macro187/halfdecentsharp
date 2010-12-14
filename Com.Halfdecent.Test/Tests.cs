@@ -611,6 +611,41 @@ Test_ComparerProxy_T()
 }
 
 
+[Test( "SystemEnumerableComparer< T >" )]
+public static
+void
+Test_SystemEnumerableComparer_T()
+{
+    IEqualityComparer< SCG.IEnumerable< int > > c
+        = SystemEnumerableComparer.Create< int >(
+            new SystemEquatableComparer< int >() );
+
+    Print( ".Equals()" );
+    Assert( c.Equals(
+        new int[]{ 1, 2, 3 },
+        new int[]{ 1, 2, 3 } ) );
+    Assert( !c.Equals(
+        new int[]{ 1, 2, 3 },
+        new int[]{ 4, 5, 6 } ) );
+
+    Print( ".GetHashCode()" );
+    Assert(
+        c.GetHashCode( new int[]{ 1, 2, 3 } )
+        == c.GetHashCode( new int[]{ 1, 2, 3 } ) );
+
+    Print( "IEquatable< IEqualityComparer >" );
+    Assert(
+        c.Equals(
+            // (an equal item comparer)
+            new SystemEnumerableComparer< int >(
+                new SystemEquatableComparer< int >() ) ) );
+    Assert(
+        !c.Equals(
+            // (a different item comparer)
+            new Comparer< int >( (a,b) => 0, a => 0 ) ) );
+}
+
+
 [Test( "Interval" )]
 public static void
 Test_Interval()
