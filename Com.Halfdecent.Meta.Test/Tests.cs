@@ -342,6 +342,43 @@ Test_ValueReferenceException()
     object foo = new object();
     object bar = new object();
 
+    Print( ".Match()" );
+    success = false;
+    try {
+        ThrowOne( new object() );
+    } catch( Exception ex ) {
+        ValueReferenceException.Match< Exception >( ex,
+            (vr,f) =>
+                vr.Equals( f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
+            e => e.Message == "fake exception",
+            (vr, f, e ) => success = true );
+    }
+    Assert( success );
+
+    success = true;
+    try {
+        ThrowOne( new object() );
+    } catch( Exception ex ) {
+        ValueReferenceException.Match< Exception >( ex,
+            (vr,f) =>
+                vr.Equals( f.Down().Parameter( "arg1" ).Property( "WRONG" ) ),
+            e => e.Message == "fake exception",
+            (vr, f, e ) => success = false );
+    }
+    Assert( success );
+
+    success = true;
+    try {
+        ThrowOne( new object() );
+    } catch( Exception ex ) {
+        ValueReferenceException.Match< Exception >( ex,
+            (vr,f) =>
+                vr.Equals( f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
+            e => e.Message == "WRONG",
+            (vr, f, e ) => success = false );
+    }
+    Assert( success );
+
     Print( "void Map( Action )" );
     success = false;
     try {
@@ -381,7 +418,7 @@ Test_ValueReferenceException()
     }
     Assert( success );
 
-    Print( "Print out a test exception chain" );
+    Print( "Print out a test mapped exception chain" );
     Expect< ValueReferenceException >( () =>
         ValueReferenceException.Map(
             f => f.Local( "foo" ),

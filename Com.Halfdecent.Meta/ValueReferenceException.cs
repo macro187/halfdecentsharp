@@ -158,6 +158,42 @@ Map<
 }
 
 
+public static
+    void
+Match<
+    TException
+>(
+    System.Exception                                    e,
+    System.Func< ValueReference, Frame, bool >          referencePredicate,
+    System.Predicate< TException >                      exceptionPredicate,
+    System.Action< ValueReference, Frame, TException >  action
+)
+    where TException : System.Exception
+{
+    if( object.ReferenceEquals( e, null ) )
+        throw new LocalisedArgumentNullException( "e" );
+    if( object.ReferenceEquals( referencePredicate, null ) )
+        throw new LocalisedArgumentNullException( "referencePredicate" );
+    if( object.ReferenceEquals( exceptionPredicate, null ) )
+        throw new LocalisedArgumentNullException( "exceptionPredicate" );
+    if( object.ReferenceEquals( action, null ) )
+        throw new LocalisedArgumentNullException( "action" );
+
+    ValueReferenceException vre = e as ValueReferenceException;
+    if( e == null ) return;
+    Frame f = new Frame().Up();
+    if( !referencePredicate( vre.ValueReference, f ) ) return;
+    TException ex =
+        e.Chain()
+        .Where( exx => !(exx is ValueReferenceException) )
+        .FirstOrDefault()
+        as TException;
+    if( ex == null ) return;
+    if( !exceptionPredicate( ex ) ) return;
+    action( vre.ValueReference, f, ex );
+}
+
+
 
 // -----------------------------------------------------------------------------
 // Constructors
