@@ -85,6 +85,15 @@ Test_SystemObject()
     Assert( SystemObject.ToString( null ) == "null" );
     Assert( SystemObject.ToString( "notnull" ) == "notnull" );
 
+    Print( "IsNull()" );
+    Assert( nul.IsNull() );
+    Assert( !( obj.IsNull() ) );
+
+    Print( "IsNullDo()" );
+    ok = false;
+    Assert( nul.IsNullDo( () => ok = true ) );
+    Assert( ok );
+
     Print( "Is()" );
     Assert( str.Is< string >() );
     Assert( strproxy.Is< string >() );

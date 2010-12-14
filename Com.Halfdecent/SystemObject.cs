@@ -60,6 +60,31 @@ ToString(
 
 public static
     bool
+IsNull(
+    this object dis
+)
+{
+    return dis.IsNullDo( () => {} );
+}
+
+
+public static
+    bool
+IsNullDo(
+    this object     dis,
+    System.Action   action
+)
+{
+    if( action == null ) throw new System.ArgumentNullException( "action" );
+
+    if( dis != null ) return false;
+    action();
+    return true;
+}
+
+
+public static
+    bool
 Is<
     T
 >(
