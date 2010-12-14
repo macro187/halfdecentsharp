@@ -199,7 +199,7 @@ Expect(
             throw new AssertFailedException(
                 "An exception occurred but it wasn't as expected" );
 
-        Print( "Expected exception occurred:\n{1}",
+        Print( "Expected exception occurred:\n{0}",
             Indent( DumpException( e ) ) );
         return;
     }
