@@ -134,16 +134,19 @@ IsAndDo<
     if( object.ReferenceEquals( action, null ) )
         throw new System.ArgumentNullException( "action" );
 
-    T sought =
-        SystemEnumerable.Create(
+    foreach(
+        object obj
+        in SystemEnumerable.Create(
             dis,
             obj => obj is IProxy ? ((IProxy)obj).Underlying : null )
-        .OfType< T >()
-        .Where( t => predicate( t ) )
-        .FirstOrDefault();
-    if( object.ReferenceEquals( sought, null ) ) return false;
-    action( sought );
-    return true;
+    ) {
+        if( !( obj is T ) ) continue;
+        T t = (T)obj;
+        if( !predicate( t ) ) continue;
+        action( t );
+        return true;
+    }
+    return false;
 }
 
 
