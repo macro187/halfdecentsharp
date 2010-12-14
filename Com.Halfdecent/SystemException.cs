@@ -45,10 +45,7 @@ Chain(
 {
     if( object.ReferenceEquals( e, null ) )
         throw new ArgumentNullException( "e" );
-    while( e != null ) {
-        yield return e;
-        e = e.InnerException;
-    }
+    return SystemEnumerable.Create( e, ex => ex.InnerException );
 }
 
 

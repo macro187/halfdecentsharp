@@ -56,6 +56,27 @@ Create<
 }
 
 
+/// Create an enumerable by recursively applying a function, starting with a
+/// seed item, until that function returns <tt>null</tt>
+///
+public static
+    IEnumerable< T >
+Create<
+    T
+>(
+    T                   seed,
+    System.Func< T, T > func
+)
+{
+    for(
+        T item = seed;
+        !object.ReferenceEquals( item, null );
+        item = func( item )
+    )
+        yield return item;
+}
+
+
 
 // -----------------------------------------------------------------------------
 // Extension Methods

@@ -63,6 +63,10 @@ Test_SystemEnumerable()
         SystemEnumerable.Create( 1, 2 )
         .SequenceEqual( new int[]{ 1, 2 } ) );
 
+    // NOTE
+    // Create( seed, func ) is tested indirectly by the SystemException.Chain()
+    // test
+
     Print( ".Append()" );
     Assert(
         SystemEnumerable.Create<int>().Append( 1, 2 ,3 )
