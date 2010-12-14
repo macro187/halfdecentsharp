@@ -34,11 +34,8 @@ Com.Halfdecent.Resources
 ///
 /// Suggested private localised string convenience function:
 /// <code>
-/// private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( typeof( THISTYPE ), s, args ); }
+/// private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 /// </code>
-/// Replace <tt>THISTYPE</tt> with the name of the type.  If the type is
-/// generic, leave the generic parameters blank, eg. for a generic type with 3
-/// type parameters <tt>MyGenericType<,,></tt>.
 // =============================================================================
 
 public static class
