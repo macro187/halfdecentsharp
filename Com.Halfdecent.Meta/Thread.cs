@@ -95,10 +95,9 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    if( object.ReferenceEquals( that, null ) ) return false;
-    return
-        that is Thread
-        && ((Thread)that).ID == this.ID;
+    return that.IsAnd<
+        Thread >(
+        t => t.ID == this.ID );
 }
 
 
@@ -107,7 +106,7 @@ public override
 GetHashCode()
 {
     return
-        this.GetType().GetHashCode()
+        typeof( Thread ).GetHashCode()
         ^ this.ID;
 }
 

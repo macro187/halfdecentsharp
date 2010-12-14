@@ -87,8 +87,7 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    if( object.ReferenceEquals( that, null ) ) return false;
-    return that.GetType() == this.GetType();
+    return that.Is< Literal >();
 }
 
 
@@ -96,7 +95,7 @@ public override
     int
 GetHashCode()
 {
-    return this.GetType().GetHashCode();
+    return typeof( Literal ).GetHashCode();
 }
 
 

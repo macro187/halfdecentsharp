@@ -88,9 +88,9 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    return
-        base.DirectionalEquals( that )
-        && ((Property)that).Name == this.Name;
+    return that.IsAnd<
+        Property >(
+        p => p.Name == this.Name );
 }
 
 

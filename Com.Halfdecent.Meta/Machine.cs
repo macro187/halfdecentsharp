@@ -95,10 +95,9 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    if( object.ReferenceEquals( that, null ) ) return false;
-    return
-        that is Machine
-        && ((Machine)that).Name == this.Name;
+    return that.IsAnd<
+        Machine >(
+        m => m.Name == this.Name );
 }
 
 
@@ -107,7 +106,7 @@ public override
 GetHashCode()
 {
     return
-        this.GetType().GetHashCode()
+        typeof( Machine ).GetHashCode()
         ^ this.Name.GetHashCode();
 }
 

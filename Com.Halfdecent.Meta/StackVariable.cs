@@ -101,10 +101,11 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    if( object.ReferenceEquals( that, null ) ) return false;
-    return
-        that.GetType() == this.GetType()
-        && ((StackVariable)that).Name == this.Name;
+    return that.IsAnd<
+        StackVariable >(
+        v =>
+            v.GetType() == this.GetType()
+            && v.Name == this.Name );
 }
 
 

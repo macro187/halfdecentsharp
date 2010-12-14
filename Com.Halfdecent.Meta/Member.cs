@@ -49,15 +49,11 @@ Equals(
 }
 
 
-public virtual
+public abstract
     bool
 DirectionalEquals(
     IValueReferenceComponent that
-)
-{
-    if( object.ReferenceEquals( that, null ) ) return false;
-    return that.GetType() == this.GetType();
-}
+);
 
 
 public override

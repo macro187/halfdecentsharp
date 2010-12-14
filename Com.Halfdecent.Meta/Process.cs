@@ -95,10 +95,9 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    if( object.ReferenceEquals( that, null ) ) return false;
-    return
-        that is Process
-        && ((Process)that).ID == this.ID;
+    return that.IsAnd<
+        Process >(
+        p => p.ID == this.ID );
 }
 
 
@@ -107,7 +106,7 @@ public override
 GetHashCode()
 {
     return
-        this.GetType().GetHashCode()
+        typeof( Process ).GetHashCode()
         ^ this.ID;
 }
 

@@ -201,10 +201,9 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    if( object.ReferenceEquals( that, null ) ) return false;
-    return
-        that is Frame
-        && ((Frame)that).Depth == this.Depth;
+    return that.IsAnd<
+        Frame >(
+        f => f.Depth == this.Depth );
 }
 
 
@@ -213,7 +212,8 @@ public override
 GetHashCode()
 {
     return
-        this.GetType().GetHashCode()
+        base.GetHashCode()
+        ^ typeof( Frame ).GetHashCode()
         ^ this.Depth;
 }
 
