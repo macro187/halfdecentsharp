@@ -39,6 +39,30 @@ InInterval
 
 public static
     void
+CheckParameter<
+    T
+>(
+    IInterval< T >  interval,
+    T               item,
+    string          paramName
+)
+{
+    if( paramName == null )
+        throw new LocalisedArgumentNullException( "paramName" );
+    if( paramName == "" )
+        throw new LocalisedArgumentException( "blank", "paramname" );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Parameter( "item" ),
+        () => ValueReferenceException.Map(
+            f => f.Parameter( "item" ),
+            f => f.Down().Parameter( "item" ),
+            () => Create( interval ).Check( item ) ) );
+}
+
+
+public static
+    void
 Check<
     T
 >(

@@ -18,6 +18,7 @@
 
 using SCG = System.Collections.Generic;
 using Com.Halfdecent;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
 
@@ -35,8 +36,56 @@ LT
 {
 
 
-/// According to IComparable
-///
+public static
+    void
+CheckParameter<
+    T
+>(
+    T       compareTo,
+    T       item,
+    string  paramName
+)
+    where T : System.IComparable< T >
+{
+    if( paramName == null )
+        throw new LocalisedArgumentNullException( "paramName" );
+    if( paramName == "" )
+        throw new LocalisedArgumentException( "blank", "paramname" );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Parameter( "item" ),
+        () => ValueReferenceException.Map(
+            f => f.Parameter( "item" ),
+            f => f.Down().Parameter( "item" ),
+            () => Check( compareTo, item ) ) );
+}
+
+
+public static
+    void
+CheckParameter<
+    T
+>(
+    T               compareTo,
+    IComparer< T >  comparer,
+    T               item,
+    string          paramName
+)
+{
+    if( paramName == null )
+        throw new LocalisedArgumentNullException( "paramName" );
+    if( paramName == "" )
+        throw new LocalisedArgumentException( "blank", "paramname" );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Parameter( "item" ),
+        () => ValueReferenceException.Map(
+            f => f.Parameter( "item" ),
+            f => f.Down().Parameter( "item" ),
+            () => Check( compareTo, comparer, item ) ) );
+}
+
+
 public static
     void
 Check<
@@ -54,8 +103,6 @@ Check<
 }
 
 
-/// According to a specified comparer
-///
 public static
     void
 Check<

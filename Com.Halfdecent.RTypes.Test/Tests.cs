@@ -316,6 +316,13 @@ Test_EQ_T()
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
             rt => rt.Equals( EQ.Create( null, new ObjectComparer() ) ) ),
         () => EQ.Check( null, new ObjectComparer(), new object() ) );
+
+    Print( "CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( EQ.Create( 1 ) ) ),
+        () => EQ.CheckParameter( 1, 2, "param" ) );
 }
 
 
@@ -366,6 +373,13 @@ Test_NEQ_T()
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
             rt => rt.Equals( NEQ.Create( null, new ObjectComparer() ) ) ),
         () => NEQ.Check( null, new ObjectComparer(), null ) );
+
+    Print( "CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( NEQ.Create( 1 ) ) ),
+        () => NEQ.CheckParameter( 1, 1, "param" ) );
 }
 
 
@@ -565,6 +579,13 @@ Test_NonNull()
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
             rt => rt.Equals( new NonNull() ) ),
         () => NonNull.Check( null ) );
+
+    Print( "CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( new NonNull() ) ),
+        () => NonNull.CheckParameter( null, "param" ) );
 }
 
 
@@ -596,6 +617,13 @@ Test_NonBlankString()
 
     Print( "Null passes" );
     NonBlankString.Check( null );
+
+    Print( "CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( new NonBlankString() ) ),
+        () => NonBlankString.CheckParameter( "", "param" ) );
 }
 
 
@@ -636,10 +664,15 @@ Test_GTE_T()
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.IsAnd<
-                GTE<int> >(
-                gte => gte.CompareTo == 1 ) ),
+            rt => rt.Equals( GTE.Create( 1 ) ) ),
         () => GTE.Check( 1, 0 ) );
+
+    Print( "CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( GTE.Create( 1 ) ) ),
+        () => GTE.CheckParameter( 1, 0, "param" ) );
 }
 
 
@@ -674,9 +707,7 @@ Test_LTE_T()
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.IsAnd<
-                LTE<int> >(
-                lte => lte.CompareTo == 1 ) ),
+            rt => rt.Equals( LTE.Create( 1 ) ) ),
         () => LTE.Check( 1, 2 ) );
 
     Print( "Equal passes" );
@@ -684,6 +715,13 @@ Test_LTE_T()
 
     Print( "Smaller passes" );
     LTE.Check( 1, 0 );
+
+    Print( "CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( LTE.Create( 1 ) ) ),
+        () => LTE.CheckParameter( 1, 2, "param" ) );
 }
 
 
@@ -713,19 +751,22 @@ Test_GT_T()
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.IsAnd<
-                GT< int > >(
-                gt => gt.Equals( GT.Create( 1 ) ) ) ),
+            rt => rt.Equals( GT.Create( 1 ) ) ),
         () => GT.Check( 1, 1 ) );
 
     Print( "Smaller fails" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.IsAnd<
-                GT< int > >(
-                gt => gt.Equals( GT.Create( 1 ) ) ) ),
+            rt => rt.Equals( GT.Create( 1 ) ) ),
         () => GT.Check( 1, 0 ) );
+
+    Print( "CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( GT.Create( 1 ) ) ),
+        () => GT.CheckParameter( 1, 0, "param" ) );
 }
 
 
@@ -752,22 +793,25 @@ Test_LT_T()
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.IsAnd<
-                LT< int > >(
-                lt => lt.Equals( LT.Create( 1 ) ) ) ),
+            rt => rt.Equals( LT.Create( 1 ) ) ),
         () => LT.Check( 1, 2 ) );
 
     Print( "Equal fails" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.IsAnd<
-                LT< int > >(
-                lt => lt.Equals( LT.Create( 1 ) ) ) ),
+            rt => rt.Equals( LT.Create( 1 ) ) ),
         () => LT.Check( 1, 1 ) );
 
     Print( "Smaller passes" );
     LT.Check( 1, 0 );
+
+    Print( "CheckParameter()" );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Parameter( "param" ) ),
+            rt => rt.Equals( LT.Create( 1 ) ) ),
+        () => LT.CheckParameter( 1, 1, "param" ) );
 }
 
 

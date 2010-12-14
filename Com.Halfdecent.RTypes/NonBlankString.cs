@@ -41,6 +41,27 @@ NonBlankString
 // Static
 // -----------------------------------------------------------------------------
 
+public static
+    void
+CheckParameter(
+    string item,
+    string paramName
+)
+{
+    if( paramName == null )
+        throw new LocalisedArgumentNullException( "paramName" );
+    if( paramName == "" )
+        throw new LocalisedArgumentException( "blank", "paramname" );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Parameter( "item" ),
+        () => ValueReferenceException.Map(
+            f => f.Parameter( "item" ),
+            f => f.Down().Parameter( "item" ),
+            () => Check( item ) ) );
+}
+
+
 public static new
     void
 Check(

@@ -35,8 +35,56 @@ NEQ
 {
 
 
-/// According to <tt>System.IEquatable<T></tt>
-///
+public static
+    void
+CheckParameter<
+    T
+>(
+    T       compareTo,
+    T       item,
+    string  paramName
+)
+    where T : System.IEquatable< T >
+{
+    if( paramName == null )
+        throw new LocalisedArgumentNullException( "paramName" );
+    if( paramName == "" )
+        throw new LocalisedArgumentException( "blank", "paramname" );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Parameter( "item" ),
+        () => ValueReferenceException.Map(
+            f => f.Parameter( "item" ),
+            f => f.Down().Parameter( "item" ),
+            () => Check( compareTo, item ) ) );
+}
+
+
+public static
+    void
+CheckParameter<
+    T
+>(
+    T                       compareTo,
+    IEqualityComparer< T >  comparer,
+    T                       item,
+    string                  paramName
+)
+{
+    if( paramName == null )
+        throw new LocalisedArgumentNullException( "paramName" );
+    if( paramName == "" )
+        throw new LocalisedArgumentException( "blank", "paramname" );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Parameter( "item" ),
+        () => ValueReferenceException.Map(
+            f => f.Parameter( "item" ),
+            f => f.Down().Parameter( "item" ),
+            () => Check( compareTo, comparer, item ) ) );
+}
+
+
 public static
     void
 Check<
@@ -47,16 +95,13 @@ Check<
 )
     where T : System.IEquatable< T >
 {
-    RType< T > rt = Create( compareTo );
     ValueReferenceException.Map(
         f => f.Parameter( "item" ),
         f => f.Down().Parameter( "item" ),
-        () => rt.Check( item ) );
+        () => Create( compareTo ).Check( item ) );
 }
 
 
-/// According to a particular equality comparer
-///
 public static
     void
 Check<
@@ -67,11 +112,10 @@ Check<
     T                       item
 )
 {
-    RType< T > rt = Create( compareTo, comparer );
     ValueReferenceException.Map(
         f => f.Parameter( "item" ),
         f => f.Down().Parameter( "item" ),
-        () => rt.Check( item ) );
+        () => Create( compareTo, comparer ).Check( item ) );
 }
 
 
