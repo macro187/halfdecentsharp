@@ -39,6 +39,15 @@ BugException
 
 public
 BugException(
+    System.Exception innerException
+)
+    : base( "A programming error has been encountered", innerException )
+{
+}
+
+
+public
+BugException(
     string              message,
     System.Exception    innerException
 )
