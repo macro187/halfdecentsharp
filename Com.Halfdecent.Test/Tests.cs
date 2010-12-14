@@ -79,6 +79,7 @@ Test_SystemObject()
     object strproxy = new TestProxy( str );
     object obj = new object();
     object objproxy = new TestProxy( obj );
+    object nul = null;
 
     Print( ".ToString()" );
     Assert( SystemObject.ToString( null ) == "null" );
@@ -88,6 +89,7 @@ Test_SystemObject()
     Assert( str.Is< string >() );
     Assert( strproxy.Is< string >() );
     Assert( !( objproxy.Is< string >() ) );
+    Assert( !( nul.Is< string >() ) );
 
     Print( "IsDo()" );
     ok = false;
@@ -99,12 +101,16 @@ Test_SystemObject()
     ok = true;
     Assert( !( objproxy.IsDo< string >( s => ok = false ) ) );
     Assert( ok );
+    ok = true;
+    Assert( !( nul.IsDo< string >( s => ok = false ) ) );
+    Assert( ok );
 
     Print( ".IsAnd()" );
     Assert( str.IsAnd< string >( s => s == "match" ) );
     Assert( strproxy.IsAnd< string >( s => s == "match" ) );
     Assert( !( strproxy.IsAnd< string >( s => s == "NOMATCH" ) ) );
     Assert( !( objproxy.IsAnd< string >( s => s == "match" ) ) );
+    Assert( !( nul.IsAnd< string >( s => s == "match" ) ) );
 
     Print( ".IsAndDo()" );
     ok = false;
@@ -121,6 +127,10 @@ Test_SystemObject()
     Assert( ok );
     ok = true;
     Assert( !( objproxy.IsAndDo<
+        string >( s => s == "match", s => ok = false ) ) );
+    Assert( ok );
+    ok = true;
+    Assert( !( nul.IsAndDo<
         string >( s => s == "match", s => ok = false ) ) );
     Assert( ok );
 
