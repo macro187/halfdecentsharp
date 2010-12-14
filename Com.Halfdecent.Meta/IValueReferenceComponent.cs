@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Globalisation;
+using Com.Halfdecent;
 
 
 namespace
@@ -25,86 +25,24 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Reference to a stack frame variable
+/// TODO
 // =============================================================================
 
-public abstract class
-Variable
-    : Value
+public interface
+IValueReferenceComponent
+    : IEquatable< IValueReferenceComponent >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Methods
 // -----------------------------------------------------------------------------
 
-internal
-Variable(
-    string name
-)
-    : base()
-{
-    if( name == null ) throw new LocalisedArgumentNullException( "name" );
-    if( name == "" ) throw new LocalisedArgumentException( "Is blank", "name" );
-    this.Name = name;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-/// The variable's source code name
+/// Produce a representation of the component in pseudo C# source code form
 ///
-public
-string
-Name
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Value
-// -----------------------------------------------------------------------------
-
-public override
     string
-ToString()
-{
-    return this.Name;
-}
-
-
-public override
-    bool
-Equals(
-    Value that
-)
-{
-    return
-        base.Equals( that ) &&
-        ((Variable)that).Name == this.Name;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Object
-// -----------------------------------------------------------------------------
-
-public override
-    int
-GetHashCode()
-{
-    return
-        base.GetHashCode() ^
-        this.Name.GetHashCode();
-}
+ToString();
 
 
 

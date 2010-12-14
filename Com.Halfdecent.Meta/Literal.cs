@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -22,47 +22,81 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Reference to a source code literal
+/// A source code literal
+///
+/// All <tt>Literal</tt> objects are considered equal
 // =============================================================================
 
 public class
 Literal
-    : Value
+    : IValueReferenceComponent
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Constructors
+// Static Methods
 // -----------------------------------------------------------------------------
 
-public
-Literal()
-    : base()
+/// Format an object like a C# source code literal
+///
+public static
+    string
+Format(
+    object value
+)
 {
+    if( value == null ) return "null";
+    if( value is string )
+        return string.Concat( "\"", (string)value, "\"" );
+    return value.ToString();
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Value
+// IValueReferenceComponent
 // -----------------------------------------------------------------------------
 
 public override
     string
 ToString()
 {
-    return "a source code literal value";
+    return "(literal value)";
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEquatable< IValueReferenceComponent >
+// -----------------------------------------------------------------------------
+
+public
+    bool
+Equals(
+    IValueReferenceComponent that
+)
+{
+    return Equatable.Equals< IValueReferenceComponent >( this, that );
+}
+
+
+public virtual
+    bool
+DirectionalEquals(
+    IValueReferenceComponent that
+)
+{
+    if( object.ReferenceEquals( that, null ) ) return false;
+    return that.GetType() == this.GetType();
 }
 
 
 public override
-    bool
-Equals(
-    Value that
-)
+    int
+GetHashCode()
 {
-    return false;
+    return this.GetType().GetHashCode();
 }
 
 

@@ -26,7 +26,8 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// An <tt>IValueException</tt> that is also a <tt>System.ArgumentException</tt>
+/// An <tt>System.ArgumentException</tt> that is also an
+/// <tt>IValueException</tt>
 // =============================================================================
 
 public class
@@ -38,84 +39,83 @@ ValueArgumentException
 
 
 // -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+/// Natural language format string referring to an argument
+///
+public static readonly
+Localised< string >
+ARGUMENT_FORMAT = _S( "the {0} argument" );
+
+
+
+// -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
 public
 ValueArgumentException(
-    Parameter           parameter
-    ///< Reference to the parameter whose value caused the exception
+    string paramName
 )
-    : this( parameter, null, null )
+    : this( paramName, null, null )
 {
 }
 
 
 public
 ValueArgumentException(
-    Parameter           parameter,
-    ///< Reference to the parameter whose value caused the exception
+    string              paramName,
     Localised< string > messageFormat
-    ///< Format string used to <tt>SayMessage()</tt>
-    ///
-    ///  {0} - Natural language referring to the problematic parameter
 )
-    : this( parameter, messageFormat, null )
+    : this( paramName, messageFormat, null )
 {
 }
 
 
 public
 ValueArgumentException(
-    Parameter           parameter,
-    ///< Reference to the parameter whose value caused the exception
-    Localised< string > messageFormat,
-    ///< Format string used to <tt>SayMessage()</tt>
-    ///
-    ///  {0} - Natural language referring to the problematic parameter
-    Exception           innerException
-    ///< Another exception that is the underlying cause of this one, or
-    ///  <tt>null</tt> if there is no such underlying cause
+    string      paramName,
+    Exception   innerException
 )
-    : base(
-        null,
-        parameter != null ? parameter.Name : "",
-        innerException )
+    : this( paramName, null, innerException )
 {
-    if( parameter == null )
-        throw new LocalisedArgumentNullException( "parameter" );
-    this.Parameter = parameter;
-    this.MessageFormat = messageFormat ?? _S("Unable to proceed due to {0}");
+}
+
+
+public
+ValueArgumentException(
+    string              paramName,
+    ///< The name of the problematic parameter
+    ///  - Must not be null
+    ///  - Must not be blank
+    Localised< string > messageFormat,
+    ///< Natural language format describing the problem
+    ///  {0} - Natural language referring to the problematic value
+    Exception           innerException
+    ///< The underlying cause of this exception, or <tt>null</tt> if there is
+    ///  no underlying cause
+)
+    : base( null, paramName, innerException )
+{
+    if( object.ReferenceEquals( paramName, null ) )
+        throw new LocalisedArgumentNullException( "paramName" );
+    if( paramName == "" )
+        throw new LocalisedArgumentException(
+            "paramName is null", "paramName" );
+    this.MessageFormat
+        = messageFormat ?? ValueException.UNSPECIFIED_PROBLEM_FORMAT;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Private
 // -----------------------------------------------------------------------------
 
-/// Reference to the parameter whose value caused the exception
-///
-public
-Parameter
-Parameter
-{
-    get;
-    private set;
-}
-
-
-/// Format string used to <tt>SayMessage()</tt>
-///
-/// {0} - Natural language referring to the problematic parameter
-///
-public
+private
 Localised< string >
-MessageFormat
-{
-    get;
-    private set;
-}
+MessageFormat;
 
 
 
@@ -129,16 +129,9 @@ SayMessage(
     Localised< string > reference
 )
 {
-    if( reference == null )
+    if( object.ReferenceEquals( reference, null ) )
         throw new LocalisedArgumentNullException( "reference" );
     return LocalisedString.Format( this.MessageFormat, reference );
-}
-
-
-Value
-IValueException.ValueReference
-{
-    get { return this.Parameter; }
 }
 
 
@@ -151,7 +144,8 @@ public override
 Localised< string >
 Message
 {
-    get { return this.SayMessage( this.Parameter.ToString() ); }
+    get { return this.SayMessage(
+        LocalisedString.Format( ARGUMENT_FORMAT, this.ParamName ) ); }
 }
 
 

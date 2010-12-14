@@ -25,13 +25,59 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Reference to a part of a value
+/// A stack-allocated variable
 // =============================================================================
 
 public abstract class
-Member
+StackVariable
     : IValueReferenceComponent
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+public
+StackVariable(
+    string name
+    ///< The variable's name
+    ///  - Non-null
+    ///  - Non-blank
+)
+{
+    if( name == null ) throw new LocalisedArgumentNullException( "name" );
+    if( name == "" ) throw new LocalisedArgumentException( "Is blank", "name" );
+    this.Name = name;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+string
+Name
+{
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IValueReferenceComponent
+// -----------------------------------------------------------------------------
+
+public override
+    string
+ToString()
+{
+    return this.Name;
+}
 
 
 
@@ -56,7 +102,9 @@ DirectionalEquals(
 )
 {
     if( object.ReferenceEquals( that, null ) ) return false;
-    return that.GetType() == this.GetType();
+    return
+        that.GetType() == this.GetType()
+        && ((StackVariable)that).Name == this.Name;
 }
 
 
@@ -64,7 +112,9 @@ public override
     int
 GetHashCode()
 {
-    return this.GetType().GetHashCode();
+    return
+        this.GetType().GetHashCode()
+        ^ this.Name.GetHashCode();
 }
 
 

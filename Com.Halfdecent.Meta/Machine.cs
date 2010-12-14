@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -25,13 +25,53 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Reference to a part of a value
+/// Reference to a machine
 // =============================================================================
 
-public abstract class
-Member
+public class
+Machine
     : IValueReferenceComponent
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+/// Initialise a new machine representing the caller
+///
+public
+Machine()
+{
+    this.Name = System.Net.Dns.GetHostName();
+}
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+string
+Name
+{
+    get;
+    private set;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IValueReferenceComponent
+// -----------------------------------------------------------------------------
+
+public override
+    string
+ToString()
+{
+    return string.Concat( "(", this.Name, ") " );
+}
 
 
 
@@ -56,7 +96,9 @@ DirectionalEquals(
 )
 {
     if( object.ReferenceEquals( that, null ) ) return false;
-    return that.GetType() == this.GetType();
+    return
+        that is Machine
+        && ((Machine)that).Name == this.Name;
 }
 
 
@@ -64,7 +106,24 @@ public override
     int
 GetHashCode()
 {
-    return this.GetType().GetHashCode();
+    return
+        this.GetType().GetHashCode()
+        ^ this.Name.GetHashCode();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
+
+public override
+    bool
+Equals(
+    object that
+)
+{
+    throw new System.NotSupportedException();
 }
 
 

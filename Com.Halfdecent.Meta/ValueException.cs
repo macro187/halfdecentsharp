@@ -38,79 +38,78 @@ ValueException
 
 
 // -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+/// Natural language referring to an unspecified value
+///
+public static readonly
+Localised< string >
+UNSPECIFIED_VALUE
+    = _S( "an unspecified value" );
+
+
+/// Natural language format describing an unspecified problem
+///
+public static readonly
+Localised< string >
+UNSPECIFIED_PROBLEM_FORMAT
+    = _S( "Unable to proceed due to an unspecified problem with {0}" );
+
+
+
+// -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
 public
-ValueException(
-    Value valueReference
-    ///< Reference to the value that caused the exception
-)
-    : this( valueReference, null, null )
+ValueException()
+    : this( null, null )
 {
 }
 
 
 public
 ValueException(
-    Value               valueReference,
-    ///< Reference to the value that caused the exception
     Localised< string > messageFormat
-    ///< Format string used to <tt>SayMessage()</tt>
-    ///
-    ///  {0} - Natural language referring to the problematic value
 )
-    : this( valueReference, messageFormat, null )
+    : this( messageFormat, null )
 {
 }
 
 
 public
 ValueException(
-    Value       valueReference,
-    ///< Reference to the value that caused the exception
-    Exception   innerException
-    ///< Another exception that is the underlying cause of this one, or
-    ///  <tt>null</tt> if there is no such underlying cause
+    Exception innerException
 )
-    : this( valueReference, null, innerException )
+    : this( null, innerException )
 {
 }
 
 
 public
 ValueException(
-    Value               valueReference,
-    ///< Reference to the value that caused the exception
     Localised< string > messageFormat,
-    ///< Format string used to <tt>SayMessage()</tt>
-    ///
+    ///< Natural language format describing the problem
     ///  {0} - Natural language referring to the problematic value
     Exception           innerException
-    ///< Another exception that is the underlying cause of this one, or
-    ///  <tt>null</tt> if there is no such underlying cause
+    ///< The underlying cause of this exception, or <tt>null</tt> if there is
+    ///  no underlying cause
 )
     : base( null, innerException )
 {
-    if( valueReference == null )
-        throw new LocalisedArgumentNullException( "valueReference" );
-    this.ValueReference = valueReference;
-    this.MessageFormat = messageFormat ?? _S("Unable to proceed due to {0}");
+    this.MessageFormat = messageFormat ?? UNSPECIFIED_PROBLEM_FORMAT;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Private
 // -----------------------------------------------------------------------------
 
-public
+private
 Localised< string >
-MessageFormat
-{
-    get;
-    private set;
-}
+MessageFormat;
 
 
 
@@ -124,18 +123,9 @@ SayMessage(
     Localised< string > reference
 )
 {
-    if( reference == null )
+    if( object.ReferenceEquals( reference, null ) )
         throw new LocalisedArgumentNullException( "reference" );
     return LocalisedString.Format( this.MessageFormat, reference );
-}
-
-
-public
-Value
-ValueReference
-{
-    get;
-    private set;
 }
 
 
@@ -148,7 +138,7 @@ public override
 Localised< string >
 Message
 {
-    get { return this.SayMessage( this.ValueReference.ToString() ); }
+    get { return this.SayMessage( UNSPECIFIED_VALUE ); }
 }
 
 

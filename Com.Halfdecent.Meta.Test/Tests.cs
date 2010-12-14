@@ -51,12 +51,10 @@ public static
 void
 Test_Literal()
 {
-    Print( ".ToString()" );
-    Print( new Literal().ToString() );
     Print( ".Equals()" );
-    Assert( !(
+    Assert(
         new Literal().Equals(
-        new Literal() ) ) );
+        new Literal() ) );
 }
 
 
@@ -65,8 +63,6 @@ public static
 void
 Test_Local()
 {
-    Print( ".ToString()" );
-    Print( new Local( "apple" ).ToString() );
     Print( ".Equals()" );
     Assert(
         new Local( "apple" ).Equals(
@@ -86,8 +82,6 @@ public static
 void
 Test_Parameter()
 {
-    Print( ".ToString()" );
-    Print( new Parameter( "apple" ).ToString() );
     Print( ".Equals()" );
     Assert(
         new Parameter( "apple" ).Equals(
@@ -110,22 +104,17 @@ public static
 void
 Test_Property()
 {
-    Print( ".ToString()" );
-    Print( new Local( "foo" ).Property( "Apple" ).ToString() );
     Print( ".Equals()" );
     Assert(
-        new Local( "foo" ).Property( "Apple" ).Equals(
-        new Local( "foo" ).Property( "Apple" ) ) );
+        new Property( "Apple" ).Equals(
+        new Property( "Apple" ) ) );
     Assert( !(
-        new Local( "foo" ).Property( "Apple" ).Equals(
-        new Local( "foo" ).Property( "Orange" ) ) ) );
-    Assert( !(
-        new Local( "foo" ).Property( "Apple" ).Equals(
-        new Local( "bar" ).Property( "Apple" ) ) ) );
+        new Property( "Apple" ).Equals(
+        new Property( "Orange" ) ) ) );
     Print( ".GetHashCode()" );
     Assert(
-        new Local( "foo" ).Property( "Apple" ).GetHashCode().Equals(
-        new Local( "foo" ).Property( "Apple" ).GetHashCode() ) );
+        new Property( "Apple" ).GetHashCode().Equals(
+        new Property( "Apple" ).GetHashCode() ) );
 }
 
 
@@ -134,29 +123,23 @@ public static
 void
 Test_Indexer()
 {
-    Print( ".ToString()" );
-    Print( new Local( "foo" ).Indexer( 0 ).ToString() );
-    Print( new Local( "foo" ).Indexer( "stringindex" ).ToString() );
     Print( ".Equals()" );
     Assert(
-        new Local( "foo" ).Indexer( 0 ).Equals(
-        new Local( "foo" ).Indexer( 0 ) ) );
+        new Indexer( 0 ).Equals(
+        new Indexer( 0 ) ) );
     Assert(
-        new Local( "foo" ).Indexer( "apple" ).Equals(
-        new Local( "foo" ).Indexer( "apple" ) ) );
+        new Indexer( "apple" ).Equals(
+        new Indexer( "apple" ) ) );
     Assert( !(
-        new Local( "foo" ).Indexer( 0 ).Equals(
-        new Local( "foo" ).Indexer( 1 ) ) ) );
+        new Indexer( 0 ).Equals(
+        new Indexer( 1 ) ) ) );
     Assert( !(
-        new Local( "foo" ).Indexer( "apple" ).Equals(
-        new Local( "foo" ).Indexer( "orange" ) ) ) );
-    Assert( !(
-        new Local( "foo" ).Indexer( 0 ).Equals(
-        new Local( "bar" ).Indexer( 0 ) ) ) );
+        new Indexer( "apple" ).Equals(
+        new Indexer( "orange" ) ) ) );
     Print( ".GetHashCode()" );
     Assert(
-        new Local( "foo" ).Indexer( 0 ).GetHashCode().Equals(
-        new Local( "foo" ).Indexer( 0 ).GetHashCode() ) );
+        new Indexer( 0 ).GetHashCode().Equals(
+        new Indexer( 0 ).GetHashCode() ) );
 }
 
 
@@ -165,8 +148,6 @@ public static
 void
 Test_This()
 {
-    Print( ".ToString()" );
-    Print( new This().ToString() );
     Print( ".Equals()" );
     Assert(
         new This().Equals(
@@ -181,59 +162,88 @@ Test_This()
 }
 
 
+[Test( "Frame" )]
+public static
+void
+Test_Frame()
+{
+    Frame f = new Frame();
+
+    Print( "Equality" );
+    Assert( f.Equals( new Frame() ) );
+    Assert( !( f.Equals( new Frame().Up() ) ) );
+
+    Print( "Relative depths" );
+    Assert( f.Down().Depth == f.Depth + 1 );
+    Assert( f.Up().Depth == f.Depth - 1 );
+
+    Print( "From down the stack" );
+    Assert( OneLower().Depth == f.Down().Depth );
+}
+
+public static
+    Frame
+OneLower()
+{
+    return new Frame();
+}
+
+
+[Test( "ValueReference" )]
+public static
+void
+Test_ValueReference()
+{
+    Print( ".Equals()" );
+    Assert(
+        new Frame().Local( "local" ).Property( "prop" ).Equals(
+        new Frame().Local( "local" ).Property( "prop" ) ) );
+    Assert( !(
+        new Frame().Local( "local" ).Property( "prop" ).Equals(
+        new Frame().Local( "local" ).Property( "prop2" ) ) ) );
+
+    // TODO Remaining ValueReference members
+}
+
+
 [Test( "ValueException" )]
 public static
 void
 Test_ValueException()
 {
-    Value               valueReference = new Local( "fakelocal" );
-    Localised< string > messageFormat = "Fake problem with {0}";
-    Exception           innerException = new Exception();
-    Localised< string > reference = "some fake value";
+    Exception inner;
 
-    ValueException e;
-    Print( "ValueException( valueReference )" );
-    e = new ValueException( valueReference );
-    Print( "Check .ValueReference" );
-    Assert( e.ValueReference == valueReference );
-    Print( "SayMessage: {0}", e.SayMessage( reference ) );
-    Print( "Message: {0}", e.Message );
-    Print( "Check .InnerException" );
-    Assert( e.InnerException == null );
+    Print( ".InnerException" );
+    Assert( object.ReferenceEquals(
+        new ValueException().InnerException,
+        null ) );
+    inner = new Exception();
+    Assert( object.ReferenceEquals(
+        new ValueException( inner ).InnerException,
+        inner ) );
 
-    Print( "ValueException( valueReference, messageFormat )" );
-    e = new ValueException( valueReference, messageFormat );
-    Print( "Check .ValueReference" );
-    Assert( e.ValueReference == valueReference );
-    Print( "Check .SayMessage()" );
-    Assert(
-        e.SayMessage( reference ).ToString() ==
-        LocalisedString.Format( e.MessageFormat, reference ).ToString() );
-    Print( "Check .Message" );
-    Assert(
-        e.Message.InCurrent() ==
-        LocalisedString.Format(
-            e.MessageFormat,
-            e.ValueReference.ToString() ).InCurrent() );
-    Print( "Check .InnerException" );
-    Assert( e.InnerException == null );
+    Print( ".SayMessage(), unspecified message" );
+    Print( new ValueException().SayMessage( "XXX" ).InCurrent() );
 
-    Print( "ValueException( valueReference, messageFormat, innerException )" );
-    e = new ValueException( valueReference, messageFormat, innerException );
-    Print( "Check .ValueReference" );
-    Assert( e.ValueReference == valueReference );
-    Print( "Check .SayMessage()" );
+    Print( ".SayMessage(), specified message" );
     Assert(
-        e.SayMessage( reference ).ToString() ==
-        LocalisedString.Format( e.MessageFormat, reference ).ToString() );
-    Print( "Check .Message" );
+        new ValueException( "{0} yyy" )
+            .SayMessage( "xxx" )
+            .InCurrent()
+        == "xxx yyy" );
+
+    Print( ".Message, unspecified message" );
+    Assert( new ValueException().Message.InCurrent()
+        == LocalisedString.Format(
+            ValueException.UNSPECIFIED_PROBLEM_FORMAT,
+            ValueException.UNSPECIFIED_VALUE )
+            .InCurrent() );
+
+    Print( ".Message, specified message" );
     Assert(
-        e.Message.InCurrent() ==
-        LocalisedString.Format(
-            e.MessageFormat,
-            e.ValueReference.ToString() ).InCurrent() );
-    Print( "Check .InnerException" );
-    Assert( e.InnerException == innerException );
+        new ValueException( "{0} yyy" ).Message.InCurrent()
+        == LocalisedString.Format(
+            "{0} yyy", ValueException.UNSPECIFIED_VALUE ).InCurrent() );
 }
 
 
@@ -242,66 +252,52 @@ public static
 void
 Test_ValueArgumentException()
 {
-    ValueArgumentException  vae;
-    IValueException         ve;
-    ILocalisedException     le;
-    ArgumentException       ae;
+    Exception inner;
 
-    Parameter param = new Parameter( "param" );
-    string format = "Test Format {0}";
-    Exception inner = new Exception();
+    Print( "Constructors" );
+    Expect< ArgumentNullException >( () =>
+        new ValueArgumentException( null ) );
+    Expect< ArgumentException >( () =>
+        new ValueArgumentException( "" ) );
 
-    Print( "ValueArgumentException( Parameter )" );
-    vae = new ValueArgumentException( param );
-    ve = vae; le = vae; ae = vae;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "ArgumentException.ParamName" );
-    Assert( ae.ParamName == param.Name );
+    Print( ".InnerException" );
+    Assert( object.ReferenceEquals(
+        new ValueArgumentException( "param" ).InnerException,
+        null ) );
+    inner = new Exception();
+    Assert( object.ReferenceEquals(
+        new ValueArgumentException( "param", inner ).InnerException,
+        inner ) );
 
-    Print( "ValueArgumentException( Parameter, Localised<string> )" );
-    vae = new ValueArgumentException( param, format );
-    ve = vae; le = vae; ae = vae;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "IValueException.SayMessage" );
-    Assert(
-        ve.SayMessage( "ref" ).InCurrent() ==
-        string.Format( format, "ref" ) );
-    Print( "ILocalisedException.Message" );
-    Assert(
-        le.Message.InCurrent() ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentException.ParamName" );
-    Assert( ae.ParamName == param.Name );
-    Print( "ArgumentException.Message" );
-    Assert(
-        ae.Message ==
-        string.Format( format, param.ToString() ) );
+    Print( ".SayMessage(), unspecified message" );
+    Print(
+        new ValueArgumentException( "arg" ).SayMessage( "XXX" ).InCurrent() );
 
-    Print( "ValueArgumentException( Parameter, Localised<string>, Exception )" );
-    vae = new ValueArgumentException( param, format, inner );
-    ve = vae; le = vae; ae = vae;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "IValueException.SayMessage" );
+    Print( ".SayMessage(), specified message" );
     Assert(
-        ve.SayMessage( "ref" ).InCurrent() ==
-        string.Format( format, "ref" ) );
-    Print( "ILocalisedException.Message" );
+        new ValueArgumentException( "arg", "{0} yyy" )
+            .SayMessage( "xxx" )
+            .InCurrent()
+        == "xxx yyy" );
+
+    Print( ".Message, unspecified message" );
+    Assert( new ValueArgumentException( "arg" ).Message.InCurrent()
+        == LocalisedString.Format(
+            ValueException.UNSPECIFIED_PROBLEM_FORMAT,
+            LocalisedString.Format(
+                ValueArgumentException.ARGUMENT_FORMAT,
+                "arg" ) )
+            .InCurrent() );
+
+    Print( ".Message, specified message" );
     Assert(
-        le.Message.InCurrent() ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentException.ParamName" );
-    Assert( ae.ParamName == param.Name );
-    Print( "ArgumentException.Message" );
-    Assert(
-        ae.Message ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentException.InnerException" );
-    Assert(
-        ae.InnerException ==
-        inner );
+        new ValueArgumentException( "arg", "{0} yyy" ).Message.InCurrent()
+        == LocalisedString.Format(
+            "{0} yyy",
+            LocalisedString.Format(
+                ValueArgumentException.ARGUMENT_FORMAT,
+                "arg" ) )
+            .InCurrent() );
 }
 
 
@@ -310,183 +306,119 @@ public static
 void
 Test_ValueArgumentNullException()
 {
-    ValueArgumentNullException  vane;
-    IValueException             ve;
-    ILocalisedException         le;
-    ArgumentNullException       ane;
+    Exception inner;
 
-    Parameter param = new Parameter( "param" );
-    string format = "Test Format {0}";
-    Exception inner = new Exception();
+    Print( "Constructors" );
+    Expect< ArgumentNullException >( () =>
+        new ValueArgumentNullException( null ) );
+    Expect< ArgumentException >( () =>
+        new ValueArgumentNullException( "" ) );
 
-    Print( "ValueArgumentNullException( Parameter )" );
-    vane = new ValueArgumentNullException( param );
-    ve = vane; le = vane; ane = vane;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "ArgumentNullException.ParamName" );
-    Assert( ane.ParamName == param.Name );
+    Print( ".InnerException" );
+    Assert( object.ReferenceEquals(
+        new ValueArgumentNullException( "param" ).InnerException,
+        null ) );
+    inner = new Exception();
+    Assert( object.ReferenceEquals(
+        new ValueArgumentNullException( "param", inner ).InnerException,
+        inner ) );
 
-    Print( "ValueArgumentNullException( Parameter, Localised<string> )" );
-    vane = new ValueArgumentNullException( param, format );
-    ve = vane; le = vane; ane = vane;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "IValueException.SayMessage" );
-    Assert(
-        ve.SayMessage( "ref" ).InCurrent() ==
-        string.Format( format, "ref" ) );
-    Print( "ILocalisedException.Message" );
-    Assert(
-        le.Message.InCurrent() ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentNullException.ParamName" );
-    Assert( ane.ParamName == param.Name );
-    Print( "ArgumentNullException.Message" );
-    Assert(
-        ane.Message ==
-        string.Format( format, param.ToString() ) );
+    Print( ".SayMessage()" );
+    Print(
+        new ValueArgumentException( "arg" ).SayMessage( "XXX" ).InCurrent() );
 
-    Print( "ValueArgumentNullException( Parameter, Localised<string>, Exception )" );
-    vane = new ValueArgumentNullException( param, format, inner );
-    ve = vane; le = vane; ane = vane;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "IValueException.SayMessage" );
-    Assert(
-        ve.SayMessage( "ref" ).InCurrent() ==
-        string.Format( format, "ref" ) );
-    Print( "ILocalisedException.Message" );
-    Assert(
-        le.Message.InCurrent() ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentNullException.ParamName" );
-    Assert( ane.ParamName == param.Name );
-    Print( "ArgumentNullException.Message" );
-    Assert(
-        ane.Message ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentNullException.InnerException" );
-    Assert(
-        ane.InnerException ==
-        inner );
+    Print( ".Message" );
+    Print( new ValueArgumentException( "arg" ).Message.InCurrent() );
 }
 
 
-[Test( "ValueArgumentOutOfRangeException" )]
+[Test( "ValueReferenceException" )]
 public static
 void
-Test_ValueArgumentOutOfRangeException()
+Test_ValueReferenceException()
 {
-    ValueArgumentOutOfRangeException    vaoore;
-    IValueException                     ve;
-    ILocalisedException                 le;
-    ArgumentOutOfRangeException         aoore;
+    bool success;
 
-    Parameter param = new Parameter( "param" );
-    string format = "Test Format {0}";
-    string actual = "badvalue";
-    Exception inner = new Exception();
+    object foo = new object();
+    object bar = new object();
 
-    Print( "ValueArgumentOutOfRangeException( Parameter )" );
-    vaoore = new ValueArgumentOutOfRangeException( param );
-    ve = vaoore; le = vaoore; aoore = vaoore;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "ArgumentOutOfRangeException.ParamName" );
-    Assert( aoore.ParamName == param.Name );
+    Print( "void Map( Action )" );
+    success = false;
+    try {
+        ValueReferenceException.Map(
+            f => f.Local( "foo" ),
+            f => f.Down().Parameter( "arg1" ),
+            () => ThrowOne( foo ) );
+    } catch( ValueReferenceException vre ) {
+        success = vre.ValueReference.Equals(
+            new Frame().Local( "foo" ).Property( "Prop1" ) );
+    }
+    Assert( success );
 
-    Print( "ValueArgumentOutOfRangeException( Parameter, Localised<string> )" );
-    vaoore = new ValueArgumentOutOfRangeException( param, format );
-    ve = vaoore; le = vaoore; aoore = vaoore;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "IValueException.SayMessage" );
-    Assert(
-        ve.SayMessage( "ref" ).InCurrent() ==
-        string.Format( format, "ref" ) );
-    Print( "ILocalisedException.Message" );
-    Assert(
-        le.Message.InCurrent() ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentOutOfRangeException.ParamName" );
-    Assert( aoore.ParamName == param.Name );
-    Print( "ArgumentOutOfRangeException.Message" );
-    Assert(
-        aoore.Message ==
-        string.Format( format, param.ToString() ) );
+    Print( "T Map<T>( Func<T> )" );
+    success = false;
+    try {
+        bar = ValueReferenceException.Map(
+            f => f.Local( "foo" ),
+            f => f.Down().Parameter( "arg2" ),
+            () => ThrowTwo( foo ) );
+    } catch( ValueReferenceException vre ) {
+        success = vre.ValueReference.Equals(
+            new Frame().Local( "foo" ).Property( "Prop2" ) );
+    }
+    Assert( success );
 
-    Print( "ValueArgumentOutOfRangeException( Parameter, Localised<string>, object )" );
-    vaoore = new ValueArgumentOutOfRangeException( param, format, actual );
-    ve = vaoore; le = vaoore; aoore = vaoore;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "IValueException.SayMessage" );
-    Assert(
-        ve.SayMessage( "ref" ).InCurrent() ==
-        string.Format( format, "ref" ) );
-    Print( "ILocalisedException.Message" );
-    Assert(
-        le.Message.InCurrent() ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentOutOfRangeException.ParamName" );
-    Assert( aoore.ParamName == param.Name );
-    Print( "ArgumentOutOfRangeException.Message" );
-    Assert(
-        aoore.Message ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentOutOfRangeException.ActualValue" );
-    Assert( aoore.ActualValue.Equals( actual ) );
+    Print( "Nested mapped method calls" );
+    success = false;
+    try {
+        bar = ValueReferenceException.Map(
+            f => f.Local( "foo" ),
+            f => f.Down().Parameter( "arg3" ),
+            () => ThrowThree( foo ) );
+    } catch( ValueReferenceException vre ) {
+        success = vre.ValueReference.Equals(
+            new Frame().Local( "foo" ).Property( "Prop2" ) );
+    }
+    Assert( success );
 
-    Print( "ValueArgumentOutOfRangeException( Parameter, Localised<string>, object, Exception )" );
-    vaoore = new ValueArgumentOutOfRangeException( param, format, actual, inner );
-    ve = vaoore; le = vaoore; aoore = vaoore;
-    Print( "IValueException.ValueReference" );
-    Assert( ve.ValueReference == param );
-    Print( "IValueException.SayMessage" );
-    Assert(
-        ve.SayMessage( "ref" ).InCurrent() ==
-        string.Format( format, "ref" ) );
-    Print( "ILocalisedException.Message" );
-    Assert(
-        le.Message.InCurrent() ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentOutOfRangeException.ParamName" );
-    Assert( aoore.ParamName == param.Name );
-    Print( "ArgumentOutOfRangeException.Message" );
-    Assert(
-        aoore.Message ==
-        string.Format( format, param.ToString() ) );
-    Print( "ArgumentOutOfRangeException.ActualValue" );
-    Assert( aoore.ActualValue.Equals( actual ) );
-    Print( "ArgumentOutOfRangeException.InnerException" );
-    Assert(
-        aoore.InnerException ==
-        inner );
+    Print( "Print out a test exception chain" );
+    Expect< ValueReferenceException >( () =>
+        ValueReferenceException.Map(
+            f => f.Local( "foo" ),
+            f => f.Down().Parameter( "arg3" ),
+            () => ThrowThree( foo ) ) );
+
+    if( bar == null ) {}
 }
 
-
-[Test( "ValueMapException" )]
 public static
-void
-Test_ValueMapException()
+    void
+ThrowOne( object arg1 )
 {
-    Value valuehere = new Local( "valuehere" );
-    Value valuethere = new Local( "valuethere" );
-    Localised< string > msg = "{0} is a problem";
+    throw
+        new ValueReferenceException(
+            new Frame().Parameter( "arg1" ).Property( "Prop1" ),
+            new Exception( "fake exception" ) );
+}
 
-    Print( "Create a mapped value exception chain" );
-    ValueMapException e =
-        new ValueMapException( valuehere,
-        new ValueException( valuethere, msg ) );
+public static
+    object
+ThrowTwo( object arg2 )
+{
+    throw
+        new ValueReferenceException(
+            new Frame().Parameter( "arg2" ).Property( "Prop2" ),
+            new Exception( "fake exception" ) );
+}
 
-    Print( "Check .ValueReference" );
-    Assert( e.ValueReference.Equals( valuehere ) );
-
-    Print( "Check that .SayMessage() comes from the underlying exception" );
-    Assert(
-        e.SayMessage( "xxx" ).InCurrent()
-        == LocalisedString.Format( msg, "xxx" ).InCurrent() );
+public static
+    object
+ThrowThree( object arg3 )
+{
+    return ValueReferenceException.Map(
+        f => f.Parameter( "arg3" ),
+        f => f.Down().Parameter( "arg2" ),
+        () => ThrowTwo( arg3 ) );
 }
 
 

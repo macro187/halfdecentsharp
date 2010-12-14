@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using Com.Halfdecent.Globalisation;
 
 
@@ -26,13 +25,12 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// An exception that translates another exception's <tt>.ValueReference</tt> to
-/// the current context
+/// Reference to a thread
 // =============================================================================
 
 public class
-ValueMapException
-    : ValueException
+Thread
+    : IValueReferenceComponent
 {
 
 
@@ -41,22 +39,13 @@ ValueMapException
 // Constructors
 // -----------------------------------------------------------------------------
 
+/// Initialise a new thread representing the caller
+///
 public
-ValueMapException(
-    Value       valueReference,
-    Exception   innerException
-    ///< - Must be an <tt>IValueException</tt>
-)
-    : base( valueReference, innerException )
+Thread()
 {
-    if( object.ReferenceEquals( innerException, null ) )
-        throw new LocalisedArgumentNullException( "innerException" );
-    if( !( innerException is IValueException ) )
-        throw new LocalisedArgumentException(
-            _S("innerException is not an IValueException"),
-            "innerException" );
+    this.ID = System.Threading.Thread.CurrentThread.ManagedThreadId;
 }
-
 
 
 // -----------------------------------------------------------------------------
@@ -64,31 +53,81 @@ ValueMapException(
 // -----------------------------------------------------------------------------
 
 public
-IValueException
-InnerValueException
+int
+ID
 {
-    get { return (IValueException)this.InnerException; }
+    get;
+    private set;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IValueException
+// IValueReferenceComponent
 // -----------------------------------------------------------------------------
 
 public override
-    Localised< string >
-SayMessage(
-    Localised< string > reference
-)
+    string
+ToString()
 {
-    return this.InnerValueException.SayMessage( reference );
+    return string.Concat( "(Thread ", this.ID.ToString(), ") " );
 }
 
 
 
+// -----------------------------------------------------------------------------
+// IEquatable< IValueReferenceComponent >
+// -----------------------------------------------------------------------------
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( typeof( ValueMapException ), s, args ); }
+public
+    bool
+Equals(
+    IValueReferenceComponent that
+)
+{
+    return Equatable.Equals< IValueReferenceComponent >( this, that );
+}
+
+
+public virtual
+    bool
+DirectionalEquals(
+    IValueReferenceComponent that
+)
+{
+    if( object.ReferenceEquals( that, null ) ) return false;
+    return
+        that is Thread
+        && ((Thread)that).ID == this.ID;
+}
+
+
+public override
+    int
+GetHashCode()
+{
+    return
+        this.GetType().GetHashCode()
+        ^ this.ID;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
+
+public override
+    bool
+Equals(
+    object that
+)
+{
+    throw new System.NotSupportedException();
+}
+
+
+
 
 } // type
 } // namespace

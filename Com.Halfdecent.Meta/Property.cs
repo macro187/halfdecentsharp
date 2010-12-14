@@ -25,7 +25,7 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Reference to a property
+/// Reference to a part of a value through a property
 // =============================================================================
 
 public class
@@ -39,12 +39,10 @@ Property
 // Constructors
 // -----------------------------------------------------------------------------
 
-internal
+public
 Property(
-    Value   parent,
     string  name
 )
-    : base( parent )
 {
     if( name == null ) throw new LocalisedArgumentNullException( "name" );
     if( name == "" ) throw new LocalisedArgumentException( "Is blank", "name" );
@@ -57,8 +55,6 @@ Property(
 // Properties
 // -----------------------------------------------------------------------------
 
-/// The property's name
-///
 public
 string
 Name
@@ -70,31 +66,33 @@ Name
 
 
 // -----------------------------------------------------------------------------
-// Member
+// IValueReferenceComponent
 // -----------------------------------------------------------------------------
 
-protected override
+public override
     string
-ComponentToString()
+ToString()
 {
     return string.Concat( ".", this.Name );
 }
 
 
-protected override
+
+// -----------------------------------------------------------------------------
+// IEquatable< IValueReferenceComponent >
+// -----------------------------------------------------------------------------
+
+public override
     bool
-ComponentEquals(
-    Member item
+DirectionalEquals(
+    IValueReferenceComponent that
 )
 {
-    return ((Property)item).Name == this.Name;
+    return
+        base.DirectionalEquals( that )
+        && ((Property)that).Name == this.Name;
 }
 
-
-
-// -----------------------------------------------------------------------------
-// object
-// -----------------------------------------------------------------------------
 
 public override
     int

@@ -22,7 +22,10 @@ Com.Halfdecent.Meta
 
 
 // =============================================================================
-/// Reference to a value accessed through an indexer
+/// Reference to the part of a value at a specified index
+///
+/// <tt>Indexer</tt> equality involves comparison of the <tt>.Index</tt> object,
+/// which is done using <tt>System.Object.Equals()</tt>.
 // =============================================================================
 
 public class
@@ -36,12 +39,11 @@ Indexer
 // Constructors
 // -----------------------------------------------------------------------------
 
-internal
+public
 Indexer(
-    Value   parent,
-    object  index
+    object index
+    ///< The index, which can be <tt>null</tt>
 )
-    : base( parent )
 {
     this.Index = index;
 }
@@ -63,34 +65,36 @@ Index
 
 
 // -----------------------------------------------------------------------------
-// Member
-// -----------------------------------------------------------------------------
-
-protected override
-string
-ComponentToString()
-{
-    return string.Concat( "[", Value.FormatLiteral( this.Index ), "]" );
-}
-
-
-protected override
-bool
-ComponentEquals(
-    Member item
-)
-{
-    return object.Equals( ((Indexer)item).Index, this.Index );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// object
+// IValueReferenceComponent
 // -----------------------------------------------------------------------------
 
 public override
-int
+    string
+ToString()
+{
+    return string.Concat( "[", Literal.Format( this.Index ), "]" );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEquatable< IValueReferenceComponent >
+// -----------------------------------------------------------------------------
+
+public override
+    bool
+DirectionalEquals(
+    IValueReferenceComponent that
+)
+{
+    return
+        base.DirectionalEquals( that )
+        && ((Indexer)that).Index.Equals( this.Index );
+}
+
+
+public override
+    int
 GetHashCode()
 {
     return

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,18 +16,21 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Globalisation;
+
+
 namespace
 Com.Halfdecent.Meta
 {
 
 
 // =============================================================================
-/// Reference to a value
+/// Reference to a process
 // =============================================================================
 
-public abstract class
-Value
-    : Halfdecent.IEquatable< Value >
+public class
+Process
+    : IValueReferenceComponent
 {
 
 
@@ -36,73 +39,66 @@ Value
 // Constructors
 // -----------------------------------------------------------------------------
 
-internal
-Value()
+/// Initialise a new process representing the caller
+///
+public
+Process()
 {
+    this.ID = System.Diagnostics.Process.GetCurrentProcess().Id;
+}
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+int
+ID
+{
+    get;
+    private set;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// IValueReferenceComponent
 // -----------------------------------------------------------------------------
 
-/// Produce a reference to the value of a particular property of this value
-///
-public
-    Property
-Property(
-    string name
-)
-{
-    return new Property( this, name );
-}
-
-
-/// Produce a reference to the value returned by this value's indexer
-/// given a particular index
-///
-public
-    Indexer
-Indexer(
-    object index
-)
-{
-    return new Indexer( this, index );
-}
-
-
-/// Produce a pseudo source code representation of this value reference
-///
-public abstract override
+public override
     string
-ToString();
+ToString()
+{
+    return string.Concat( "(Process ", this.ID.ToString(), ") " );
+}
 
 
 
 // -----------------------------------------------------------------------------
-// IEquatable< Value >
+// IEquatable< IValueReferenceComponent >
 // -----------------------------------------------------------------------------
+
+public
+    bool
+Equals(
+    IValueReferenceComponent that
+)
+{
+    return Equatable.Equals< IValueReferenceComponent >( this, that );
+}
+
 
 public virtual
     bool
-Equals(
-    Value that
-)
-{
-    return
-        that != null &&
-        that.GetType() == this.GetType();
-}
-
-
-public
-    bool
 DirectionalEquals(
-    Value that
+    IValueReferenceComponent that
 )
 {
-    return this.Equals( that );
+    if( object.ReferenceEquals( that, null ) ) return false;
+    return
+        that is Process
+        && ((Process)that).ID == this.ID;
 }
 
 
@@ -110,7 +106,9 @@ public override
     int
 GetHashCode()
 {
-    return this.GetType().GetHashCode();
+    return
+        this.GetType().GetHashCode()
+        ^ this.ID;
 }
 
 
@@ -119,36 +117,13 @@ GetHashCode()
 // System.Object
 // -----------------------------------------------------------------------------
 
-public override sealed
+public override
     bool
 Equals(
     object that
 )
 {
-    return
-        that != null &&
-        that is Value &&
-        this.Equals( (Value)that );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Static Methods
-// -----------------------------------------------------------------------------
-
-/// Format an object like a source code literal
-///
-public static
-    string
-FormatLiteral(
-    object value
-)
-{
-    if( value == null ) return "null";
-    if( value is string )
-        return string.Concat( "\"", (string)value, "\"" );
-    return value.ToString();
+    throw new System.NotSupportedException();
 }
 
 
