@@ -119,7 +119,7 @@ StartsWith<
         throw new System.ArgumentNullException( "comparer" );
     return dis.StartsWith< T >(
         sequence.Select( s =>
-            ((Predicate< T >)( item => comparer.Equals( item, s ) ) ) ) );
+            (Predicate< T >)( item => comparer.Equals( item, s ) ) ) );
 }
 
 
@@ -170,6 +170,96 @@ StartsWith<
             throw new ArgumentException( "null criteria encountered" );
         if( !c.Current( d.Current ) ) return false;
     }
+}
+
+
+/// Locate the first instance of a specified subsequence
+///
+public static
+    int
+    /// @returns
+    /// The index of the beginning of the subsequence, or <tt>-1</tt> if not
+    /// found
+IndexOf<
+    T
+>(
+    this IEnumerable< T >   dis,
+    IEnumerable< T >        subsequence
+)
+    where T : System.IEquatable< T >
+{
+    if( object.ReferenceEquals( dis, null ) )
+        throw new System.ArgumentNullException( "dis" );
+    if( object.ReferenceEquals( subsequence, null ) )
+        throw new System.ArgumentNullException( "subsequence" );
+
+    return dis.IndexOf( subsequence, new SystemEquatableComparer< T >() );
+}
+
+
+/// Locate the first instance of a specified subsequence, matched according to a
+/// specified equality comparer
+///
+public static
+    int
+    /// @returns
+    /// The index of the beginning of the subsequence, or <tt>-1</tt> if not
+    /// found
+IndexOf<
+    T
+>(
+    this IEnumerable< T >   dis,
+    IEnumerable< T >        subsequence,
+    IEqualityComparer< T >  comparer
+)
+{
+    if( object.ReferenceEquals( dis, null ) )
+        throw new System.ArgumentNullException( "dis" );
+    if( object.ReferenceEquals( subsequence, null ) )
+        throw new System.ArgumentNullException( "subsequence" );
+    if( object.ReferenceEquals( comparer, null ) )
+        throw new System.ArgumentNullException( "comparer" );
+
+    return dis.IndexOf(
+        subsequence.Select( s =>
+            (Predicate< T >)( item => comparer.Equals( item, s ) ) ) );
+}
+
+
+/// Locate the first subsequence matching specified criteria
+///
+public static
+    int
+    /// @returns
+    /// The index of the beginning of the subsequence, or <tt>-1</tt> if not
+    /// found
+IndexOf<
+    T
+>(
+    this IEnumerable< T >           dis,
+    IEnumerable< Predicate< T > >   criteria
+)
+{
+    if( object.ReferenceEquals( dis, null ) )
+        throw new System.ArgumentNullException( "dis" );
+    if( object.ReferenceEquals( criteria, null ) )
+        throw new System.ArgumentNullException( "criteria" );
+
+    int dcount = dis.Count();
+    int ccount = criteria.Count();
+
+    // Zero-length criteria matches straight away
+    if( ccount == 0 ) return 0;
+
+    // Longer substring can't possibly match
+    if( ccount > dcount ) return -1;
+
+    int lastpossible = dcount - ccount;
+
+    for( int i = 0; i <= lastpossible; i++ )
+        if( dis.Skip( i ).StartsWith( criteria ) ) return i;
+
+    return -1;
 }
 
 

@@ -98,6 +98,40 @@ Test_SystemEnumerable()
     Assert(
         !SystemEnumerable.Create( 1, 2 )
         .StartsWith( SystemEnumerable.Create( 1, 2, 3 ) ) );
+
+    Print( ".IndexOf()" );
+    Assert(
+        Enumerable.Empty< int >()
+        .IndexOf( Enumerable.Empty< int >() )
+        == 0 );
+    Assert(
+        Enumerable.Empty< int >()
+        .IndexOf( SystemEnumerable.Create( 1 ) )
+        == -1 );
+    Assert(
+        SystemEnumerable.Create( 1 )
+        .IndexOf( Enumerable.Empty< int >() )
+        == 0 );
+    Assert(
+        SystemEnumerable.Create( 1, 2, 3 )
+        .IndexOf( SystemEnumerable.Create( 1, 2, 3 ) )
+        == 0 );
+    Assert(
+        SystemEnumerable.Create( 1, 2, 3, 4 )
+        .IndexOf( SystemEnumerable.Create( 1, 2, 3 ) )
+        == 0 );
+    Assert(
+        SystemEnumerable.Create( 1, 2, 3 )
+        .IndexOf( SystemEnumerable.Create( 1, 2, 3, 4 ) )
+        == -1 );
+    Assert(
+        SystemEnumerable.Create( 1, 2, 3, 4 )
+        .IndexOf( SystemEnumerable.Create( 2, 3, 4 ) )
+        == 1 );
+    Assert(
+        SystemEnumerable.Create( 1, 2, 3, 2, 3 )
+        .IndexOf( SystemEnumerable.Create( 2, 3 ) )
+        == 1 );
 }
 
 
