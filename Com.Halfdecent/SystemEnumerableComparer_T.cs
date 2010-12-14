@@ -102,19 +102,6 @@ GetHashCode(
 
 
 // -----------------------------------------------------------------------------
-// IEqualityComparer
-// -----------------------------------------------------------------------------
-
-
-    IEqualityComparer
-IEqualityComparer.GetUnderlying()
-{
-    return this;
-}
-
-
-
-// -----------------------------------------------------------------------------
 // IEquatable< IEqualityComparer >
 // -----------------------------------------------------------------------------
 
@@ -145,9 +132,9 @@ IEquatable< IEqualityComparer >.DirectionalEquals(
 {
     return
         that != null
-        && that.GetUnderlying() is SystemEnumerableComparer< T >
-        && ((SystemEnumerableComparer< T >)that).ItemComparer.Equals(
-            this.ItemComparer );
+        && that.GetUnderlying().IsAnd<
+            SystemEnumerableComparer< T > >(
+            c => c.ItemComparer.Equals( this.ItemComparer ) );
 }
 
 

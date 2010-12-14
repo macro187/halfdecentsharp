@@ -16,6 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System.Linq;
+
+
 namespace
 Com.Halfdecent
 {
@@ -55,84 +58,109 @@ ToString(
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Determine if an object is a specified type and meets specified criteria
-///
 public static
     bool
-    /// @returns
-    /// Whether the object was the specified type and met the specified criteria
+Is<
+    T
+>(
+    this object dis
+)
+{
+    return
+        dis.IsDo<
+            T >(
+            t => {} );
+}
+
+
+public static
+    bool
+IsDo<
+    T
+>(
+    this object             dis,
+    System.Action< T >      action
+)
+{
+    return
+        dis.IsAndDo<
+            T >(
+            t => true,
+            action );
+}
+
+
+public static
+    bool
 IsAnd<
     T
 >(
     this object             dis,
-    System.Func< T, bool >  predicate
+    System.Predicate< T >   predicate
 )
-    where T : class
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    if( object.ReferenceEquals( predicate, null ) )
-        throw new System.ArgumentNullException( "predicate" );
-    T t = dis as T;
-    if( object.ReferenceEquals( t, null ) ) return false;
-    return predicate( t );
+    return
+        dis.IsAndDo<
+            T >(
+            predicate,
+            t => {} );
 }
 
 
-/// Perform an action with an object if it is a specified type
+/// Perform an action on an object (or an underlying object for which it is an
+/// <tt>IProxy</tt>) if it (or one of those underlying objects) is a specified
+/// type and meets specified criteria
 ///
 public static
     bool
     /// @returns
-    /// Whether the object was the specified type and, therefore, whether the
-    /// specified action was performed
-IfIsDo<
+    /// Whether the object (or an underlying object for which it is an
+    /// <tt>IProxy</tt>) was the specified type and met the specified criteria
+    /// and, therefore, whether the action was performed
+IsAndDo<
     T
->(
-    this object         dis,
-    System.Action< T >  action
-)
-    where T : class
-{
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    if( object.ReferenceEquals( action, null ) )
-        throw new System.ArgumentNullException( "action" );
-    T t = dis as T;
-    if( object.ReferenceEquals( t, null ) ) return false;
-    action( t );
-    return true;
-}
-
-
-/// Perform an action with an object if it is a specified type and meets
-/// specified criteria
-///
-public static
-    bool
-    /// @returns
-    /// Whether the object was the specified type and met the specified criteria
-    /// and, therefore, whether the specified action was performed
-IfIsAndDo<
-    T
+    ///< The sought-after type
 >(
     this object             dis,
+    ///< The object
     System.Predicate< T >   predicate,
+    ///< The criteria
     System.Action< T >      action
+    ///< The action to perform
 )
-    where T : class
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
     if( object.ReferenceEquals( predicate, null ) )
         throw new System.ArgumentNullException( "predicate" );
     if( object.ReferenceEquals( action, null ) )
         throw new System.ArgumentNullException( "action" );
-    T t = dis as T;
-    if( object.ReferenceEquals( t, null ) ) return false;
-    if( !predicate( t ) ) return false;
-    action( t );
+
+    T sought =
+        SystemEnumerable.Create(
+            dis,
+            obj => obj is IProxy ? ((IProxy)obj).Underlying : null )
+        .OfType< T >()
+        .Where( t => predicate( t ) )
+        .FirstOrDefault();
+    if( object.ReferenceEquals( sought, null ) ) return false;
+    action( sought );
     return true;
+}
+
+
+/// Look through any proxies, recursively, to the underlying object
+///
+public static
+    object
+GetUnderlying(
+    this object dis
+)
+{
+    if( dis == null ) throw new System.ArgumentNullException( "dis" );
+    return
+        SystemEnumerable.Create(
+            dis, 
+            obj => obj is IProxy ? ((IProxy)obj).Underlying : null )
+        .Last();
 }
 
 

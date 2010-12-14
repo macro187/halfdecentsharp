@@ -35,6 +35,8 @@ ComparerProxy<
     T
 >
     : IComparer< T >
+    , IProxy
+
     where T : TFrom
 {
 
@@ -114,14 +116,13 @@ GetHashCode(
 
 
 // -----------------------------------------------------------------------------
-// IEqualityComparer
+// IProxy
 // -----------------------------------------------------------------------------
 
-public
-    IEqualityComparer
-GetUnderlying()
+object
+IProxy.Underlying
 {
-    return this.From.GetUnderlying();
+    get { return this.From; }
 }
 
 

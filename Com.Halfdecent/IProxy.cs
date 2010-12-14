@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,22 +16,40 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-
-
 namespace
 Com.Halfdecent
 {
 
 
 // =============================================================================
-// A definition of equality between items
+/// An object acting as a proxy for another object
+///
+// TODO
+// Discussion of exactly what it means to be a "proxy", i.e. adds an interface
+// to an underlying object, and is "proxy" indeed the right term for this?
+//
+// TODO
+// Further discussion of other kinds of wrappers that are meant to hide the
+// underlying object, correct terminology, etc.
+//
 // =============================================================================
 
 public interface
-IEqualityComparer
-    : IEquatable< IEqualityComparer >
+IProxy
 {
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+/// The underlying object for which this object is acting as a proxy
+///
+object
+Underlying
+{
+    get;
+}
 
 
 

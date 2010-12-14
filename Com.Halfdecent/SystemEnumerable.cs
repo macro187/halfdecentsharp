@@ -18,6 +18,7 @@
 
 using System;
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 
 
@@ -99,6 +100,22 @@ Append<
     if( object.ReferenceEquals( items, null ) )
         throw new ArgumentNullException( "items" );
     return enumerable.Concat( items );
+}
+
+
+public static
+    IEnumerable< T >
+WhereIs<
+    T
+>(
+    this IEnumerable dis
+)
+{
+    if( (object)dis == null ) throw new ArgumentNullException( "dis" );
+    foreach( object obj in dis ) {
+        T result = default( T );
+        if( obj.IsDo< T >( t => result = t ) ) yield return result;
+    }
 }
 
 

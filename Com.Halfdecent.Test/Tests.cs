@@ -46,6 +46,89 @@ Main()
 }
 
 
+class
+TestProxy
+    : IProxy
+{
+    public
+    TestProxy(
+        object underlying
+    )
+    {
+        this.Underlying = underlying;
+    }
+
+    public
+    object
+    Underlying
+    {
+        get;
+        private set;
+    }
+}
+
+
+[Test( "SystemObject" )]
+public static
+void
+Test_SystemObject()
+{
+    bool ok;
+
+    object str = "match";
+    object strproxy = new TestProxy( str );
+    object obj = new object();
+    object objproxy = new TestProxy( obj );
+
+    Print( ".ToString()" );
+    Assert( SystemObject.ToString( null ) == "null" );
+    Assert( SystemObject.ToString( "notnull" ) == "notnull" );
+
+    Print( "Is()" );
+    Assert( str.Is< string >() );
+    Assert( strproxy.Is< string >() );
+    Assert( !( objproxy.Is< string >() ) );
+
+    Print( "IsDo()" );
+    ok = false;
+    Assert( str.IsDo< string >( s => ok = true ) );
+    Assert( ok );
+    ok = false;
+    Assert( strproxy.IsDo< string >( s => ok = true ) );
+    Assert( ok );
+    ok = true;
+    Assert( !( objproxy.IsDo< string >( s => ok = false ) ) );
+    Assert( ok );
+
+    Print( ".IsAnd()" );
+    Assert( str.IsAnd< string >( s => s == "match" ) );
+    Assert( strproxy.IsAnd< string >( s => s == "match" ) );
+    Assert( !( strproxy.IsAnd< string >( s => s == "NOMATCH" ) ) );
+    Assert( !( objproxy.IsAnd< string >( s => s == "match" ) ) );
+
+    Print( ".IsAndDo()" );
+    ok = false;
+    Assert( str.IsAndDo<
+        string >( s => s == "match", s => ok = true ) );
+    Assert( ok );
+    ok = false;
+    Assert( strproxy.IsAndDo<
+        string >( s => s == "match", s => ok = true ) );
+    Assert( ok );
+    ok = true;
+    Assert( !( strproxy.IsAndDo<
+        string >( s => s == "NOMATCH", s => ok = false ) ) );
+    Assert( ok );
+    ok = true;
+    Assert( !( objproxy.IsAndDo<
+        string >( s => s == "match", s => ok = false ) ) );
+    Assert( ok );
+
+    Print( "GetUnderlying()" );
+    Assert( obj.GetUnderlying() == obj );
+    Assert( objproxy.GetUnderlying() == obj );
+}
+
 
 [Test( "SystemEnumerable" )]
 public static
@@ -152,75 +235,6 @@ Test_SystemException()
     Assert(
         h.Chain()
         .SequenceEqual( SystemEnumerable.Create( h, g, f, e ) ) );
-}
-
-
-[Test( "SystemObject" )]
-public static
-void
-Test_SystemObject()
-{
-    bool ok;
-
-    Print( ".ToString()" );
-    Assert( SystemObject.ToString( null ) == "null" );
-    Assert( SystemObject.ToString( "notnull" ) == "notnull" );
-
-
-    Print( ".IsAnd()" );
-    Assert(
-        "abc".IsAnd< string >( s => s == "abc" ) );
-    Assert( !(
-        "abc".IsAnd< string >( s => s == "def" ) ) );
-    Assert( !(
-        "abc".IsAnd< System.Exception >( e => true ) ) );
-    Expect< System.ArgumentNullException >( () =>
-        "abc".IsAnd< string >( null ) );
-
-
-    Print( ".IfIsDo()" );
-
-    ok = false;
-    "abc".IfIsDo< string >( s => { ok = true; } );
-    Assert( ok );
-
-    ok = true;
-    "abc".IfIsDo< System.Exception >( e => { ok = false; } );
-    Assert( ok );
-
-    Expect< System.ArgumentNullException >( () =>
-        "abc".IfIsDo< string >( null ) );
-
-
-    Print( ".IfIsAndDo()" );
-
-    ok = false;
-    "abc".IfIsAndDo< string >(
-        s => s == "abc",
-        s => { ok = true; } );
-    Assert( ok );
-
-    ok = true;
-    "abc".IfIsAndDo< string >(
-        s => s == "def",
-        s => { ok = false; } );
-    Assert( ok );
-
-    ok = true;
-    "abc".IfIsAndDo< System.Exception >(
-        e => true,
-        e => { ok = false; } );
-    Assert( ok );
-
-    Expect< System.ArgumentNullException >( () =>
-        "abc".IfIsAndDo< string >(
-            s => true,
-            null ) );
-
-    Expect< System.ArgumentNullException >( () =>
-        "abc".IfIsAndDo< string >(
-            null,
-            s => {} ) );
 }
 
 
