@@ -355,10 +355,11 @@ Test_ValueReferenceException()
     }
     Assert( success );
 
-    success = true;
+    success = false;
     try {
         ThrowOne( new object() );
     } catch( Exception ex ) {
+        success = true;
         ValueReferenceException.Match< Exception >( ex,
             (vr,f) =>
                 vr.Equals( f.Down().Parameter( "arg1" ).Property( "WRONG" ) ),
@@ -367,15 +368,39 @@ Test_ValueReferenceException()
     }
     Assert( success );
 
-    success = true;
+    success = false;
     try {
         ThrowOne( new object() );
     } catch( Exception ex ) {
+        success = true;
         ValueReferenceException.Match< Exception >( ex,
             (vr,f) =>
                 vr.Equals( f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
             e => e.Message == "WRONG",
             (vr, f, e ) => success = false );
+    }
+    Assert( success );
+
+    success = false;
+    try {
+        ThrowOne( new object() );
+    } catch( Exception ex ) {
+        success = ValueReferenceException.Match< Exception >( ex,
+            (vr,f) =>
+                vr.Equals( f.Down().Parameter( "arg1" ).Property( "Prop1" ) ),
+            e => e.Message == "fake exception" );
+    }
+    Assert( success );
+
+    success = false;
+    try {
+        ThrowOne( new object() );
+    } catch( Exception ex ) {
+        success = true;
+        success = !( ValueReferenceException.Match< Exception >( ex,
+            (vr,f) =>
+                vr.Equals( f.Down().Parameter( "arg1" ).Property( "WRONG" ) ),
+            e => e.Message == "fake exception" ) );
     }
     Assert( success );
 

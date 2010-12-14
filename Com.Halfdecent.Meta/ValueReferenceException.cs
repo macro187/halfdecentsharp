@@ -194,6 +194,36 @@ Match<
 }
 
 
+public static
+    bool
+Match<
+    TException
+>(
+    System.Exception                                    e,
+    System.Func< ValueReference, Frame, bool >          referencePredicate,
+    System.Predicate< TException >                      exceptionPredicate
+)
+    where TException : System.Exception
+{
+    if( object.ReferenceEquals( e, null ) )
+        throw new LocalisedArgumentNullException( "e" );
+    if( object.ReferenceEquals( referencePredicate, null ) )
+        throw new LocalisedArgumentNullException( "referencePredicate" );
+    if( object.ReferenceEquals( exceptionPredicate, null ) )
+        throw new LocalisedArgumentNullException( "exceptionPredicate" );
+
+    bool result = false;
+    ValueReferenceException.Match<
+        TException >(
+        e,
+        (vre,f) => referencePredicate( vre, f.Up() ),
+        exceptionPredicate,
+        (vr,f,ex) => result = true );
+    return result;
+}
+
+
+
 
 // -----------------------------------------------------------------------------
 // Constructors
