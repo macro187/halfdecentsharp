@@ -174,25 +174,59 @@ Expect<
 )
     where TExpected : Exception
 {
+    Expect< TExpected >(
+        delegate( TExpected ex ) { return true; },
+        action );
+}
+
+
+public static
+void
+Expect<
+    TExpected
+>(
+    ExpectPredicate< TExpected >    predicate,
+    ExpectAction                    action
+)
+    where TExpected : Exception
+{
+    if( predicate == null ) throw new ArgumentNullException( "predicate" );
     if( action == null ) throw new ArgumentNullException( "action" );
-    bool threw = false;
+
     try {
         action();
+
     } catch( TExpected e ) {
+        if( !predicate( e ) )
+            throw new AssertFailedException( String.Format(
+                "Expected {0} occurred but it didn't match the specified"
+                + " criteria",
+                typeof( TExpected ).Name ) );
+
         Print( "Expected '{0}' occurred:\n{1}",
             typeof( TExpected ).Name,
             Indent( DumpException( e ) ) );
-        threw = true;
+
+        return;
     }
-    if( !threw )
-        throw new AssertFailedException( String.Format(
-            "Expected {0} but it didn't occur",
-            typeof( TExpected ).Name ) );
+
+    throw new AssertFailedException( String.Format(
+        "Expected {0} but it didn't occur",
+        typeof( TExpected ).Name ) );
 }
 
 public delegate
 void
 ExpectAction();
+
+public delegate
+    bool
+ExpectPredicate<
+    T
+>(
+    T item
+);
+
 
 
 
