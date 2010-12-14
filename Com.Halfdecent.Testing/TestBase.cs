@@ -196,16 +196,16 @@ Expect(
     } catch( Exception e ) {
 
         if( !predicate( e ) )
-            throw new AssertFailedException(
-                "An exception occurred but it wasn't as expected" );
+            throw new Exception(
+                "An exception occurred but it wasn't as expected",
+                e );
 
         Print( "Expected exception occurred:\n{0}",
             Indent( DumpException( e ) ) );
         return;
     }
 
-    throw new AssertFailedException(
-        "An exception was expected to occur, but did not" );
+    throw new Exception( "An exception was expected to occur, but did not" );
 }
 
 public delegate
