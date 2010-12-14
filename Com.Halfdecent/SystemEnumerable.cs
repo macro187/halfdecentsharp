@@ -81,7 +81,8 @@ Append<
 }
 
 
-/// Determine whether an enumerable begins with a specified sequence of items
+/// Determine whether an enumerable begins with a specified sequence of
+/// equatable items
 ///
 public static
     bool
@@ -91,10 +92,9 @@ StartsWith<
     this IEnumerable< T >   dis,
     IEnumerable< T >        sequence
 )
+    where T : System.IEquatable< T >
 {
-    return dis.StartsWith<T>(
-        sequence,
-        new ObjectComparer().Contravary< object, T >() );
+    return dis.StartsWith< T >( sequence, new SystemEquatableComparer< T >() );
 }
 
 
