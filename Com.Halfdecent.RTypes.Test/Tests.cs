@@ -274,8 +274,6 @@ public static
 void
 Test_EQ_T()
 {
-    bool ok;
-
     Print( "Equality" );
     Assert(
         new EQ<object>( 1, new ObjectComparer() ).Equals(
@@ -303,31 +301,21 @@ Test_EQ_T()
     EQ.Check( 1, 1 );
 
     Print( "Inequal fails" );
-    ok = false;
-    try {
-        EQ.Check( 1, 2 );
-    } catch( System.Exception e ) {
-        ok = RTypeException.Match<
-            EQ< int > >(
-            e,
-            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ) );
-    }
-    Assert( ok );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( EQ.Create( 1 ) ) ),
+        () => EQ.Check( 1, 2 ) );
 
     Print( "With null CompareTo, null passes" );
     EQ.Check( null, new ObjectComparer(), null );
 
     Print( "With null CompareTo, non-null fails" );
-    ok = false;
-    try {
-        EQ.Check( null, new ObjectComparer(), new object() );
-    } catch( System.Exception e ) {
-        ok = RTypeException.Match<
-            EQ< object > >(
-            e,
-            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ) );
-    }
-    Assert( ok );
+    Expect(
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( EQ.Create( null, new ObjectComparer() ) ) ),
+        () => EQ.Check( null, new ObjectComparer(), new object() ) );
 }
 
 
@@ -364,10 +352,9 @@ Test_NEQ_T()
 
     Print( "Equal fails" );
     Expect(
-        e => RTypeException.Match<
-            NEQ< int > >(
-            e,
-            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ) ),
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( NEQ.Create( 1 ) ) ),
         () => NEQ.Check( 1, 1 ) );
 
     Print( "With null CompareTo, non-null passes" );
@@ -375,10 +362,9 @@ Test_NEQ_T()
 
     Print( "With null CompareTo, null fails" );
     Expect(
-        e => RTypeException.Match<
-            NEQ< object > >(
-            e,
-            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ) ),
+        e => RTypeException.Match( e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
+            rt => rt.Equals( NEQ.Create( null, new ObjectComparer() ) ) ),
         () => NEQ.Check( null, new ObjectComparer(), null ) );
 }
 
