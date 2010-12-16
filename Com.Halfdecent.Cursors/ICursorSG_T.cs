@@ -35,6 +35,34 @@ ICursorSG<
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorSG.Statics
+// -----------------------------------------------------------------------------
+public static
+    ICursorSG< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this ICursorSG< TFrom > from
+)
+    where T : TFrom
+{
+    return new CursorSGProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorSG.Proxy
+// -----------------------------------------------------------------------------
+#endif
+
+
+
 
 } // type
 } // namespace

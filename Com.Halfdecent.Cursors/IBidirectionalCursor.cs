@@ -47,6 +47,23 @@ TryMoveBack(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IBidirectionalCursor.Statics
+// -----------------------------------------------------------------------------
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IBidirectionalCursor.Proxy
+// -----------------------------------------------------------------------------
+public IInteger TryMoveBack( IInteger count) { return this.From.TryMoveBack( count ); }
+#endif
+
+
+
 
 } // type
 } // namespace

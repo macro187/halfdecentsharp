@@ -50,6 +50,35 @@ Insert(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorG.Statics
+// -----------------------------------------------------------------------------
+public static
+    ICursorG< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this ICursorG< TFrom > from
+)
+    where T : TFrom
+{
+    return new CursorGProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorG.Proxy
+// -----------------------------------------------------------------------------
+public void Insert( T replacement ) { this.From.Insert( replacement ); }
+#endif
+
+
+
 
 } // type
 } // namespace

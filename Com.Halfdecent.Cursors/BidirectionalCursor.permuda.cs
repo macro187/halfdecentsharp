@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _RCSG
+// filename BidirectionalCursor/*PERMUDA*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -16,60 +20,19 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Cursors
 {
 
 
-public class
-BidirectionalCursorProxy
-    : CursorProxy
-    , IBidirectionalCursor
-    , IProxy
+public static partial class
+BidirectionalCursor/*PERMUDA*/
 {
 
 
-
-public
-BidirectionalCursorProxy(
-    IBidirectionalCursor from
-)
-    : base( from )
-{
-    this.From = from;
-}
-
-
-new protected
-    IBidirectionalCursor
-From
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IBidirectionalCursor
-// -----------------------------------------------------------------------------
-
-public IInteger TryMoveBack( IInteger count) { return this.From.TryMoveBack( count ); }
-
-
-
-// -----------------------------------------------------------------------------
-// IProxy
-// -----------------------------------------------------------------------------
-
-    object
-IProxy.Underlying
-{
-    get { return this.From; }
-}
+#region TRAITOR
+// IBidirectionalCursor/*PERMUDA*/.Statics
+#endregion
 
 
 

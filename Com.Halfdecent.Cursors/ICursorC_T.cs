@@ -45,6 +45,35 @@ Set(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorC.Statics
+// -----------------------------------------------------------------------------
+public static
+    ICursorC< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this ICursorC< TFrom > from
+)
+    where T : TFrom
+{
+    return new CursorCProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorC.Proxy
+// -----------------------------------------------------------------------------
+public void Set( T replacement ) { this.From.Set( replacement ); }
+#endif
+
+
+
 
 } // type
 } // namespace

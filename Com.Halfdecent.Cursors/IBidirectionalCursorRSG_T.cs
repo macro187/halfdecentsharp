@@ -16,62 +16,36 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Cursors
 {
 
 
-public class
-BidirectionalCursorRGProxy<
+public interface
+IBidirectionalCursorRSG<
     T
 >
-    : CursorRGProxy< T >
+    : ICursorRSG< T >
+    , IBidirectionalCursorRS< T >
     , IBidirectionalCursorRG< T >
-    , IProxy
+    , IBidirectionalCursorSG< T >
 {
 
 
 
-public
-BidirectionalCursorRGProxy(
-    IBidirectionalCursorRG< T > from
-)
-    : base( from )
-{
-    this.From = from;
-}
-
-
-new protected
-    IBidirectionalCursorRG< T >
-From
-{
-    get;
-    private set;
-}
-
-
-
+#if TRAITOR
 // -----------------------------------------------------------------------------
-// IBidirectionalCursor
+// Trait IBidirectionalCursorRSG.Statics
 // -----------------------------------------------------------------------------
-
-public IInteger TryMoveBack( IInteger count) { return this.From.TryMoveBack( count ); }
-
+#endif
 
 
+
+#if TRAITOR
 // -----------------------------------------------------------------------------
-// IProxy
+// Trait IBidirectionalCursorRSG.Proxy
 // -----------------------------------------------------------------------------
-
-    object
-IProxy.Underlying
-{
-    get { return this.From; }
-}
+#endif
 
 
 

@@ -72,6 +72,25 @@ TryMove(
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursor.Statics
+// -----------------------------------------------------------------------------
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursor.Proxy
+// -----------------------------------------------------------------------------
+public bool AtBeginning { get { return this.From.AtBeginning; } }
+public bool AtEnd { get { return this.From.AtEnd; } }
+public IInteger TryMove( IInteger count) { return this.From.TryMove( count ); }
+#endif
+
+
+
 
 } // type
 } // namespace

@@ -43,6 +43,35 @@ Get();
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorR.Statics
+// -----------------------------------------------------------------------------
+public static
+    ICursorR< T >
+Covary<
+    TFrom,
+    T
+>(
+    this ICursorR< TFrom > from
+)
+    where TFrom : T
+{
+    return new CursorRProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorR.Proxy
+// -----------------------------------------------------------------------------
+public T Get() { return this.From.Get(); }
+#endif
+
+
+
 
 } // type
 } // namespace

@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _RCSG
+// filename Cursor/*PERMUDA*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -21,28 +25,18 @@ Com.Halfdecent.Cursors
 {
 
 
-public static class
-CursorSG
+public static partial class
+Cursor/*PERMUDA*/
 {
 
 
-public static
-    ICursorSG< T >
-Contravary<
-    TFrom,
-    T
->(
-    this ICursorSG< TFrom > from
-)
-    where T : TFrom
-{
-    return new CursorSGProxy< TFrom, T >( from );
-}
+#region TRAITOR
+// ICursor/*PERMUDA*/.Statics
+#endregion
 
 
 
 
 } // type
 } // namespace
-
 

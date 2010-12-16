@@ -21,23 +21,30 @@ Com.Halfdecent.Cursors
 {
 
 
-public static class
-BidirectionalCursorCG
-{
-
-
-public static
-    IBidirectionalCursorCG< T >
-Contravary<
-    TFrom,
+public interface
+ICursorRSG<
     T
->(
-    this IBidirectionalCursorCG< TFrom > from
-)
-    where T : TFrom
+>
+    : ICursorR< T >
+    , ICursorS
+    , ICursorG< T >
 {
-    return new BidirectionalCursorCGProxy< TFrom, T >( from );
-}
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorRSG.Statics
+// -----------------------------------------------------------------------------
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorRSG.Proxy
+// -----------------------------------------------------------------------------
+#endif
 
 
 

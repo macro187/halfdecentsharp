@@ -37,6 +37,34 @@ IBidirectionalCursorCSG<
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IBidirectionalCursorCSG.Statics
+// -----------------------------------------------------------------------------
+public static
+    IBidirectionalCursorCSG< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this IBidirectionalCursorCSG< TFrom > from
+)
+    where T : TFrom
+{
+    return new BidirectionalCursorCSGProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IBidirectionalCursorCSG.Proxy
+// -----------------------------------------------------------------------------
+#endif
+
+
+
 
 } // type
 } // namespace

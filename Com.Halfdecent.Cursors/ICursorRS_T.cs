@@ -35,6 +35,34 @@ ICursorRS<
 
 
 
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorRS.Statics
+// -----------------------------------------------------------------------------
+public static
+    ICursorRS< T >
+Covary<
+    TFrom,
+    T
+>(
+    this ICursorRS< TFrom > from
+)
+    where TFrom : T
+{
+    return new CursorRSProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICursorRS.Proxy
+// -----------------------------------------------------------------------------
+#endif
+
+
+
 
 } // type
 } // namespace
