@@ -31,6 +31,7 @@ CursorRGProxy<
     T
 >
     : ICursorRG< T >
+    , IProxy
 {
 
 
@@ -78,6 +79,18 @@ public T Get() { return this.From.Get(); }
 // -----------------------------------------------------------------------------
 
 public void Insert( T replacement ) { this.From.Insert( replacement ); }
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 

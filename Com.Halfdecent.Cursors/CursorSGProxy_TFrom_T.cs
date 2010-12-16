@@ -32,6 +32,8 @@ CursorSGProxy<
     T
 >
     : ICursorSG< T >
+    , IProxy
+
     where T : TFrom
 {
 
@@ -80,6 +82,18 @@ public void Remove() { this.From.Remove(); }
 // -----------------------------------------------------------------------------
 
 public void Insert( T replacement ) { this.From.Insert( replacement ); }
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 

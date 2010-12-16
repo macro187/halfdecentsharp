@@ -32,6 +32,8 @@ CursorCSProxy<
     T
 >
     : ICursorCS< T >
+    , IProxy
+
     where T : TFrom
 {
 
@@ -80,6 +82,18 @@ public void Set( T replacement ) { this.From.Set( replacement ); }
 // -----------------------------------------------------------------------------
 
 public void Remove() { this.From.Remove(); }
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 

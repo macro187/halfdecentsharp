@@ -32,6 +32,8 @@ CursorCProxy<
     T
 >
     : ICursorC< T >
+    , IProxy
+
     where T : TFrom
 {
 
@@ -72,6 +74,18 @@ public IInteger TryMove( IInteger count) { return this.From.TryMove( count ); }
 // -----------------------------------------------------------------------------
 
 public void Set( T replacement ) { this.From.Set( replacement ); }
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 

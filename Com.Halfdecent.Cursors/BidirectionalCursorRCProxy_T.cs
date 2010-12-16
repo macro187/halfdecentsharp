@@ -30,6 +30,7 @@ BidirectionalCursorRCProxy<
 >
     : CursorRCProxy< T >
     , IBidirectionalCursorRC< T >
+    , IProxy
 {
 
 
@@ -59,6 +60,18 @@ From
 // -----------------------------------------------------------------------------
 
 public IInteger TryMoveBack( IInteger count) { return this.From.TryMoveBack( count ); }
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 

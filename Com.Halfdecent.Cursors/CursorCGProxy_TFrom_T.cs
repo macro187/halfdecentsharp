@@ -32,6 +32,8 @@ CursorCGProxy<
     T
 >
     : ICursorCG< T >
+    , IProxy
+
     where T : TFrom
 {
 
@@ -80,6 +82,18 @@ public void Set( T replacement ) { this.From.Set( replacement ); }
 // -----------------------------------------------------------------------------
 
 public void Insert( T replacement ) { this.From.Insert( replacement ); }
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 

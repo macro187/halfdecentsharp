@@ -29,6 +29,7 @@ Com.Halfdecent.Cursors
 public class
 CursorSProxy
     : ICursorS
+    , IProxy
 {
 
 
@@ -68,6 +69,18 @@ public IInteger TryMove( IInteger count) { return this.From.TryMove( count ); }
 // -----------------------------------------------------------------------------
 
 public void Remove() { this.From.Remove(); }
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 

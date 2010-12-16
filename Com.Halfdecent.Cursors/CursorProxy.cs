@@ -29,6 +29,7 @@ Com.Halfdecent.Cursors
 public class
 CursorProxy
     : ICursor
+    , IProxy
 {
 
 
@@ -60,6 +61,18 @@ From
 public bool AtBeginning { get { return this.From.AtBeginning; } }
 public bool AtEnd { get { return this.From.AtEnd; } }
 public IInteger TryMove( IInteger count) { return this.From.TryMove( count ); }
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 
