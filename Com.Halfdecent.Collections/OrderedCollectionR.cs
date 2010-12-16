@@ -35,6 +35,7 @@ OrderedCollectionR
 
 
 
+/*
 public static
     bool
 SequenceEqual<
@@ -44,8 +45,8 @@ SequenceEqual<
     IOrderedCollectionR< T >        that
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
     return dis.SequenceEqual< T >(
         that, new ObjectComparer().Contravary< object, T >() );
 }
@@ -63,8 +64,8 @@ SequenceEqual<
     where T : TEquatable
     where TEquatable : IEquatable< TEquatable >
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
     return dis.SequenceEqual(
         that,
         new EquatableComparer< TEquatable >().Contravary< TEquatable, T >() );
@@ -81,13 +82,14 @@ SequenceEqual<
     IEqualityComparer< T >          comparer
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( that, new Parameter( "that" ) );
-    NonNull.Require( comparer, new Parameter( "comparer" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( that, "that" );
+    NonNull.CheckParameter( comparer, "comparer" );
 
     if( !dis.Count.Equals( that.Count ) ) return false;
     return dis.Stream().SequenceEqual( that.Stream(), comparer );
 }
+*/
 
 
 public static
@@ -119,7 +121,7 @@ IndexWhere<
     Predicate< T >                  where
 )
 {
-    NonNull.Require( where, new Parameter( "where" ) );
+    NonNull.CheckParameter( where, "where" );
     foreach( ITuple< IInteger, T > t in dis.StreamPairs().AsEnumerable() ) {
         if( where( t.B ) ) return t.A;
     }

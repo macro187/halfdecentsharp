@@ -54,7 +54,7 @@ CollectionFromSystemDictionaryAdapter(
     SCG.IDictionary< TKey, T > from
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
+    NonNull.CheckParameter( from, "from" );
     this.From = from;
 }
 
@@ -84,7 +84,7 @@ Get(
     TKey key
 )
 {
-    ExistingKeyIn.Require( this, key, new Parameter( "key" ) );
+    ExistingKeyIn.CheckParameter( this, key, "key" );
     return this.From[ key ];
 }
 
@@ -101,7 +101,7 @@ Replace(
     T    replacement
 )
 {
-    ExistingKeyIn.Require( this, key, new Parameter( "key" ) );
+    ExistingKeyIn.CheckParameter( this, key, "key" );
     this.From[ key ] = replacement;
 }
 
@@ -117,7 +117,7 @@ Remove(
     TKey key
 )
 {
-    ExistingKeyIn.Require( this, key, new Parameter( "key" ) );
+    ExistingKeyIn.CheckParameter( this, key, "key" );
     this.From.Remove( key );
 }
 
@@ -149,7 +149,7 @@ Add(
     T    item
 )
 {
-    NonExistingKeyIn.Require( this, key, new Parameter( "key" ) );
+    NonExistingKeyIn.CheckParameter( this, key, "key" );
     this.From.Add( key, item );
 }
 
@@ -218,7 +218,10 @@ Stream(
     TKey key
 )
 {
-    return KeyedCollection.StreamViaUniqueKeyedCollection( this, key );
+    return ValueReferenceException.Map(
+        f => f.Parameter( "key" ),
+        f => f.Down().Parameter( "key" ),
+        () => KeyedCollection.StreamViaUniqueKeyedCollection( this, key ) );
 }
 
 
@@ -246,6 +249,7 @@ GetAndReplaceWhere(
     System.Predicate< T > where
 )
 {
+    NonNull.CheckParameter( where, "where" );
     return Collection.GetAndReplaceWhereViaUniqueKeyedCollection( this, where );
 }
 
@@ -261,6 +265,7 @@ GetAndRemoveWhere(
     System.Predicate< T > where
 )
 {
+    NonNull.CheckParameter( where, "where" );
     return Collection.GetAndRemoveWhereViaUniqueKeyedCollection( this, where );
 }
 

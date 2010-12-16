@@ -30,6 +30,7 @@ Com.Halfdecent.Collections
 public class
 KeyedCollection/*PERMUDA*/Proxy/*PERMUDA PROXYSUFFIX*/
     : IKeyedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
+    , IProxy
 
     /*PERMUDA WHERE*/
 {
@@ -41,7 +42,7 @@ KeyedCollection/*PERMUDA*/Proxy(
     IKeyedCollection/*PERMUDA*//*PERMUDA FROMSUFFIX*/ from
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
+    NonNull.CheckParameter( from, "from" );
     this.From = from;
 }
 
@@ -61,6 +62,18 @@ From
 // IKeyedCollection.Proxy
 /*PERMUDA TRAITS*/
 #endregion
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 

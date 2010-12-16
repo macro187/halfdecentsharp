@@ -37,21 +37,41 @@ ExistingKeyIn
 
 public static
     void
-Require<
+CheckParameter<
     TKey,
     T
 >(
     IKeyedCollectionR< TKey, T >    collection,
     TKey                            item,
-    Value                           itemReference
+    string                          paramName
 )
 {
-    Create( collection ).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Down().Parameter( "item" ),
+        () => Check( collection, item ) );
 }
 
 
 public static
-    IRType< TKey >
+    void
+Check<
+    TKey,
+    T
+>(
+    IKeyedCollectionR< TKey, T >    collection,
+    TKey                            item
+)
+{
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create( collection ).Check( item ) );
+}
+
+
+public static
+    RType< TKey >
 Create<
     TKey,
     T
@@ -77,7 +97,7 @@ ExistingKeyIn<
     TKey,
     T
 >
-    : SimpleTextRTypeBase< TKey >
+    : RType< TKey >
 {
 
 
@@ -91,11 +111,12 @@ ExistingKeyIn(
     IKeyedCollectionR< TKey, T > collection
 )
     : base(
-        _S( "{0} is the key of an item in the collection" ),
-        _S( "{0} is not the key of an item in the collection" ),
-        _S( "{0} must be the key of an item in the collection" ) )
+        item => collection.Contains( item ),
+        r => _S( "{0} is the key of an item in the collection", r ),
+        r => _S( "{0} is not the key of an item in the collection", r ),
+        r => _S( "{0} must be the key of an item in the collection", r ) )
 {
-    NonNull.Require( collection, new Parameter( "collection" ) );
+    NonNull.CheckParameter( collection, "collection" );
     this.Collection = collection;
 }
 
@@ -116,35 +137,21 @@ Collection
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Predicate(
-    TKey item
-)
-{
-    return this.Collection.Contains( item );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IEquatable< IRType >
+// IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
 DirectionalEquals(
-    IRType that
+    RType that
 )
 {
     return
-        that.GetType() == this.GetType() &&
-        object.ReferenceEquals(
-            ((ExistingKeyIn< TKey, T >)that).Collection,
-            this.Collection );
+        base.DirectionalEquals( that )
+        && that.IsAnd<
+            // XXX Won't work if 'that' has been varied through an adapter
+            ExistingKeyIn< TKey, T > >(
+            rt => ((object)(rt.Collection)) == this.Collection );
 }
 
 
@@ -160,7 +167,7 @@ GetHashCode()
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType ), s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

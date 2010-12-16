@@ -52,8 +52,8 @@ ImplicitUniqueKeyedCollectionFromUniqueKeyedCollectionAdapter(
 )
     : base( from )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
-    NonNull.Require( extractKeyFunc, new Parameter( "extractKeyFunc" ) );
+    NonNull.CheckParameter( from, "from" );
+    NonNull.CheckParameter( extractKeyFunc, "extractKeyFunc" );
     this.From = from;
     this.ExtractKeyFunc = extractKeyFunc;
 }

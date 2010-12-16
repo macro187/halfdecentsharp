@@ -34,7 +34,7 @@ Com.Halfdecent.Collections
 
 public sealed class
 ExistingOrNextPositionIn
-    : SimpleTextRTypeBase< IInteger >
+    : CompositeRType< IInteger >
 {
 
 
@@ -45,18 +45,35 @@ ExistingOrNextPositionIn
 
 public static
     void
-Require(
+CheckParameter(
     ICollection collection,
     IInteger    item,
-    Value       itemReference
+    string      paramName
 )
 {
-    Create( collection ).Require( item, itemReference );
+    ValueReferenceException.Map(
+        f => f.Up().Parameter( paramName ),
+        f => f.Down().Parameter( "item" ),
+        () => Check( collection, item ) );
 }
 
 
 public static
-    IRType< IInteger >
+    void
+Check(
+    ICollection collection,
+    IInteger    item
+)
+{
+    ValueReferenceException.Map(
+        f => f.Parameter( "item" ),
+        f => f.Down().Parameter( "item" ),
+        () => Create( collection ).Check( item ) );
+}
+
+
+public static
+    RType< IInteger >
 Create(
     ICollection collection
 )
@@ -75,11 +92,14 @@ ExistingOrNextPositionIn(
     ICollection collection
 )
     : base(
-        _S( "{0} is an existing or the next position in the collection" ),
-        _S( "{0} is not an existing or the next position in the collection" ),
-        _S( "{0} must be an existing or the next position in the collection" ) )
+        SystemEnumerable.Create(
+            GTE.Create( Integer.From( 0 ) ).Contravary< IInteger >(),
+            LTE.Create( collection.Count ).Contravary< IInteger >() ),
+        r => _S( "{0} is an existing or the next position in the collection", r ),
+        r => _S( "{0} is not an existing or the next position in the collection", r ),
+        r => _S( "{0} must be an existing or the next position in the collection", r ) )
 {
-    NonNull.Require( collection, new Parameter( "collection" ) );
+    NonNull.CheckParameter( collection, "collection" );
     this.Collection = collection;
 }
 
@@ -100,38 +120,20 @@ Collection
 
 
 // -----------------------------------------------------------------------------
-// RTypeBase< T >
-// -----------------------------------------------------------------------------
-
-public override
-    SCG.IEnumerable< IRType< IInteger > >
-GetComponents()
-{
-    yield return
-        GTE.Create< IReal >( Integer.From( 0 ) )
-        .Contravary< IReal, IInteger >();
-    yield return
-        LTE.Create< IReal >( this.Collection.Count )
-        .Contravary< IReal, IInteger >();
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IEquatable< IRType >
+// IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
 DirectionalEquals(
-    IRType that
+    RType that
 )
 {
     return
-        that.GetType() == this.GetType() &&
-        object.ReferenceEquals(
-            ((ExistingOrNextPositionIn)that).Collection,
-            this.Collection );
+        base.DirectionalEquals( that )
+        && that.IsAnd<
+            ExistingOrNextPositionIn >(
+            rt => (object)(rt.Collection) == this.Collection );
 }
 
 

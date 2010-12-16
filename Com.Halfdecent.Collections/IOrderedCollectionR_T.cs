@@ -106,8 +106,8 @@ Get(
     IInteger key
 )
 {
-    NonNull.Require( key, new Parameter( "key" ) );
-    ExistingKeyIn.Require( this, key, new Parameter( "key" ) );
+    NonNull.CheckParameter( key, "key" );
+    ExistingKeyIn.CheckParameter( this, key, "key" );
     return this.From.Get( this.Trans( key ) );
 }
 
@@ -143,7 +143,7 @@ Contains(
     IInteger key
 )
 {
-    NonNull.Require( key, new Parameter( "key" ) );
+    NonNull.CheckParameter( key, "key" );
     return key.GTE< IReal >( Integer.From( 0 ) ) && key.LT( this.SliceCount );
 }
 

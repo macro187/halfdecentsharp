@@ -61,9 +61,9 @@ Remove(
     IInteger key
 )
 {
-    NonNull.Require( key, new Parameter( "key" ) );
-    GTE.Require< IReal >( Integer.From( 0 ), key, new Parameter( "key" ) );
-    LTE.Require< IReal >( this.Count, key, new Parameter( "key" ) );
+    NonNull.CheckParameter( key, "key" );
+    GTE.CheckParameter( Integer.From( 0 ), key, "key" );
+    LTE.CheckParameter( this.Count, key, "key" );
     this.From.Remove( this.Trans( key ) );
     this.SliceCount = this.SliceCount.Minus( Integer.From( 1 ) );
 }

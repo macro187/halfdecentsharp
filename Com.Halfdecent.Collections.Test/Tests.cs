@@ -388,8 +388,12 @@ Test_CollectionFromSystemDictionaryAdapter()
     c.Remove( "2" );
     Assert( c.Count.Equals( Integer.From( 2 ) ) );
     Assert( !c.Contains( "2" ) );
-    Expect< RTypeException >( () =>
-        c.Get( "2" ) );
+    Expect(
+        e => RTypeException.Match(
+            e,
+            (vr,f) => vr.Equals( f.Down().Parameter( "key" ) ),
+            rt => rt.Equals( new ExistingKeyIn< string, int >( c ) ) ),
+        () => c.Get( "2" ) );
 }
 
 
@@ -423,8 +427,11 @@ Test_IUniqueKeyedCollectionRSG_AsImplicitUniqueKeyedCollection()
     Assert( c.Get( "2" ) == 2 );
 
     Print( "Add() item with duplicate key throws RTypeException" );
-    Expect< RTypeException >( () =>
-        c.Add( 2 ) );
+    Expect(
+        e => RTypeException.Match<
+            NonExistingKeyIn< string, int > >(
+            e ),
+        () => c.Add( 2 ) );
 }
 
 
@@ -755,26 +762,6 @@ Test_IOrderedCollectionR_T_SplitWhere()
     Assert(
         s2.Stream().AsEnumerable().SequenceEqual(
             new char[]{ 'b' } ) );
-}
-
-
-[Test( "IOrderedCollectionR< T >.SequenceEqual() and friends" )]
-public static
-void
-Test_IOrderedCollectionR_T_SequenceEqual()
-{
-    Assert(
-        "abc".AsHalfdecentCollection().SequenceEqual(
-            "abc".AsHalfdecentCollection() ) );
-    Assert( !
-        "abc".AsHalfdecentCollection().SequenceEqual(
-            "def".AsHalfdecentCollection() ) );
-    Assert( !
-        "abc".AsHalfdecentCollection().SequenceEqual(
-            "abcd".AsHalfdecentCollection() ) );
-    Assert( !
-        "abcd".AsHalfdecentCollection().SequenceEqual(
-            "abc".AsHalfdecentCollection() ) );
 }
 
 

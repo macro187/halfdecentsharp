@@ -53,17 +53,14 @@ IndexSlice/*PERMUDA*/(
     ///  - <tt>LTE( from.Count - sliceIndex )</tt>
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
-    NonNull.Require( sliceIndex, new Parameter( "sliceIndex" ) );
-    GTE.Require< IReal >( Integer.From( 0 ),
-        sliceIndex, new Parameter( "sliceIndex" ) );
-    LTE.Require< IReal >( from.Count,
-        sliceIndex, new Parameter( "sliceIndex" ) );
-    NonNull.Require( sliceCount, new Parameter( "sliceCount" ) );
-    GTE.Require< IReal >( Integer.From( 0 ),
-        sliceCount, new Parameter( "sliceCount" ) );
-    LTE.Require< IReal >( from.Count.Minus( sliceIndex ),
-        sliceCount, new Parameter( "sliceCount" ) );
+    NonNull.CheckParameter( from, "from" );
+    NonNull.CheckParameter( sliceIndex, "sliceIndex" );
+    GTE.CheckParameter( Integer.From( 0 ), sliceIndex, "sliceIndex" );
+    LTE.CheckParameter( from.Count, sliceIndex, "sliceIndex" );
+    NonNull.CheckParameter( sliceCount, "sliceCount" );
+    GTE.CheckParameter( Integer.From( 0 ), sliceCount, "sliceCount" );
+    LTE.CheckParameter(
+        from.Count.Minus( sliceIndex ), sliceCount, "sliceCount" );
     this.From = from;
     this.SliceIndex = sliceIndex;
     this.SliceCount = sliceCount;

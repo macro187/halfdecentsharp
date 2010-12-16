@@ -53,7 +53,7 @@ CollectionFromSystemListAdapter(
     SCG.IList< T > from
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
+    NonNull.CheckParameter( from, "from" );
     this.From = from;
 }
 
@@ -84,8 +84,8 @@ Replace(
     T           replacement
 )
 {
-    NonNull.Require( key, new Parameter( "key" ) );
-    ExistingKeyIn.Require( this, key, new Parameter( "key" ) );
+    NonNull.CheckParameter( key, "key" );
+    ExistingKeyIn.CheckParameter( this, key, "key" );
     int i = (int)( key.GetValue() );
     this.From[ i ] = replacement;
 }
@@ -102,8 +102,8 @@ Get(
     IInteger key
 )
 {
-    NonNull.Require( key, new Parameter( "key" ) );
-    ExistingKeyIn.Require( this, key, new Parameter( "key" ) );
+    NonNull.CheckParameter( key, "key" );
+    ExistingKeyIn.CheckParameter( this, key, "key" );
     int i = (int)( key.GetValue() );
     return this.From[ i ];
 }
@@ -120,8 +120,8 @@ Remove(
     IInteger key
 )
 {
-    NonNull.Require( key, new Parameter( "key" ) );
-    ExistingKeyIn.Require( this, key, new Parameter( "key" ) );
+    NonNull.CheckParameter( key, "key" );
+    ExistingKeyIn.CheckParameter( this, key, "key" );
     int i = (int)( key.GetValue() );
     this.From.RemoveAt( i );
 }
@@ -154,9 +154,9 @@ Add(
     T           item
 )
 {
-    NonNull.Require( key, new Parameter( "key" ) );
-    ExistingOrNextPositionIn.Require( this, key, new Parameter( "key" ) );
-    InInt32Range.Require( key, new Parameter( "key" ) );
+    NonNull.CheckParameter( key, "key" );
+    ExistingOrNextPositionIn.CheckParameter( this, key, "key" );
+    InInt32Range.CheckParameter( key, "key" );
     int i = (int)( key.GetValue() );
     this.From.Insert( i, item );
 }

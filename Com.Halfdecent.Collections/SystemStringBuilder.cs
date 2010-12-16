@@ -47,7 +47,7 @@ AsHalfdecentCollection(
     this StringBuilder dis
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.CheckParameter( dis, "dis" );
     return new CollectionFromSystemStringBuilderAdapter( dis );
 }
 

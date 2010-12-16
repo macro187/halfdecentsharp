@@ -17,6 +17,7 @@
 
 
 using SCG = System.Collections.Generic;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Numerics;
@@ -121,8 +122,7 @@ PrepareInternalCapacityForAdditional(
     ///  - GTE( 0 )
 )
 {
-    if( i <= 0 )
-        throw new ValueArgumentOutOfRangeException( new Parameter( "i" ) );
+    if( i <= 0 ) throw new LocalisedArgumentOutOfRangeException( "i" );
     if( i == 0 ) return;
     int c = this.List.Count + i;
     if( this.List.Capacity < c ) this.List.Capacity = c;
@@ -135,7 +135,7 @@ OptimisedCreateInternalListFrom(
     ICollectionR< T > from
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
+    NonNull.CheckParameter( from, "from" );
     SCG.List< T > l;
 
     // Optimise initial capacity if the source collection's .Count is

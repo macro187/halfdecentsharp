@@ -28,26 +28,27 @@ Com.Halfdecent.Collections
 /// ICollection/*PERMUDA*/ proxy
 ///
 public class
-  Collection/*PERMUDA*/Proxy/*PERMUDA PROXYSUFFIX*/
-      : ICollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
+Collection/*PERMUDA*/Proxy/*PERMUDA PROXYSUFFIX*/
+    : ICollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
+    , IProxy
 
-      /*PERMUDA WHERE*/
+    /*PERMUDA WHERE*/
 {
 
 
 
 public
-  Collection/*PERMUDA*/Proxy(
-      ICollection/*PERMUDA*//*PERMUDA FROMSUFFIX*/ from
+Collection/*PERMUDA*/Proxy(
+    ICollection/*PERMUDA*//*PERMUDA FROMSUFFIX*/ from
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
+    NonNull.CheckParameter( from, "from" );
     this.From = from;
 }
 
 
 protected
-      ICollection/*PERMUDA*//*PERMUDA FROMSUFFIX*/
+    ICollection/*PERMUDA*//*PERMUDA FROMSUFFIX*/
 From
 {
     get;
@@ -60,6 +61,18 @@ From
 // ICollection.Proxy
 /*PERMUDA TRAITS*/
 #endregion
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
+}
 
 
 

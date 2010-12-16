@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent;
 using Com.Halfdecent.Numerics;
 
 

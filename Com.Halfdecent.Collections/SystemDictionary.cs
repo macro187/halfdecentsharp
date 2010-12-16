@@ -49,7 +49,7 @@ AsHalfdecentCollection<
     this SCG.IDictionary< TKey, T > dis
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
+    NonNull.CheckParameter( dis, "dis" );
     return new CollectionFromSystemDictionaryAdapter< TKey, T >( dis );
 }
 

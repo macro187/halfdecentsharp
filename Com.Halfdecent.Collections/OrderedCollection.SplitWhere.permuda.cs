@@ -56,8 +56,8 @@ SplitWhere<
     System.Predicate< T > where
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( where, new Parameter( "where" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( where, "where" );
     return
         SplitWhereIterator< T >( dis, where, false, Integer.From( -1 ) )
         .AsStream();
@@ -84,8 +84,8 @@ SplitAtFirstWhere<
     System.Predicate< T > where
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( where, new Parameter( "where" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( where, "where" );
 
     IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ > slices =
         SplitWhereIterator< T >( dis, where, false, Integer.From( 2 ) )
@@ -121,8 +121,8 @@ SplitBeforeWhere<
     System.Predicate< T > where
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( where, new Parameter( "where" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( where, "where" );
     return
         SplitWhereIterator< T >( dis, where, true, Integer.From( -1 ) )
         .AsStream();
@@ -148,8 +148,8 @@ SplitBeforeFirstWhere<
     System.Predicate< T > where
 )
 {
-    NonNull.Require( dis, new Parameter( "dis" ) );
-    NonNull.Require( where, new Parameter( "where" ) );
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( where, "where" );
 
     IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ > slices =
         SplitWhereIterator< T >( dis, where, true, Integer.From( 2 ) )

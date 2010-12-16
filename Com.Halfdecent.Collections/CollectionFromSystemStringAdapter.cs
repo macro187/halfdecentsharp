@@ -50,7 +50,7 @@ CollectionFromSystemStringAdapter(
     string from
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
+    NonNull.CheckParameter( from, "from" );
     this.From = from;
 }
 
@@ -80,8 +80,8 @@ Get(
     IInteger key
 )
 {
-    NonNull.Require( key, new Parameter( "key" ) );
-    ExistingKeyIn.Require( this, key, new Parameter( "key" ) );
+    NonNull.CheckParameter( key, "key" );
+    ExistingKeyIn.CheckParameter( this, key, "key" );
     int i = (int)( key.GetValue() );
     return this.From[ i ];
 }
