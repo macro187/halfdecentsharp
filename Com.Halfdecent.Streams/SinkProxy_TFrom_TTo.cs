@@ -35,6 +35,8 @@ SinkProxy<
     TTo
 >
     : ISink< TTo >
+    , IProxy
+
     where TTo : TFrom
 {
 
@@ -65,6 +67,18 @@ TryPush(
 )
 {
     return this.From.TryPush( item );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
 }
 
 

@@ -35,6 +35,8 @@ StreamProxy<
     TTo
 >
     : IStream< TTo >
+    , IProxy
+
     where TFrom : TTo
 {
 
@@ -63,6 +65,18 @@ public
 TryPull()
 {
     return this.From.TryPull().Covary< bool, TFrom, bool, TTo >();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IProxy
+// -----------------------------------------------------------------------------
+
+    object
+IProxy.Underlying
+{
+    get { return this.From; }
 }
 
 
