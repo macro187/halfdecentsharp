@@ -121,7 +121,10 @@ DumpException(
     s += "(" + e.GetType().FullName + ")";
     if( e.Data != null )
         foreach( DictionaryEntry de in e.Data )
-            s += "\n" + de.Key + ": " + de.Value;
+            if( de.Value != null )
+                s += "\n" + de.Key + ":\n" + Indent( de.Value.ToString() );
+            else
+                s += "\n" + de.Key + ":\n" + Indent( "(null)" );
     if( e.Source != null && e.Source != "" )
         s += "\nSource: " + e.Source;
     if( !string.IsNullOrEmpty( e.StackTrace ) )
