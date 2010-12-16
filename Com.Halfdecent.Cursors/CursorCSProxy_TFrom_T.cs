@@ -42,7 +42,7 @@ CursorCSProxy(
     ICursorCS< TFrom > from
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
+    NonNull.CheckParameter( from, "from" );
     this.From = from;
 }
 

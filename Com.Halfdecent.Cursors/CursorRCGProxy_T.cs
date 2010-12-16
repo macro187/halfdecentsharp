@@ -40,7 +40,7 @@ CursorRCGProxy(
     ICursorRCG< T > from
 )
 {
-    NonNull.Require( from, new Parameter( "from" ) );
+    NonNull.CheckParameter( from, "from" );
     this.From = from;
 }
 
