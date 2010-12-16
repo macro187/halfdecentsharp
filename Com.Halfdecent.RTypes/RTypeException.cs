@@ -134,6 +134,25 @@ public static
 Match<
     TRType
 >(
+    System.Exception ex
+)
+    where TRType : RType
+{
+    if( ex == null )
+        throw new LocalisedArgumentNullException( "ex" );
+
+    return ValueReferenceException.Match<
+        RTypeException >(
+        ex,
+        (vr,f) => true );
+}
+
+
+public static
+    bool
+Match<
+    TRType
+>(
     System.Exception
         ex,
     System.Func< ValueReference, Frame, bool >
