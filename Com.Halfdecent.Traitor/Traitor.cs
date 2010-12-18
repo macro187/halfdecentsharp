@@ -293,7 +293,7 @@ LineRef(
 {
     filename = filename ?? "";
     return string.Format(
-        "#line {0}{1}{2}",
+        "//#line {0}{1}{2}",
         linenumber,
         filename != "" ? " " : "",
         filename );
