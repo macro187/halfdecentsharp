@@ -44,7 +44,7 @@ IImplicitKeyedCollectionSG<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IImplicitKeyedCollectionSG< TKey, T >.Proxy
+// Trait IImplicitKeyedCollectionSG.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

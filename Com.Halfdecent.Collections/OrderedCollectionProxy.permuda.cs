@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _RCSG
+// filename OrderedCollection/*PERMUDA*/Proxy/*PERMUDA FILESUFFIX*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -58,10 +62,6 @@ From
 
 
 #region TRAITOR
-// ICollection.Proxy
-// IKeyedCollection.Proxy
-// IUniqueKeyedCollection.Proxy
-// IOrderedCollection.Proxy
 /*PERMUDA TRAITS*/
 #endregion
 
@@ -132,10 +132,6 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
 
 
 
-#region PERMUDA
-// permute _RCSG
-// filename OrderedCollection/*PERMUDA*/Proxy/*PERMUDA FILESUFFIX*/.cs
-#endregion
 #region PERMUDA FILESUFFIX
 // R:       _TFrom_T
 // C:       _TFrom_T
@@ -222,119 +218,166 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
 // RCSG:    < T >
 #endregion
 #region PERMUDA TRAITS _
+// ICollection.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
 // OrderedCollectionProxy.Slice< T >
 #endregion
 #region PERMUDA TRAITS R
-// ICollectionR< out T >.Proxy
-// IOrderedCollectionR< out T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR.Proxy
 // OrderedCollectionProxy.Slice< out T >
 // OrderedCollectionProxyR.Slice< out T >
 #endregion
 #region PERMUDA TRAITS C
-// ICollectionC< T >.Proxy
-// IOrderedCollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionC.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionC.Proxy
 // OrderedCollectionProxy.Slice< in T >
 // OrderedCollectionProxyC.Slice< in T >
 #endregion
 #region PERMUDA TRAITS S
+// ICollection.Proxy
 // ICollectionS.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
 // IOrderedCollectionS.Proxy
 // OrderedCollectionProxy.Slice< T >
 // OrderedCollectionProxyS.Slice< T >
 #endregion
 #region PERMUDA TRAITS G
-// ICollectionG< T >.Proxy
-// IOrderedCollectionG< T >.Proxy
+// ICollection.Proxy
+// ICollectionG.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionG.Proxy
 // OrderedCollectionProxy.Slice< in T >
 // OrderedCollectionProxyG.Slice< in T >
 #endregion
 #region PERMUDA TRAITS RC
-// ICollectionR< T >.Proxy
-// ICollectionC< T >.Proxy
-// ICollectionRC< T >.Proxy
-// IOrderedCollectionR< T >.Proxy
-// IOrderedCollectionC< T >.Proxy
-// IOrderedCollectionRC< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionC.Proxy
+// ICollectionRC.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR.Proxy.Invariant
+// IOrderedCollectionC.Proxy
+// IOrderedCollectionRC.Proxy
 // OrderedCollectionProxy.Slice< T >
 // OrderedCollectionProxyR.Slice< T >
 // OrderedCollectionProxyC.Slice< T >
 // OrderedCollectionProxyRC.Slice< T >
 #endregion
 #region PERMUDA TRAITS RS
-// ICollectionR< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
 // ICollectionS.Proxy
-// ICollectionRS< T >.Proxy
-// IOrderedCollectionR< T >.Proxy
+// ICollectionRS.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR.Proxy.Invariant
 // IOrderedCollectionS.Proxy
-// IOrderedCollectionRS< T >.Proxy
+// IOrderedCollectionRS.Proxy
 // OrderedCollectionProxy.Slice< T >
 // OrderedCollectionProxyR.Slice< T >
 // OrderedCollectionProxyS.Slice< T >
 // OrderedCollectionProxyRS.Slice< T >
 #endregion
 #region PERMUDA TRAITS RG
-// ICollectionR< T >.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRG< T >.Proxy
-// IOrderedCollectionR< T >.Proxy
-// IOrderedCollectionG< T >.Proxy
-// IOrderedCollectionRG< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionG.Proxy
+// ICollectionRG.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR.Proxy.Invariant
+// IOrderedCollectionG.Proxy
+// IOrderedCollectionRG.Proxy
 // OrderedCollectionProxy.Slice< T >
 // OrderedCollectionProxyR.Slice< T >
 // OrderedCollectionProxyG.Slice< T >
 // OrderedCollectionProxyRG.Slice< T >
 #endregion
 #region PERMUDA TRAITS CS
-// ICollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionC.Proxy
 // ICollectionS.Proxy
-// ICollectionCS< T >.Proxy
-// IOrderedCollectionC< T >.Proxy
+// ICollectionCS.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionC.Proxy
 // IOrderedCollectionS.Proxy
-// IOrderedCollectionCS< T >.Proxy
+// IOrderedCollectionCS.Proxy
 // OrderedCollectionProxy.Slice< in T >
 // OrderedCollectionProxyC.Slice< in T >
 // OrderedCollectionProxyS.Slice< in T >
 // OrderedCollectionProxyCS.Slice< in T >
 #endregion
 #region PERMUDA TRAITS CG
-// ICollectionC< T >.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionCG< T >.Proxy
-// IOrderedCollectionC< T >.Proxy
-// IOrderedCollectionG< T >.Proxy
-// IOrderedCollectionCG< T >.Proxy
+// ICollection.Proxy
+// ICollectionC.Proxy
+// ICollectionG.Proxy
+// ICollectionCG.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionC.Proxy
+// IOrderedCollectionG.Proxy
+// IOrderedCollectionCG.Proxy
 // OrderedCollectionProxy.Slice< in T >
 // OrderedCollectionProxyC.Slice< in T >
 // OrderedCollectionProxyG.Slice< in T >
 // OrderedCollectionProxyCG.Slice< in T >
 #endregion
 #region PERMUDA TRAITS SG
+// ICollection.Proxy
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionSG< T >.Proxy
+// ICollectionG.Proxy
+// ICollectionSG.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
 // IOrderedCollectionS.Proxy
-// IOrderedCollectionG< T >.Proxy
-// IOrderedCollectionSG< T >.Proxy
+// IOrderedCollectionG.Proxy
+// IOrderedCollectionSG.Proxy
 // OrderedCollectionProxy.Slice< in T >
 // OrderedCollectionProxyS.Slice< in T >
 // OrderedCollectionProxyG.Slice< in T >
 // OrderedCollectionProxySG.Slice< in T >
 #endregion
 #region PERMUDA TRAITS RCS
-// ICollectionR< T >.Proxy
-// ICollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionC.Proxy
 // ICollectionS.Proxy
-// ICollectionRC< T >.Proxy
-// ICollectionRS< T >.Proxy
-// ICollectionCS< T >.Proxy
-// ICollectionRCS< T >.Proxy
-// IOrderedCollectionR< T >.Proxy
-// IOrderedCollectionC< T >.Proxy
+// ICollectionRC.Proxy
+// ICollectionRS.Proxy
+// ICollectionCS.Proxy
+// ICollectionRCS.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR.Proxy.Invariant
+// IOrderedCollectionC.Proxy
 // IOrderedCollectionS.Proxy
-// IOrderedCollectionRC< T >.Proxy
-// IOrderedCollectionRS< T >.Proxy
-// IOrderedCollectionCS< T >.Proxy
-// IOrderedCollectionRCS< T >.Proxy
+// IOrderedCollectionRC.Proxy
+// IOrderedCollectionRS.Proxy
+// IOrderedCollectionCS.Proxy
+// IOrderedCollectionRCS.Proxy
 // OrderedCollectionProxy.Slice< T >
 // OrderedCollectionProxyR.Slice< T >
 // OrderedCollectionProxyC.Slice< T >
@@ -345,20 +388,24 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
 // OrderedCollectionProxyRCS.Slice< T >
 #endregion
 #region PERMUDA TRAITS RCG
-// ICollectionR< T >.Proxy
-// ICollectionC< T >.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRC< T >.Proxy
-// ICollectionRG< T >.Proxy
-// ICollectionCG< T >.Proxy
-// ICollectionRCG< T >.Proxy
-// IOrderedCollectionR< T >.Proxy
-// IOrderedCollectionC< T >.Proxy
-// IOrderedCollectionG< T >.Proxy
-// IOrderedCollectionRC< T >.Proxy
-// IOrderedCollectionRG< T >.Proxy
-// IOrderedCollectionCG< T >.Proxy
-// IOrderedCollectionRCG< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionC.Proxy
+// ICollectionG.Proxy
+// ICollectionRC.Proxy
+// ICollectionRG.Proxy
+// ICollectionCG.Proxy
+// ICollectionRCG.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR.Proxy.Invariant
+// IOrderedCollectionC.Proxy
+// IOrderedCollectionG.Proxy
+// IOrderedCollectionRC.Proxy
+// IOrderedCollectionRG.Proxy
+// IOrderedCollectionCG.Proxy
+// IOrderedCollectionRCG.Proxy
 // OrderedCollectionProxy.Slice< T >
 // OrderedCollectionProxyR.Slice< T >
 // OrderedCollectionProxyC.Slice< T >
@@ -369,20 +416,24 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
 // OrderedCollectionProxyRCG.Slice< T >
 #endregion
 #region PERMUDA TRAITS RSG
-// ICollectionR< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRS< T >.Proxy
-// ICollectionRG< T >.Proxy
-// ICollectionSG< T >.Proxy
-// ICollectionRSG< T >.Proxy
-// IOrderedCollectionR< T >.Proxy
+// ICollectionG.Proxy
+// ICollectionRS.Proxy
+// ICollectionRG.Proxy
+// ICollectionSG.Proxy
+// ICollectionRSG.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR.Proxy.Invariant
 // IOrderedCollectionS.Proxy
-// IOrderedCollectionG< T >.Proxy
-// IOrderedCollectionRS< T >.Proxy
-// IOrderedCollectionRG< T >.Proxy
-// IOrderedCollectionSG< T >.Proxy
-// IOrderedCollectionRSG< T >.Proxy
+// IOrderedCollectionG.Proxy
+// IOrderedCollectionRS.Proxy
+// IOrderedCollectionRG.Proxy
+// IOrderedCollectionSG.Proxy
+// IOrderedCollectionRSG.Proxy
 // OrderedCollectionProxy.Slice< T >
 // OrderedCollectionProxyR.Slice< T >
 // OrderedCollectionProxyS.Slice< T >
@@ -393,19 +444,23 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
 // OrderedCollectionProxyRSG.Slice< T >
 #endregion
 #region PERMUDA TRAITS CSG
-// ICollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionC.Proxy
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionCS< T >.Proxy
-// ICollectionCG< T >.Proxy
-// ICollectionSG< T >.Proxy
-// IOrderedCollectionC< T >.Proxy
+// ICollectionG.Proxy
+// ICollectionCS.Proxy
+// ICollectionCG.Proxy
+// ICollectionSG.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionC.Proxy
 // IOrderedCollectionS.Proxy
-// IOrderedCollectionG< T >.Proxy
-// IOrderedCollectionCS< T >.Proxy
-// IOrderedCollectionCG< T >.Proxy
-// IOrderedCollectionSG< T >.Proxy
-// IOrderedCollectionCSG< T >.Proxy
+// IOrderedCollectionG.Proxy
+// IOrderedCollectionCS.Proxy
+// IOrderedCollectionCG.Proxy
+// IOrderedCollectionSG.Proxy
+// IOrderedCollectionCSG.Proxy
 // OrderedCollectionProxy.Slice< T >
 // OrderedCollectionProxyC.Slice< T >
 // OrderedCollectionProxyS.Slice< T >
@@ -416,34 +471,38 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
 // OrderedCollectionProxyCSG.Slice< T >
 #endregion
 #region PERMUDA TRAITS RCSG
-// ICollectionR< T >.Proxy
-// ICollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionC.Proxy
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRC< T >.Proxy
-// ICollectionRS< T >.Proxy
-// ICollectionRG< T >.Proxy
-// ICollectionCS< T >.Proxy
-// ICollectionCG< T >.Proxy
-// ICollectionSG< T >.Proxy
-// ICollectionRCS< T >.Proxy
-// ICollectionRCG< T >.Proxy
-// ICollectionRSG< T >.Proxy
-// IOrderedCollectionR< T >.Proxy
-// IOrderedCollectionC< T >.Proxy
+// ICollectionG.Proxy
+// ICollectionRC.Proxy
+// ICollectionRS.Proxy
+// ICollectionRG.Proxy
+// ICollectionCS.Proxy
+// ICollectionCG.Proxy
+// ICollectionSG.Proxy
+// ICollectionRCS.Proxy
+// ICollectionRCG.Proxy
+// ICollectionRSG.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IOrderedCollection.Proxy
+// IOrderedCollectionR.Proxy.Invariant
+// IOrderedCollectionC.Proxy
 // IOrderedCollectionS.Proxy
-// IOrderedCollectionG< T >.Proxy
-// IOrderedCollectionRC< T >.Proxy
-// IOrderedCollectionRS< T >.Proxy
-// IOrderedCollectionRG< T >.Proxy
-// IOrderedCollectionCS< T >.Proxy
-// IOrderedCollectionCG< T >.Proxy
-// IOrderedCollectionSG< T >.Proxy
-// IOrderedCollectionRCS< T >.Proxy
-// IOrderedCollectionRCG< T >.Proxy
-// IOrderedCollectionRSG< T >.Proxy
-// IOrderedCollectionCSG< T >.Proxy
-// IOrderedCollectionRCSG< T >.Proxy
+// IOrderedCollectionG.Proxy
+// IOrderedCollectionRC.Proxy
+// IOrderedCollectionRS.Proxy
+// IOrderedCollectionRG.Proxy
+// IOrderedCollectionCS.Proxy
+// IOrderedCollectionCG.Proxy
+// IOrderedCollectionSG.Proxy
+// IOrderedCollectionRCS.Proxy
+// IOrderedCollectionRCG.Proxy
+// IOrderedCollectionRSG.Proxy
+// IOrderedCollectionCSG.Proxy
+// IOrderedCollectionRCSG.Proxy
 // OrderedCollectionProxy.Slice< T >
 // OrderedCollectionProxyR.Slice< T >
 // OrderedCollectionProxyC.Slice< T >

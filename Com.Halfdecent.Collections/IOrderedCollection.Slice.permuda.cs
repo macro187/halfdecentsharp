@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _RCSG
+// filename IOrderedCollection/*PERMUDA*//*PERMUDA FILESUFFIX*/.Slice.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -50,10 +54,6 @@ Slice(
 
 
 
-#region PERMUDA
-// permute _RCSG
-// filename IOrderedCollection/*PERMUDA*//*PERMUDA FILESUFFIX*/.Slice.cs
-#endregion
 #region PERMUDA FILESUFFIX
 // R:       _T
 // C:       _T

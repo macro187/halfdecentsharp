@@ -22,7 +22,7 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// TODO
+/// A changable, growable collection
 // =============================================================================
 
 public interface
@@ -41,7 +41,28 @@ ICollectionCG<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait ICollectionCG< T >.Proxy
+// Trait ICollectionCG.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    ICollectionCG< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this ICollectionCG< TFrom > from
+)
+    where T : TFrom
+{
+    return new CollectionCGProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionCG.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

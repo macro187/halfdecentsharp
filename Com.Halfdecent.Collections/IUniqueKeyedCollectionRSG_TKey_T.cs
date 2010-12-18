@@ -40,7 +40,30 @@ IUniqueKeyedCollectionRSG<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IUniqueKeyedCollectionRSG< TKey, T >.Proxy
+// Trait IUniqueKeyedCollectionRSG.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IImplicitUniqueKeyedCollectionRSG< TKey, T >
+AsImplicitUniqueKeyedCollection<
+    TKey,
+    T
+>(
+    this IUniqueKeyedCollectionRSG< TKey, T >   from,
+    System.Func< T, TKey >                      extractKeyFunc
+)
+{
+    return
+        new ImplicitUniqueKeyedCollectionFromUniqueKeyedCollectionAdapter<
+            TKey, T >( from, extractKeyFunc );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionRSG.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

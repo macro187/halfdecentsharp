@@ -1,3 +1,7 @@
+#region PERMUDA
+// combos R RC RS RG RCS RCG RSG RCSG
+// filename OrderedCollection/*PERMUDA*/.SplitWhere.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -230,10 +234,6 @@ SplitWhereIterator<
 
 
 
-#region PERMUDA
-// combos R RC RS RG RCS RCG RSG RCSG
-// filename OrderedCollection/*PERMUDA*/.SplitWhere.cs
-#endregion
 #region PERMUDA TYPESUFFIX
 // R:       < T >
 // RC:      < T >

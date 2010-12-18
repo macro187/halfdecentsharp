@@ -47,7 +47,28 @@ IOrderedCollectionG<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IOrderedCollectionG< T >.Proxy
+// Trait IOrderedCollectionG.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IOrderedCollectionG< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this IOrderedCollectionG< TFrom > from
+)
+    where T : TFrom
+{
+    return new OrderedCollectionGProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionG.Proxy
 // -----------------------------------------------------------------------------
 
 public void Add( IInteger key, T item ) { this.From.Add( key, item ); }

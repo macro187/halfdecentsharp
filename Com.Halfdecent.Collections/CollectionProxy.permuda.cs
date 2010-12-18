@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _RCSG
+// filename Collection/*PERMUDA*/Proxy/*PERMUDA FILESUFFIX*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -58,7 +62,6 @@ From
 
 
 #region TRAITOR
-// ICollection.Proxy
 /*PERMUDA TRAITS*/
 #endregion
 
@@ -76,10 +79,6 @@ IProxy.Underlying
 
 
 
-#region PERMUDA
-// permute _RCSG
-// filename Collection/*PERMUDA*/Proxy/*PERMUDA FILESUFFIX*/.cs
-#endregion
 #region PERMUDA FILESUFFIX
 // R:       _TFrom_T
 // C:       _TFrom_T
@@ -165,100 +164,118 @@ IProxy.Underlying
 // CSG:     < TFrom >
 // RCSG:    < T >
 #endregion
+#region PERMUDA TRAITS _
+// ICollection.Proxy
+#endregion
 #region PERMUDA TRAITS R
-// ICollectionR< out T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy
 #endregion
 #region PERMUDA TRAITS C
-// ICollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionC.Proxy
 #endregion
 #region PERMUDA TRAITS S
+// ICollection.Proxy
 // ICollectionS.Proxy
 #endregion
 #region PERMUDA TRAITS G
-// ICollectionG< T >.Proxy
+// ICollection.Proxy
+// ICollectionG.Proxy
 #endregion
 #region PERMUDA TRAITS RC
-// ICollectionR< T >.Proxy
-// ICollectionC< T >.Proxy
-// ICollectionRC< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionC.Proxy
+// ICollectionRC.Proxy
 #endregion
 #region PERMUDA TRAITS RS
-// ICollectionR< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
 // ICollectionS.Proxy
-// ICollectionRS< T >.Proxy
+// ICollectionRS.Proxy
 #endregion
 #region PERMUDA TRAITS RG
-// ICollectionR< T >.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRG< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionG.Proxy
+// ICollectionRG.Proxy
 #endregion
 #region PERMUDA TRAITS CS
-// ICollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionC.Proxy
 // ICollectionS.Proxy
-// ICollectionCS< T >.Proxy
+// ICollectionCS.Proxy
 #endregion
 #region PERMUDA TRAITS CG
-// ICollectionC< T >.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionCG< T >.Proxy
+// ICollection.Proxy
+// ICollectionC.Proxy
+// ICollectionG.Proxy
+// ICollectionCG.Proxy
 #endregion
 #region PERMUDA TRAITS SG
+// ICollection.Proxy
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionSG< T >.Proxy
+// ICollectionG.Proxy
+// ICollectionSG.Proxy
 #endregion
 #region PERMUDA TRAITS RCS
-// ICollectionR< T >.Proxy
-// ICollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionC.Proxy
 // ICollectionS.Proxy
-// ICollectionRC< T >.Proxy
-// ICollectionRS< T >.Proxy
-// ICollectionCS< T >.Proxy
-// ICollectionRCS< T >.Proxy
+// ICollectionRC.Proxy
+// ICollectionRS.Proxy
+// ICollectionCS.Proxy
+// ICollectionRCS.Proxy
 #endregion
 #region PERMUDA TRAITS RCG
-// ICollectionR< T >.Proxy
-// ICollectionC< T >.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRC< T >.Proxy
-// ICollectionRG< T >.Proxy
-// ICollectionCG< T >.Proxy
-// ICollectionRCG< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionC.Proxy
+// ICollectionG.Proxy
+// ICollectionRC.Proxy
+// ICollectionRG.Proxy
+// ICollectionCG.Proxy
+// ICollectionRCG.Proxy
 #endregion
 #region PERMUDA TRAITS RSG
-// ICollectionR< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRS< T >.Proxy
-// ICollectionRG< T >.Proxy
-// ICollectionSG< T >.Proxy
-// ICollectionRSG< T >.Proxy
+// ICollectionG.Proxy
+// ICollectionRS.Proxy
+// ICollectionRG.Proxy
+// ICollectionSG.Proxy
+// ICollectionRSG.Proxy
 #endregion
 #region PERMUDA TRAITS CSG
-// ICollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionC.Proxy
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionCS< T >.Proxy
-// ICollectionCG< T >.Proxy
-// ICollectionSG< T >.Proxy
-// ICollectionCSG< T >.Proxy
+// ICollectionG.Proxy
+// ICollectionCS.Proxy
+// ICollectionCG.Proxy
+// ICollectionSG.Proxy
+// ICollectionCSG.Proxy
 #endregion
 #region PERMUDA TRAITS RCSG
-// ICollectionR< T >.Proxy
-// ICollectionC< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionC.Proxy
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRC< T >.Proxy
-// ICollectionRS< T >.Proxy
-// ICollectionRG< T >.Proxy
-// ICollectionCS< T >.Proxy
-// ICollectionCG< T >.Proxy
-// ICollectionSG< T >.Proxy
-// ICollectionRCS< T >.Proxy
-// ICollectionRCG< T >.Proxy
-// ICollectionRSG< T >.Proxy
-// ICollectionCSG< T >.Proxy
-// ICollectionRCSG< T >.Proxy
+// ICollectionG.Proxy
+// ICollectionRC.Proxy
+// ICollectionRS.Proxy
+// ICollectionRG.Proxy
+// ICollectionCS.Proxy
+// ICollectionCG.Proxy
+// ICollectionSG.Proxy
+// ICollectionRCS.Proxy
+// ICollectionRCG.Proxy
+// ICollectionRSG.Proxy
+// ICollectionCSG.Proxy
+// ICollectionRCSG.Proxy
 #endregion
 
 

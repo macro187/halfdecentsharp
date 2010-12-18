@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _RCSG
+// filename OrderedCollection/*PERMUDA*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -21,27 +25,18 @@ Com.Halfdecent.Collections
 {
 
 
-public static class
-KeyedCollectionG
+// =============================================================================
+/// <tt>IOrderedCollection/*PERMUDA*/</tt> Library
+// =============================================================================
+
+public static partial class
+OrderedCollection/*PERMUDA*/
 {
 
 
-
-public static
-    IKeyedCollectionG< TKey, T >
-Contravary<
-    TKeyFrom,
-    TFrom,
-    TKey,
-    T
->(
-    this IKeyedCollectionG< TKeyFrom, TFrom > from
-)
-    where TKey : TKeyFrom
-    where T : TFrom
-{
-    return new KeyedCollectionGProxy< TKeyFrom, TFrom, TKey, T >( from );
-}
+#region TRAITOR
+// IOrderedCollection/*PERMUDA*/.Statics
+#endregion
 
 
 

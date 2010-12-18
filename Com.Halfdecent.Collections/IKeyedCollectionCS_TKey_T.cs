@@ -44,7 +44,31 @@ IKeyedCollectionCS<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IKeyedCollectionCS< TKey, T >.Proxy
+// Trait IKeyedCollectionCS.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IKeyedCollectionCS< TKey, T >
+Contravary<
+    TKeyFrom,
+    TFrom,
+    TKey,
+    T
+>(
+    this IKeyedCollectionCS< TKeyFrom, TFrom > from
+)
+    where TKey : TKeyFrom
+    where T : TFrom
+{
+    return new KeyedCollectionCSProxy< TKeyFrom, TFrom, TKey, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IKeyedCollectionCS.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

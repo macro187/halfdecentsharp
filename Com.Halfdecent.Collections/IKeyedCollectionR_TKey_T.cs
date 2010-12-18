@@ -18,6 +18,7 @@
 
 using System.Linq;
 using Com.Halfdecent;
+using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
 
 
@@ -78,49 +79,109 @@ Stream(
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IKeyedCollectionR< TKey, T >.Proxy
+// Trait IKeyedCollectionR.Statics
 // -----------------------------------------------------------------------------
 
-public IStream< ITuple< TKey, T > > StreamPairs() {
-    return this.From.StreamPairs(); }
+public static
+    IStream< TKey >
+StreamKeys<
+    TKey,
+    T
+>(
+    this IKeyedCollectionR< TKey, T > col
+)
+{
+    NonNull.CheckParameter( col, "col" );
+    return
+        col.StreamPairs()
+        .AsEnumerable()
+        .Select( pair => pair.A )
+        .AsStream();
+}
 
-public bool Contains( TKey key ) { return this.From.Contains( key ); }
 
-public IStream< T > Stream( TKey key ) {
-    return this.From.Stream( key ); }
+public static
+    IKeyedCollectionR< TKey, T >
+Covary<
+    TFrom,
+    TKey,
+    T
+>(
+    this IKeyedCollectionR< TKey, TFrom > from
+)
+    where TFrom : T
+{
+    return new KeyedCollectionRProxy< TFrom, TKey, T >( from );
+}
 #endif
 
 
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IKeyedCollectionR< TKey, out T >.Proxy
+// Trait IKeyedCollectionR.Proxy
 // -----------------------------------------------------------------------------
 
-public IStream< ITuple< TKey, T > > StreamPairs() {
+public
+    IStream< ITuple< TKey, T > >
+StreamPairs()
+{
 //
 // NET 4.0 covariance (apparently) isn't smart enough to do this
 // - Mono dmcs v2.6.7.0
-// - TODO Try MS compiler
+// - TODO Try MS or a newer Mono
 //
 //#if DOTNET40
-//    return this.From.StreamPairs(); }
+//    return this.From.StreamPairs();
 //#else
     return
         this.From.StreamPairs()
         .AsEnumerable()
         .Select( t => t.Covary< TKey, TFrom, TKey, T >() )
-        .AsStream(); }
+        .AsStream();
 //#endif
+}
 
 public bool Contains( TKey key ) { return this.From.Contains( key ); }
 
-public IStream< T > Stream( TKey key ) {
+public
+    IStream< T >
+Stream(
+    TKey key
+)
+{
 #if DOTNET40
-    return this.From.Stream( key ); }
+    return this.From.Stream( key );
 #else
-    return this.From.Stream( key ).Covary< TFrom, T >(); }
+    return this.From.Stream( key ).Covary< TFrom, T >();
 #endif
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IKeyedCollectionR.Proxy.Invariant
+// -----------------------------------------------------------------------------
+
+public
+    IStream< ITuple< TKey, T > >
+StreamPairs()
+{
+    return this.From.StreamPairs();
+}
+
+public bool Contains( TKey key ) { return this.From.Contains( key ); }
+
+public
+    IStream< T >
+Stream(
+    TKey key
+)
+{
+    return this.From.Stream( key );
+}
 #endif
 
 

@@ -22,7 +22,7 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// TODO
+/// A changable, shrinkable, growable collection
 // =============================================================================
 
 public interface
@@ -42,7 +42,28 @@ ICollectionCSG<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait ICollectionCSG< T >.Proxy
+// Trait ICollectionCSG.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    ICollectionCSG< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this ICollectionCSG< TFrom > from
+)
+    where T : TFrom
+{
+    return new CollectionCSGProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionCSG.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

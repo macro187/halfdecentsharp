@@ -59,7 +59,28 @@ RemoveAll(
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IKeyedCollectionS< TKey >.Proxy
+// Trait IKeyedCollectionS.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IKeyedCollectionS< TKey >
+Contravary<
+    TKeyFrom,
+    TKey
+>(
+    this IKeyedCollectionS< TKeyFrom > from
+)
+    where TKey : TKeyFrom
+{
+    return new KeyedCollectionSProxy< TKeyFrom, TKey >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IKeyedCollectionS.Proxy
 // -----------------------------------------------------------------------------
 
 public void RemoveAll( TKey key ) { this.From.RemoveAll( key ); }

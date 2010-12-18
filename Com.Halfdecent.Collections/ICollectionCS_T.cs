@@ -22,7 +22,7 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// TODO
+/// A changable, shrinkable collection
 // =============================================================================
 
 public interface
@@ -41,7 +41,28 @@ ICollectionCS<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait ICollectionCS< T >.Proxy
+// Trait ICollectionCS.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    ICollectionCS< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this ICollectionCS< TFrom > from
+)
+    where T : TFrom
+{
+    return new CollectionCSProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionCS.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

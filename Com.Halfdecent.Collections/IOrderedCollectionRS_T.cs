@@ -42,7 +42,15 @@ IOrderedCollectionRS<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IOrderedCollectionRS< T >.Proxy
+// Trait IOrderedCollectionRS.Statics
+// -----------------------------------------------------------------------------
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionRS.Proxy
 // -----------------------------------------------------------------------------
 
 public IStream< T > GetAndRemoveAll( IInteger key ) {

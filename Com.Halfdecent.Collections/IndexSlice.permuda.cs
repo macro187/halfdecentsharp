@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _RCSG
+// filename IndexSlice/*PERMUDA*//*PERMUDA FILESUFFIX*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -55,11 +59,12 @@ IndexSlice/*PERMUDA*/(
 {
     NonNull.CheckParameter( from, "from" );
     NonNull.CheckParameter( sliceIndex, "sliceIndex" );
-    GTE.CheckParameter( Integer.From( 0 ), sliceIndex, "sliceIndex" );
-    LTE.CheckParameter( from.Count, sliceIndex, "sliceIndex" );
+    GTE.CheckParameter< IReal >( Integer.From( 0 ), sliceIndex, "sliceIndex" );
+    LTE.CheckParameter< IReal >( from.Count, sliceIndex, "sliceIndex" );
     NonNull.CheckParameter( sliceCount, "sliceCount" );
-    GTE.CheckParameter( Integer.From( 0 ), sliceCount, "sliceCount" );
-    LTE.CheckParameter(
+    GTE.CheckParameter< IReal >( Integer.From( 0 ), sliceCount, "sliceCount" );
+    LTE.CheckParameter<
+        IReal >(
         from.Count.Minus( sliceIndex ), sliceCount, "sliceCount" );
     this.From = from;
     this.SliceIndex = sliceIndex;
@@ -162,10 +167,6 @@ IOrderedCollection/*PERMUDA*//*PERMUDA CHARSUFFIX*/.Slice(
 
 
 
-#region PERMUDA
-// permute _RCSG
-// filename IndexSlice/*PERMUDA*//*PERMUDA FILESUFFIX*/.cs
-#endregion
 #region PERMUDA FILESUFFIX
 // R:       _T
 // C:       _T

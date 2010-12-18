@@ -1,3 +1,7 @@
+#region PERMUDA
+// combos G RG SG RSG
+// filename ImplicitUniqueKeyedCollection/*PERMUDA*/Proxy/*PERMUDA FILESUFFIX*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -58,9 +62,6 @@ From
 
 
 #region TRAITOR
-// ICollection.Proxy
-// IKeyedCollection.Proxy
-// IUniqueKeyedCollection.Proxy
 /*PERMUDA TRAITS*/
 #endregion
 
@@ -78,10 +79,6 @@ IProxy.Underlying
 
 
 
-#region PERMUDA
-// combos G RG SG RSG
-// filename ImplicitUniqueKeyedCollection/*PERMUDA*/Proxy/*PERMUDA FILESUFFIX*/.cs
-#endregion
 #region PERMUDA FILESUFFIX
 // G:       _TFrom_T
 // RG:      _TKey_T
@@ -113,54 +110,66 @@ IProxy.Underlying
 // RSG:     < TKey, T >
 #endregion
 #region PERMUDA TRAITS G
-// ICollectionG< T >.Proxy
-// IImplicitKeyedCollectionG< T >.Proxy
-// IImplicitUniqueKeyedCollectionG< T >.Proxy
+// ICollection.Proxy
+// ICollectionG.Proxy
+// IKeyedCollection.Proxy
+// IUniqueKeyedCollection.Proxy
+// IImplicitKeyedCollectionG.Proxy
+// IImplicitUniqueKeyedCollectionG.Proxy
 #endregion
 #region PERMUDA TRAITS RG
-// ICollectionR< T >.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRG< T >.Proxy
-// IKeyedCollectionR< TKey, T >.Proxy
-// IImplicitKeyedCollectionG< T >.Proxy
-// IImplicitKeyedCollectionRG< TKey, T >.Proxy
-// IUniqueKeyedCollectionR< TKey, T >.Proxy
-// IImplicitUniqueKeyedCollectionG< T >.Proxy
-// IImplicitUniqueKeyedCollectionRG< TKey, T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
+// ICollectionG.Proxy
+// ICollectionRG.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionR.Proxy.Invariant
+// IUniqueKeyedCollection.Proxy
+// IImplicitKeyedCollectionG.Proxy
+// IImplicitKeyedCollectionRG.Proxy
+// IUniqueKeyedCollectionR.Proxy
+// IImplicitUniqueKeyedCollectionG.Proxy
+// IImplicitUniqueKeyedCollectionRG.Proxy
 #endregion
 #region PERMUDA TRAITS SG
+// ICollection.Proxy
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionSG< T >.Proxy
-// IKeyedCollectionS< TKey >.Proxy
-// IImplicitKeyedCollectionG< T >.Proxy
-// IImplicitKeyedCollectionSG< TKey, T >.Proxy
-// IUniqueKeyedCollectionS< TKey >.Proxy
-// IImplicitUniqueKeyedCollectionG< T >.Proxy
-// IImplicitUniqueKeyedCollectionSG< TKey, T >.Proxy
+// ICollectionG.Proxy
+// ICollectionSG.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionS.Proxy
+// IImplicitKeyedCollectionG.Proxy
+// IImplicitKeyedCollectionSG.Proxy
+// IUniqueKeyedCollection.Proxy
+// IUniqueKeyedCollectionS.Proxy
+// IImplicitUniqueKeyedCollectionG.Proxy
+// IImplicitUniqueKeyedCollectionSG.Proxy
 #endregion
 #region PERMUDA TRAITS RSG
-// ICollectionR< T >.Proxy
+// ICollection.Proxy
+// ICollectionR.Proxy.Invariant
 // ICollectionS.Proxy
-// ICollectionG< T >.Proxy
-// ICollectionRS< T >.Proxy
-// ICollectionRG< T >.Proxy
-// ICollectionSG< T >.Proxy
-// ICollectionRSG< T >.Proxy
-// IKeyedCollectionR< TKey, T >.Proxy
-// IKeyedCollectionS< TKey >.Proxy
-// IKeyedCollectionRS< TKey, T >.Proxy
-// IImplicitKeyedCollectionG< T >.Proxy
-// IImplicitKeyedCollectionRG< TKey, T >.Proxy
-// IImplicitKeyedCollectionSG< TKey, T >.Proxy
-// IImplicitKeyedCollectionRSG< TKey, T >.Proxy
-// IUniqueKeyedCollectionR< TKey, T >.Proxy
-// IUniqueKeyedCollectionS< TKey >.Proxy
-// IUniqueKeyedCollectionRS< TKey, T >.Proxy
-// IImplicitUniqueKeyedCollectionG< T >.Proxy
-// IImplicitUniqueKeyedCollectionRG< TKey, T >.Proxy
-// IImplicitUniqueKeyedCollectionSG< TKey, T >.Proxy
-// IImplicitUniqueKeyedCollectionRSG< TKey, T >.Proxy
+// ICollectionG.Proxy
+// ICollectionRS.Proxy
+// ICollectionRG.Proxy
+// ICollectionSG.Proxy
+// ICollectionRSG.Proxy
+// IKeyedCollection.Proxy
+// IKeyedCollectionR.Proxy.Invariant
+// IKeyedCollectionS.Proxy
+// IKeyedCollectionRS.Proxy
+// IImplicitKeyedCollectionG.Proxy
+// IImplicitKeyedCollectionRG.Proxy
+// IImplicitKeyedCollectionSG.Proxy
+// IImplicitKeyedCollectionRSG.Proxy
+// IUniqueKeyedCollection.Proxy
+// IUniqueKeyedCollectionR.Proxy
+// IUniqueKeyedCollectionS.Proxy
+// IUniqueKeyedCollectionRS.Proxy
+// IImplicitUniqueKeyedCollectionG.Proxy
+// IImplicitUniqueKeyedCollectionRG.Proxy
+// IImplicitUniqueKeyedCollectionSG.Proxy
+// IImplicitUniqueKeyedCollectionRSG.Proxy
 #endregion
 
 

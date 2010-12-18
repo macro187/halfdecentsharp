@@ -22,7 +22,7 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// TODO
+/// A shrinkable, growable collection
 // =============================================================================
 
 public interface
@@ -41,7 +41,28 @@ ICollectionSG<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait ICollectionSG< T >.Proxy
+// Trait ICollectionSG.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    ICollectionSG< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this ICollectionSG< TFrom > from
+)
+    where T : TFrom
+{
+    return new CollectionSGProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionSG.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

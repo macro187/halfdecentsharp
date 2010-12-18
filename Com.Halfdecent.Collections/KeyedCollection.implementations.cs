@@ -32,11 +32,11 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// <tt>ICollection</tt> library
+/// <tt>IKeyedCollection</tt> Implementations
 // =============================================================================
 
-public static class
-Collection
+public static partial class
+KeyedCollection
 {
 
 
@@ -45,144 +45,117 @@ Collection
 // Implementations
 // -----------------------------------------------------------------------------
 
-/// <tt>ICollectionRC< T >.GetAndReplaceWhere()</tt>
+/// <tt>IKeyedCollectionRC< TKey, T >.GetAndReplaceAll()</tt>
 /// in terms of
-/// <tt>IUniqueKeyedCollection</tt>
+/// <tt>IUniqueKeyedCollectionRC< TKey, T ></tt>
 ///
 public static
     IFilter< T, T >
-GetAndReplaceWhereViaUniqueKeyedCollection<
+GetAndReplaceAllViaUniqueKeyedCollection<
     TKey,
     T
 >(
     IUniqueKeyedCollectionRC< TKey, T > col,
-    Predicate< T >                      where
+    TKey                                key
 )
 {
     NonNull.CheckParameter( col, "col" );
-    NonNull.CheckParameter( where, "where" );
-    return
-        new Filter< T, T >(
-            ( get, put, drop ) =>
-                GetAndReplaceWhereViaUniqueKeyedCollectionFilter(
-                    col, where, get, put, drop ) );
+    return new Filter< T, T >(
+        ( get, put, drop ) =>
+            GetAndReplaceAllViaUniqueKeyedCollectionFilter(
+                col, key, get, put, drop ) );
 }
 
 private static
     SCG.IEnumerator< bool >
-GetAndReplaceWhereViaUniqueKeyedCollectionFilter<
+GetAndReplaceAllViaUniqueKeyedCollectionFilter<
     TKey,
     T
 >(
     IUniqueKeyedCollectionRC< TKey, T > col,
-    Predicate< T >                      where,
+    TKey                                key,
     Func< T >                           get,
     Action< T >                         put,
     Action< T >                         drop
 )
 {
-    // XXX
-    // This algorithm assumes that .Replace() doesn't interfere with
-    // .StreamKeys().  If this becomes an issue, just retrieve all keys at once
-    // first.
-    //
-    foreach( TKey key in col.StreamKeys().AsEnumerable() ) {
-        T old = col.Get( key );
-        if( !where( old ) ) continue;
-        yield return false;
-        col.Replace( key, get() );
-        put( old );
-        yield return true;
-    }
+    if( !col.Contains( key ) ) yield break;
+    yield return false;
+    put( col.Get( key ) );
+    col.Replace( key, get() );
+    yield return true;
 }
 
 
-/// <tt>ICollectionRS< T >.GetAndRemoveWhere()</tt>
+/// <tt>IKeyedCollectionRS< TKey, T >.GetAndRemoveAll()</tt>
 /// in terms of
-/// <tt>IUniqueKeyedCollection</tt>
+/// <tt>IUniqueKeyedCollectionRS< TKey, T ></tt>
 ///
 public static
     IStream< T >
-GetAndRemoveWhereViaUniqueKeyedCollection<
+GetAndRemoveAllViaUniqueKeyedCollection<
     TKey,
     T
 >(
     IUniqueKeyedCollectionRS< TKey, T > col,
-    Predicate< T >                      where
+    TKey                                key
 )
 {
     NonNull.CheckParameter( col, "col" );
-    NonNull.CheckParameter( where, "where" );
     return
-        GetAndRemoveWhereViaUniqueKeyedCollectionIterator( col, where )
+        GetAndRemoveAllViaUniqueKeyedCollectionIterator( col, key )
         .AsStream();
 }
 
 private static
     SCG.IEnumerator< T >
-GetAndRemoveWhereViaUniqueKeyedCollectionIterator<
+GetAndRemoveAllViaUniqueKeyedCollectionIterator<
     TKey,
     T
 >(
     IUniqueKeyedCollectionRS< TKey, T > col,
-    Predicate< T >                      where
+    TKey                                key
 )
 {
-    restart:
-    while( true ) {
-        foreach( TKey key in col.StreamKeys().AsEnumerable() ) {
-            T item = col.Get( key );
-            if( !where( item ) ) continue;
-            col.Remove( key );
-            yield return item;
-            // Restart because keys may have changed
-            goto restart;
-        }
-        yield break;
-    }
+    if( !col.Contains( key ) ) yield break;
+    T item = col.Get( key );
+    col.Remove( key );
+    yield return item;
 }
 
 
-/// <tt>ICollectionR< T >.Stream()</tt>
+/// <tt>IKeyedCollectionR< TKey, T >.Stream()</tt>
 /// in terms of
-/// <tt>IKeyedCollection</tt>
+/// <tt>IUniqueKeyedCollectionR< TKey, T ></tt>
 ///
 public static
     IStream< T >
-StreamViaKeyedCollection<
+StreamViaUniqueKeyedCollection<
     TKey,
     T
 >(
-    IKeyedCollectionR< TKey, T > col
+    IUniqueKeyedCollectionR< TKey, T >  col,
+    TKey                                key
 )
 {
     NonNull.CheckParameter( col, "col" );
     return
-        col.StreamPairs()
-        .AsEnumerable()
-        .Select( pair => pair.B )
+        StreamViaUniqueKeyedCollectionIterator( col, key )
         .AsStream();
 }
 
-
-/// <tt>ICollectionG< T >.Add()</tt>
-/// in terms of
-/// <tt>IOrderedCollectionG< T ></tt>
-///
-public static
-    void
-AddViaOrderedCollection<
+private static
+    SCG.IEnumerator< T >
+StreamViaUniqueKeyedCollectionIterator<
+    TKey,
     T
 >(
-    IOrderedCollectionG< T >    col,
-    T                           item
+    IUniqueKeyedCollectionR< TKey, T >  col,
+    TKey                                key
 )
 {
-    NonNull.CheckParameter( col, "col" );
-    ValueReferenceException.Map(
-        f => f.Parameter( "item" ),
-        f => f.Down().Parameter( "item" ),
-        () => col.Add( col.Count, item ) );
+    if( !col.Contains( key ) ) yield break;
+    yield return col.Get( key );
 }
 
 

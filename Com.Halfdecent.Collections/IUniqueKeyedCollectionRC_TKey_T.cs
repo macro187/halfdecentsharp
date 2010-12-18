@@ -39,7 +39,15 @@ IUniqueKeyedCollectionRC<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IUniqueKeyedCollectionRC< TKey, T >.Proxy
+// Trait IUniqueKeyedCollectionRC.Statics
+// -----------------------------------------------------------------------------
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionRC.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

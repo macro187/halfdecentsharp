@@ -56,7 +56,29 @@ Get(
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IUniqueKeyedCollectionR< TKey, T >.Proxy
+// Trait IUniqueKeyedCollectionR.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IUniqueKeyedCollectionR< TKey, T >
+Covary<
+    TFrom,
+    TKey,
+    T
+>(
+    this IUniqueKeyedCollectionR< TKey, TFrom > from
+)
+    where TFrom : T
+{
+    return new UniqueKeyedCollectionRProxy< TFrom, TKey, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionR.Proxy
 // -----------------------------------------------------------------------------
 
 public T Get( TKey key ) { return this.From.Get( key ); }

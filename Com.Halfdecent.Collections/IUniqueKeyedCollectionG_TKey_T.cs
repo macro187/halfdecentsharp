@@ -43,7 +43,31 @@ IUniqueKeyedCollectionG<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IUniqueKeyedCollectionG< TKey, T >.Proxy
+// Trait IUniqueKeyedCollectionG.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IUniqueKeyedCollectionG< TKey, T >
+Contravary<
+    TKeyFrom,
+    TFrom,
+    TKey,
+    T
+>(
+    this IUniqueKeyedCollectionG< TKeyFrom, TFrom > from
+)
+    where TKey : TKeyFrom
+    where T : TFrom
+{
+    return new UniqueKeyedCollectionGProxy< TKeyFrom, TFrom, TKey, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionG.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

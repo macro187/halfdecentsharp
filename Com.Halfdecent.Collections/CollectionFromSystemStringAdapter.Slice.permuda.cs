@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _R
+// filename CollectionFromSystemStringAdapter.Slice/*PERMUDA*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -29,13 +33,6 @@ CollectionFromSystemStringAdapter
 
 #region TRAITOR
 // IndexSlice/*PERMUDA*/.Slice< char >
-#endregion
-
-
-
-#region PERMUDA
-// permute _R
-// filename CollectionFromSystemStringAdapter.Slice/*PERMUDA*/.cs
 #endregion
 
 

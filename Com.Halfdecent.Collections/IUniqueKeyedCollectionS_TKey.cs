@@ -56,7 +56,28 @@ Remove(
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IUniqueKeyedCollectionS< TKey >.Proxy
+// Trait IUniqueKeyedCollectionS.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IUniqueKeyedCollectionS< TKey >
+Contravary<
+    TKeyFrom,
+    TKey
+>(
+    this IUniqueKeyedCollectionS< TKeyFrom > from
+)
+    where TKey : TKeyFrom
+{
+    return new UniqueKeyedCollectionSProxy< TKeyFrom, TKey >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionS.Proxy
 // -----------------------------------------------------------------------------
 
 public void Remove( TKey key ) { this.From.Remove( key ); }

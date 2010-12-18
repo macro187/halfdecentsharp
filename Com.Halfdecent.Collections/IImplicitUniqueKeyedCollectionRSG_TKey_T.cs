@@ -45,7 +45,7 @@ IImplicitUniqueKeyedCollectionRSG<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IImplicitUniqueKeyedCollectionRSG< TKey, T >.Proxy
+// Trait IImplicitUniqueKeyedCollectionRSG.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

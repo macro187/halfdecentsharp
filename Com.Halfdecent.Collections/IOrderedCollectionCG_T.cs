@@ -45,7 +45,28 @@ IOrderedCollectionCG<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IOrderedCollectionCG< T >.Proxy
+// Trait IOrderedCollectionCG.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IOrderedCollectionCG< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this IOrderedCollectionCG< TFrom > from
+)
+    where T : TFrom
+{
+    return new OrderedCollectionCGProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionCG.Proxy
 // -----------------------------------------------------------------------------
 #endif
 

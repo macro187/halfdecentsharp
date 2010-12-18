@@ -59,7 +59,31 @@ Add(
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IKeyedCollectionG< TKey, T >.Proxy
+// Trait IKeyedCollectionG.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IKeyedCollectionG< TKey, T >
+Contravary<
+    TKeyFrom,
+    TFrom,
+    TKey,
+    T
+>(
+    this IKeyedCollectionG< TKeyFrom, TFrom > from
+)
+    where TKey : TKeyFrom
+    where T : TFrom
+{
+    return new KeyedCollectionGProxy< TKeyFrom, TFrom, TKey, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IKeyedCollectionG.Proxy
 // -----------------------------------------------------------------------------
 
 public void Add( TKey key, T item ) { this.From.Add( key, item ); }

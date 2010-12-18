@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _RCSG
+// filename UniqueKeyedCollection/*PERMUDA*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -21,24 +25,18 @@ Com.Halfdecent.Collections
 {
 
 
-public static class
-KeyedCollectionS
+// =============================================================================
+/// <tt>IUniqueKeyedCollection/*PERMUDA*/</tt> Library
+// =============================================================================
+
+public static partial class
+UniqueKeyedCollection/*PERMUDA*/
 {
 
 
-
-public static
-    IKeyedCollectionS< TKey >
-Contravary<
-    TKeyFrom,
-    TKey
->(
-    this IKeyedCollectionS< TKeyFrom > from
-)
-    where TKey : TKeyFrom
-{
-    return new KeyedCollectionSProxy< TKeyFrom, TKey >( from );
-}
+#region TRAITOR
+// IUniqueKeyedCollection/*PERMUDA*/.Statics
+#endregion
 
 
 

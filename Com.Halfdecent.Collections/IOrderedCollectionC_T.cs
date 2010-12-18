@@ -46,7 +46,28 @@ IOrderedCollectionC<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IOrderedCollectionC< T >.Proxy
+// Trait IOrderedCollectionC.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IOrderedCollectionC< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this IOrderedCollectionC< TFrom > from
+)
+    where T : TFrom
+{
+    return new OrderedCollectionCProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionC.Proxy
 // -----------------------------------------------------------------------------
 
 public void Replace( IInteger key, T replacement ) {
@@ -68,8 +89,8 @@ Replace(
 )
 {
     NonNull.CheckParameter( key, "key" );
-    GTE.CheckParameter( Integer.From( 0 ), key, "key" );
-    LTE.CheckParameter( this.Count, key, "key" );
+    GTE.CheckParameter< IReal >( Integer.From( 0 ), key, "key" );
+    LTE.CheckParameter< IReal >( this.Count, key, "key" );
     this.From.Replace( this.Trans( key ), replacement );
 }
 #endif

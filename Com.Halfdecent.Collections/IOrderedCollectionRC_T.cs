@@ -42,7 +42,15 @@ IOrderedCollectionRC<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IOrderedCollectionRC< T >.Proxy
+// Trait IOrderedCollectionRC.Statics
+// -----------------------------------------------------------------------------
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionRC.Proxy
 // -----------------------------------------------------------------------------
 
 public IFilter< T, T > GetAndReplaceAll( IInteger key ) {

@@ -57,7 +57,31 @@ Replace(
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IUniqueKeyedCollectionC< TKey, T >.Proxy
+// Trait IUniqueKeyedCollectionC.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    IUniqueKeyedCollectionC< TKey, T >
+Contravary<
+    TKeyFrom,
+    TFrom,
+    TKey,
+    T
+>(
+    this IUniqueKeyedCollectionC< TKeyFrom, TFrom > from
+)
+    where TKey : TKeyFrom
+    where T : TFrom
+{
+    return new UniqueKeyedCollectionCProxy< TKeyFrom, TFrom, TKey, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IUniqueKeyedCollectionC.Proxy
 // -----------------------------------------------------------------------------
 
 public void Replace( TKey key, T replacement ) {

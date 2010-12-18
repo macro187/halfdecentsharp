@@ -25,7 +25,7 @@ Com.Halfdecent.Collections
 
 
 // =============================================================================
-/// TODO
+/// A readable collection
 // =============================================================================
 
 public interface
@@ -54,23 +54,49 @@ Stream();
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait ICollectionR< T >.Proxy
+// Trait ICollectionR.Statics
 // -----------------------------------------------------------------------------
 
-public IStream< T > Stream() {
-    return this.From.Stream(); }
+public static
+    ICollectionR< T >
+Covary<
+    TFrom,
+    T
+>(
+    this ICollectionR< TFrom > from
+)
+    where TFrom : T
+{
+    return new CollectionRProxy< TFrom, T >( from );
+}
 #endif
 
 
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait ICollectionR< out T >.Proxy
+// Trait ICollectionR.Proxy
 // -----------------------------------------------------------------------------
 
 public IStream< T > Stream() {
+#if DOTNET40
+    return this.From.Stream(); }
+#else
     return this.From.Stream().Covary< TFrom, T >(); }
 #endif
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionR.Proxy.Invariant
+// -----------------------------------------------------------------------------
+
+public IStream< T > Stream() {
+    return this.From.Stream(); }
+#endif
+
 
 
 

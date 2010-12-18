@@ -40,6 +40,71 @@ IOrderedCollectionS
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
+// Trait IOrderedCollectionS.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    void
+RemoveFirst(
+    this IOrderedCollectionS dis
+)
+{
+    NonNull.CheckParameter( dis, "dis" );
+    dis.RemoveFirst( Integer.From( 1 ) );
+}
+
+
+public static
+    void
+RemoveFirst(
+    this IOrderedCollectionS    dis,
+    IInteger                    count
+)
+{
+    NonNull.CheckParameter( dis, "dis" );
+    GTE.CheckParameter< IReal >( Integer.From( 0 ), count, "count" );
+    LTE.CheckParameter< IReal >( dis.Count, count, "count" );
+
+    while( count.GT( Integer.From( 0 ) ) ) {
+        dis.Remove( Integer.From( 0 ) );
+        count = count.Minus( Integer.From( 1 ) );
+    }
+}
+
+
+public static
+    void
+RemoveLast(
+    this IOrderedCollectionS dis
+)
+{
+    NonNull.CheckParameter( dis, "dis" );
+    dis.RemoveLast( Integer.From( 1 ) );
+}
+
+
+public static
+    void
+RemoveLast(
+    this IOrderedCollectionS    dis,
+    IInteger                    count
+)
+{
+    NonNull.CheckParameter( dis, "dis" );
+    GTE.CheckParameter< IReal >( Integer.From( 0 ), count, "count" );
+    LTE.CheckParameter< IReal >( dis.Count, count, "count" );
+
+    while( count.GT( Integer.From( 0 ) ) ) {
+        dis.Remove( dis.Count.Minus( Integer.From( 1 ) ) );
+        count = count.Minus( Integer.From( 1 ) );
+    }
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
 // Trait IOrderedCollectionS.Proxy
 // -----------------------------------------------------------------------------
 
@@ -62,8 +127,8 @@ Remove(
 )
 {
     NonNull.CheckParameter( key, "key" );
-    GTE.CheckParameter( Integer.From( 0 ), key, "key" );
-    LTE.CheckParameter( this.Count, key, "key" );
+    GTE.CheckParameter< IReal >( Integer.From( 0 ), key, "key" );
+    LTE.CheckParameter< IReal >( this.Count, key, "key" );
     this.From.Remove( this.Trans( key ) );
     this.SliceCount = this.SliceCount.Minus( Integer.From( 1 ) );
 }

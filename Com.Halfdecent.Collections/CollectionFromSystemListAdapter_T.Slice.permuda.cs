@@ -1,3 +1,7 @@
+#region PERMUDA
+// permute _RCSG
+// filename CollectionFromSystemListAdapter_T.Slice/*PERMUDA*/.cs
+#endregion
 // -----------------------------------------------------------------------------
 // Copyright (c) 2010
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
@@ -31,13 +35,6 @@ CollectionFromSystemListAdapter<
 
 #region TRAITOR
 // IndexSlice/*PERMUDA*/.Slice< T >
-#endregion
-
-
-
-#region PERMUDA
-// permute _RCSG
-// filename CollectionFromSystemListAdapter_T.Slice/*PERMUDA*/.cs
 #endregion
 
 

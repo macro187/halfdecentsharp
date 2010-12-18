@@ -49,16 +49,82 @@ IOrderedCollectionR<
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IOrderedCollectionR< T >.Proxy
+// Trait IOrderedCollectionR.Statics
 // -----------------------------------------------------------------------------
 
-public IStream< ITuple< IInteger, T > > StreamPairs() {
-    return this.From.StreamPairs(); }
+/// Determine the index of the first item in the collection that matches
+/// specified criteria
+///
+public static
+    IInteger
+    /// @returns Index of the matching item
+    /// - OR -
+    /// -1 if no matching item
+IndexWhere<
+    T
+>(
+    this IOrderedCollectionR< T >   dis,
+    System.Predicate< T >           where
+)
+{
+    NonNull.CheckParameter( where, "where" );
+    foreach( ITuple< IInteger, T > t in dis.StreamPairs().AsEnumerable() ) {
+        if( where( t.B ) ) return t.A;
+    }
+    return Integer.From( -1 );
+}
+
+
+public static
+    IOrderedCollectionR< T >
+Covary<
+    TFrom,
+    T
+>(
+    this IOrderedCollectionR< TFrom > from
+)
+    where TFrom : T
+{
+    return new OrderedCollectionRProxy< TFrom, T >( from );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait IOrderedCollectionR.Proxy
+// -----------------------------------------------------------------------------
+
+public
+    IStream< ITuple< IInteger, T > >
+StreamPairs()
+{
+#if DOTNET40
+    return this.From.StreamPairs();
+#else
+    return
+        this.From.StreamPairs()
+        .AsEnumerable()
+        .Select( t => t.Covary< IInteger, TFrom, IInteger, T >() )
+        .AsStream();
+#endif
+}
 
 public bool Contains( IInteger key ) { return this.From.Contains( key ); }
 
-public IStream< T > Stream( IInteger key ) {
-    return this.From.Stream( key ); }
+public
+    IStream< T >
+Stream(
+    IInteger key
+)
+{
+#if DOTNET40
+    return this.From.Stream( key );
+#else
+    return this.From.Stream().Covary< TFrom, T >();
+#endif
+}
 
 public T Get( IInteger key ) { return this.From.Get( key ); }
 #endif
@@ -67,28 +133,26 @@ public T Get( IInteger key ) { return this.From.Get( key ); }
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait IOrderedCollectionR< out T >.Proxy
+// Trait IOrderedCollectionR.Proxy.Invariant
 // -----------------------------------------------------------------------------
 
-public IStream< ITuple< IInteger, T > > StreamPairs() {
-#if DOTNET40
-    return this.From.StreamPairs(); }
-#else
-    return
-        this.From.StreamPairs()
-        .AsEnumerable()
-        .Select( t => t.Covary< IInteger, TFrom, IInteger, T >() )
-        .AsStream(); }
-#endif
+public
+    IStream< ITuple< IInteger, T > >
+StreamPairs()
+{
+    return this.From.StreamPairs();
+}
 
 public bool Contains( IInteger key ) { return this.From.Contains( key ); }
 
-public IStream< T > Stream( IInteger key ) {
-#if DOTNET40
-    return this.From.Stream( key ); }
-#else
-    return this.From.Stream().Covary< TFrom, T >(); }
-#endif
+public
+    IStream< T >
+Stream(
+    IInteger key
+)
+{
+    return this.From.Stream( key );
+}
 
 public T Get( IInteger key ) { return this.From.Get( key ); }
 #endif

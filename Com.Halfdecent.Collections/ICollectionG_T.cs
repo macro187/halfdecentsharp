@@ -16,13 +16,16 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Streams;
+
+
 namespace
 Com.Halfdecent.Collections
 {
 
 
 // =============================================================================
-/// A collection to which items can be added
+/// A growable collection
 // =============================================================================
 
 public interface
@@ -53,7 +56,42 @@ Add(
 
 #if TRAITOR
 // -----------------------------------------------------------------------------
-// Trait ICollectionG< T >.Proxy
+// Trait ICollectionG.Statics
+// -----------------------------------------------------------------------------
+
+public static
+    ICollectionG< T >
+Contravary<
+    TFrom,
+    T
+>(
+    this ICollectionG< TFrom > from
+)
+    where T : TFrom
+{
+    return new CollectionGProxy< TFrom, T >( from );
+}
+
+
+/// Present the growable collection as a sink
+///
+public static
+    ISink< T >
+AsSink<
+    T
+>(
+    this ICollectionG< T > dis
+)
+{
+    return new CollectionGToSinkAdapter< T >( dis );
+}
+#endif
+
+
+
+#if TRAITOR
+// -----------------------------------------------------------------------------
+// Trait ICollectionG.Proxy
 // -----------------------------------------------------------------------------
 
 public void Add( T item ) { this.From.Add( item ); }
