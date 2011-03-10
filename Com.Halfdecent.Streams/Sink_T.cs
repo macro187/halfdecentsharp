@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections.Generic;
-using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
@@ -27,11 +25,11 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// Treat any System.Collections.Generic.ICollection<T> as a Sink<T>
+/// Sink implementation
 // =============================================================================
 
-internal class
-SinkFromSystemCollectionAdapter<
+public class
+Sink<
     T
 >
     : ISink< T >
@@ -40,16 +38,46 @@ SinkFromSystemCollectionAdapter<
 
 
 // -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+
+
+// -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
+/// Create a sink from a pair of functions, one that determines whether a push
+/// can occur, and one that does it
+///
 public
-SinkFromSystemCollectionAdapter(
-    ICollection< T > collection
+Sink(
+    System.Func< bool > canPushFunc,
+    System.Action< T >  pushFunc
+)
+    : this( item => {
+        if( canPushFunc() ) {
+            pushFunc( item );
+            return true;
+        } else {
+            return false;
+        } } )
+{
+    NonNull.CheckParameter( canPushFunc, "canPushFunc" );
+    NonNull.CheckParameter( pushFunc, "pushFunc" );
+}
+
+
+/// Create a sink from a function that performs and signals the success of the
+/// push
+///
+public
+Sink(
+    System.Func< T, bool > tryPushFunc
 )
 {
-    NonNull.CheckParameter( collection, "collection" );
-    this.Collection = collection;
+    NonNull.CheckParameter( tryPushFunc, "tryPushFunc" );
+    this.TryPushFunc = tryPushFunc;
 }
 
 
@@ -59,8 +87,8 @@ SinkFromSystemCollectionAdapter(
 // -----------------------------------------------------------------------------
 
 private
-ICollection< T >
-Collection
+System.Func< T, bool >
+TryPushFunc
 {
     get;
     set;
@@ -78,8 +106,7 @@ TryPush(
     T item
 )
 {
-    this.Collection.Add( item );
-    return true;
+    return this.TryPushFunc( item );
 }
 
 

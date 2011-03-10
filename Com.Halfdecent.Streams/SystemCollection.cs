@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -51,7 +51,9 @@ AsSink<
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    return new SinkFromSystemCollectionAdapter< T >( dis );
+    return new Sink< T >( item => {
+        dis.Add( item );
+        return true; } );
 }
 
 

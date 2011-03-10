@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent;
-using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
@@ -39,20 +37,24 @@ SystemStream
 public static
     IStream< byte >
 AsHalfdecentStream(
-    this System.IO.Stream from
+    this System.IO.Stream dis
 )
 {
-    return new StreamFromSystemStreamAdapter( from );
+    NonNull.CheckParameter( dis, "dis" );
+    return new StreamFromSystemStreamAdapter( dis );
 }
 
 
 public static
     ISink< byte >
 AsHalfdecentSink(
-    this System.IO.Stream from
+    this System.IO.Stream dis
 )
 {
-    return new SinkFromSystemStreamAdapter( from );
+    NonNull.CheckParameter( dis, "dis" );
+    return new Sink< byte >( item => {
+        dis.WriteByte( item );
+        return true; } );
 }
 
 
