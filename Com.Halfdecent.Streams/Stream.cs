@@ -179,10 +179,9 @@ SequenceEqual<
     this IStream< T >   dis,
     IStream< T >        that
 )
+    where T : System.IEquatable< T >
 {
-    return dis.SequenceEqual(
-        that,
-        new ObjectComparer().Contravary< object, T >() );
+    return dis.SequenceEqual< T, T >( that );
 }
 
 
@@ -197,11 +196,12 @@ SequenceEqual<
     IStream< T >        that
 )
     where T : TEquatable
-    where TEquatable : IEquatable< TEquatable >
+    where TEquatable : System.IEquatable< TEquatable >
 {
     return dis.SequenceEqual< T >(
         that,
-        new EquatableComparer< TEquatable >().Contravary< TEquatable, T >() );
+        new SystemEquatableComparer< TEquatable >()
+            .Contravary< TEquatable, T >() );
 }
 
 
