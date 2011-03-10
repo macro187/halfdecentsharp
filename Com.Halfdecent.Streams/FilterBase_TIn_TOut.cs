@@ -16,8 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using System.Collections.Generic;
+using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 
 
@@ -162,8 +162,7 @@ DropItem(
     TIn item
 )
 {
-    IDisposable d = item as IDisposable;
-    if( d != null ) d.Dispose();
+    item.IsDo< System.IDisposable >( d => d.Dispose() );
 }
 
 
