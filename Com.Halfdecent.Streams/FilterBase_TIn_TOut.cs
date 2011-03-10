@@ -162,7 +162,7 @@ DropItem(
     TIn item
 )
 {
-    item.IsDo< System.IDisposable >( d => d.Dispose() );
+    item.IfIs< System.IDisposable >( d => d.Dispose() );
 }
 
 

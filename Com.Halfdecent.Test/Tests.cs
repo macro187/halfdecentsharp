@@ -89,9 +89,9 @@ Test_SystemObject()
     Assert( nul.IsNull() );
     Assert( !( obj.IsNull() ) );
 
-    Print( "IsNullDo()" );
+    Print( "IfIsNull()" );
     ok = false;
-    Assert( nul.IsNullDo( () => ok = true ) );
+    Assert( nul.IfIsNull( () => ok = true ) );
     Assert( ok );
 
     Print( "Is()" );
@@ -100,18 +100,18 @@ Test_SystemObject()
     Assert( !( objproxy.Is< string >() ) );
     Assert( !( nul.Is< string >() ) );
 
-    Print( "IsDo()" );
+    Print( "IfIs()" );
     ok = false;
-    Assert( str.IsDo< string >( s => ok = true ) );
+    Assert( str.IfIs< string >( s => ok = true ) );
     Assert( ok );
     ok = false;
-    Assert( strproxy.IsDo< string >( s => ok = true ) );
+    Assert( strproxy.IfIs< string >( s => ok = true ) );
     Assert( ok );
     ok = true;
-    Assert( !( objproxy.IsDo< string >( s => ok = false ) ) );
+    Assert( !( objproxy.IfIs< string >( s => ok = false ) ) );
     Assert( ok );
     ok = true;
-    Assert( !( nul.IsDo< string >( s => ok = false ) ) );
+    Assert( !( nul.IfIs< string >( s => ok = false ) ) );
     Assert( ok );
 
     Print( ".IsAnd()" );
@@ -121,25 +121,25 @@ Test_SystemObject()
     Assert( !( objproxy.IsAnd< string >( s => s == "match" ) ) );
     Assert( !( nul.IsAnd< string >( s => s == "match" ) ) );
 
-    Print( ".IsAndDo()" );
+    Print( ".IfIsAnd()" );
     ok = false;
-    Assert( str.IsAndDo<
+    Assert( str.IfIsAnd<
         string >( s => s == "match", s => ok = true ) );
     Assert( ok );
     ok = false;
-    Assert( strproxy.IsAndDo<
+    Assert( strproxy.IfIsAnd<
         string >( s => s == "match", s => ok = true ) );
     Assert( ok );
     ok = true;
-    Assert( !( strproxy.IsAndDo<
+    Assert( !( strproxy.IfIsAnd<
         string >( s => s == "NOMATCH", s => ok = false ) ) );
     Assert( ok );
     ok = true;
-    Assert( !( objproxy.IsAndDo<
+    Assert( !( objproxy.IfIsAnd<
         string >( s => s == "match", s => ok = false ) ) );
     Assert( ok );
     ok = true;
-    Assert( !( nul.IsAndDo<
+    Assert( !( nul.IfIsAnd<
         string >( s => s == "match", s => ok = false ) ) );
     Assert( ok );
 

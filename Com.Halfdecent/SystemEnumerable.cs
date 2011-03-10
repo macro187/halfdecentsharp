@@ -105,22 +105,6 @@ Append<
 }
 
 
-public static
-    IEnumerable< T >
-WhereIs<
-    T
->(
-    this IEnumerable dis
-)
-{
-    if( (object)dis == null ) throw new ArgumentNullException( "dis" );
-    foreach( object obj in dis ) {
-        T result = default( T );
-        if( obj.IsDo< T >( t => result = t ) ) yield return result;
-    }
-}
-
-
 /// Determine whether an enumerable begins with a specified sequence of
 /// equatable items
 ///

@@ -65,13 +65,13 @@ IsNull(
     this object dis
 )
 {
-    return dis.IsNullDo( () => {} );
+    return dis.IfIsNull( () => {} );
 }
 
 
 public static
     bool
-IsNullDo(
+IfIsNull(
     this object     dis,
     System.Action   action
 )
@@ -93,7 +93,7 @@ Is<
 )
 {
     return
-        dis.IsDo<
+        dis.IfIs<
             T >(
             t => {} );
 }
@@ -101,7 +101,7 @@ Is<
 
 public static
     bool
-IsDo<
+IfIs<
     T
 >(
     this object             dis,
@@ -109,7 +109,7 @@ IsDo<
 )
 {
     return
-        dis.IsAndDo<
+        dis.IfIsAnd<
             T >(
             t => true,
             action );
@@ -126,7 +126,7 @@ IsAnd<
 )
 {
     return
-        dis.IsAndDo<
+        dis.IfIsAnd<
             T >(
             predicate,
             t => {} );
@@ -143,7 +143,7 @@ public static
     /// Whether the object (or an underlying object for which it is an
     /// <tt>IProxy</tt>) was the specified type and met the specified criteria
     /// and, therefore, whether the action was performed
-IsAndDo<
+IfIsAnd<
     T
     ///< The sought-after type
 >(
@@ -196,7 +196,7 @@ ProxyChain(
 {
     if( dis == null ) throw new System.ArgumentNullException( "dis" );
     return SystemEnumerable.Recurse(
-        dis, 
+        dis,
         obj => obj is IProxy ? ((IProxy)obj).Underlying : null );
 }
 
