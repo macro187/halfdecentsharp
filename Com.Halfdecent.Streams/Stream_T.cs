@@ -17,6 +17,7 @@
 
 
 using SCG = System.Collections.Generic;
+using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -80,9 +81,9 @@ public
 Stream(
     SCG.IEnumerable< T > enumerable
 )
+    : this( enumerable.GetEnumerator() )
 {
     NonNull.CheckParameter( enumerable, "enumerable" );
-    this.Enumerator = enumerable.GetEnumerator();
 }
 
 
@@ -93,9 +94,42 @@ public
 Stream(
     SCG.IEnumerator< T > enumerator
 )
+    : this( () => {
+        if( enumerator.MoveNext() )
+            return Tuple.Create( true, enumerator.Current );
+        else
+            return Tuple.Create( false, default( T ) ); } )
 {
     NonNull.CheckParameter( enumerator, "enumerator" );
-    this.Enumerator = enumerator;
+}
+
+
+/// Initialise a new stream from a <tt>Com.Halfdecent.MaybeFunc<T></tt>
+///
+public
+Stream(
+    MaybeFunc< T > maybeFunc
+)
+    : this( () => {
+        T r;
+        if( maybeFunc( out r ) )
+            return Tuple.Create( true, r );
+        else
+            return Tuple.Create( false, default( T ) ); } )
+{
+    NonNull.CheckParameter( maybeFunc, "maybeFunc" );
+}
+
+
+/// Initialise a new stream from a <tt>Func< ITuple< bool, T > ></tt>
+///
+public
+Stream(
+    System.Func< ITuple< bool, T > > tryPullFunc
+)
+{
+    NonNull.CheckParameter( tryPullFunc, "tryPullFunc" );
+    this.TryPullFunc = tryPullFunc;
 }
 
 
@@ -105,8 +139,8 @@ Stream(
 // -----------------------------------------------------------------------------
 
 private
-SCG.IEnumerator< T >
-Enumerator
+System.Func< ITuple< bool, T > >
+TryPullFunc
 {
     get;
     set;
@@ -122,11 +156,7 @@ public
     ITuple< bool, T >
 TryPull()
 {
-    if( this.Enumerator.MoveNext() ) {
-        return new Tuple< bool, T >( true, this.Enumerator.Current );
-    } else {
-        return new Tuple< bool, T >( false, default( T ) );
-    }
+    return this.TryPullFunc();
 }
 
 

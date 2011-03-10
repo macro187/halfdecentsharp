@@ -29,8 +29,8 @@ Com.Halfdecent.Streams
 ///
 /// On it's own, <tt>IStream< T ></tt> does not imply how many more items (if
 /// any) are available, nor how long (if ever) it will take to yield the next
-/// one.  Implementations should document their semantics in these regards
-/// and/or implement stream subtypes with more specific semantics.
+/// one.  Implementations should document their behaviour in this regard
+/// and/or implement stream subtypes with more specific behaviour.
 // =============================================================================
 
 public interface
@@ -47,15 +47,24 @@ IStream<
 
 /// Try to pull the next item from the stream
 ///
-/// <tt>IStream< T ></tt> does not imply how long this method will take to
-/// return, if ever.
+/// <tt>IStream< T ></tt> alone does not imply how long this method will take
+/// to return or whether it will return at all.
 ///
-/// Once this method returns <tt>false</tt>, indicating the end of the stream
-/// has been reached, it will never produce items again.
+/// Once this method returns <tt>false</tt> indicating that the end of the
+/// stream has been reached, it will never produce items again.
+///
+/// Design Note:
+/// This method returns a tuple rather than using an <tt>out</tt> parameter
+/// because <tt>out</tt> parameters are not covariant, which would mean that
+/// this interface couldn't be covariant.  The good news is that an extension
+/// method is available that provides a <tt>bool TryPull( out T result )</tt>
+/// overload.
 ///
     ITuple< bool, T >
     /// @returns
-    /// Whether there was another item in the stream
+    /// A tuple whose first value indicates whether there was another item in
+    /// the stream and whose second value is either the value from the stream or
+    /// an undefined and unusable value if there was none
 TryPull();
 
 
