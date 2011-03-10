@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -39,68 +39,26 @@ Stream<
 {
 
 
-
-// -----------------------------------------------------------------------------
-// Static Properties
-// -----------------------------------------------------------------------------
-
-/// A stream that yields no items
-///
-public static
-IStream< T >
-Empty
-{
-    get { return empty; }
-}
-
-private static
-IStream< T >
-empty = new Stream< T >();
-
-
-
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new stream that yields a specified series of items, or none
-/// at all
+/// Create a stream from a pair of functions, one that indicates whether an item
+/// can be pulled, and one that does the pull
 ///
 public
 Stream(
-    params T[] items
-)
-    : this( (SCG.IEnumerable<T>)items )
-{
-}
-
-
-/// Initialise a new stream that yields the items in a specified enumerable
-///
-public
-Stream(
-    SCG.IEnumerable< T > enumerable
-)
-    : this( enumerable.GetEnumerator() )
-{
-    NonNull.CheckParameter( enumerable, "enumerable" );
-}
-
-
-/// Initialise a new stream that yields the items remaining in a specified
-/// enumerator
-///
-public
-Stream(
-    SCG.IEnumerator< T > enumerator
+    System.Func< bool > canPullFunc,
+    System.Func< T >    pullFunc
 )
     : this( () => {
-        if( enumerator.MoveNext() )
-            return Tuple.Create( true, enumerator.Current );
+        if( canPullFunc() )
+            return Tuple.Create( true, pullFunc() );
         else
             return Tuple.Create( false, default( T ) ); } )
 {
-    NonNull.CheckParameter( enumerator, "enumerator" );
+    NonNull.CheckParameter( canPullFunc, "canPullFunc" );
+    NonNull.CheckParameter( pullFunc, "pullFunc" );
 }
 
 

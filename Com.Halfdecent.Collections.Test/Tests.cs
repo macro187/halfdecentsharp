@@ -124,7 +124,7 @@ Test_CollectionFromSystemListAdapter()
 
     Print( ".GetAndReplaceAll( TKey )" );
     f = c.GetAndReplaceAll( Integer.From( 1 ) );
-    f.From = new Stream< int >( 6 );
+    f.From = Stream.Create( 6 );
     to.Clear();
     f.EmptyTo( to.AsSink() );
     Assert(
@@ -295,7 +295,7 @@ Test_CollectionFromSystemStringBuilderAdapter()
 
     Print( ".GetAndReplaceAll( IInteger )" );
     f = c.GetAndReplaceAll( Integer.From( 1 ) );
-    f.From = new Stream< char >( 'D' );
+    f.From = Stream.Create( 'D' );
     to.Clear();
     f.EmptyTo( to.AsSink() );
     Assert(

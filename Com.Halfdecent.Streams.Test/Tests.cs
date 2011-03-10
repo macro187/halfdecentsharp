@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -56,7 +56,7 @@ public static
 void
 Test_Stream_T()
 {
-    IStream< int > s = new Stream< int >( 1, 2, 3 );
+    IStream< int > s = Stream.Create( 1, 2, 3 );
 
     int i;
     bool b;
@@ -88,7 +88,7 @@ public static
 void
 Test_Stream_Pull()
 {
-    IStream< int > s = new Stream< int >( 1, 2, 3 );
+    IStream< int > s = Stream.Create( 1, 2, 3 );
 
     int i;
 
@@ -109,7 +109,7 @@ Test_Stream_Pull()
         e => ValueReferenceException.Match<
             EmptyException >(
             e,
-            (vr,f) => vr.Equals( f.Down().Parameter( "stream" ) ) ),
+            (vr,f) => vr.Equals( f.Down().Parameter( "dis" ) ) ),
         () => s.Pull() );
 }
 
@@ -240,7 +240,7 @@ Test_Stream_EmptyTo()
     int[] items = new int[] { 1, 2, 3 };
     Print( "EmptyTo() a sink" );
     TestSink sink = new TestSink();
-    new Stream< int >( items ).EmptyTo( sink );
+    Stream.Create( items ).EmptyTo( sink );
     Print( "Check items" );
     Assert( sink.Items.SequenceEqual( items ) );
 }
@@ -251,7 +251,7 @@ public static
 void
 Test_Stream_T_Empty()
 {
-    IStream< int > s = Stream< int >.Empty;
+    IStream< int > s = Stream.Create< int >();
     int i;
     Assert( !s.TryPull( out i ) );
 }
@@ -264,7 +264,7 @@ Test_Stream_AsEnumerable()
 {
     int[] items = new int[] { 1, 2, 3 };
     Print( "Items in enumerable accurately reflect stream" );
-    Assert( new Stream< int >( items ).AsEnumerable().SequenceEqual( items ) );
+    Assert( Stream.Create( items ).AsEnumerable().SequenceEqual( items ) );
 }
 
 
@@ -286,7 +286,7 @@ void
 Test_Stream_Append()
 {
     Assert(
-        new Stream< int >( 1, 2, 3 )
+        Stream.Create( 1, 2, 3 )
         .Append( 4 )
         .AsEnumerable()
         .SequenceEqual( new int[] { 1, 2, 3, 4 } ) );
@@ -299,8 +299,8 @@ void
 Test_Stream_Concat()
 {
     Assert(
-        new Stream< int >( 1, 2, 3 )
-        .Concat( new Stream< int >( 4, 5, 6 ) )
+        Stream.Create( 1, 2, 3 )
+        .Concat( Stream.Create( 4, 5, 6 ) )
         .AsEnumerable()
         .SequenceEqual( new int[] { 1, 2, 3, 4, 5, 6 } ) );
 }
@@ -312,7 +312,7 @@ void
 Test_Collection_AsSink()
 {
     ICollection< int > col = new List< int >();
-    new Stream< int >( 1, 2, 3 ).EmptyTo( col.AsSink() );
+    Stream.Create( 1, 2, 3 ).EmptyTo( col.AsSink() );
     Assert( col.SequenceEqual( new int[] { 1, 2, 3 } ) );
 }
 
@@ -584,35 +584,35 @@ Test_FilterBase_Pull()
     List< int > to = new List< int >();
 
     Print( "1-to-1 filter" );
-    f = new PassThrough { From = new Stream< int >( 1, 2, 3, 4 ) };
+    f = new PassThrough { From = Stream.Create( 1, 2, 3, 4 ) };
     to.Clear();
     f.EmptyTo( to.AsSink() );
     Assert( to.SequenceEqual( new int[] { 1, 2, 3, 4 } ) );
 
     Print( "1-to-many filter" );
-    f = new DoubleUp { From = new Stream< int >( 1, 2, 3, 4 ) };
+    f = new DoubleUp { From = Stream.Create( 1, 2, 3, 4 ) };
     to.Clear();
     f.EmptyTo( to.AsSink() );
     Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
 
     Print( "Many-to-1 filter" );
-    f = new AddPairs { From = new Stream< int >( 1, 2, 3, 4 ) };
+    f = new AddPairs { From = Stream.Create( 1, 2, 3, 4 ) };
     to.Clear();
     f.EmptyTo( to.AsSink() );
     Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
 
     Print( "Closing filter" );
-    f = new PassOne { From = new Stream< int >( 1, 2, 3, 4 ) };
+    f = new PassOne { From = Stream.Create( 1, 2, 3, 4 ) };
     to.Clear();
     f.EmptyTo( to.AsSink() );
     Assert( to.SequenceEqual( new int[] { 1 } ) );
 
     Print( "Many-to-1 filter, switch .From mid-block" );
-    f = new AddPairs { From = new Stream< int >( 1 ) };
+    f = new AddPairs { From = Stream.Create( 1 ) };
     to.Clear();
     f.EmptyTo( to.AsSink() );
     Assert( to.Count == 0 );
-    f.From = new Stream< int >( 2 );
+    f.From = Stream.Create( 2 );
     f.EmptyTo( to.AsSink() );
     Assert( to.SequenceEqual( new int[] { 3 } ) );
 }
@@ -627,7 +627,7 @@ Test_IStream_PipeTo_IFilter()
 
     Print( "Works as a stream" );
     to.Clear();
-    new Stream< int >( 1, 2, 3, 4 )
+    Stream.Create( 1, 2, 3, 4 )
         .PipeTo( new PassThrough() )
         .EmptyTo( to.AsSink() );
     Assert( to.SequenceEqual( new int[] { 1, 2, 3, 4 } ) );

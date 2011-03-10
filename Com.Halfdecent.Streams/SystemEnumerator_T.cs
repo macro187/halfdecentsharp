@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,9 +16,11 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Collections;
-using System.Collections.Generic;
+using SC = System.Collections;
+using SCG = System.Collections.Generic;
+using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
+using Com.Halfdecent.RTypes;
 
 
 namespace
@@ -27,21 +29,41 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// Base class for implementing non-resettable enumerators
+/// A non-resettable System.Collections.Generic.IEnumerator< T >
 // =============================================================================
 
-internal abstract class
-SystemEnumeratorBase<
+internal class
+SystemEnumerator<
     T
 >
-    : IEnumerator< T >
+    : SCG.IEnumerator< T >
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+public
+SystemEnumerator(
+    System.Func< ITuple< bool, T > > tryPullFunc
+)
+{
+    NonNull.CheckParameter( tryPullFunc, "tryPullFunc" );
+    this.TryPullFunc = tryPullFunc;
+}
 
 
 
 // -----------------------------------------------------------------------------
 // Properties
 // -----------------------------------------------------------------------------
+
+private
+System.Func< ITuple< bool, T > >
+TryPullFunc;
+
 
 private
 bool
@@ -56,32 +78,6 @@ finished;
 private
 T
 current;
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// Simplified enumerator implementation
-///
-/// Once this method returns <tt>false</tt>, it will never be called again.
-///
-protected virtual
-    bool
-    /// @returns
-    /// Whether there was another item
-MoveNext(
-    out T nextItem
-    ///< The next item
-    ///  - OR -
-    ///  An undefined value that will never be used, if there wasn't another
-    ///  item
-)
-{
-    nextItem = default( T );
-    return false;
-}
 
 
 
@@ -112,9 +108,9 @@ Current
 // -----------------------------------------------------------------------------
 
 object
-IEnumerator.Current
+SC.IEnumerator.Current
 {
-    get { return ((IEnumerator< T >)this).Current; }
+    get { return ((SCG.IEnumerator< T >)this).Current; }
 }
 
 
@@ -123,7 +119,8 @@ public
 MoveNext()
 {
     if( this.finished ) return false;
-    bool r = this.MoveNext( out this.current );
+    bool r;
+    this.TryPullFunc().AssignTo( out r, out this.current );
     if( !this.started ) this.started = true;
     if( !r ) this.finished = true;
     return r;

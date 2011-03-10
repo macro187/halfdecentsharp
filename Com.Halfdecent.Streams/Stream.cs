@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -39,6 +39,51 @@ Stream
 
 
 // -----------------------------------------------------------------------------
+// Static Methods
+// -----------------------------------------------------------------------------
+
+public static
+    IStream< T >
+Create<
+    T
+>(
+    params T[] items
+)
+{
+    return items.AsStream();
+}
+
+
+public static
+    IStream< T >
+Create<
+    T
+>(
+    System.Func< bool > canPullFunc,
+    System.Func< T >    pullFunc
+)
+{
+    NonNull.CheckParameter( canPullFunc, "canPullFunc" );
+    NonNull.CheckParameter( pullFunc, "pullFunc" );
+    return new Stream< T >( canPullFunc, pullFunc );
+}
+
+
+public static
+    IStream< T >
+Create<
+    T
+>(
+    MaybeFunc< T > maybeFunc
+)
+{
+    NonNull.CheckParameter( maybeFunc, "maybeFunc" );
+    return new Stream< T >( maybeFunc );
+}
+
+
+
+// -----------------------------------------------------------------------------
 // Extension Methods
 // -----------------------------------------------------------------------------
 
@@ -55,7 +100,7 @@ Append<
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    return dis.Concat( new Stream< T >( item ) );
+    return dis.Concat( Stream.Create( item ) );
 }
 
 
@@ -72,10 +117,11 @@ Concat<
 )
 {
     NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( stream, "stream" );
     return
-        dis.AsEnumerable().Concat(
-            stream.AsEnumerable() )
-        .AsStream();
+        dis.AsEnumerable()
+            .Concat( stream.AsEnumerable() )
+            .AsStream();
 }
 
 
@@ -112,14 +158,14 @@ public static
 Pull<
     T
 >(
-    this IStream< T > stream
+    this IStream< T > dis
 )
 {
-    NonNull.CheckParameter( stream, "stream" );
+    NonNull.CheckParameter( dis, "dis" );
     T r;
-    if( !stream.TryPull( out r ) )
+    if( !dis.TryPull( out r ) )
         throw new ValueReferenceException(
-            new Frame().Parameter( "stream" ),
+            new Frame().Parameter( "dis" ),
             new EmptyException() );
     return r;
 }
@@ -135,7 +181,8 @@ SequenceEqual<
 )
 {
     return dis.SequenceEqual(
-        that, new ObjectComparer().Contravary< object, T >() );
+        that,
+        new ObjectComparer().Contravary< object, T >() );
 }
 
 
@@ -163,34 +210,16 @@ public static
 SequenceEqual<
     T
 >(
-    this IStream< T >       dis,
-    IStream< T >            that,
-    IEqualityComparer< T >  comparer
+    this IStream< T >           dis,
+    IStream< T >                that,
+    SCG.IEqualityComparer< T >  comparer
     ///< Equality comparer to use
 )
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( that, "that" );
     NonNull.CheckParameter( comparer, "comparer" );
-
-    T a, b;
-    bool havea, haveb;
-
-    for( ;; ) {
-
-        // Try grabbing the next items
-        havea = dis.TryPull( out a );
-        haveb = that.TryPull( out b );
-
-        // If we've made it to the end of both, they're equal
-        if( !havea && !haveb ) return true;
-
-        // If either ended before the other, they're not equal
-        if( havea != haveb ) return false;
-
-        // If the two items aren't equal, they're not equal
-        if( !comparer.Equals( a, b ) ) return false;
-    }
+    return dis.AsEnumerable().SequenceEqual( that.AsEnumerable(), comparer );
 }
 
 
@@ -218,6 +247,21 @@ EmptyTo<
 }
 
 
+/// Present the stream as an enumerator
+///
+public static
+    SCG.IEnumerator< T >
+AsEnumerator<
+    T
+>(
+    this IStream< T > dis
+)
+{
+    NonNull.CheckParameter( dis, "dis" );
+    return new SystemEnumerator< T >( dis.TryPull );
+}
+
+
 /// Present the stream as an enumerable
 ///
 public static
@@ -231,7 +275,7 @@ AsEnumerable<
     NonNull.CheckParameter( dis, "dis" );
     return
         new SystemEnumerableFromSystemEnumeratorAdapter< T >(
-            new StreamToSystemEnumeratorAdapter< T >( dis ) );
+            dis.AsEnumerator() );
 }
 
 

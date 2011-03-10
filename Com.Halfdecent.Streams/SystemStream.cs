@@ -41,7 +41,12 @@ AsHalfdecentStream(
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    return new StreamFromSystemStreamAdapter( dis );
+    return new Stream< byte >( () => {
+        int i = dis.ReadByte();
+        if( i >= 0 )
+            return Tuple.Create( true, (byte)i );
+        else
+            return Tuple.Create( false, default( byte ) ); } );
 }
 
 
