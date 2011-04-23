@@ -22,13 +22,12 @@ Com.Halfdecent
 
 
 // =============================================================================
-// A function that may or may not be able to successfully return a value of a
-// particular type
+// A function that may or may not be able to return a value
 // =============================================================================
 
 public delegate
     bool
-MaybeFunc<
+Maybe<
     T
 >(
     out T result
