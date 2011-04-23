@@ -38,10 +38,26 @@ BugException
 // -----------------------------------------------------------------------------
 
 public
+BugException()
+    : this( null, null )
+{
+}
+
+
+public
+BugException(
+    string message
+)
+    : this( message, null )
+{
+}
+
+
+public
 BugException(
     System.Exception innerException
 )
-    : base( "A programming error has been encountered", innerException )
+    : this( null, innerException )
 {
 }
 
@@ -51,7 +67,9 @@ BugException(
     string              message,
     System.Exception    innerException
 )
-    : base( message, innerException )
+    : base(
+        message ?? "A programming error has been encountered",
+        innerException )
 {
 }
 
