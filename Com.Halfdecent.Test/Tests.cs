@@ -340,6 +340,43 @@ Test_IEquatable_T()
 }
 
 
+[Test( "EqualityComparer< T >" )]
+public static
+void
+Test_EqualityComparer_T()
+{
+    System.Func< string, string, bool> equalsfunc =
+        (s1,s2) => s1 == s2;
+    System.Func< string, int > gethashcodefunc =
+        s => s.GetHashCode();
+    IEqualityComparer< string > c1 =
+        new EqualityComparer< string >(
+            equalsfunc,
+            gethashcodefunc );
+    IEqualityComparer< string > c2 =
+        new EqualityComparer< string >(
+            equalsfunc,
+            gethashcodefunc );
+    IEqualityComparer< string > c3 =
+        new EqualityComparer< string >(
+            (s1,s2) => s1.ToLowerInvariant() == s2.ToLowerInvariant(),
+            s => s.ToLowerInvariant().GetHashCode() );
+
+    Print( "Equality of EqualityComparers" );
+    Assert( c1.Equals( c2 ) );
+    Assert( c2.Equals( c1 ) );
+    Assert( !c1.Equals( c3 ) );
+    Assert( !c3.Equals( c1 ) );
+
+    Print( "EqualityComparer Functionality" );
+    Assert( c1.Equals( "abc", "abc" ) );
+    Assert( !c1.Equals( "abc", "def" ) );
+    Assert( c1.GetHashCode( "abc" ) == c1.GetHashCode( "abc" ) );
+    Assert( c3.Equals( "abc", "ABC" ) );
+    Assert( !c3.Equals( "abc", "def" ) );
+}
+
+
 [Test( "EquatableComparer< T >" )]
 public static
 void
