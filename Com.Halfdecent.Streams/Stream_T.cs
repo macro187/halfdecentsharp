@@ -28,7 +28,7 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// A stream yielding a specified sequence of items
+/// A stream based on a <tt>TryPull()</tt> function
 // =============================================================================
 
 public class
@@ -43,51 +43,52 @@ Stream<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Create a stream from a pair of functions, one that indicates whether an item
-/// can be pulled, and one that does the pull
-///
 public
 Stream(
     System.Func< bool > canPullFunc,
-    System.Func< T >    pullFunc
+    System.Func< T >    pullFunc,
+    System.Action       disposeFunc
 )
-    : this( () => {
-        if( canPullFunc() )
-            return Tuple.Create( true, pullFunc() );
-        else
-            return Tuple.Create( false, default( T ) ); } )
+    : this(
+        () =>
+            canPullFunc()
+                ? Tuple.Create( true, pullFunc() )
+                : Tuple.Create( false, default( T ) ),
+        disposeFunc )
 {
     NonNull.CheckParameter( canPullFunc, "canPullFunc" );
     NonNull.CheckParameter( pullFunc, "pullFunc" );
 }
 
 
-/// Initialise a new stream from a <tt>Com.Halfdecent.MaybeFunc<T></tt>
-///
 public
 Stream(
-    MaybeFunc< T > maybeFunc
+    Maybe< T >      maybeFunc,
+    System.Action   disposeFunc
 )
-    : this( () => {
-        T r;
-        if( maybeFunc( out r ) )
-            return Tuple.Create( true, r );
-        else
-            return Tuple.Create( false, default( T ) ); } )
+    : this(
+        () => {
+            T r;
+            return maybeFunc( out r )
+                ? Tuple.Create( true, r )
+                : Tuple.Create( false, default( T ) ); },
+        disposeFunc )
 {
     NonNull.CheckParameter( maybeFunc, "maybeFunc" );
 }
 
 
-/// Initialise a new stream from a <tt>Func< ITuple< bool, T > ></tt>
-///
 public
 Stream(
-    System.Func< ITuple< bool, T > > tryPullFunc
+    System.Func< ITuple< bool, T > >    tryPullFunc,
+    System.Action                       disposeFunc
 )
 {
     NonNull.CheckParameter( tryPullFunc, "tryPullFunc" );
+    NonNull.CheckParameter( disposeFunc, "disposeFunc" );
     this.TryPullFunc = tryPullFunc;
+    this.DisposeFunc = disposeFunc;
+    this.Disposed = false;
 }
 
 
@@ -98,11 +99,17 @@ Stream(
 
 private
 System.Func< ITuple< bool, T > >
-TryPullFunc
-{
-    get;
-    set;
-}
+TryPullFunc;
+
+
+private
+System.Action
+DisposeFunc;
+
+
+private
+bool
+Disposed;
 
 
 
@@ -114,7 +121,25 @@ public
     ITuple< bool, T >
 TryPull()
 {
+    if( this.Disposed )
+        throw new BugException(
+            new System.ObjectDisposedException( null ) );
     return this.TryPullFunc();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.IDisposable
+// -----------------------------------------------------------------------------
+
+public
+    void
+Dispose()
+{
+    if( this.Disposed ) return;
+    this.DisposeFunc();
+    this.Disposed = true;
 }
 
 

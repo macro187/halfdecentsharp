@@ -17,7 +17,6 @@
 
 
 using SCG = System.Collections.Generic;
-using Com.Halfdecent;
 using Com.Halfdecent.RTypes;
 
 
@@ -50,11 +49,9 @@ AsStream<
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    return new Stream< T >( () => {
-        if( dis.MoveNext() )
-            return Tuple.Create( true, dis.Current );
-        else
-            return Tuple.Create( false, default( T ) ); } );
+    return Stream.Create(
+        dis.MoveNext,
+        () => dis.Current );
 }
 
 

@@ -41,12 +41,11 @@ AsHalfdecentStream(
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    return new Stream< byte >( () => {
+    return Stream.Create( () => {
         int i = dis.ReadByte();
-        if( i >= 0 )
-            return Tuple.Create( true, (byte)i );
-        else
-            return Tuple.Create( false, default( byte ) ); } );
+        return i >= 0
+            ? Tuple.Create( true, (byte)i )
+            : Tuple.Create( false, default( byte ) ); } );
 }
 
 
@@ -57,9 +56,8 @@ AsHalfdecentSink(
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    return new Sink< byte >( item => {
-        dis.WriteByte( item );
-        return true; } );
+    return Sink.Create< byte >(
+        b => dis.WriteByte( b ) );
 }
 
 

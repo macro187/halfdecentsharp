@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,9 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using Com.Halfdecent;
-using Com.Halfdecent.Meta;
+using SC = System.Collections;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.RTypes;
 
 
@@ -28,18 +27,14 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// A filter connected to a sink
+/// An enumerable based on a <tt>GetEnumerator()</tt> function
 // =============================================================================
 
-public class
-FilterToSink<
-    TFrom,
-    /// < Type of items that the filter accepts
-    TTo
-    /// < Type of items that the sink accepts
+internal class
+SystemEnumerable<
+    T
 >
-    : ISink< TFrom >
-    , IDisposable
+    : SCG.IEnumerable< T >
 {
 
 
@@ -48,24 +43,13 @@ FilterToSink<
 // Constructors
 // -----------------------------------------------------------------------------
 
-internal
-FilterToSink(
-    IFilter< TFrom, TTo >   f,
-    bool                    disposeF,
-    ISink< TTo >            s,
-    bool                    disposeS
+public
+SystemEnumerable(
+    System.Func< SCG.IEnumerator< T > > getEnumeratorFunc
 )
 {
-    NonNull.CheckParameter( f, "f" );
-    NonNull.CheckParameter( s, "s" );
-
-    this.F = f;
-    this.DisposeF = disposeF;
-    this.S = s;
-    this.DisposeS = disposeS;
-
-    // Connect
-    this.F.To = this.S;
+    NonNull.CheckParameter( getEnumeratorFunc, "getEnumeratorFunc" );
+    this.GetEnumeratorFunc = getEnumeratorFunc;
 }
 
 
@@ -74,101 +58,38 @@ FilterToSink(
 // Properties
 // -----------------------------------------------------------------------------
 
-protected
-    IFilter< TFrom, TTo >
-F
+private
+System.Func< SCG.IEnumerator< T > >
+GetEnumeratorFunc
 {
     get;
-    private set;
-}
-
-
-protected
-    bool
-DisposeF
-{
-    get;
-    private set;
-}
-
-
-protected
-    ISink< TTo >
-S
-{
-    get;
-    private set;
-}
-
-
-protected
-    bool
-DisposeS
-{
-    get;
-    private set;
+    set;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// ISink< TFrom >
+// IEnumerable< T >
 // -----------------------------------------------------------------------------
 
 public
-    bool
-TryPush(
-    TFrom item
-)
+    SCG.IEnumerator< T >
+GetEnumerator()
 {
-    return this.F.TryPush( item );
+    return this.GetEnumeratorFunc();
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IDisposable
+// IEnumerable
 // -----------------------------------------------------------------------------
 
-public
-    void
-Dispose()
+    SC.IEnumerator
+SC.IEnumerable.GetEnumerator()
 {
-    this.Dispose( true );
-    GC.SuppressFinalize( this );
+    return this.GetEnumerator();
 }
-
-
-~FilterToSink()
-{
-    this.Dispose( false );
-}
-
-
-protected virtual
-    void
-Dispose(
-    bool disposing
-)
-{
-    if( this.disposed ) return;
-    if( disposing ) {
-        // (managed)
-
-        // Disconnect
-        this.F.To = null;
-
-        // Dispose
-        if( this.DisposeF && this.F is IDisposable )
-            ((IDisposable)this.F).Dispose();
-        if( this.DisposeS && this.S is IDisposable )
-            ((IDisposable)this.S).Dispose();
-    }
-    // (unmanaged)
-    this.disposed = true;
-}
-
-private bool disposed = false;
 
 
 

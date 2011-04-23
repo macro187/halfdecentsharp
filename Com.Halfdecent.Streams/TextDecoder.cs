@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -32,7 +33,7 @@ Com.Halfdecent.Streams
 
 public class
 TextDecoder
-    : FilterBase< byte, char >
+    : Filter< byte, char >
 {
 
 
@@ -41,36 +42,29 @@ public
 TextDecoder(
     System.Text.Encoding encoding
 )
+    : base(
+        (getState,get,put) => StepIterator( encoding, getState, get, put ),
+        () => {;} )
 {
     NonNull.CheckParameter( encoding, "encoding" );
-    this.Encoding = encoding;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// Private
 // -----------------------------------------------------------------------------
 
-protected
-    System.Text.Encoding
-Encoding
+private static
+    SCG.IEnumerator< bool >
+StepIterator(
+    System.Text.Encoding        encoding,
+    System.Func< FilterState >  getState,
+    System.Func< byte >         get,
+    System.Action< char >       put
+)
 {
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// FilterBase
-// -----------------------------------------------------------------------------
-
-protected override
-    System.Collections.Generic.IEnumerator< bool >
-Process()
-{
-    System.Text.Decoder d = this.Encoding.GetDecoder();
+    System.Text.Decoder d = encoding.GetDecoder();
     byte[] b = new byte[ 1 ];
     int csize = 1;
     char[] c = new char[ csize ];
@@ -78,7 +72,7 @@ Process()
 
         // Get the next byte
         yield return false;
-        b[0] = this.GetItem();
+        b[0] = get();
 
         // See how many chars we'll get and grow the output array if necessary
         int newsize = d.GetCharCount( b, 0, 1, false );
@@ -92,10 +86,9 @@ Process()
 
         // Yield any decoded character(s)
         for( int i = 0; i < ccount; i++ ) {
-            this.PutItem( c[i] );
+            put( c[i] );
             yield return true;
         }
-
     }
 }
 

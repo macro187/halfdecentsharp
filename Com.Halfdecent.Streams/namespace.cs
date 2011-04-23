@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -68,18 +68,16 @@
 ///
 /// @section solution Solution
 ///
-///     -   Properly-designed streams:  <tt>IStream<T></tt>
+///     -   Streams:  <tt>IStream<T></tt> and <tt>Stream<T></tt>
 ///
-///     -   Sinks:  <tt>ISink<T></tt>
+///     -   Sinks:  <tt>ISink<T></tt> and <tt>Sink<t></tt>
 ///
 ///     -   Filters that work on both streams and sinks:
-///         <tt>IFilter<TIn,TOut></tt>
-///
-///     -   Base class for making filters: <tt>FilterBase<TFrom,TTo></tt>
+///         <tt>IFilter<TIn,TOut></tt> and <tt>Filter<TIn,TOut></tt>
 ///
 ///     -   %Streams, filters, and sinks are composable:
-///         <tt>Stream.PipeTo<TFrom,TTo>()</tt>,
-///         <tt>Filter.PipeTo<TFrom,TTo>()</tt>
+///         <tt>Stream.To()</tt>,
+///         <tt>Filter.To()</tt>
 ///
 ///     -   Turn all kinds of stuff into streams or sinks:
 ///         <tt>SystemEnumerable.AsStream<T>()</tt>,

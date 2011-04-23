@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,25 +16,45 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Streams;
-
-
 namespace
 Com.Halfdecent.Streams
 {
 
 
 // =============================================================================
-/// Processes elements passing between an input stream and an output sink
+/// A mechanism that transforms one sequence of items to another
+///
+/// @section state State
+/// A filter is always in a particular <tt>FilterState</tt> as indicated by
+/// <tt>.State</tt>.
+///
+/// <pre>
+/// State Flowchart
+///
+///        (begin)
+///           |\
+///           | `---------.
+///           V            |
+///     .--> Want --.      |
+///  .--             --.   |
+/// |   `--> Have --'   |  |
+/// |                   |  |
+///  `-----------------'   |
+///            /           |
+///           | .---------'
+///           |/
+///           |
+///           V
+///        Closed
+/// </pre>
 // =============================================================================
 
 public interface
 IFilter<
-    TIn,
-    TOut
+    in TIn,
+    out TOut
 >
-    : ISink< TIn >
-    , IStream< TOut >
+    : System.IDisposable
 {
 
 
@@ -43,20 +63,57 @@ IFilter<
 // Properties
 // -----------------------------------------------------------------------------
 
-IStream< TIn >
-From
+FilterState
+State
 {
     get;
-    set;
 }
 
 
-ISink< TOut >
-To
-{
-    get;
-    set;
-}
+
+// -----------------------------------------------------------------------------
+// Methods
+// -----------------------------------------------------------------------------
+
+/// Give an input item to the filter
+///
+/// The filter continues processing, proceeding to the next state.
+///
+/// Only valid when the filter is in the <tt>Want</tt> state.
+///
+/// @exception InvalidOperationException
+/// <tt>.State != Want</tt>
+///
+    void
+Give(
+    TIn item
+);
+
+
+/// Peek at the available output item
+///
+/// The filter does <em>not</em> continue processing.
+///
+/// Only valid when the filter is in the <tt>Have</tt> state.
+///
+/// @exception InvalidOperationException
+/// <tt>.State != Have</tt>
+///
+    TOut
+Peek();
+
+
+/// Retrieve the available output item
+///
+/// The filter continues processing, proceeding to the next state.
+///
+/// Only valid when the filter is in the <tt>Have</tt> state.
+///
+/// @exception InvalidOperationException
+/// <tt>.State != Have</tt>
+///
+    TOut
+Take();
 
 
 

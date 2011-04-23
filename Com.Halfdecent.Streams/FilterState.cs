@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,32 +16,78 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using SCG = System.Collections.Generic;
-
-
 namespace
 Com.Halfdecent.Streams
 {
 
 
 // =============================================================================
-/// Filter processing kernel
+/// Filter state enumeration
 // =============================================================================
 
-public delegate
-    SCG.IEnumerator< bool >
-FilterKernel<
-    TIn,
-    TOut
->(
-    Func< TIn >     get,
-    Action< TOut >  put,
-    Action< TIn >   drop
-);
+public class
+FilterState
+{
+
+
+// -----------------------------------------------------------------------------
+// Static
+// -----------------------------------------------------------------------------
+
+/// The filter requires an item
+///
+public static readonly
+FilterState
+Want = new FilterState( "Want" );
+
+
+/// The filter has produced an item
+///
+public static readonly
+FilterState
+Have = new FilterState( "Have" );
+
+
+/// The filter can no longer accept nor produce any more items
+///
+public static readonly
+FilterState
+Closed = new FilterState( "Closed" );
+
+
+
+// -----------------------------------------------------------------------------
+// System.Object
+// -----------------------------------------------------------------------------
+
+public override
+    string
+ToString()
+{
+    return string.Concat( "FilterState:", this.Tag );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private
+FilterState(
+    string tag
+)
+{
+    this.Tag = tag;
+}
+
+private
+string
+Tag;
 
 
 
 
+} // type
 } // namespace
 

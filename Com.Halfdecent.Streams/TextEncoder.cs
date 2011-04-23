@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -32,7 +33,7 @@ Com.Halfdecent.Streams
 
 public class
 TextEncoder
-    : FilterBase< char, byte >
+    : Filter< char, byte >
 {
 
 
@@ -41,36 +42,29 @@ public
 TextEncoder(
     System.Text.Encoding encoding
 )
+    : base(
+        (getState,get,put) => StepIterator( encoding, getState, get, put ),
+        () => {;} )
 {
     NonNull.CheckParameter( encoding, "encoding" );
-    this.Encoding = encoding;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// private
 // -----------------------------------------------------------------------------
 
-protected
-    System.Text.Encoding
-Encoding
+private static
+    SCG.IEnumerator< bool >
+StepIterator(
+    System.Text.Encoding        encoding,
+    System.Func< FilterState >  getState,
+    System.Func< char >         get,
+    System.Action< byte >       put
+)
 {
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// FilterBase
-// -----------------------------------------------------------------------------
-
-protected override
-    System.Collections.Generic.IEnumerator< bool >
-Process()
-{
-    System.Text.Encoder e = this.Encoding.GetEncoder();
+    System.Text.Encoder e = encoding.GetEncoder();
     char[] c = new char[ 1 ];
     int bsize = 1;
     byte[] b = new byte[ bsize ];
@@ -78,7 +72,7 @@ Process()
 
         // Get the next character
         yield return false;
-        c[0] = this.GetItem();
+        c[0] = get();
 
         // See how many bytes we'll get and grow the output array if necessary
         int newsize = e.GetByteCount( c, 0, 1, false );
@@ -92,10 +86,9 @@ Process()
 
         // Yield any encoded byte(s)
         for( int i = 0; i < bcount; i++ ) {
-            this.PutItem( b[i] );
+            put( b[i] );
             yield return true;
         }
-
     }
 }
 

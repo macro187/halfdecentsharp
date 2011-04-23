@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -65,6 +65,19 @@ public
 TryPull()
 {
     return this.From.TryPull().Covary< bool, TFrom, bool, TTo >();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.IDisposable
+// -----------------------------------------------------------------------------
+
+public
+void
+Dispose()
+{
+    this.From.Dispose();
 }
 
 

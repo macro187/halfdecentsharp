@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Meta;
-using Com.Halfdecent.RTypes;
+using SCG = System.Collections.Generic;
 
 
 namespace
@@ -26,77 +25,37 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// TODO
+/// An iterator function that performs filter processing
+///
+/// Each iteration (<tt>yield</tt> if implemented as a C# iterator) behaves like
+/// an invocation of a <tt>FilterStepFunc<TIn,TOut></tt> except that:
+/// - Yielding <tt>false</tt> means <tt>Want</tt>
+/// - Yielding <tt>true</tt> means <tt>Have</tt>
+/// - End of iteration means <tt>Closed</tt>
+///
+/// See:
+/// <tt>http://msdn.microsoft.com/en-us/library/dscyy5s0.aspx</tt>
+/// <tt>http://en.wikipedia.org/wiki/Coroutine</tt>
 // =============================================================================
 
-public class
-SinkProxy<
-    TFrom,
-    TTo
->
-    : ISink< TTo >
-    , IProxy
-
-    where TTo : TFrom
-{
-
-
-public
-SinkProxy(
-    ISink< TFrom > from
-)
-{
-    NonNull.CheckParameter( from, "from" );
-    this.From = from;
-}
-
-
-protected
-ISink< TFrom >
-From
-{
-    get;
-    private set;
-}
-
-
-public
-    bool
-TryPush(
-    TTo item
-)
-{
-    return this.From.TryPush( item );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// System.IDisposable
-// -----------------------------------------------------------------------------
-
-public
-void
-Dispose()
-{
-    this.From.Dispose();
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IProxy
-// -----------------------------------------------------------------------------
-
-    object
-IProxy.Underlying
-{
-    get { return this.From; }
-}
+public delegate
+    SCG.IEnumerator< bool >
+    /// @returns An enumerator that performs a filter processing step on each
+    /// <tt>.MoveNext()</tt>
+FilterStepIterator<
+    in TIn,
+    out TOut
+>(
+    System.Func< FilterState >  GetState,
+    ///< Function indicating the current filter state
+    System.Func< TIn >          Get,
+    ///< Function that retrieves the next input item
+    System.Action< TOut >       Put
+    ///< Function that outputs an item
+);
 
 
 
 
-} // type
 } // namespace
 

@@ -16,9 +16,10 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
-using System.Collections.Generic;
+using SC = System.Collections;
+using SCG = System.Collections.Generic;
 using System.Linq;
+using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Text;
@@ -51,59 +52,164 @@ Main()
 
 
 
+private static
+void
+Assert123(
+    IStream< int > s
+)
+{
+    ITuple< bool, int > t;
+
+    t = s.TryPull();
+    Assert( t.A );
+    Assert( t.B == 1 );
+
+    t = s.TryPull();
+    Assert( t.A );
+    Assert( t.B == 2 );
+
+    t = s.TryPull();
+    Assert( t.A );
+    Assert( t.B == 3 );
+
+    t = s.TryPull();
+    Assert( !t.A );
+}
+
+
 [Test( "Stream< T >" )]
 public static
 void
 Test_Stream_T()
 {
-    IStream< int > s = Stream.Create( 1, 2, 3 );
-
-    int i;
-    bool b;
-
-    Print( "Item #1" );
-    b = s.TryPull( out i );
-    Assert( b );
-    Assert( i == 1 );
-
-    Print( "Item #2" );
-    b = s.TryPull( out i );
-    Assert( b );
-    Assert( i == 2 );
-
-    Print( "Item #3" );
-    b = s.TryPull( out i );
-    Assert( b );
-    Assert( i == 3 );
-
-    Print( "End of stream" );
-    b = s.TryPull( out i );
-    Assert( !b );
+    int i = 1;
+    IStream< int > s = new Stream< int >(
+        () =>
+            i <= 3
+                ? Tuple.Create( true, i++ )
+                : Tuple.Create( false, -1 ),
+        () => {;} );
+    Assert123( s );
 }
 
 
-
-[Test( "Stream.Pull( this IStream )" )]
+[Test( "Stream.Create( Maybe<T> )" )]
 public static
 void
-Test_Stream_Pull()
+Test_Stream_Create_Maybe()
+{
+    testmaybestate = 1;
+    IStream< int > s = Stream.Create< int >( TestMaybe );
+    Assert123( s );
+}
+
+private static int testmaybestate = 1;
+
+private static
+    bool
+TestMaybe( out int result )
+{
+    if( testmaybestate <= 3 ) {
+        result = testmaybestate++;
+        return true;
+    } else {
+        result = default( int );
+        return false;
+    }
+}
+
+
+[Test( "Stream.Create( Func<bool>, Func<T> )" )]
+public static
+void
+Test_Stream_Create_canPullFunc_pullFunc()
+{
+    int i = 1;
+    IStream< int > s = Stream.Create(
+        () => i <= 3,
+        () => i++ );
+    Assert123( s );
+}
+
+
+[Test( "Stream.Create( params T[] )" )]
+public static
+void
+Test_Stream_Create_params()
 {
     IStream< int > s = Stream.Create( 1, 2, 3 );
+    ITuple< bool, int > t;
+    t = s.TryPull();
+    Assert( t.A );
+    Assert( t.B == 1 );
+    t = s.TryPull();
+    Assert( t.A );
+    Assert( t.B == 2 );
+    t = s.TryPull();
+    Assert( t.A );
+    Assert( t.B == 3 );
+    t = s.TryPull();
+    Assert( !t.A );
+}
 
+
+[Test( "IStream.Covary()" )]
+public static
+void
+Test_IStream_Covary()
+{
+    IStream< object > s =
+        new int[] { 1, 2, 3 }
+        .AsStream()
+        .Covary< int, object >();
+    Assert(
+        s.AsEnumerable()
+        .SequenceEqual( new object[] { 1, 2, 3 } ) );
+}
+
+
+#if DOTNET40
+[Test( "IStream Covariance" )]
+public static
+void
+Test_IStream_Covariance()
+{
+    IStream< object > s =
+        new string[] { "1", "2", "3" }
+        .AsStream();
+    Assert(
+        s.AsEnumerable()
+        .SequenceEqual( new object[] { "1", "2", "3" } ) );
+}
+#endif
+
+
+[Test( "IStream.TryPull( out T )" )]
+public static
+void
+Test_IStream_TryPull_out_T()
+{
+    IStream< int > s = Stream.Create( 1, 2, 3 );
     int i;
-
-    Print( "Item #1" );
-    i = s.Pull();
+    Assert( s.TryPull( out i ) );
     Assert( i == 1 );
-
-    Print( "Item #2" );
-    i = s.Pull();
+    Assert( s.TryPull( out i ) );
     Assert( i == 2 );
-
-    Print( "Item #3" );
-    i = s.Pull();
+    Assert( s.TryPull( out i ) );
     Assert( i == 3 );
+    Assert( !s.TryPull( out i ) );
+}
 
+
+[Test( "IStream.Pull()" )]
+public static
+void
+Test_IStream_Pull()
+{
+    IStream< int > s = Stream.Create( 1, 2, 3 );
+    Assert( s.Pull() == 1 );
+    Assert( s.Pull() == 2 );
+    Assert( s.Pull() == 3 );
     Print( "EmptyException" );
     Expect(
         e => ValueReferenceException.Match<
@@ -114,169 +220,237 @@ Test_Stream_Pull()
 }
 
 
-// A test IStream<T> implementation that yields 3 ints
-private class
-TestStream
-    : IStream< int >
-    , IDisposable
-{
-    public
-    TestStream()
-    {
-        this.Disposed = false;
-    }
-
-    public
-        ITuple< bool, int >
-    TryPull()
-    {
-        if( this.current > 3 ) return new Tuple< bool, int >( false, 0 );
-        return new Tuple< bool, int >( true, this.current++ );
-    }
-
-    private
-    int
-    current = 1;
-
-    public
-        void
-    Dispose()
-    {
-        this.Disposed = true;
-        GC.SuppressFinalize( this );
-    }
-
-    ~TestStream()
-    {
-        this.Dispose();
-    }
-
-    public bool Disposed { get; private set; }
-}
-
-
-
-// A test ISink<T> implementation that holds 3 ints
-private class
-TestSink
-    : ISink< int >
-    , IDisposable
-{
-    public
-    TestSink()
-    {
-        this.Disposed = false;
-    }
-
-    public
-    int[]
-    Items = new int[3];
-
-    public
-    bool
-    TryPush(
-        int item
-    )
-    {
-        if( this.current >= this.Items.Length ) return false;
-        this.Items[ this.current ] = item;
-        this.current++;
-        return true;
-    }
-
-    private
-    int
-    current = 0;
-
-    public
-        void
-    Dispose()
-    {
-        this.Disposed = true;
-        GC.SuppressFinalize( this );
-    }
-
-    ~TestSink()
-    {
-        this.Dispose();
-    }
-
-    public bool Disposed { get; private set; }
-}
-
-
-
-[Test( "Sink.Push( this ISink )" )]
+[Test( "IStream.AsEnumerator()" )]
 public static
 void
-Test_Sink_Push()
+Test_IStream_AsEnumerator()
 {
-    TestSink ts = new TestSink();
-    ISink< int > s = ts;
-    Print( "Push items" );
-    s.Push( 0 );
+    IStream< int > s;
+    SC.IEnumerator e;
+    SCG.IEnumerator< int > ge;
+
+    s = Stream.Create( 1, 2, 3 );
+
+    Print( "Correct sequence" );
+    ge = s.AsEnumerator();
+    Assert( ge.MoveNext() );
+    Assert( ge.Current == 1 );
+    Assert( ge.MoveNext() );
+    Assert( ge.Current == 2 );
+
+    Print( "Subsequent .AsEnumerator() continues from the same point" );
+    ge = s.AsEnumerator();
+    Assert( ge.MoveNext() );
+    Assert( ge.Current == 3 );
+
+    Print( "Ends when the underlying stream ends" );
+    Assert( !ge.MoveNext() );
+
+    Print( "Non-generic IEnumerator interface" );
+    s = Stream.Create( 1, 2, 3 );
+    e = s.AsEnumerator();
+    Assert( e.MoveNext() );
+    Assert( e.Current.Equals( 1 ) );
+    Assert( e.MoveNext() );
+    Assert( e.Current.Equals( 2 ) );
+    Assert( e.MoveNext() );
+    Assert( e.Current.Equals( 3 ) );
+    Assert( !e.MoveNext() );
+}
+
+
+[Test( "IStream.AsEnumerable()" )]
+public static
+void
+Test_IStream_AsEnumerable()
+{
+    IStream< int > s;
+    SC.IEnumerable e;
+    SCG.IEnumerable< int > ge;
+
+    Print( "Single .AsEnumerable()" );
+    s = Stream.Create( 1, 2, 3 );
+    Assert(
+        s
+        .AsEnumerable()
+        .SequenceEqual(
+            new int[] { 1, 2, 3 } ) );
+
+    Print( "Single .AsEnumerable(), multiple .GetEnumerator()" );
+    s = Stream.Create( 1, 2, 3 );
+    ge = s.AsEnumerable();
+    Assert(
+        ge
+        .Take( 2 )
+        .SequenceEqual(
+            new int[] { 1, 2 } ) );
+    Assert(
+        ge
+        .SequenceEqual(
+            new int[] { 3 } ) );
+
+    Print( "Multiple .AsEnumerable()" );
+    s = Stream.Create( 1, 2, 3 );
+    Assert(
+        s.AsEnumerable()
+        .Take( 2 )
+        .SequenceEqual(
+            new int[] { 1, 2 } ) );
+    Assert(
+        s.AsEnumerable()
+        .SequenceEqual(
+            new int[] { 3 } ) );
+
+    Print( "Non-generic IEnumerable interface" );
+    s = Stream.Create( 1, 2, 3 );
+    e = s.AsEnumerable();
+    Assert(
+        e
+        .OfType< int >()
+        .SequenceEqual(
+            new int[] { 1, 2, 3 } ) );
+}
+
+
+[Test( "IEnumerator<T>.AsStream()" )]
+public static
+void
+Test_IEnumerator_AsStream()
+{
+    Assert(
+        new int[] { 1, 2, 3 }
+        //
+        // XXX Not sure why this is required, but it is, otherwise the result of
+        // the subsequent .GetEnumerator() seems to be an enumerable (!)
+        .AsEnumerable()
+        //
+        .GetEnumerator()
+        .AsStream()
+        .AsEnumerable()
+        .SequenceEqual(
+            new int[] { 1, 2, 3 } ) );
+}
+
+
+[Test( "IEnumerable<T>.AsStream()" )]
+public static
+void
+Test_IEnumerable_AsStream()
+{
+    Assert(
+        new int[] { 1, 2, 3 }
+        .AsStream()
+        .AsEnumerable()
+        .SequenceEqual(
+            new int[] { 1, 2, 3 } ) );
+}
+
+
+[Test( "Sink<T>" )]
+public static
+void
+Test_Sink()
+{
+    int i = 0;
+    ISink< object > s = new Sink< object >(
+        item => i++ < 3
+            ? true
+            : false,
+        () => {;} );
+    Assert( s.TryPush( 1 ) );
+    Assert( s.TryPush( 2 ) );
+    Assert( s.TryPush( 3 ) );
+    Assert( !s.TryPush( 4 ) );
+}
+
+
+[Test( "Sink.Create( canPushFunc, pushFunc )" )]
+public static
+void
+Test_Sink_Create_canPushFunc_pushFunc()
+{
+    int i = 0;
+    ISink< int > s = Sink.Create< int >(
+        () => i < 3,
+        item => i++ );
+    Assert( s.TryPush( 1 ) );
+    Assert( s.TryPush( 2 ) );
+    Assert( s.TryPush( 3 ) );
+    Assert( !s.TryPush( 4 ) );
+}
+
+
+[Test( "Sink.Create( pushFunc )" )]
+public static
+void
+Test_Sink_Create_pushFunc()
+{
+    ISink< int > s = Sink.Create< int >(
+        item => { ; } );
+    Assert( s.TryPush( 1 ) );
+    Assert( s.TryPush( 2 ) );
+    Assert( s.TryPush( 3 ) );
+}
+
+
+[Test( "ISink.Push()" )]
+public static
+void
+Test_ISink_Push()
+{
+    int i = 0;
+    ISink< int > s = Sink.Create< int >(
+        () => i < 3,
+        item => i++ );
+
     s.Push( 1 );
     s.Push( 2 );
-    Print( "Check pushed items" );
-    Assert( ts.Items[0] == 0 );
-    Assert( ts.Items[1] == 1 );
-    Assert( ts.Items[2] == 2 );
-    Print( "FullException if we try to push another" );
+    s.Push( 3 );
     Expect(
         e => ValueReferenceException.Match<
             FullException >(
             e,
             (vr,f) => vr.Equals( f.Down().Parameter( "sink" ) ) ),
-        () => s.Push( 3 ) );
+        () => s.Push( 4 ) );
 }
 
 
-
-[Test( "Stream.EmptyTo()" )]
+[Test( "ISink.Contravary()" )]
 public static
 void
-Test_Stream_EmptyTo()
+Test_ISink_Contravary()
 {
-    int[] items = new int[] { 1, 2, 3 };
-    Print( "EmptyTo() a sink" );
-    TestSink sink = new TestSink();
-    Stream.Create( items ).EmptyTo( sink );
-    Print( "Check items" );
-    Assert( sink.Items.SequenceEqual( items ) );
+    ISink< string > s =
+        Sink.Create< object >( item => { ; } )
+        .Contravary< object, string >();
+    Assert( s.TryPush( "1" ) );
 }
 
 
-[Test( "Stream<T>.Empty" )]
+#if DOTNET40
+[Test( "ISink Contravariance" )]
 public static
 void
-Test_Stream_T_Empty()
+Test_ISink_Contravariance()
 {
-    IStream< int > s = Stream.Create< int >();
-    int i;
-    Assert( !s.TryPull( out i ) );
+    ISink< string > s =
+        Sink.Create< object >( item => { ; } );
+    Assert( s.TryPush( "1" ) );
 }
+#endif
 
 
-[Test( "Stream.AsEnumerable( this IStream )" )]
+[Test( "IStream.EmptyTo()" )]
 public static
 void
-Test_Stream_AsEnumerable()
+Test_IStream_EmptyTo()
 {
-    int[] items = new int[] { 1, 2, 3 };
-    Print( "Items in enumerable accurately reflect stream" );
-    Assert( Stream.Create( items ).AsEnumerable().SequenceEqual( items ) );
-}
-
-
-
-[Test( "Enumerable.AsStream()" )]
-public static
-void
-Test_Enumerable_AsStream()
-{
-    int[] items = new int[] { 1, 2, 3 };
-    Print( "Items in stream accurately reflect enumerable" );
-    Assert( items.AsStream().AsEnumerable().SequenceEqual( items ) );
+    SCG.IEnumerable< int > from = new int[] { 1, 2, 3 };
+    SCG.ICollection< int > to = new SCG.List< int >();
+    from.AsStream().EmptyTo(
+        Sink.Create< int >(
+            item => to.Add( item ) ) );
+    Assert( to.SequenceEqual( from ) );
 }
 
 
@@ -289,7 +463,8 @@ Test_Stream_Append()
         Stream.Create( 1, 2, 3 )
         .Append( 4 )
         .AsEnumerable()
-        .SequenceEqual( new int[] { 1, 2, 3, 4 } ) );
+        .SequenceEqual(
+            new int[] { 1, 2, 3, 4 } ) );
 }
 
 
@@ -302,82 +477,29 @@ Test_Stream_Concat()
         Stream.Create( 1, 2, 3 )
         .Concat( Stream.Create( 4, 5, 6 ) )
         .AsEnumerable()
-        .SequenceEqual( new int[] { 1, 2, 3, 4, 5, 6 } ) );
+        .SequenceEqual(
+            new int[] { 1, 2, 3, 4, 5, 6 } ) );
 }
 
 
-[Test( "Collection.AsSink()" )]
+[Test( "System.Collection.ICollection<T>.AsSink()" )]
 public static
 void
-Test_Collection_AsSink()
+Test_SystemCollection_AsSink()
 {
-    ICollection< int > col = new List< int >();
-    Stream.Create( 1, 2, 3 ).EmptyTo( col.AsSink() );
-    Assert( col.SequenceEqual( new int[] { 1, 2, 3 } ) );
+    SCG.IEnumerable< int > from = new int[] { 1, 2, 3 };
+    SCG.ICollection< int > to = new SCG.List< int >();
+    from.AsStream().EmptyTo(
+        to.AsSink() );
+    Assert( to.SequenceEqual( from ) );
 }
 
 
-[Test( "Sink.Contravary()" )]
+[Test( "IStream.SequenceEqual( IStream )" )]
 public static
 void
-Test_Sink_Contravary()
+Test_IStream_SequenceEqual_IStream()
 {
-    IList< object > objs = new List< object >();
-    ISink< string > s = objs.AsSink().Contravary< object, string >();
-    s.Push( "1" );
-    s.Push( "2" );
-    s.Push( "3" );
-    Assert( objs.SequenceEqual( new object[] { "1", "2", "3" } ) );
-}
-
-
-#if DOTNET40
-[Test( "Sink.Contravariance" )]
-public static
-void
-Test_Sink_Contravariance()
-{
-    IList< object > objs = new List< object >();
-    ISink< string > s = objs.AsSink();
-    s.Push( "1" );
-    s.Push( "2" );
-    s.Push( "3" );
-    Assert( objs.SequenceEqual( new object[] { "1", "2", "3" } ) );
-}
-#endif
-
-
-[Test( "Stream.Covary()" )]
-public static
-void
-Test_Stream_Covary()
-{
-    IStream< object > s =
-        new int[] { 1, 2, 3 }.AsStream().Covary< int, object >();
-    Assert( s.AsEnumerable().SequenceEqual( new object[] { 1, 2, 3 } ) );
-}
-
-
-// TODO Enable once Mono's runtime can handle this
-#if DOTNET40 && !MONO
-[Test( "Stream Covariance" )]
-public static
-void
-Test_Stream_Covariance()
-{
-    IStream< object > s =
-        new string[] { "1", "2", "3" }.AsStream();
-    Assert( s.AsEnumerable().SequenceEqual( new string[] { "1", "2", "3" } ) );
-}
-#endif
-
-
-[Test( "IStream<T>.SequenceEqual() and friends..." )]
-public static
-void
-Test_IStream_SequenceEqual()
-{
-    Print( ".SequenceEqual<T>( that )" );
     Assert(
         "abc".AsStream().SequenceEqual(
             "abc".AsStream() ) );
@@ -393,15 +515,50 @@ Test_IStream_SequenceEqual()
     Assert( !
         "abcd".AsStream().SequenceEqual(
             "abc".AsStream() ) );
-    // TODO Print( ".SequenceEqual<T,TEquatable>( that )" );
-    // TODO Print( ".SequenceEqual<T>( that, comparer )" );
 }
 
 
-[Test( "System.IO.Stream::AsHalfdecentStream()" )]
+// TODO Print( ".SequenceEqual<T,TEquatable>( that )" );
+
+
+[Test( "IStream.SequenceEqual( IStream, IEqualityComparer )" )]
 public static
 void
-Test_System_IO_Stream__AsHalfdecentStream()
+Test_IStream_SequenceEqual_IStream_IEqualityComparer()
+{
+    SCG.IEqualityComparer< char > comparer =
+        new EqualityComparer< char >(
+            (c1,c2) =>
+                char.ToLowerInvariant( c1 ) == char.ToLowerInvariant( c2 ),
+            c => char.ToLowerInvariant( c ).GetHashCode() );
+
+    Assert(
+        "abc".AsStream().SequenceEqual(
+            "ABC".AsStream(),
+            comparer ) );
+    Assert(
+        "".AsStream().SequenceEqual(
+            "".AsStream(),
+            comparer ) );
+    Assert( !
+        "abc".AsStream().SequenceEqual(
+            "def".AsStream(),
+            comparer ) );
+    Assert( !
+        "abc".AsStream().SequenceEqual(
+            "abcd".AsStream(),
+            comparer ) );
+    Assert( !
+        "abcd".AsStream().SequenceEqual(
+            "abc".AsStream(),
+            comparer) );
+}
+
+
+[Test( "SystemStream.AsHalfdecentStream()" )]
+public static
+void
+Test_SystemStream_AsHalfdecentStream()
 {
     IStream< byte > s =
         new System.IO.MemoryStream(
@@ -416,10 +573,10 @@ Test_System_IO_Stream__AsHalfdecentStream()
 }
 
 
-[Test( "System.IO.Stream::AsHalfdecentSink()" )]
+[Test( "SystemStream.AsHalfdecentSink()" )]
 public static
 void
-Test_System_IO_Stream__AsHalfdecentSink()
+Test_SystemStream_AsHalfdecentSink()
 {
     System.IO.MemoryStream ms = new System.IO.MemoryStream();
     ISink< byte > s = ms.AsHalfdecentSink();
@@ -431,518 +588,280 @@ Test_System_IO_Stream__AsHalfdecentSink()
 }
 
 
-
-public class
-PassOne
-    : FilterBase< int, int >
-{
-    protected override
-    IEnumerator< bool >
-    Process()
-    {
-        yield return false;
-        this.PutItem( this.GetItem() );
-        yield return true;
-    }
-}
-
-
-
-public class
-PassThrough
-    : FilterBase< int, int >
-    , IDisposable
-{
-    public
-    PassThrough()
-    {
-        this.Disposed = false;
-    }
-
-    protected override
-    IEnumerator< bool >
-    Process()
-    {
-        for( ;; ) {
-            yield return false;
-            this.PutItem( this.GetItem() );
-            yield return true;
-        }
-    }
-
-    public
-        void
-    Dispose()
-    {
-        this.Disposed = true;
-        GC.SuppressFinalize( this );
-    }
-
-    ~PassThrough()
-    {
-        this.Dispose();
-    }
-
-    public bool Disposed { get; private set; }
-}
-
-
-
-public class
-DoubleUp
-    : FilterBase< int, int >
-{
-    protected override
-    IEnumerator< bool >
-    Process()
-    {
-        for( ;; ) {
-            int i;
-            yield return false; i = this.GetItem();
-            this.PutItem( i ); yield return true;
-            this.PutItem( i ); yield return true;
-        }
-    }
-}
-
-
-
-public class
-AddPairs
-    : FilterBase< int, int >
-{
-    protected override
-    IEnumerator< bool >
-    Process()
-    {
-        for( ;; ) {
-            int i,j;
-            yield return false; i = this.GetItem();
-            yield return false; j = this.GetItem();
-            this.PutItem( i + j ); yield return true;
-        }
-    }
-}
-
-
-[Test( "FilterBase::Push()" )]
+[Test( "Filter<TIn,TOut>" )]
 public static
 void
-Test_FilterBase_Push()
+Test_Filter()
 {
-    int[]               from = new int[] { 1, 2, 3, 4 };
-    IFilter< int, int > f;
-    List< int >     to = new List< int >();
-    List< int >     too = new List< int >();
+    int count = 0;
+    IFilter< int, int > f
+        = new Filter< int, int >(
+            null,
+            (GetState,Get,Put) => {
+                if( GetState() == null ) {
+                    return FilterState.Want;
+                } else if( GetState() == FilterState.Want ) {
+                    Put( Get() );
+                    count++;
+                    return FilterState.Have;
+                } else if( GetState() == FilterState.Have ) {
+                    if( count >= 3 ) return FilterState.Closed;
+                    return FilterState.Want;
+                } else { // FilterState.Closed
+                    return FilterState.Closed;
+                } },
+            () => {;} );
 
-    Print( "1-to-1 filter" );
-    to.Clear();
-    f = new PassThrough { To = to.AsSink() };
-    foreach( int i in from ) f.Push( i );
-    Assert( to.SequenceEqual( from ) );
+    Assert( f.State == FilterState.Want );
+    f.Give( 1 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 1 );
 
-    Print( "1-to-many filter" );
-    to.Clear();
-    f = new DoubleUp { To = to.AsSink() };
-    foreach( int i in from ) f.Push( i );
-    Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
+    Assert( f.State == FilterState.Want );
+    f.Give( 2 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 2 );
 
-    Print( "Many-to-1 filter" );
-    to.Clear();
-    f = new AddPairs { To = to.AsSink() };
-    foreach( int i in from ) f.Push( i );
-    Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
+    Assert( f.State == FilterState.Want );
+    f.Give( 3 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 3 );
 
-    Print( "Closing filter" );
-    to.Clear();
-    f = new PassOne { To = to.AsSink() };
-    f.Push( 1 );
-    Assert( !f.TryPush( 2 ) );
-    Assert( to.SequenceEqual( new int[] { 1 } ) );
-
-    Print( "1-to-many filter, switch .To mid-block" );
-    to.Clear();
-    too.Clear();
-    f = new DoubleUp { To =
-        new PassOne { To =
-        to.AsSink() } };
-    f.Push( 1 );
-    Assert( to.SequenceEqual( new int[] { 1 } ) );
-    f.To = too.AsSink();
-    // (filter immediately flushes pending item to new sink)
-    Assert( too.SequenceEqual( new int[] { 1 } ) );
+    Assert( f.State == FilterState.Closed );
 }
 
 
-
-[Test( "FilterBase::Pull()" )]
+[Test( "Filter<TIn,TOut> immediately Closed" )]
 public static
 void
-Test_FilterBase_Pull()
+Test_Filter_closed()
 {
-    IFilter< int, int > f;
-    List< int > to = new List< int >();
+    IFilter< int, int > f
+        = new Filter< int, int >(
+            null,
+            (GetState,Get,Put) => FilterState.Closed,
+            () => {;} );
 
-    Print( "1-to-1 filter" );
-    f = new PassThrough { From = Stream.Create( 1, 2, 3, 4 ) };
-    to.Clear();
-    f.EmptyTo( to.AsSink() );
-    Assert( to.SequenceEqual( new int[] { 1, 2, 3, 4 } ) );
-
-    Print( "1-to-many filter" );
-    f = new DoubleUp { From = Stream.Create( 1, 2, 3, 4 ) };
-    to.Clear();
-    f.EmptyTo( to.AsSink() );
-    Assert( to.SequenceEqual( new int[] { 1,1, 2,2, 3,3, 4,4 } ) );
-
-    Print( "Many-to-1 filter" );
-    f = new AddPairs { From = Stream.Create( 1, 2, 3, 4 ) };
-    to.Clear();
-    f.EmptyTo( to.AsSink() );
-    Assert( to.SequenceEqual( new int[] { 3, 7 } ) );
-
-    Print( "Closing filter" );
-    f = new PassOne { From = Stream.Create( 1, 2, 3, 4 ) };
-    to.Clear();
-    f.EmptyTo( to.AsSink() );
-    Assert( to.SequenceEqual( new int[] { 1 } ) );
-
-    Print( "Many-to-1 filter, switch .From mid-block" );
-    f = new AddPairs { From = Stream.Create( 1 ) };
-    to.Clear();
-    f.EmptyTo( to.AsSink() );
-    Assert( to.Count == 0 );
-    f.From = Stream.Create( 2 );
-    f.EmptyTo( to.AsSink() );
-    Assert( to.SequenceEqual( new int[] { 3 } ) );
+    Assert( f.State == FilterState.Closed );
 }
 
 
-[Test( "IStream::PipeTo( IFilter )" )]
+[Test( "Filter.Create( convertFunc )" )]
 public static
 void
-Test_IStream_PipeTo_IFilter()
+Test_Filter_convertFunc()
 {
-    List< int > to = new List< int >();
+    IFilter< int, int > f
+        = Filter.Create< int, int >(
+            i => i * 2 );
 
-    Print( "Works as a stream" );
-    to.Clear();
-    Stream.Create( 1, 2, 3, 4 )
-        .PipeTo( new PassThrough() )
-        .EmptyTo( to.AsSink() );
-    Assert( to.SequenceEqual( new int[] { 1, 2, 3, 4 } ) );
+    Assert( f.State == FilterState.Want );
+    f.Give( 1 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 2 );
 
-    TestStream      s;
-    PassThrough     f;
-    PassThrough     f2;
+    Assert( f.State == FilterState.Want );
+    f.Give( 2 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 4 );
 
-    Print( "Connection and Disconnection" );
-    s = new TestStream();
-    f = new PassThrough();
-    f2 = new PassThrough();
-    Assert( f.From == null );
-    Assert( f2.From == null );
-    using( (IDisposable)( s.PipeTo( f ).PipeTo( f2 ) ) ) {
-        Assert( f.From != null );
-        Assert( f2.From != null );
-    }
-    Assert( f.From == null );
-    Assert( f2.From == null );
-
-    Print( "Disposal (both)" );
-    s = new TestStream();
-    f = new PassThrough();
-    Assert( !s.Disposed );
-    Assert( !f.Disposed );
-    using( (IDisposable)( s.PipeTo( f ) ) ) {
-        Assert( !s.Disposed );
-        Assert( !f.Disposed );
-    }
-    Assert( s.Disposed );
-    Assert( f.Disposed );
-
-    Print( "Disposal (stream only)" );
-    s = new TestStream();
-    f = new PassThrough();
-    Assert( !s.Disposed );
-    Assert( !f.Disposed );
-    using( (IDisposable)( s.PipeTo( f, true, false ) ) ) {
-        Assert( !s.Disposed );
-        Assert( !f.Disposed );
-    }
-    Assert( s.Disposed );
-    Assert( !f.Disposed );
-
-    Print( "Disposal (filter only)" );
-    s = new TestStream();
-    f = new PassThrough();
-    Assert( !s.Disposed );
-    Assert( !f.Disposed );
-    using( (IDisposable)( s.PipeTo( f, false, true ) ) ) {
-        Assert( !s.Disposed );
-        Assert( !f.Disposed );
-    }
-    Assert( !s.Disposed );
-    Assert( f.Disposed );
-
-    Print( "Disposal (neither)" );
-    s = new TestStream();
-    f = new PassThrough();
-    Assert( !s.Disposed );
-    Assert( !f.Disposed );
-    using( (IDisposable)( s.PipeTo( f, false, false ) ) ) {
-        Assert( !s.Disposed );
-        Assert( !f.Disposed );
-    }
-    Assert( !s.Disposed );
-    Assert( !f.Disposed );
-
-    Print( "Disposal (chained)" );
-    s = new TestStream();
-    f = new PassThrough();
-    f2 = new PassThrough();
-    Assert( !s.Disposed );
-    Assert( !f.Disposed );
-    Assert( !f2.Disposed );
-    using( (IDisposable)( s.PipeTo( f ).PipeTo( f2 ) ) ) {
-        Assert( !s.Disposed );
-        Assert( !f.Disposed );
-        Assert( !f2.Disposed );
-    }
-        Assert( s.Disposed );
-        Assert( f.Disposed );
-        Assert( f2.Disposed );
+    Assert( f.State == FilterState.Want );
+    f.Give( 3 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 6 );
 }
 
 
+[Test( "Filter.Create( filterStepIterator ) one-to-many" )]
 public static
-    IEnumerator< bool >
-OnlyEvens(
-    Func< int >     get,
-    Action< int >   put,
-    Action< int >   drop
+void
+Test_Filter_filterStepIterator_onetomany()
+{
+    IFilter< int, int > f
+        = Filter.Create< int, int >(
+            DoubleUp3FilterIterator );
+
+    Assert( f.State == FilterState.Want );
+    f.Give( 1 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 1 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 1 );
+
+    Assert( f.State == FilterState.Want );
+    f.Give( 2 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 2 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 2 );
+
+    Assert( f.State == FilterState.Want );
+    f.Give( 3 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 3 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 3 );
+
+    Assert( f.State == FilterState.Closed );
+}
+
+private static
+SCG.IEnumerator< bool >
+DoubleUp3FilterIterator(
+    System.Func< FilterState > GetState,
+    System.Func< int > Get,
+    System.Action< int > Put
 )
 {
-    for( ;; ) {
+    int count = 0;
+    while( count < 3 ) {
         yield return false;
-        int i = get();
-        if( i % 2 != 0 ) continue;
-        put( i );
+        int i = Get();
+        Put( i );
         yield return true;
+        Put( i );
+        yield return true;
+        count++;
     }
 }
 
 
-[Test( "Filter< TIn, TOut >" )]
+[Test( "Filter.Create( filterStepIterator ) many-to-one" )]
 public static
 void
-Test_Filter_TIn_TOut()
+Test_Filter_filterStepIterator_manytomany()
 {
+    IFilter< int, int > f
+        = Filter.Create< int, int >(
+            Add3PairsFilterIterator );
+
+    Assert( f.State == FilterState.Want );
+    f.Give( 1 );
+    Assert( f.State == FilterState.Want );
+    f.Give( 2 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 3 );
+
+    Assert( f.State == FilterState.Want );
+    f.Give( 4 );
+    Assert( f.State == FilterState.Want );
+    f.Give( 5 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 9 );
+
+    Assert( f.State == FilterState.Want );
+    f.Give( 10 );
+    Assert( f.State == FilterState.Want );
+    f.Give( 11 );
+    Assert( f.State == FilterState.Have );
+    Assert( f.Take() == 21 );
+
+    Assert( f.State == FilterState.Closed );
+}
+
+private static
+SCG.IEnumerator< bool >
+Add3PairsFilterIterator(
+    System.Func< FilterState > GetState,
+    System.Func< int > Get,
+    System.Action< int > Put
+)
+{
+    int count = 0;
+    while( count < 3 ) {
+        yield return false;
+        int i = Get();
+        yield return false;
+        int j = Get();
+        Put( i+j );
+        yield return true;
+        count++;
+    }
+}
+
+
+[Test( "IStream.To()" )]
+public static
+void
+Test_IStream_To()
+{
+    Print( "Fewer items than the filter allows" );
+    Assert(
+        Stream.Create( 1, 2 )
+        .To( Filter.Create< int, int >( DoubleUp3FilterIterator ) )
+        .SequenceEqual(
+            Stream.Create( 1, 1, 2, 2 ) ) );
+    Print( "More items than the filter allows" );
+    Assert(
+        Stream.Create( 1, 2, 3, 4 )
+        .To( Filter.Create< int, int >( DoubleUp3FilterIterator ) )
+        .SequenceEqual(
+            Stream.Create( 1, 1, 2, 2, 3, 3 ) ) );
+}
+
+
+[Test( "IFilter.To( filter )" )]
+public static
+void
+Test_IFilter_To_filter()
+{
+    IFilter< int, int > f1
+        = Filter.Create< int, int >( DoubleUp3FilterIterator );
+    IFilter< int, int > f2
+        = Filter.Create< int, int >( Add3PairsFilterIterator );
+    IFilter< int, int > f3 = f1.To( f2 );
+    Assert(
+        Stream.Create( 1, 2, 3, 999, 999 )
+        .To( f3 )
+        .SequenceEqual(
+            Stream.Create( 2, 4, 6 ) ) );
+}
+
+
+[Test( "IFilter.To( sink )" )]
+public static
+void
+Test_IFilter_To_sink()
+{
+    IStream< int > stream = Stream.Create( 1, 2, 3, 999, 999 );
     IFilter< int, int > f;
-    IList< int > results = new List< int >();
+    ISink< int > sink;
+    SCG.ICollection< int > c = new SCG.List< int >();
 
-    Print( "Filter( FilterKernel )" );
-    f = new Filter< int, int >( OnlyEvens );
-    f.From = new int[] { 1, 2, 3, 4, 5, 6 }.AsStream();
-    f.EmptyTo( results.AsSink() );
-    Assert( results.SequenceEqual( new int[] { 2, 4, 6 } ) );
+    Print( "Basic behaviour" );
+    c.Clear();
+    f = Filter.Create< int, int >( DoubleUp3FilterIterator );
+    sink = f.To( c.AsSink() );
+    while( sink.TryPush( stream.Pull() ) );
+    Assert(
+        c.SequenceEqual(
+            new int[] { 1, 1, 2, 2, 3, 3 } ) );
 
-    Print( "Filter( Func )" );
-    f = new Filter< int, int >( i => i * 2 );
-    results.Clear();
-    f.From = new int[] { 1, 2, 3, 4 }.AsStream();
-    f.EmptyTo( results.AsSink() );
-    Assert( results.SequenceEqual( new int[] { 2, 4, 6, 8 } ) );
+    Print( "Immediate empty to sink on connect" );
+    c.Clear();
+    f = Filter.Create< int, int >( DoubleUp3FilterIterator );
+    f.Give( 1 );
+    sink = f.To( c.AsSink() );
+    Assert(
+        c.SequenceEqual(
+            new int[] { 1, 1 } ) );
 }
 
 
-[Test( "IFilter::PipeTo( IFilter )" )]
+[Test( "TextLineSplitter" )]
 public static
 void
-Test_IFilter_PipeTo_IFilter()
+Test_TextLineSplitter()
 {
-    IFilter< int, int > f;
-    IList< int > to = new List< int >();
-
-    Print( "Works as a filter" );
-    f = new DoubleUp()
-        .PipeTo( new AddPairs() )
-        .PipeTo( new PassThrough() );
-    f.From = new int[] { 1, 2 }.AsStream();
-    f.EmptyTo( to.AsSink() );
-    Assert( to.SequenceEqual( new int[] { 2, 4 } ) );
-    f.From = null;
-
-    PassThrough f1;
-    PassThrough f2;
-    PassThrough f3;
-
-    Print( "Connection and Disconnection" );
-    f1 = new PassThrough();
-    f2 = new PassThrough();
-    f3 = new PassThrough();
-    Assert( f1.From == null );
-    Assert( f1.To == null );
-    Assert( f2.From == null );
-    Assert( f2.To == null );
-    Assert( f3.From == null );
-    Assert( f3.To == null );
-    using( (IDisposable)( f1.PipeTo( f2 ).PipeTo( f3 ) ) ) {
-        Assert( f1.From == null );
-        Assert( f1.To != null );
-        Assert( f2.From != null );
-        Assert( f2.To != null );
-        Assert( f3.From != null );
-        Assert( f3.To == null );
-    }
-    Assert( f1.From == null );
-    Assert( f1.To == null );
-    Assert( f2.From == null );
-    Assert( f2.To == null );
-    Assert( f3.From == null );
-    Assert( f3.To == null );
-
-    Print( "Disposal (both)" );
-    f1 = new PassThrough();
-    f2 = new PassThrough();
-    Assert( !f1.Disposed );
-    Assert( !f2.Disposed );
-    using( (IDisposable)( f1.PipeTo( f2 ) ) ) {
-        Assert( !f1.Disposed );
-        Assert( !f2.Disposed );
-    }
-    Assert( f1.Disposed );
-    Assert( f2.Disposed );
-
-    Print( "Disposal (f1 only)" );
-    f1 = new PassThrough();
-    f2 = new PassThrough();
-    Assert( !f1.Disposed );
-    Assert( !f2.Disposed );
-    using( (IDisposable)( f1.PipeTo( f2, true, false ) ) ) {
-        Assert( !f1.Disposed );
-        Assert( !f2.Disposed );
-    }
-    Assert( f1.Disposed );
-    Assert( !f2.Disposed );
-
-    Print( "Disposal (f2 only)" );
-    f1 = new PassThrough();
-    f2 = new PassThrough();
-    Assert( !f1.Disposed );
-    Assert( !f2.Disposed );
-    using( (IDisposable)( f1.PipeTo( f2, false, true ) ) ) {
-        Assert( !f1.Disposed );
-        Assert( !f2.Disposed );
-    }
-    Assert( !f1.Disposed );
-    Assert( f2.Disposed );
-
-    Print( "Disposal (neither)" );
-    f1 = new PassThrough();
-    f2 = new PassThrough();
-    Assert( !f1.Disposed );
-    Assert( !f2.Disposed );
-    using( (IDisposable)( f1.PipeTo( f2, false, false ) ) ) {
-        Assert( !f1.Disposed );
-        Assert( !f2.Disposed );
-    }
-    Assert( !f1.Disposed );
-    Assert( !f2.Disposed );
-
-    Print( "Disposal (chained)" );
-    f1 = new PassThrough();
-    f2 = new PassThrough();
-    f3 = new PassThrough();
-    Assert( !f1.Disposed );
-    Assert( !f2.Disposed );
-    Assert( !f3.Disposed );
-    using( (IDisposable)( f1.PipeTo( f2 ).PipeTo( f3 ) ) ) {
-        Assert( !f1.Disposed );
-        Assert( !f2.Disposed );
-        Assert( !f3.Disposed );
-    }
-    Assert( f1.Disposed );
-    Assert( f2.Disposed );
-    Assert( f3.Disposed );
+    Assert(
+        "\nline1\nline2\rline3\r\nline4\r\rline6\n\nline8\n"
+            .AsStream()
+            .To( new TextLineSplitter() )
+            .SequenceEqual(
+                Stream.Create(
+                    "", "line1", "line2", "line3", "line4", "", "line6", "",
+                    "line8" ) ) );
 }
-
-
-[Test( "IFilter::PipeTo( ISink )" )]
-public static
-void
-Test_IFilter_PipeTo_ISink()
-{
-    Print( "Works as a sink" );
-    List< int > to = new List< int >();
-    ISink< int > sink = new DoubleUp().PipeTo( to.AsSink() );
-    new int[] { 1, 2 }.AsStream().EmptyTo( sink );
-    Assert( to.SequenceEqual( new int[] { 1, 1, 2, 2 } ) );
-
-    PassThrough f;
-
-    Print( "Connection and Disconnection" );
-    f = new PassThrough();
-    Assert( f.From == null );
-    Assert( f.To == null );
-    using( (IDisposable)( f.PipeTo( new TestSink() ) ) ) {
-        Assert( f.From == null );
-        Assert( f.To != null );
-    }
-    Assert( f.From == null );
-    Assert( f.To == null );
-
-    TestSink s;
-
-    Print( "Disposal (both)" );
-    f = new PassThrough();
-    s = new TestSink();
-    Assert( !f.Disposed );
-    Assert( !s.Disposed );
-    using( (IDisposable)( f.PipeTo( s ) ) ) {
-        Assert( !f.Disposed );
-        Assert( !s.Disposed );
-    }
-    Assert( f.Disposed );
-    Assert( s.Disposed );
-
-    Print( "Disposal (filter only)" );
-    f = new PassThrough();
-    s = new TestSink();
-    Assert( !f.Disposed );
-    Assert( !s.Disposed );
-    using( (IDisposable)( f.PipeTo( s, true, false ) ) ) {
-        Assert( !f.Disposed );
-        Assert( !s.Disposed );
-    }
-    Assert( f.Disposed );
-    Assert( !s.Disposed );
-
-    Print( "Disposal (sink only)" );
-    f = new PassThrough();
-    s = new TestSink();
-    Assert( !f.Disposed );
-    Assert( !s.Disposed );
-    using( (IDisposable)( f.PipeTo( s, false, true ) ) ) {
-        Assert( !f.Disposed );
-        Assert( !s.Disposed );
-    }
-    Assert( !f.Disposed );
-    Assert( s.Disposed );
-
-    Print( "Disposal (neither)" );
-    f = new PassThrough();
-    s = new TestSink();
-    Assert( !f.Disposed );
-    Assert( !s.Disposed );
-    using( (IDisposable)( f.PipeTo( s, false, false ) ) ) {
-        Assert( !f.Disposed );
-        Assert( !s.Disposed );
-    }
-    Assert( !f.Disposed );
-    Assert( !s.Disposed );
-}
-
 
 
 [Test( "TextDecoder" )]
@@ -958,7 +877,7 @@ Test_TextDecoder()
     Assert(
         e.GetBytes( src )
             .AsStream()
-            .PipeTo( new TextDecoder( e ) )
+            .To( new TextDecoder( e ) )
             .AsEnumerable()
             .SequenceEqual( src ) );
 
@@ -967,7 +886,7 @@ Test_TextDecoder()
     Assert(
         e.GetBytes( src )
             .AsStream()
-            .PipeTo( new TextDecoder( e ) )
+            .To( new TextDecoder( e ) )
             .AsEnumerable()
             .SequenceEqual( src ) );
 
@@ -976,7 +895,7 @@ Test_TextDecoder()
     Assert(
         e.GetBytes( src )
             .AsStream()
-            .PipeTo( new TextDecoder( e ) )
+            .To( new TextDecoder( e ) )
             .AsEnumerable()
             .SequenceEqual( src ) );
 
@@ -988,7 +907,7 @@ Test_TextDecoder()
     Assert(
         e.GetBytes( src )
             .AsStream()
-            .PipeTo( new TextDecoder( e ) )
+            .To( new TextDecoder( e ) )
             .AsEnumerable()
             .SequenceEqual( src ) );
     #endif
@@ -1007,49 +926,32 @@ Test_TextEncoder()
     Print( "UTF8" );
     e = Encodings.UTF8;
     Assert(
-        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+        src.AsStream().To( new TextEncoder( e ) ).AsEnumerable()
             .SequenceEqual( e.GetBytes( src ) ) );
 
     Print( "UTF16LE" );
     e = Encodings.UTF16LE;
     Assert(
-        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+        src.AsStream().To( new TextEncoder( e ) ).AsEnumerable()
             .SequenceEqual( e.GetBytes( src ) ) );
 
     Print( "UTF16BE" );
     e = Encodings.UTF16BE;
     Assert(
-        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+        src.AsStream().To( new TextEncoder( e ) ).AsEnumerable()
             .SequenceEqual( e.GetBytes( src ) ) );
 
     Print( "UTF32LE" );
     e = Encodings.UTF32LE;
     Assert(
-        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+        src.AsStream().To( new TextEncoder( e ) ).AsEnumerable()
             .SequenceEqual( e.GetBytes( src ) ) );
 
     Print( "UTF32BE" );
     e = Encodings.UTF32BE;
     Assert(
-        src.AsStream().PipeTo( new TextEncoder( e ) ).AsEnumerable()
+        src.AsStream().To( new TextEncoder( e ) ).AsEnumerable()
             .SequenceEqual( e.GetBytes( src ) ) );
-}
-
-
-
-[Test( "TextLineSplitter" )]
-public static
-void
-Test_TextLineSplitter()
-{
-    Assert(
-        "line1\nline2\rline3\r\nline4\r\rline6\n\nline8\n"
-            .AsStream()
-            .PipeTo( new TextLineSplitter() )
-            .AsEnumerable()
-            .SequenceEqual( new string[] {
-                "line1", "line2", "line3", "line4", "", "line6", "",
-                "line8" } ) );
 }
 
 

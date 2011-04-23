@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -32,6 +32,97 @@ Com.Halfdecent.Streams
 public static class
 Sink
 {
+
+
+
+// -----------------------------------------------------------------------------
+// Static Methods
+// -----------------------------------------------------------------------------
+
+/// Create a sink from an infinitely-callable function that performs the push
+/// action
+///
+public static
+    ISink< T >
+Create<
+    T
+>(
+    System.Action< T > pushFunc
+)
+{
+    return Create< T >( pushFunc, () => {;} );
+}
+
+
+public static
+    ISink< T >
+Create<
+    T
+>(
+    System.Action< T >  pushFunc,
+    System.Action       disposeFunc
+)
+{
+    return new Sink< T >( pushFunc, disposeFunc );
+}
+
+
+/// Create a sink from a pair of functions, one that determines whether a push
+/// can occur, and one that does it
+///
+public static
+    ISink< T >
+Create<
+    T
+>(
+    System.Func< bool > canPushFunc,
+    System.Action< T >  pushFunc
+)
+{
+    return Create< T >( canPushFunc, pushFunc, () => {;} );
+}
+
+
+public static
+    ISink< T >
+Create<
+    T
+>(
+    System.Func< bool > canPushFunc,
+    System.Action< T >  pushFunc,
+    System.Action       disposeFunc
+)
+{
+    return new Sink< T >( canPushFunc, pushFunc, disposeFunc );
+}
+
+
+/// Create a sink from a function that performs and signals the success of the
+/// push
+///
+public static
+    ISink< T >
+Create<
+    T
+>(
+    System.Func< T, bool > tryPushFunc
+)
+{
+    return Create< T >( tryPushFunc, () => {;} );
+}
+
+
+public static
+    ISink< T >
+Create<
+    T
+>(
+    System.Func< T, bool >  tryPushFunc,
+    System.Action           disposeFunc
+)
+{
+    return new Sink< T >( tryPushFunc, disposeFunc );
+}
 
 
 

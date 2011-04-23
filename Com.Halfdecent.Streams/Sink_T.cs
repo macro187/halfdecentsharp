@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent;
 using Com.Halfdecent.RTypes;
 
 
@@ -25,7 +26,7 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// Sink implementation
+/// A sink based on an <tt>ISink<T>.TryPush()</tt> function
 // =============================================================================
 
 public class
@@ -38,46 +39,56 @@ Sink<
 
 
 // -----------------------------------------------------------------------------
-// Static
-// -----------------------------------------------------------------------------
-
-
-
-// -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Create a sink from a pair of functions, one that determines whether a push
-/// can occur, and one that does it
-///
+public
+Sink(
+    System.Action< T >  pushFunc,
+    System.Action       disposeFunc
+)
+    : this(
+        item => {
+            pushFunc( item );
+            return true; },
+        disposeFunc )
+{
+    NonNull.CheckParameter( pushFunc, "pushFunc" );
+}
+
+
 public
 Sink(
     System.Func< bool > canPushFunc,
-    System.Action< T >  pushFunc
+    System.Action< T >  pushFunc,
+    System.Action       disposeFunc
 )
-    : this( item => {
-        if( canPushFunc() ) {
-            pushFunc( item );
-            return true;
-        } else {
-            return false;
-        } } )
+    : this(
+        item => {
+            if( canPushFunc() ) {
+                pushFunc( item );
+                return true;
+            } else {
+                return false;
+            } },
+        disposeFunc )
 {
     NonNull.CheckParameter( canPushFunc, "canPushFunc" );
     NonNull.CheckParameter( pushFunc, "pushFunc" );
 }
 
 
-/// Create a sink from a function that performs and signals the success of the
-/// push
-///
 public
 Sink(
-    System.Func< T, bool > tryPushFunc
+    System.Func< T, bool >  tryPushFunc,
+    System.Action           disposeFunc
 )
 {
     NonNull.CheckParameter( tryPushFunc, "tryPushFunc" );
+    NonNull.CheckParameter( disposeFunc, "disposeFunc" );
     this.TryPushFunc = tryPushFunc;
+    this.DisposeFunc = disposeFunc;
+    this.Disposed = false;
 }
 
 
@@ -88,11 +99,17 @@ Sink(
 
 private
 System.Func< T, bool >
-TryPushFunc
-{
-    get;
-    set;
-}
+TryPushFunc;
+
+
+private
+System.Action
+DisposeFunc;
+
+
+private
+bool
+Disposed;
 
 
 
@@ -106,7 +123,25 @@ TryPush(
     T item
 )
 {
+    if( this.Disposed )
+        throw new BugException(
+            new System.ObjectDisposedException( null ) );
     return this.TryPushFunc( item );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// System.IDisposable
+// -----------------------------------------------------------------------------
+
+public
+void
+Dispose()
+{
+    if( this.Disposed ) return;
+    this.DisposeFunc();
+    this.Disposed = true;
 }
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -26,11 +26,6 @@ Com.Halfdecent.Streams
 /// one after another over time
 ///
 /// See <tt>http://en.wikipedia.org/wiki/Stream_(computing)</tt>
-///
-/// On it's own, <tt>IStream< T ></tt> does not imply how many more items (if
-/// any) are available, nor how long (if ever) it will take to yield the next
-/// one.  Implementations should document their behaviour in this regard
-/// and/or implement stream subtypes with more specific behaviour.
 // =============================================================================
 
 public interface
@@ -41,30 +36,18 @@ IStream<
     T
 #endif
 >
+    : System.IDisposable
 {
 
 
 
 /// Try to pull the next item from the stream
 ///
-/// <tt>IStream< T ></tt> alone does not imply how long this method will take
-/// to return or whether it will return at all.
-///
-/// Once this method returns <tt>false</tt> indicating that the end of the
-/// stream has been reached, it will never produce items again.
-///
-/// Design Note:
-/// This method returns a tuple rather than using an <tt>out</tt> parameter
-/// because <tt>out</tt> parameters are not covariant, which would mean that
-/// this interface couldn't be covariant.  The good news is that an extension
-/// method is available that provides a <tt>bool TryPull( out T result )</tt>
-/// overload.
-///
     ITuple< bool, T >
     /// @returns
-    /// A tuple whose first value indicates whether there was another item in
-    /// the stream and whose second value is either the value from the stream or
-    /// an undefined and unusable value if there was none
+    /// A tuple whose first value indicates whether the end of the stream has
+    /// been reached and whose second value is either the next value or, if the
+    /// end of the stream has been reached, an undefined and unusable value
 TryPull();
 
 

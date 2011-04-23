@@ -42,6 +42,8 @@ Stream
 // Static Methods
 // -----------------------------------------------------------------------------
 
+/// Create a stream that yields a specified sequence of items
+///
 public static
     IStream< T >
 Create<
@@ -50,10 +52,14 @@ Create<
     params T[] items
 )
 {
+    NonNull.CheckParameter( items, "items" );
     return items.AsStream();
 }
 
 
+/// Create a stream from a pair of functions, one that indicates whether an
+/// item can be pulled and another that does the pull
+///
 public static
     IStream< T >
 Create<
@@ -63,9 +69,7 @@ Create<
     System.Func< T >    pullFunc
 )
 {
-    NonNull.CheckParameter( canPullFunc, "canPullFunc" );
-    NonNull.CheckParameter( pullFunc, "pullFunc" );
-    return new Stream< T >( canPullFunc, pullFunc );
+    return Create( canPullFunc, pullFunc, () => {;} );
 }
 
 
@@ -74,11 +78,66 @@ public static
 Create<
     T
 >(
-    MaybeFunc< T > maybeFunc
+    System.Func< bool > canPullFunc,
+    System.Func< T >    pullFunc,
+    System.Action       disposeFunc
 )
 {
-    NonNull.CheckParameter( maybeFunc, "maybeFunc" );
-    return new Stream< T >( maybeFunc );
+    return new Stream< T >( canPullFunc, pullFunc, disposeFunc );
+}
+
+
+/// Create a stream from a <tt>Com.Halfdecent.Maybe<T></tt>
+///
+public static
+    IStream< T >
+Create<
+    T
+>(
+    Maybe< T > maybeFunc
+)
+{
+    return Create( maybeFunc, () => {;} );
+}
+
+
+public static
+    IStream< T >
+Create<
+    T
+>(
+    Maybe< T >      maybeFunc,
+    System.Action   disposeFunc
+)
+{
+    return new Stream< T >( maybeFunc, disposeFunc );
+}
+
+
+/// Create a stream from a <tt>IStream<T>.TryPull()</tt> function
+///
+public static
+    IStream< T >
+Create<
+    T
+>(
+    System.Func< ITuple< bool, T > > tryPullFunc
+)
+{
+    return Create( tryPullFunc, () => {;} );
+}
+
+
+public static
+    IStream< T >
+Create<
+    T
+>(
+    System.Func< ITuple< bool, T > >    tryPullFunc,
+    System.Action                       disposeFunc
+)
+{
+    return new Stream< T >( tryPullFunc, disposeFunc );
 }
 
 
@@ -201,7 +260,10 @@ SequenceEqual<
     return dis.SequenceEqual< T >(
         that,
         new SystemEquatableComparer< TEquatable >()
-            .Contravary< TEquatable, T >() );
+            #if !DOTNET40
+            .Contravary< TEquatable, T >()
+            #endif
+            );
 }
 
 
@@ -223,6 +285,26 @@ SequenceEqual<
 }
 
 
+/// Pull items from the stream, performing an action on each, forever or until
+/// the end of the stream is reached
+///
+public static
+    void
+ForEach<
+    T
+>(
+    this IStream< T >   stream,
+    System.Action< T >  action
+)
+{
+    NonNull.CheckParameter( stream, "stream" );
+    NonNull.CheckParameter( action, "action" );
+    T item;
+    while( stream.TryPull( out item ) )
+        action( item );
+}
+
+
 /// Push all items from the stream to <tt>sink</tt>, which is expected to have
 /// capacity to accept them all
 ///
@@ -241,9 +323,7 @@ EmptyTo<
 {
     NonNull.CheckParameter( stream, "stream" );
     NonNull.CheckParameter( sink, "sink" );
-    T item;
-    while( stream.TryPull( out item ) )
-        sink.Push( item );
+    stream.ForEach( sink.Push );
 }
 
 
@@ -258,11 +338,23 @@ AsEnumerator<
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    return new SystemEnumerator< T >( dis.TryPull );
+    T item;
+    while( dis.TryPull( out item ) )
+        yield return item;
 }
 
 
 /// Present the stream as an enumerable
+///
+/// This method is mainly to enable streams to work with existing
+/// enumerable-based mechanisms like the LINQ <tt>IEnumerable</tt> and
+/// <tt>IEnumerable<T></tt> extension methods and the C# <tt>foreach</tt>
+/// statement.  Enumerables produced by this method are unusual in that calls to
+/// <tt>GetEnumerator()</tt> do not "restart" iteration but instead just
+/// continue from whatever point this underlying stream is at.  The result is
+/// that one can use any combination of operations -- <tt>IStream<T></tt>,
+/// <tt>IEnumerable</tt>, <tt>IEnumerable<T></tt>, <tt>foreach</tt>, etc. -- to
+/// pull items from a single stream.
 ///
 public static
     SCG.IEnumerable< T >
@@ -273,9 +365,7 @@ AsEnumerable<
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    return
-        new SystemEnumerableFromSystemEnumeratorAdapter< T >(
-            dis.AsEnumerator() );
+    return new SystemEnumerable< T >( () => dis.AsEnumerator() );
 }
 
 
@@ -293,6 +383,60 @@ Covary<
 }
 
 
+/// Connect a filter to the stream
+///
+public static
+    IStream< TOut >
+To<
+    TIn,
+    TOut
+>(
+    this IStream< TIn >     dis,
+    IFilter< TIn, TOut >    filter
+)
+{
+    return dis.To( filter, true, true );
+}
+
+
+public static
+    IStream< TOut >
+To<
+    TIn,
+    TOut
+>(
+    this IStream< TIn >     dis,
+    IFilter< TIn, TOut >    filter,
+    bool                    disposeThis,
+    bool                    disposeFilter
+)
+{
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( filter, "filter" );
+    return Stream.Create(
+        () => {
+            TIn i;
+            // Feed items from upstream to the filter until it produces an item
+            while( filter.State != FilterState.Have ) {
+                // ...unless the filter closes...
+                if( filter.State == FilterState.Closed )
+                    return Tuple.Create( false, default( TOut ) );
+                // ...or upstream runs out...
+                if( !dis.TryPull( out i ) )
+                    return Tuple.Create( false, default( TOut ) );
+                filter.Give( i );
+            }
+            // ...and yield it
+            return Tuple.Create( true, filter.Take() ); },
+        () => {
+            if( disposeFilter )
+                filter.Dispose();
+            if( disposeThis )
+                dis.Dispose(); } );
+}
+
+
+/*
 /// Connect a stream to a filter
 ///
 public static
@@ -326,6 +470,7 @@ PipeTo<
 {
     return new StreamToFilter< TFrom, TTo >( dis, disposeThis, to, disposeTo );
 }
+*/
 
 
 

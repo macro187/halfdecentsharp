@@ -51,9 +51,8 @@ AsSink<
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    return new Sink< T >( item => {
-        dis.Add( item );
-        return true; } );
+    return Sink.Create< T >(
+        item => dis.Add( item ) );
 }
 
 

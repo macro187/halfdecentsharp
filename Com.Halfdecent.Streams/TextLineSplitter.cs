@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -33,18 +34,34 @@ Com.Halfdecent.Streams
 
 public class
 TextLineSplitter
-    : FilterBase< char, string >
+    : Filter< char, string >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// FilterBase
+// Constructor
 // -----------------------------------------------------------------------------
 
-protected override
-    System.Collections.Generic.IEnumerator< bool >
-Process()
+public
+TextLineSplitter()
+    : base( StepIterator, () => {;} )
+{
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private static
+    SCG.IEnumerator< bool >
+StepIterator(
+    System.Func< FilterState >  getState,
+    System.Func< char >         get,
+    System.Action< string >     put
+)
 {
     System.Text.StringBuilder sb = new System.Text.StringBuilder();
     bool r = false;
@@ -52,7 +69,7 @@ Process()
 
         // Get the next character
         yield return false;
-        char c = this.GetItem();
+        char c = get();
 
         // If it's an \n right after an \r, ignore it completely
         if( r && c == '\n' ) { r = false; continue; }
@@ -62,7 +79,7 @@ Process()
 
         // If it's an \r or \n the line's done, so yield it
         if( c == '\r' || c == '\n' ) {
-            this.PutItem( sb.ToString() );
+            put( sb.ToString() );
             yield return true;
             // XXX Does this shrink .Capacity?  If so, it guarantees new
             // allocation(s) each line, killing the advantage of using a
@@ -74,7 +91,6 @@ Process()
 
         // Otherwise append the character to the current line
         sb.Append( c );
-
     }
 }
 
