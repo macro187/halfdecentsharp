@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -60,10 +60,10 @@ GetAndReplaceWhereViaUniqueKeyedCollection<
     NonNull.CheckParameter( col, "col" );
     NonNull.CheckParameter( where, "where" );
     return
-        new Filter< T, T >(
-            ( get, put, drop ) =>
+        Filter.Create< T, T >(
+            ( getState, get, put ) =>
                 GetAndReplaceWhereViaUniqueKeyedCollectionFilter(
-                    col, where, get, put, drop ) );
+                    col, where, getState, get, put ) );
 }
 
 private static
@@ -74,9 +74,9 @@ GetAndReplaceWhereViaUniqueKeyedCollectionFilter<
 >(
     IUniqueKeyedCollectionRC< TKey, T > col,
     System.Predicate< T >               where,
+    System.Func< FilterState >          getState,
     System.Func< T >                    get,
-    System.Action< T >                  put,
-    System.Action< T >                  drop
+    System.Action< T >                  put
 )
 {
     // XXX

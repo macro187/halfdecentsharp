@@ -83,7 +83,7 @@ AsSink<
     this ICollectionG< T > dis
 )
 {
-    return new CollectionGToSinkAdapter< T >( dis );
+    return Sink.Create< T >( item => dis.Add( item ) );
 }
 #endif
 

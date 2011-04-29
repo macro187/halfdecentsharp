@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent;
@@ -60,10 +59,10 @@ GetAndReplaceAllViaUniqueKeyedCollection<
 )
 {
     NonNull.CheckParameter( col, "col" );
-    return new Filter< T, T >(
-        ( get, put, drop ) =>
+    return Filter.Create< T, T >(
+        ( getState, get, put ) =>
             GetAndReplaceAllViaUniqueKeyedCollectionFilter(
-                col, key, get, put, drop ) );
+                col, key, getState, get, put ) );
 }
 
 private static
@@ -74,9 +73,9 @@ GetAndReplaceAllViaUniqueKeyedCollectionFilter<
 >(
     IUniqueKeyedCollectionRC< TKey, T > col,
     TKey                                key,
-    Func< T >                           get,
-    Action< T >                         put,
-    Action< T >                         drop
+    System.Func< FilterState >          getState,
+    System.Func< T >                    get,
+    System.Action< T >                  put
 )
 {
     if( !col.Contains( key ) ) yield break;
