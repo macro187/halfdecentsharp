@@ -853,6 +853,12 @@ Test_Tuple()
     Assert( ints.A == 1 );
     Assert( ints.B == 2 );
 
+    Print( "ITuple.BothEqual( a, b )" );
+    Assert( strings.BothEqual( "A", "B" ) );
+    Assert( !strings.BothEqual( "A", "X" ) );
+    Assert( !strings.BothEqual( "X", "B" ) );
+    Assert( !strings.BothEqual( "X", "X" ) );
+
 #if DOTNET40
     Print( "(C# doesn't vary value types)" );
 #endif

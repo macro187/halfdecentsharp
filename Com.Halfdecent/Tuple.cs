@@ -47,6 +47,25 @@ Create<
 }
 
 
+/// Determine whether both tuple values are equal to the specified values
+///
+public static
+    bool
+BothEqual<
+    T1,
+    T2
+>(
+    this ITuple< T1, T2 >   dis,
+    T1                      a,
+    T2                      b
+)
+    where T1 : System.IEquatable< T1 >
+    where T2 : System.IEquatable< T2 >
+{
+    return dis.A.Equals( a ) && dis.B.Equals( b );
+}
+
+
 /// Assign the tuple values to the specifed variables
 ///
 public static
