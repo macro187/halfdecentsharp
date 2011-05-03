@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -42,21 +42,12 @@ DataToken
 
 public
 DataToken(
-    string data
-)
-    : this( data, 0 )
-{
-}
-
-
-public
-DataToken(
     string data,
     int    lineNumber
 )
     : base( lineNumber )
 {
-    NonNull.Require( data, new Parameter( "data" ) );
+    NonNull.CheckParameter( data, "data" );
     this.Data = data;
 }
 
@@ -72,36 +63,6 @@ Data
 {
     get;
     private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Token
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Equals(
-    Token that
-)
-{
-    if( !base.Equals( that ) ) return false;
-    if( ((DataToken)( that )).Data != this.Data ) return false;
-    return true;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Object
-// -----------------------------------------------------------------------------
-
-public override
-    int
-GetHashCode()
-{
-    return base.GetHashCode() ^ this.Data.GetHashCode();
 }
 
 

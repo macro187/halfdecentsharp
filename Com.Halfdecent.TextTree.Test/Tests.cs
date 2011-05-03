@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,12 +18,13 @@
 
 using System.Linq;
 using Com.Halfdecent.Testing;
+using Com.Halfdecent;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.TextTree;
 
 
 namespace
-Com.Halfdecent.Streams.Test
+Com.Halfdecent.TextTree.Test
 {
 
 
@@ -47,27 +48,6 @@ Main()
 
 
 
-[Test( "Token Equality" )]
-public static
-void
-Test_TokenEquality()
-{
-    Print( "IndentToken" );
-    Assert( new IndentToken().Equals( new IndentToken() ) );
-    Assert( !new IndentToken().Equals( new DeindentToken() ) );
-
-    Print( "DeindentToken" );
-    Assert( new DeindentToken().Equals( new DeindentToken() ) );
-    Assert( !new DeindentToken().Equals( new IndentToken() ) );
-
-    Print( "DataToken" );
-    Assert( new DataToken( "abc" ).Equals( new DataToken( "abc" ) ) );
-    Assert( !new DataToken( "abc" ).Equals( new DataToken( "def" ) ) );
-    Assert( !new DataToken( "abc" ).Equals( new IndentToken() ) );
-}
-
-
-
 [Test( "Output Token Streams" )]
 public static
 void
@@ -76,54 +56,54 @@ Test_OutputTokenStreams()
     IStream< Token > tokens =
         tree1
         .AsStream()
-        .PipeTo( new TextLineSplitter() )
-        .PipeTo( new Lexer() );
+        .To( new TextLineSplitter() )
+        .To( new Lexer() );
 
     Token t;
 
     t = tokens.Pull();
-    Assert( new DataToken( "a" ).Equals( t ) );
     Assert( t.LineNumber == 1 );
+    Assert( t.IsAnd< DataToken >( dt => dt.Data == "a" ) );
 
     t = tokens.Pull();
-    Assert( new IndentToken().Equals( t ) );
     Assert( t.LineNumber == 2 );
+    Assert( t.Is< IndentToken >() );
 
     t = tokens.Pull();
-    Assert( new DataToken( "aa" ).Equals( t ) );
     Assert( t.LineNumber == 2 );
+    Assert( t.IsAnd< DataToken >( dt => dt.Data == "aa" ) );
 
     t = tokens.Pull();
-    Assert( new DataToken( "ab" ).Equals( t ) );
     Assert( t.LineNumber == 3 );
+    Assert( t.IsAnd< DataToken >( dt => dt.Data == "ab" ) );
 
     t = tokens.Pull();
-    Assert( new DeindentToken().Equals( t ) );
     Assert( t.LineNumber == 4 );
+    Assert( t.Is< DeindentToken >() );
 
     t = tokens.Pull();
-    Assert( new IndentToken().Equals( t ) );
     Assert( t.LineNumber == 5 );
+    Assert( t.Is< IndentToken >() );
 
     t = tokens.Pull();
-    Assert( new DeindentToken().Equals( t ) );
     Assert( t.LineNumber == 6 );
+    Assert( t.Is< DeindentToken >() );
 
     t = tokens.Pull();
-    Assert( new DataToken( "b" ).Equals( t ) );
     Assert( t.LineNumber == 7 );
+    Assert( t.IsAnd< DataToken >( dt => dt.Data == "b" ) );
 
     t = tokens.Pull();
-    Assert( new IndentToken().Equals( t ) );
     Assert( t.LineNumber == 8 );
+    Assert( t.Is< IndentToken >() );
 
     t = tokens.Pull();
-    Assert( new DataToken( "ba" ).Equals( t ) );
     Assert( t.LineNumber == 8 );
+    Assert( t.IsAnd< DataToken >( dt => dt.Data == "ba" ) );
 
     t = tokens.Pull();
-    Assert( new DataToken( "bb" ).Equals( t ) );
     Assert( t.LineNumber == 9 );
+    Assert( t.IsAnd< DataToken >( dt => dt.Data == "bb" ) );
 
     Assert( !tokens.TryPull( out t ) );
 }

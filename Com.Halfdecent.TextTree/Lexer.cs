@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,6 +17,7 @@
 
 
 using System.Linq;
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Streams;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Collections;
@@ -33,28 +34,46 @@ Com.Halfdecent.TextTree
 
 public class
 Lexer
-    : FilterBase< string, Token >
+    : Filter< string, Token >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// FilterBase
+// Constructors
 // -----------------------------------------------------------------------------
 
-protected override
-    System.Collections.Generic.IEnumerator< bool >
-Process()
+public
+Lexer()
+    : base(
+        (getState,get,put) => this.Process( getState, get, put ),
+        () => {;} )
 {
-    IOrderedCollectionRCSG< char > indent = new ArrayList< char >();
-    IOrderedCollectionRCSG< IInteger > stops = new ArrayList< IInteger >();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Private
+// -----------------------------------------------------------------------------
+
+private
+    SCG.IEnumerator< bool >
+Process(
+    System.Func< FilterState >  getState,
+    System.Func< string >       get,
+    System.Action< Token >      put
+)
+{
+    var indent = new ArrayList< char >();
+    var stops = new ArrayList< IInteger >();
     int linenum = 0;
 
     for( ;; ) {
 
         // Get the next line
         yield return false;
-        string line = this.GetItem();
+        string line = get();
         linenum++;
 
         // Split the indent and data apart
@@ -72,21 +91,21 @@ Process()
                     stops.Count.Minus( Integer.From( 1 ) ) ) );
             stops.RemoveLast();
 
-            this.PutItem( new DeindentToken( linenum ) );
+            put( new DeindentToken( linenum ) );
             yield return true;
         }
 
         // Pop stops off the indent until it equals the same section of the
         // new indent
-        while( !indent.SequenceEqual(
-            newindent.Slice( Integer.From( 0 ), indent.Count ) )
+        while( !indent.Stream().SequenceEqual(
+            newindent.Slice( Integer.From( 0 ), indent.Count ).Stream() )
         ) {
             indent.RemoveLast(
                 stops.Get(
                     stops.Count.Minus( Integer.From( 1 ) ) ) );
             stops.RemoveLast();
 
-            this.PutItem( new DeindentToken( linenum ) );
+            put( new DeindentToken( linenum ) );
             yield return true;
         }
 
@@ -100,7 +119,7 @@ Process()
                 .EmptyTo(
                     indent.AsSink() );
 
-            this.PutItem( new IndentToken( linenum ) );
+            put( new IndentToken( linenum ) );
             yield return true;
         }
 
@@ -108,7 +127,7 @@ Process()
         // TODO Trim?
         if( data.Count.Equals( Integer.From( 0 ) ) ) continue;
 
-        this.PutItem(
+        put(
             new DataToken(
                 new string( data.Stream().AsEnumerable().ToArray() ),
                 linenum ) );

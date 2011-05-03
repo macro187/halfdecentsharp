@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -23,11 +23,6 @@ Com.Halfdecent.TextTree
 
 // =============================================================================
 /// A TextTree lexer token
-///
-/// @section equality Equality
-///
-///     Contextual information such as line numbers is not considered in token
-///     equality
 // =============================================================================
 
 public abstract class
@@ -39,13 +34,6 @@ Token
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
-
-internal
-Token()
-    : this( 0 )
-{
-}
-
 
 internal
 Token(
@@ -67,49 +55,6 @@ LineNumber
 {
     get;
     private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-public virtual
-    bool
-Equals(
-    Token that
-)
-{
-    if( that == null ) return false;
-    if( that.GetType() != this.GetType() ) return false;
-    return true;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Object
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Equals(
-    object that
-)
-{
-    if( that == null ) return false;
-    if( !( that is Token ) ) return false;
-    if( !this.Equals( (Token)that ) ) return false;
-    return true;
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return this.GetType().GetHashCode();
 }
 
 
