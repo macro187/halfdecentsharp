@@ -136,21 +136,12 @@ OptimisedCreateInternalListFrom(
 )
 {
     NonNull.CheckParameter( from, "from" );
-    SCG.List< T > l;
-
-    // Optimise initial capacity if the source collection's .Count is
-    // within range of Int32...
-    if( from.Count.GT( Integer.From( int.MaxValue ) ) ) {
-        l = new SCG.List< T >();
-    } else {
-        int c = (int)( from.Count.GetValue() );
-        l = new SCG.List< T >( c );
-    }
-
-    // ...and copy the items
-    from.Stream().EmptyTo( l.AsSink() );
-
-    return l;
+    var list = new SCG.List< T >(
+        from.Count.LT( Integer.From( int.MaxValue ) )
+            ? (int)( from.Count.GetValue() )
+            : int.MaxValue );
+    from.Stream().EmptyTo( list.AsSink() );
+    return list;
 }
 
 
