@@ -50,33 +50,13 @@ ArrayList<
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new, empty list
-///
-public
-ArrayList()
-    : this( new SCG.List< T >() )
-{
-}
-
-
-/// Initialise a new list containing the items from another collection while
-/// (possibly) minimising the number of internal capacity changes required
-///
-public
-ArrayList(
-    ICollectionR< T > from
-)
-    : this( OptimisedCreateInternalListFrom( from ) )
-{
-}
-
-
-private
+internal
 ArrayList(
     SCG.List< T > list
 )
     : base( list )
 {
+    NonNull.CheckParameter( list, "list" );
     this.List = list;
 }
 

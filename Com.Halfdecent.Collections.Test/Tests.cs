@@ -476,12 +476,11 @@ Test_ArrayList()
     ArrayList< int > l;
 
     Print( "ArrayList()" );
-    l = new ArrayList< int >();
+    l = ArrayList.Create< int >();
     Assert( l.Count.Equals( Integer.From( 0 ) ) );
 
     Print( "ArrayList( ICollectionR<T> )" );
-    l = new ArrayList< int >(
-        new int[] { 1, 2, 3 }.AsHalfdecentCollection() );
+    l = ArrayList.Create( 1, 2, 3 );
     // Presumably the capacity has been optimised for the number of items
     // in the source collection, but that's an internal detail so can't really
     // check it.  We can check that the correct items where added, though.
@@ -497,12 +496,8 @@ void
 Test_IndexSliceRCSG_T()
 {
     Print( "Create ordered collection" );
-    IOrderedCollectionRCSG< int > c = new ArrayList< int >();
-    c.Add( 1 );
-    c.Add( 2 );
-    c.Add( 3 );
-    c.Add( 4 );
-    c.Add( 5 );
+    IOrderedCollectionRCSG< int > c
+        = ArrayList.Create( 1, 2, 3, 4, 5 );
 
     Print( "Slice" );
     IOrderedCollectionRCSG< int > s =
@@ -598,7 +593,7 @@ void
 Test_ICollectionS_RemoveFirst()
 {
     IOrderedCollectionRCSG< char > chars =
-        new ArrayList< char >( "abcdefg".AsHalfdecentCollection() );
+        ArrayList.Create< char >( "abcdefg".AsHalfdecentCollection() );
 
     Print( ".RemoveFirst()" );
     chars.RemoveFirst();
