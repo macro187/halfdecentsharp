@@ -127,7 +127,7 @@ Map<
     } catch( System.Exception e ) {
         ValueReferenceException vre = e.ExceptionChain()
             .OfType< ValueReferenceException >().FirstOrDefault();
-        if( vre == null ) throw e;
+        if( vre == null ) throw;
 
         Frame f = new Frame();
         var i = -1;
