@@ -56,8 +56,13 @@ public delegate
     FilterState
     /// @returns The new filter state
 FilterStepFunc<
+    #if DOTNET40
     in TIn,
     out TOut
+    #else
+    TIn,
+    TOut
+    #endif
 >(
     System.Func< FilterState >  GetState,
     ///< Function indicating the current filter state

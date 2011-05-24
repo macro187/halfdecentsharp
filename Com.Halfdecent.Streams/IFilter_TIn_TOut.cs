@@ -51,8 +51,13 @@ Com.Halfdecent.Streams
 
 public interface
 IFilter<
+    #if DOTNET40
     in TIn,
     out TOut
+    #else
+    TIn,
+    TOut
+    #endif
 >
     : System.IDisposable
 {

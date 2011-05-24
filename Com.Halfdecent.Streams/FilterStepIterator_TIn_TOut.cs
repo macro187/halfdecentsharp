@@ -43,8 +43,13 @@ public delegate
     /// @returns An enumerator that performs a filter processing step on each
     /// <tt>.MoveNext()</tt>
 FilterStepIterator<
+    #if DOTNET40
     in TIn,
     out TOut
+    #else
+    TIn,
+    TOut
+    #endif
 >(
     System.Func< FilterState >  GetState,
     ///< Function indicating the current filter state
