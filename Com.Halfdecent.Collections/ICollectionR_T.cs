@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -79,11 +79,7 @@ Covary<
 // -----------------------------------------------------------------------------
 
 public IStream< T > Stream() {
-#if DOTNET40
-    return this.From.Stream(); }
-#else
     return this.From.Stream().Covary< TFrom, T >(); }
-#endif
 #endif
 
 

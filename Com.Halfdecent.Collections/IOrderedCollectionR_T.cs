@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -100,15 +100,11 @@ public
     IStream< ITuple< IInteger, T > >
 StreamPairs()
 {
-#if DOTNET40
-    return this.From.StreamPairs();
-#else
     return
         this.From.StreamPairs()
         .AsEnumerable()
         .Select( t => t.Covary< IInteger, TFrom, IInteger, T >() )
         .AsStream();
-#endif
 }
 
 public bool Contains( IInteger key ) { return this.From.Contains( key ); }
@@ -119,11 +115,7 @@ Stream(
     IInteger key
 )
 {
-#if DOTNET40
-    return this.From.Stream( key );
-#else
     return this.From.Stream().Covary< TFrom, T >();
-#endif
 }
 
 public T Get( IInteger key ) { return this.From.Get( key ); }

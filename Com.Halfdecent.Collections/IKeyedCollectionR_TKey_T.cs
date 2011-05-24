@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -126,20 +126,11 @@ public
     IStream< ITuple< TKey, T > >
 StreamPairs()
 {
-//
-// NET 4.0 covariance (apparently) isn't smart enough to do this
-// - Mono dmcs v2.6.7.0
-// - TODO Try MS or a newer Mono
-//
-//#if DOTNET40
-//    return this.From.StreamPairs();
-//#else
     return
         this.From.StreamPairs()
         .AsEnumerable()
         .Select( t => t.Covary< TKey, TFrom, TKey, T >() )
         .AsStream();
-//#endif
 }
 
 public bool Contains( TKey key ) { return this.From.Contains( key ); }
@@ -150,11 +141,7 @@ Stream(
     TKey key
 )
 {
-#if DOTNET40
-    return this.From.Stream( key );
-#else
     return this.From.Stream( key ).Covary< TFrom, T >();
-#endif
 }
 #endif
 

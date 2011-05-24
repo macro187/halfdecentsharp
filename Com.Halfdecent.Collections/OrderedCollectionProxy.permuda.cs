@@ -103,11 +103,7 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
     IInteger count
 )
 {
-#if DOTNET40
-    return this.From.Slice( index, count );
-#else
     return this.From.Contravary< TFrom, T >().Slice( index, count );
-#endif
 }
 #endif
 
@@ -122,11 +118,7 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
     IInteger count
 )
 {
-#if DOTNET40
-    return this.From.Slice( index, count );
-#else
     return this.From.Covary< TFrom, T >().Slice( index, count );
-#endif
 }
 #endif
 
