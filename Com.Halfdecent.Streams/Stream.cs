@@ -260,10 +260,7 @@ SequenceEqual<
     return dis.SequenceEqual< T >(
         that,
         new SystemEquatableComparer< TEquatable >()
-            #if !DOTNET40
-            .Contravary< TEquatable, T >()
-            #endif
-            );
+            .Contravary< TEquatable, T >() );
 }
 
 
