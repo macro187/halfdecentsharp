@@ -180,7 +180,7 @@ Match<
         throw new LocalisedArgumentNullException( "action" );
 
     ValueReferenceException vre = e as ValueReferenceException;
-    if( e == null ) return;
+    if( vre == null ) return;
     Frame f = new Frame().Up();
     if( !referencePredicate( vre.ValueReference, f ) ) return;
     TException ex =
