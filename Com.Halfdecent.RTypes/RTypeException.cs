@@ -203,7 +203,6 @@ RTypeException(
     if( rtype == null )
         throw new LocalisedArgumentNullException( "rtype" );
     this.RType = rtype;
-    this.Data.Add( "Com.Halfdecent.RTypes.RTypeException.RType", rtype );
 }
 
 
