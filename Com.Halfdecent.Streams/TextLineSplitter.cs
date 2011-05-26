@@ -45,7 +45,7 @@ TextLineSplitter
 
 public
 TextLineSplitter()
-    : base( StepIterator, () => {;} )
+    : base( StepIterator, null, () => {;} )
 {
 }
 

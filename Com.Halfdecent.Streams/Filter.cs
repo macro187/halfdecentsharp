@@ -64,7 +64,21 @@ Create<
     System.Action                   disposeFunc
 )
 {
-    return new Filter< TIn, TOut >( convertFunc, disposeFunc );
+    NonNull.CheckParameter( convertFunc, "convertFunc" );
+    return new Filter< TIn, TOut >(
+        null,
+        (GetState,Get,Put) => {
+            if( GetState() == null ) {
+                return FilterState.Want;
+            } else if( GetState() == FilterState.Want ) {
+                Put( convertFunc( Get() ) );
+                return FilterState.Have;
+            } else if( GetState() == FilterState.Have ) {
+                return FilterState.Want;
+            } else { // FilterState.Closed
+                throw new BugException();
+            } },
+        disposeFunc );
 }
 
 

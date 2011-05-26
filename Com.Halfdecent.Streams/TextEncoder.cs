@@ -44,6 +44,7 @@ TextEncoder(
 )
     : base(
         (getState,get,put) => StepIterator( encoding, getState, get, put ),
+        null,
         () => {;} )
 {
     NonNull.CheckParameter( encoding, "encoding" );

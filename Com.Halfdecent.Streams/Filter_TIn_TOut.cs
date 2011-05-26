@@ -46,44 +46,6 @@ Filter<
 {
 
 
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-Filter(
-    System.Converter< TIn, TOut >   convertFunc,
-    System.Action                   disposeFunc
-)
-    : this(
-        null,
-        (GetState,Get,Put) => {
-            if( GetState() == null ) {
-                return FilterState.Want;
-            } else if( GetState() == FilterState.Want ) {
-                Put( convertFunc( Get() ) );
-                return FilterState.Have;
-            } else if( GetState() == FilterState.Have ) {
-                return FilterState.Want;
-            } else { // FilterState.Closed
-                throw new BugException();
-            } },
-        disposeFunc )
-{
-    NonNull.CheckParameter( convertFunc, "convertFunc" );
-}
-
-
-public
-Filter(
-    FilterStepIterator< TIn, TOut > stepIterator,
-    System.Action                   disposeFunc
-)
-    : this( stepIterator, null, disposeFunc )
-{
-}
-
-
 public
 Filter(
     FilterStepIterator< TIn, TOut > stepIterator,
