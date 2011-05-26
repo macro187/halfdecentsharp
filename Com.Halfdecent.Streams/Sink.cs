@@ -63,7 +63,12 @@ Create<
     System.Action       disposeFunc
 )
 {
-    return new Sink< T >( pushFunc, disposeFunc );
+    NonNull.CheckParameter( pushFunc, "pushFunc" );
+    return Create< T >(
+        item => {
+            pushFunc( item );
+            return true; },
+        disposeFunc );
 }
 
 
@@ -93,7 +98,17 @@ Create<
     System.Action       disposeFunc
 )
 {
-    return new Sink< T >( canPushFunc, pushFunc, disposeFunc );
+    NonNull.CheckParameter( canPushFunc, "canPushFunc" );
+    NonNull.CheckParameter( pushFunc, "pushFunc" );
+    return Create< T >(
+        item => {
+            if( canPushFunc() ) {
+                pushFunc( item );
+                return true;
+            } else {
+                return false;
+            } },
+        disposeFunc );
 }
 
 

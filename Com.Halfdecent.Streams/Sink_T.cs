@@ -37,47 +37,6 @@ Sink<
 {
 
 
-
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-Sink(
-    System.Action< T >  pushFunc,
-    System.Action       disposeFunc
-)
-    : this(
-        item => {
-            pushFunc( item );
-            return true; },
-        disposeFunc )
-{
-    NonNull.CheckParameter( pushFunc, "pushFunc" );
-}
-
-
-public
-Sink(
-    System.Func< bool > canPushFunc,
-    System.Action< T >  pushFunc,
-    System.Action       disposeFunc
-)
-    : this(
-        item => {
-            if( canPushFunc() ) {
-                pushFunc( item );
-                return true;
-            } else {
-                return false;
-            } },
-        disposeFunc )
-{
-    NonNull.CheckParameter( canPushFunc, "canPushFunc" );
-    NonNull.CheckParameter( pushFunc, "pushFunc" );
-}
-
-
 public
 Sink(
     System.Func< T, bool >  tryPushFunc,
