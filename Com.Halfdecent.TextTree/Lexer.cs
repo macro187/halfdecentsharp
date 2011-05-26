@@ -47,6 +47,7 @@ public
 Lexer()
     : base(
         (getState,get,put) => this.Process( getState, get, put ),
+        null,
         () => {;} )
 {
 }
@@ -65,8 +66,8 @@ Process(
     System.Action< Token >      put
 )
 {
-    var indent = new ArrayList< char >();
-    var stops = new ArrayList< IInteger >();
+    var indent = ArrayList.Create< char >();
+    var stops = ArrayList.Create< IInteger >();
     int linenum = 0;
 
     for( ;; ) {
