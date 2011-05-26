@@ -39,45 +39,6 @@ Stream<
 {
 
 
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-public
-Stream(
-    System.Func< bool > canPullFunc,
-    System.Func< T >    pullFunc,
-    System.Action       disposeFunc
-)
-    : this(
-        () =>
-            canPullFunc()
-                ? Tuple.Create( true, pullFunc() )
-                : Tuple.Create( false, default( T ) ),
-        disposeFunc )
-{
-    NonNull.CheckParameter( canPullFunc, "canPullFunc" );
-    NonNull.CheckParameter( pullFunc, "pullFunc" );
-}
-
-
-public
-Stream(
-    Maybe< T >      maybeFunc,
-    System.Action   disposeFunc
-)
-    : this(
-        () => {
-            T r;
-            return maybeFunc( out r )
-                ? Tuple.Create( true, r )
-                : Tuple.Create( false, default( T ) ); },
-        disposeFunc )
-{
-    NonNull.CheckParameter( maybeFunc, "maybeFunc" );
-}
-
-
 public
 Stream(
     System.Func< ITuple< bool, T > >    tryPullFunc,

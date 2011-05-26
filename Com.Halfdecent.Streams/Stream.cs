@@ -83,7 +83,14 @@ Create<
     System.Action       disposeFunc
 )
 {
-    return new Stream< T >( canPullFunc, pullFunc, disposeFunc );
+    NonNull.CheckParameter( canPullFunc, "canPullFunc" );
+    NonNull.CheckParameter( pullFunc, "pullFunc" );
+    return Create< T >(
+        () =>
+            canPullFunc()
+                ? Tuple.Create( true, pullFunc() )
+                : Tuple.Create( false, default( T ) ),
+        disposeFunc );
 }
 
 
@@ -110,7 +117,14 @@ Create<
     System.Action   disposeFunc
 )
 {
-    return new Stream< T >( maybeFunc, disposeFunc );
+    NonNull.CheckParameter( maybeFunc, "maybeFunc" );
+    return Create< T >(
+        () => {
+            T r;
+            return maybeFunc( out r )
+                ? Tuple.Create( true, r )
+                : Tuple.Create( false, default( T ) ); },
+        disposeFunc );
 }
 
 
