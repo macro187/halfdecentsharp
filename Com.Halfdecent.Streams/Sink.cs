@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -136,8 +137,56 @@ Create<
     System.Action           disposeFunc
 )
 {
-    return new Sink< T >( tryPushFunc, disposeFunc );
+    NonNull.CheckParameter( tryPushFunc, "tryPushFunc" );
+    return Create< T >(
+        get => TryPushFuncToPushIterator( get, tryPushFunc ),
+        disposeFunc );
 }
+
+
+private static
+    SCG.IEnumerator< object >
+TryPushFuncToPushIterator<
+    T
+>(
+    System.Func< T >        get,
+    System.Func< T, bool >  tryPushFunc
+)
+{
+    for( ;; ) {
+        if( !tryPushFunc( get() ) ) break;
+        yield return null;
+    }
+}
+
+
+/// Create a sink from a iterator that performs push actions
+///
+public static
+    ISink< T >
+Create<
+    T
+>(
+    SinkPushIterator< T > pushIterator
+)
+{
+    return Create< T >( pushIterator, () => {;} );
+}
+
+
+public static
+    ISink< T >
+Create<
+    T
+>(
+    SinkPushIterator< T >   pushIterator,
+    System.Action           disposeFunc
+)
+{
+    NonNull.CheckParameter( pushIterator, "pushIterator" );
+    return new Sink< T >( pushIterator, disposeFunc );
+}
+
 
 
 

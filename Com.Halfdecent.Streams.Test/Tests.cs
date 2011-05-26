@@ -352,7 +352,7 @@ void
 Test_Sink()
 {
     int i = 0;
-    ISink< object > s = new Sink< object >(
+    ISink< object > s = Sink.Create< object >(
         item => i++ < 3
             ? true
             : false,

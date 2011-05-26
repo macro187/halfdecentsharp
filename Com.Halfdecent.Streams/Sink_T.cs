@@ -16,7 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using SCG = System.Collections.Generic;
 using Com.Halfdecent;
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
 
 
@@ -26,7 +28,7 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// A sink based on an <tt>ISink<T>.TryPush()</tt> function
+/// A sink based on a <tt>SinkPushIterator< T ></tt>
 // =============================================================================
 
 public class
@@ -39,13 +41,16 @@ Sink<
 
 public
 Sink(
-    System.Func< T, bool >  tryPushFunc,
+    SinkPushIterator< T >   pushIterator,
     System.Action           disposeFunc
 )
 {
-    NonNull.CheckParameter( tryPushFunc, "tryPushFunc" );
+    NonNull.CheckParameter( pushIterator, "pushIterator" );
     NonNull.CheckParameter( disposeFunc, "disposeFunc" );
-    this.TryPushFunc = tryPushFunc;
+    this.PushEnumerator = pushIterator( this.Get );
+    this.NextItem = default( T );
+    this.NextItemReady = false;
+    this.Open = true;
     this.DisposeFunc = disposeFunc;
     this.Disposed = false;
 }
@@ -57,8 +62,36 @@ Sink(
 // -----------------------------------------------------------------------------
 
 private
-System.Func< T, bool >
-TryPushFunc;
+T
+NextItem;
+
+
+private
+bool
+NextItemReady;
+
+
+private
+    T
+Get()
+{
+    if( !this.NextItemReady )
+        throw new BugException(
+            new LocalisedInvalidOperationException(
+                _S( "SinkPushIterator called get() before the next item was ready" ) ) );
+    this.NextItemReady = false;
+    return this.NextItem;
+}
+
+
+private
+SCG.IEnumerator< object >
+PushEnumerator;
+
+
+private
+bool
+Open;
 
 
 private
@@ -85,7 +118,11 @@ TryPush(
     if( this.Disposed )
         throw new BugException(
             new System.ObjectDisposedException( null ) );
-    return this.TryPushFunc( item );
+    if( !this.Open ) return false;
+    this.NextItem = item;
+    this.NextItemReady = true;
+    this.Open = this.PushEnumerator.MoveNext();
+    return this.Open;
 }
 
 
@@ -105,6 +142,8 @@ Dispose()
 
 
 
+
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace
