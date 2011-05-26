@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -69,5 +70,61 @@ Data
 
 
 } // type
+
+
+
+// =============================================================================
+/// Token Extension Methods
+// =============================================================================
+
+public static class
+DataTokenStatic
+{
+
+
+public static
+    void
+ExpectFixedData(
+    this Token  dis,
+    string      data
+)
+{
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( data, "data" );
+    if( !dis.Match< DataToken >( dt => dt.Data == data ) )
+        throw new ParseException(
+            LocalisedString.Format( "Expected '{0}'", data ),
+            dis );
+}
+
+
+public static
+    string
+ExpectData(
+    this Token          dis,
+    Localised< string > description
+)
+{
+    NonNull.CheckParameter( dis, "dis" );
+    NonNull.CheckParameter( description, "description" );
+    return
+        dis.MatchElse< DataToken >(
+            () => {
+                throw new ParseException(
+                    LocalisedString.Format( "Expected {0}", description ),
+                    dis ); } )
+        .Data;
+}
+
+
+
+
+private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+
+} // type
+
+
+
+
 } // namespace
 

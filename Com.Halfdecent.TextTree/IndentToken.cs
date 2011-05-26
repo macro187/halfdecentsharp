@@ -31,7 +31,6 @@ IndentToken
 {
 
 
-
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
@@ -48,5 +47,37 @@ IndentToken(
 
 
 } // type
+
+
+
+// =============================================================================
+/// Token Extension Methods
+// =============================================================================
+
+public static class
+IndentTokenStatic
+{
+
+
+public static
+    void
+ExpectIndent(
+    this Token dis
+)
+{
+    if( !dis.Is< IndentToken >() )
+        throw new ParseException( _S( "Expected indent" ), dis );
+}
+
+
+
+
+private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+
+} // type
+
+
+
+
 } // namespace
 

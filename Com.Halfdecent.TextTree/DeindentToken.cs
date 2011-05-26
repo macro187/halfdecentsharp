@@ -48,5 +48,37 @@ DeindentToken(
 
 
 } // type
+
+
+
+// =============================================================================
+/// Token Extension Methods
+// =============================================================================
+
+public static class
+DeindentTokenStatic
+{
+
+
+public static
+    void
+ExpectDeindent(
+    this Token dis
+)
+{
+    if( !dis.Is< DeindentToken >() )
+        throw new ParseException( _S( "Expected deindent" ), dis );
+}
+
+
+
+
+private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+
+} // type
+
+
+
+
 } // namespace
 
