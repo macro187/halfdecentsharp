@@ -233,7 +233,7 @@ DirectionalEquals(
 {
     return
         base.DirectionalEquals( that )
-        && that.IsAnd<
+        && that.Match<
             LTE< T > >(
             lte =>
                 lte.Comparer.Equals( this.Comparer ) &&

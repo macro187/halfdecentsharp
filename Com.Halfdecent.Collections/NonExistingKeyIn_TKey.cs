@@ -148,7 +148,7 @@ DirectionalEquals(
 {
     return
         base.DirectionalEquals( that )
-        && that.IsAnd<
+        && that.Match<
             ExistingKeyIn< TKey, T > >(
             rt => (object)(rt.Collection) == this.Collection );
 }

@@ -122,7 +122,7 @@ DirectionalEquals(
 {
     return
         base.DirectionalEquals( that )
-        && that.IsAnd<
+        && that.Match<
             CompositeRType< T > >(
             crt =>
                 crt.Components

@@ -132,7 +132,7 @@ IEquatable< IEqualityComparer >.DirectionalEquals(
 {
     return
         that != null
-        && that.GetUnderlying().IsAnd<
+        && that.Match<
             SystemEnumerableComparer< T > >(
             c => c.ItemComparer.Equals( this.ItemComparer ) );
 }

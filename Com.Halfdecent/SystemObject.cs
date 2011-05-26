@@ -59,30 +59,6 @@ ToString(
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-public static
-    bool
-IsNull(
-    this object dis
-)
-{
-    return dis.IfIsNull( () => {} );
-}
-
-
-public static
-    bool
-IfIsNull(
-    this object     dis,
-    System.Action   action
-)
-{
-    if( action == null ) throw new System.ArgumentNullException( "action" );
-
-    if( dis != null ) return false;
-    action();
-    return true;
-}
-
 
 public static
     bool
@@ -92,73 +68,114 @@ Is<
     this object dis
 )
 {
-    return
-        dis.IfIs<
-            T >(
-            t => {} );
+    return dis.Match< T >( t => true );
 }
 
 
 public static
     bool
-IfIs<
+Match<
     T
 >(
-    this object             dis,
-    System.Action< T >      action
+    this object         dis,
+    System.Action< T >  action
 )
 {
-    return
-        dis.IfIsAnd<
-            T >(
-            t => true,
-            action );
+    return dis.Match< T >( t => true, action );
+}
+
+
+public static
+    T
+MatchElse<
+    T
+>(
+    this object     dis,
+    System.Action   else_
+)
+{
+    return dis.MatchElse< T >( t => true, else_ );
 }
 
 
 public static
     bool
-IsAnd<
+TryMatch<
+    T
+>(
+    this object dis,
+    out T       match
+)
+{
+    return dis.TryMatch< T >( t => true, out match );
+}
+
+
+public static
+    bool
+Match<
     T
 >(
     this object             dis,
     System.Predicate< T >   predicate
 )
 {
-    return
-        dis.IfIsAnd<
-            T >(
-            predicate,
-            t => {} );
+    return dis.Match< T >( predicate, t => {;} );
 }
 
 
-/// Perform an action on an object (or an underlying object for which it is an
-/// <tt>IProxy</tt>) if it (or one of those underlying objects) is a specified
-/// type and meets specified criteria
-///
 public static
     bool
-    /// @returns
-    /// Whether the object (or an underlying object for which it is an
-    /// <tt>IProxy</tt>) was the specified type and met the specified criteria
-    /// and, therefore, whether the action was performed
-IfIsAnd<
+Match<
     T
-    ///< The sought-after type
 >(
     this object             dis,
-    ///< The object
     System.Predicate< T >   predicate,
-    ///< The criteria
     System.Action< T >      action
-    ///< The action to perform
 )
 {
-    if( object.ReferenceEquals( predicate, null ) )
-        throw new System.ArgumentNullException( "predicate" );
-    if( object.ReferenceEquals( action, null ) )
+    if( action == null )
         throw new System.ArgumentNullException( "action" );
+    T t;
+    if( !dis.TryMatch< T >( predicate, out t ) ) return false;
+    action( t );
+    return true;
+}
+
+
+public static
+    T
+MatchElse<
+    T
+>(
+    this object             dis,
+    System.Predicate< T >   predicate,
+    System.Action           else_
+)
+{
+    if( else_ == null )
+        throw new System.ArgumentNullException( "else_" );
+    T match = default( T );
+    if( !dis.TryMatch< T >( predicate, out match ) )
+        else_();
+    return match;
+}
+
+
+public static
+    bool
+TryMatch<
+    T
+>(
+    this object             dis,
+    System.Predicate< T >   predicate,
+    out T                   match
+)
+{
+    if( predicate == null )
+        throw new System.ArgumentNullException( "predicate" );
+
+    match = default( T );
 
     if( dis == null ) return false;
 
@@ -166,9 +183,10 @@ IfIsAnd<
         if( !( obj is T ) ) continue;
         T t = (T)obj;
         if( !predicate( t ) ) continue;
-        action( t );
+        match = t;
         return true;
     }
+
     return false;
 }
 

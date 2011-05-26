@@ -85,61 +85,52 @@ Test_SystemObject()
     Assert( SystemObject.ToString( null ) == "null" );
     Assert( SystemObject.ToString( "notnull" ) == "notnull" );
 
-    Print( "IsNull()" );
-    Assert( nul.IsNull() );
-    Assert( !( obj.IsNull() ) );
-
-    Print( "IfIsNull()" );
-    ok = false;
-    Assert( nul.IfIsNull( () => ok = true ) );
-    Assert( ok );
-
-    Print( "Is()" );
+    Print( "Is< T >()" );
     Assert( str.Is< string >() );
     Assert( strproxy.Is< string >() );
     Assert( !( objproxy.Is< string >() ) );
     Assert( !( nul.Is< string >() ) );
 
-    Print( "IfIs()" );
+    Print( "Match< T >( action )" );
     ok = false;
-    Assert( str.IfIs< string >( s => ok = true ) );
+    Assert( str.Match< string >( s => ok = true ) );
     Assert( ok );
     ok = false;
-    Assert( strproxy.IfIs< string >( s => ok = true ) );
+    Assert( strproxy.Match< string >( s => ok = true ) );
     Assert( ok );
     ok = true;
-    Assert( !( objproxy.IfIs< string >( s => ok = false ) ) );
+    Assert( !( objproxy.Match< string >( s => ok = false ) ) );
     Assert( ok );
     ok = true;
-    Assert( !( nul.IfIs< string >( s => ok = false ) ) );
+    Assert( !( nul.Match< string >( s => ok = false ) ) );
     Assert( ok );
 
-    Print( ".IsAnd()" );
-    Assert( str.IsAnd< string >( s => s == "match" ) );
-    Assert( strproxy.IsAnd< string >( s => s == "match" ) );
-    Assert( !( strproxy.IsAnd< string >( s => s == "NOMATCH" ) ) );
-    Assert( !( objproxy.IsAnd< string >( s => s == "match" ) ) );
-    Assert( !( nul.IsAnd< string >( s => s == "match" ) ) );
+    Print( ".Match< T >( predicate )" );
+    Assert( str.Match< string >( s => s == "match" ) );
+    Assert( strproxy.Match< string >( s => s == "match" ) );
+    Assert( !( strproxy.Match< string >( s => s == "NOMATCH" ) ) );
+    Assert( !( objproxy.Match< string >( s => s == "match" ) ) );
+    Assert( !( nul.Match< string >( s => s == "match" ) ) );
 
-    Print( ".IfIsAnd()" );
+    Print( ".Match< T >( predicate, action )" );
     ok = false;
-    Assert( str.IfIsAnd<
+    Assert( str.Match<
         string >( s => s == "match", s => ok = true ) );
     Assert( ok );
     ok = false;
-    Assert( strproxy.IfIsAnd<
+    Assert( strproxy.Match<
         string >( s => s == "match", s => ok = true ) );
     Assert( ok );
     ok = true;
-    Assert( !( strproxy.IfIsAnd<
+    Assert( !( strproxy.Match<
         string >( s => s == "NOMATCH", s => ok = false ) ) );
     Assert( ok );
     ok = true;
-    Assert( !( objproxy.IfIsAnd<
+    Assert( !( objproxy.Match<
         string >( s => s == "match", s => ok = false ) ) );
     Assert( ok );
     ok = true;
-    Assert( !( nul.IfIsAnd<
+    Assert( !( nul.Match<
         string >( s => s == "match", s => ok = false ) ) );
     Assert( ok );
 

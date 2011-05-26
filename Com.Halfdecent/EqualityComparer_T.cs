@@ -114,7 +114,7 @@ DirectionalEquals(
     IEqualityComparer that
 )
 {
-    return that.IsAnd<
+    return that.Match<
         EqualityComparer< T > >(
         c =>
             c.EqualsFunc == this.EqualsFunc

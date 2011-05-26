@@ -201,7 +201,7 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    return that.IsAnd<
+    return that.Match<
         Frame >(
         f => f.Depth == this.Depth );
 }
