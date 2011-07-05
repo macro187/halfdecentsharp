@@ -598,7 +598,7 @@ Test_Filter()
         = new Filter< int, int >(
             null,
             (GetState,Get,Put) => {
-                if( GetState() == null ) {
+                if( GetState() == FilterState.NotStarted ) {
                     return FilterState.Want;
                 } else if( GetState() == FilterState.Want ) {
                     Put( Get() );
@@ -607,7 +607,7 @@ Test_Filter()
                 } else if( GetState() == FilterState.Have ) {
                     if( count >= 3 ) return FilterState.Closed;
                     return FilterState.Want;
-                } else { // FilterState.Closed
+                } else {
                     return FilterState.Closed;
                 } },
             () => {;} );
@@ -706,21 +706,22 @@ Test_Filter_filterStepIterator_onetomany()
 }
 
 private static
-SCG.IEnumerator< bool >
+SCG.IEnumerator< FilterState >
 DoubleUp3FilterIterator(
-    System.Func< FilterState > GetState,
-    System.Func< int > Get,
-    System.Action< int > Put
+    System.Func< FilterState > getState,
+    System.Func< int > get,
+    System.Action< int > put
 )
 {
     int count = 0;
     while( count < 3 ) {
-        yield return false;
-        int i = Get();
-        Put( i );
-        yield return true;
-        Put( i );
-        yield return true;
+        yield return FilterState.Want;
+        if( getState() == FilterState.Closed ) yield break;
+        int i = get();
+        put( i );
+        yield return FilterState.Have;
+        put( i );
+        yield return FilterState.Have;
         count++;
     }
 }
@@ -760,7 +761,7 @@ Test_Filter_filterStepIterator_manytomany()
 }
 
 private static
-SCG.IEnumerator< bool >
+SCG.IEnumerator< FilterState >
 Add3PairsFilterIterator(
     System.Func< FilterState > GetState,
     System.Func< int > Get,
@@ -769,12 +770,12 @@ Add3PairsFilterIterator(
 {
     int count = 0;
     while( count < 3 ) {
-        yield return false;
+        yield return FilterState.Want;
         int i = Get();
-        yield return false;
+        yield return FilterState.Want;;
         int j = Get();
         Put( i+j );
-        yield return true;
+        yield return FilterState.Have;
         count++;
     }
 }
@@ -853,14 +854,31 @@ public static
 void
 Test_TextLineSplitter()
 {
+    Print( "Pull" );
     Assert(
-        "\nline1\nline2\rline3\r\nline4\r\rline6\n\nline8\n"
+        "\nline1\nline2\rline3\r\nline4\r\rline6\n\nline8\nline9"
             .AsStream()
             .To( new TextLineSplitter() )
             .SequenceEqual(
                 Stream.Create(
                     "", "line1", "line2", "line3", "line4", "", "line6", "",
-                    "line8" ) ) );
+                    "line8", "line9" ) ) );
+    Print( "Push" );
+    var lines = new SCG.List< string >();
+    var sink =
+        new TextLineSplitter()
+        .To( lines.AsSink() );
+    "\nline1\nline2\rline3\r\nline4\r\rline6\n\nline8\nline9"
+        .AsStream()
+        .EmptyTo( sink );
+    sink.Dispose();
+    Assert(
+        lines
+            .AsStream()
+            .SequenceEqual(
+                Stream.Create(
+                    "", "line1", "line2", "line3", "line4", "", "line6", "",
+                    "line8", "line9" ) ) );
 }
 
 

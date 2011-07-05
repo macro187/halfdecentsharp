@@ -56,7 +56,7 @@ TextLineSplitter()
 // -----------------------------------------------------------------------------
 
 private static
-    SCG.IEnumerator< bool >
+    SCG.IEnumerator< FilterState >
 StepIterator(
     System.Func< FilterState >  getState,
     System.Func< char >         get,
@@ -68,7 +68,8 @@ StepIterator(
     for( ;; ) {
 
         // Get the next character
-        yield return false;
+        yield return FilterState.Want;
+        if( getState() == FilterState.Closed ) break;
         char c = get();
 
         // If it's an \n right after an \r, ignore it completely
@@ -80,7 +81,7 @@ StepIterator(
         // If it's an \r or \n the line's done, so yield it
         if( c == '\r' || c == '\n' ) {
             put( sb.ToString() );
-            yield return true;
+            yield return FilterState.Have;
             // XXX Does this shrink .Capacity?  If so, it guarantees new
             // allocation(s) each line, killing the advantage of using a
             // StringBuilder in the first place, so find another way to
@@ -91,6 +92,12 @@ StepIterator(
 
         // Otherwise append the character to the current line
         sb.Append( c );
+    }
+
+    // Closing, yield any remaining characters as the last line
+    if( sb.Length > 0 ) {
+        put( sb.ToString() );
+        yield return FilterState.Have;
     }
 }
 

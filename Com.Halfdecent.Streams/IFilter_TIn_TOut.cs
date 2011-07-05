@@ -28,25 +28,33 @@ Com.Halfdecent.Streams
 /// A filter is always in a particular <tt>FilterState</tt> as indicated by
 /// <tt>.State</tt>.
 ///
-/// <pre>
-/// State Flowchart
+//  TODO Find a clearer way to illustrate these state transitions
 ///
-///        (begin)
-///           |\
-///           | `---------.
-///           V            |
-///     .--> Want --.      |
-///  .--             --.   |
-/// |   `--> Have --'   |  |
-/// |                   |  |
-///  `-----------------'   |
-///            /           |
-///           | .---------'
-///           |/
-///           |
-///           V
-///        Closed
+/// <pre>
+/// State Flowcharts
+/// ----------------
+///
+/// Filter closes immediately:
+///
+///     NotStarted  -->  Closed
+///
+///
+/// Filter processes normally, possibly eventually deciding to close itself:
+///
+///                       ..         ..
+///                      V  )       V  )
+///                        /          /
+///     NotStarted  -->  Want  -->  Have  -->  Closed
+///                            <--
+///
+///
+/// While processing, filter is instructed to close:
+///
+///            ...  -->  Want  -->  Closed  -->  Have
+///                                         <--
+///
 /// </pre>
+///
 // =============================================================================
 
 public interface
@@ -119,6 +127,20 @@ Peek();
 ///
     TOut
 Take();
+
+
+/// Instruct the filter to begin closing
+///
+/// The filter begins yielding any remaining in-flight items via final
+/// <tt>Have</tt> states, after which it proceeds to the <tt>Closed</tt> state.
+///
+/// Only valid when the filter is in the <tt>Want</tt> state.
+///
+/// @exception InvalidOperationException
+/// <tt>.State != Want</tt>
+///
+    void
+Close();
 
 
 

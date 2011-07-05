@@ -427,61 +427,22 @@ To<
     return Stream.Create(
         () => {
             TIn i;
-            // Feed items from upstream to the filter until it produces an item
-            while( filter.State != FilterState.Have ) {
-                // ...unless the filter closes...
+            for( ;; ) {
                 if( filter.State == FilterState.Closed )
                     return Tuple.Create( false, default( TOut ) );
-                // ...or upstream runs out...
-                if( !dis.TryPull( out i ) )
-                    return Tuple.Create( false, default( TOut ) );
-                filter.Give( i );
-            }
-            // ...and yield it
-            return Tuple.Create( true, filter.Take() ); },
+                if( filter.State == FilterState.Have )
+                    return Tuple.Create( true, filter.Take() );
+                if( dis.TryPull( out i ) )
+                    filter.Give( i );
+                else
+                    filter.Close();
+            } },
         () => {
             if( disposeFilter )
                 filter.Dispose();
             if( disposeThis )
                 dis.Dispose(); } );
 }
-
-
-/*
-/// Connect a stream to a filter
-///
-public static
-    IStream< TTo >
-PipeTo<
-    TFrom,
-    TTo
->(
-    this IStream< TFrom > dis,
-    IFilter< TFrom, TTo > to
-)
-{
-    return dis.PipeTo< TFrom, TTo >( to, true, true );
-}
-
-
-/// Connect a stream to a filter, specifying whether each should be disposed
-/// after use
-///
-public static
-    IStream< TTo >
-PipeTo<
-    TFrom,
-    TTo
->(
-    this IStream< TFrom >   dis,
-    IFilter< TFrom, TTo >   to,
-    bool                    disposeThis,
-    bool                    disposeTo
-)
-{
-    return new StreamToFilter< TFrom, TTo >( dis, disposeThis, to, disposeTo );
-}
-*/
 
 
 

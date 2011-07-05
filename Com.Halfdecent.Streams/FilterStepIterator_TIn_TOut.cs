@@ -39,7 +39,7 @@ Com.Halfdecent.Streams
 // =============================================================================
 
 public delegate
-    SCG.IEnumerator< bool >
+    SCG.IEnumerator< FilterState >
     /// @returns An enumerator that performs a filter processing step on each
     /// <tt>.MoveNext()</tt>
 FilterStepIterator<

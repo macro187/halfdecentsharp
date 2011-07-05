@@ -34,6 +34,13 @@ FilterState
 // Static
 // -----------------------------------------------------------------------------
 
+/// The filter has not started
+///
+public static readonly
+FilterState
+NotStarted = new FilterState( "NotStarted" );
+
+
 /// The filter requires an item
 ///
 public static readonly

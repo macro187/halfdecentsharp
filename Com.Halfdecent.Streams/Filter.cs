@@ -68,14 +68,16 @@ Create<
     return new Filter< TIn, TOut >(
         null,
         (GetState,Get,Put) => {
-            if( GetState() == null ) {
+            if( GetState() == FilterState.NotStarted ) {
                 return FilterState.Want;
             } else if( GetState() == FilterState.Want ) {
                 Put( convertFunc( Get() ) );
                 return FilterState.Have;
             } else if( GetState() == FilterState.Have ) {
                 return FilterState.Want;
-            } else { // FilterState.Closed
+            } else if( GetState() == FilterState.Closed ) {
+                return FilterState.Closed;
+            } else {
                 throw new BugException();
             } },
         disposeFunc );
@@ -118,8 +120,6 @@ Create<
 
 /// Hook this filter to another one to produce a composite filter
 ///
-// TODO Overload with disposeF1 and disposeF2 parameters
-//
 public static
     IFilter< TIn, TOut >
 To<
@@ -159,7 +159,7 @@ To<
 }
 
 private static
-    SCG.IEnumerator< bool >
+    SCG.IEnumerator< FilterState >
 ComposeFilterStepIterator<
     TIn,
     TBetween,
@@ -177,27 +177,45 @@ ComposeFilterStepIterator<
     NonNull.CheckParameter( getState, "getState" );
     NonNull.CheckParameter( get, "get" );
     NonNull.CheckParameter( put, "put" );
+
     for( ;; ) {
-        // (f2 Have|Want|Closed)
-        while( f2.State == FilterState.Have ) {
-            // (f2 Have)
+        // (f1 Want|Have|Closed)
+        // (f2 Want|Have|Closed)
+
+        if( f2.State == FilterState.Closed )
+            break;
+
+        // (f1 Want|Have|Closed)
+        // (f2 Want|Have)
+
+        if( f2.State == FilterState.Have ) {
             put( f2.Take() );
-            yield return true;
+            yield return FilterState.Have;
+            continue;
         }
-        // (f2 Want|Closed)
-        if( f2.State == FilterState.Closed ) yield break;
+
+        // (f1 Want|Have|Closed)
         // (f2 Want)
 
-        // (f1 Have|Want|Closed)
-        while( f1.State != FilterState.Have ) {
-            // (f1 Want|Closed)
-            if( f1.State == FilterState.Closed ) yield break;
-            // (f1 Want)
-            yield return false;
-            f1.Give( get() );
+        if( f1.State == FilterState.Closed ) {
+            f2.Close();
+            continue;
         }
-        // (f1 Have)
-        f2.Give( f1.Take() );
+
+        // (f1 Want|Have)
+        // (f2 Want)
+
+        if( f1.State == FilterState.Have ) {
+            f2.Give( f1.Take() );
+            continue;
+        }
+
+        // (f1 Want)
+        // (f2 Want)
+
+        yield return FilterState.Want;
+        if( getState() == FilterState.Closed ) continue;
+        f1.Give( get() );
     }
 }
 
@@ -205,6 +223,9 @@ ComposeFilterStepIterator<
 /// Hook this filter to a sink
 ///
 /// Immediately attempts to empty any items in this filter to the sink
+///
+/// When disposed, attempts to empty any items remaining in the filter into the
+/// sink.
 ///
 public static
     ISink< TIn >
@@ -220,6 +241,13 @@ To<
 }
 
 
+/// Hook this filter to a sink
+///
+/// Immediately attempts to empty any items in this filter to the sink
+///
+/// If <tt>disposeDis</tt>, when disposed, attempts to empty any items remaining
+/// in the filter into the sink.
+///
 public static
     ISink< TIn >
 To<
@@ -264,9 +292,19 @@ To<
             // (Want)
             return true;
             },
+
         () => {
-            if( disposeDis ) dis.Dispose();
-            if( disposeSink ) sink.Dispose(); } );
+            if( disposeDis ) {
+                dis.Close();
+                while( dis.State == FilterState.Have )
+                    if( sink.TryPush( dis.Peek() ) )
+                        dis.Take();
+                    else
+                        break;
+                dis.Dispose();
+            }
+            if( disposeSink )
+                sink.Dispose(); } );
 }
 
 

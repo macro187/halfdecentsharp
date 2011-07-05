@@ -57,7 +57,7 @@ TextEncoder(
 // -----------------------------------------------------------------------------
 
 private static
-    SCG.IEnumerator< bool >
+    SCG.IEnumerator< FilterState >
 StepIterator(
     System.Text.Encoding        encoding,
     System.Func< FilterState >  getState,
@@ -72,7 +72,8 @@ StepIterator(
     for( ;; ) {
 
         // Get the next character
-        yield return false;
+        yield return FilterState.Want;
+        if( getState() == FilterState.Closed ) break;
         c[0] = get();
 
         // See how many bytes we'll get and grow the output array if necessary
@@ -88,7 +89,7 @@ StepIterator(
         // Yield any encoded byte(s)
         for( int i = 0; i < bcount; i++ ) {
             put( b[i] );
-            yield return true;
+            yield return FilterState.Have;
         }
     }
 }

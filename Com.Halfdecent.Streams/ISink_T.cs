@@ -24,6 +24,8 @@ Com.Halfdecent.Streams
 // =============================================================================
 /// A programmatic consumer of items
 ///
+/// "End-of-stream" is signalled, if necessary, by disposal.
+///
 /// See <tt>http://en.wikipedia.org/wiki/Sink_(computing)</tt>
 // =============================================================================
 

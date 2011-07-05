@@ -28,13 +28,8 @@ Com.Halfdecent.Streams
 
 
 // =============================================================================
-/// Filter implementation based on a <tt>FilterStepFunc<TIn,TOut></tt>
-///
-/// This class can be used in a functional style by passing a
-/// <tt>FilterStepFunc<TIn,TOut></tt> to the contructor.  This class can also be
-/// used in an object-oriented style by subclassing and overriding
-/// <tt>.Step()</tt>.  In either case, the step function is expected to behave
-/// as outlined in <tt>FilterStepFunc<TIn,TOut></tt>.
+/// Filter implementation based on a <tt>FilterStepIterator<TIn,TOut></tt> or a
+/// <tt>FilterStepFunc<TIn,TOut></tt>
 // =============================================================================
 
 public class
@@ -61,23 +56,22 @@ Filter(
     // If we're given an iterator, turn it into a repeatedly-callable
     // FilterStepFunc
     if( stepIterator != null ) {
-        SCG.IEnumerator< bool > e = null;
+        SCG.IEnumerator< FilterState > e = null;
         stepFunc =
             (GetState,Get,Put) => {
-                if( GetState() == null )
+                if( GetState() == FilterState.NotStarted )
                     e = stepIterator( GetState, Get, Put );
                 if( !e.MoveNext() )
                     return FilterState.Closed;
-                return e.Current
-                    ? FilterState.Have
-                    : FilterState.Want; };
+                return e.Current; };
     }
 
-    this.State = null;
+    this.State = FilterState.NotStarted;
     this.StepFunc = stepFunc;
     this.DisposeFunc = disposeFunc;
     this.Disposed = false;
-    this.FirstStep();
+    this.Closing = false;
+    this.Step();
 }
 
 
@@ -99,6 +93,11 @@ DisposeFunc;
 private
 bool
 Disposed;
+
+
+private
+bool
+Closing;
 
 
 private
@@ -167,23 +166,36 @@ private
 Step()
 {
     FilterState newstate = this.StepFunc( this.GetState, this.Get, this.Put );
+
     if( newstate == null )
         throw new BugException(
             new LocalisedInvalidOperationException(
-                _S("StepFunc returned null FilterState") ) );
-    this.State = newstate;
-}
+                _S("StepFunc returned null") ) );
 
-
-private
-    void
-FirstStep()
-{
-    this.Step();
-    if( this.State == FilterState.Have )
+    if( newstate == FilterState.NotStarted )
         throw new BugException(
             new LocalisedInvalidOperationException(
-                _S("StepFunc returned Have state on first step") ) );
+                _S("StepFunc tried to move to NotStarted") ) );
+
+    if( this.State == FilterState.NotStarted )
+        if( newstate != FilterState.Want && newstate != FilterState.Closed )
+            throw new BugException(
+                new LocalisedInvalidOperationException(
+                    _S("StepFunc tried to move to {0} on first step", newstate) ) );
+
+    if( this.State == FilterState.Closed )
+        if( newstate != FilterState.Have && newstate != FilterState.Closed )
+            throw new BugException(
+                new LocalisedInvalidOperationException(
+                    _S("StepFunc tried to move from Closed to {0}", newstate) ) );
+
+    if( this.State == FilterState.Have && this.Closing )
+        if( newstate != FilterState.Have && newstate != FilterState.Closed )
+            throw new BugException(
+                new LocalisedInvalidOperationException(
+                    _S("StepFunc tried to move to {0} while closing", newstate) ) );
+
+    this.State = newstate;
 }
 
 
@@ -246,6 +258,23 @@ Take()
     this.Step();
     return item;
 }
+
+
+public
+    void
+Close()
+{
+    if( this.Disposed )
+        throw new BugException(
+            new System.ObjectDisposedException( null ) );
+    if( this.State != FilterState.Want )
+        throw new LocalisedInvalidOperationException(
+            _S(".State must be Want in order to Close()") );
+    this.State = FilterState.Closed;
+    this.Closing = true;
+    this.Step();
+}
+
 
 
 // -----------------------------------------------------------------------------
