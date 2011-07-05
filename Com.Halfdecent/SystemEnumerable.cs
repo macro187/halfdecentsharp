@@ -85,8 +85,8 @@ Recurse<
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Create an enumerable consiting of the items in this one plus a specified
-/// sequence of additional items
+/// Create an enumerable consisting of the items in this one plus additional
+/// specified item(s)
 ///
 public static
     IEnumerable< T >
@@ -191,7 +191,7 @@ StartsWith<
         if( !c.MoveNext() ) return true;
         if( !d.MoveNext() ) return false;
         if( object.ReferenceEquals( c.Current, null ) )
-            throw new ArgumentException( "null criteria encountered" );
+            throw new ArgumentException( "null criterion encountered" );
         if( !c.Current( d.Current ) ) return false;
     }
 }
