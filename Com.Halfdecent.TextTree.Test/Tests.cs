@@ -105,6 +105,10 @@ Test_OutputTokenStreams()
     Assert( t.LineNumber == 9 );
     Assert( t.Match< DataToken >( dt => dt.Data == "bb" ) );
 
+    t = tokens.Pull();
+    Assert( t.LineNumber == 9 );
+    Assert( t.Is< DeindentToken >() );
+
     Assert( !tokens.TryPull( out t ) );
 }
 
@@ -119,8 +123,7 @@ tree1 =
 
 b
     ba
-    bb
-";
+    bb";
 
 
 

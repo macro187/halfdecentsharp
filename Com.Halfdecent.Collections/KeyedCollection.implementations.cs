@@ -79,10 +79,11 @@ GetAndReplaceAllViaUniqueKeyedCollectionFilter<
 )
 {
     if( !col.Contains( key ) ) yield break;
-    yield return false;
+    yield return FilterState.Want;
+    if( getState() == FilterState.Closed ) yield break;
     put( col.Get( key ) );
     col.Replace( key, get() );
-    yield return true;
+    yield return FilterState.Have;
 }
 
 

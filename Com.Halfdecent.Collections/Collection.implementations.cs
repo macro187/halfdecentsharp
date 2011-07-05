@@ -87,10 +87,11 @@ GetAndReplaceWhereViaUniqueKeyedCollectionFilter<
     foreach( TKey key in col.StreamKeys().AsEnumerable() ) {
         T old = col.Get( key );
         if( !where( old ) ) continue;
-        yield return false;
+        yield return FilterState.Want;
+        if( getState() == FilterState.Closed ) break;
         col.Replace( key, get() );
         put( old );
-        yield return true;
+        yield return FilterState.Have;
     }
 }
 

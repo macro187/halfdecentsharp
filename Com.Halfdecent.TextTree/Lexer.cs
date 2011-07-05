@@ -59,7 +59,7 @@ Lexer()
 // -----------------------------------------------------------------------------
 
 private
-    SCG.IEnumerator< bool >
+    SCG.IEnumerator< FilterState >
 Process(
     System.Func< FilterState >  getState,
     System.Func< string >       get,
@@ -73,7 +73,8 @@ Process(
     for( ;; ) {
 
         // Get the next line
-        yield return false;
+        yield return FilterState.Want;
+        if( getState() == FilterState.Closed ) break;
         string line = get();
         linenum++;
 
@@ -93,7 +94,7 @@ Process(
             stops.RemoveLast();
 
             put( new DeindentToken( linenum ) );
-            yield return true;
+            yield return FilterState.Have;
         }
 
         // Pop stops off the indent until it equals the same section of the
@@ -107,7 +108,7 @@ Process(
             stops.RemoveLast();
 
             put( new DeindentToken( linenum ) );
-            yield return true;
+            yield return FilterState.Have;
         }
 
         // If the new indent is longer than indent, push a new stop
@@ -121,7 +122,7 @@ Process(
                     indent.AsSink() );
 
             put( new IndentToken( linenum ) );
-            yield return true;
+            yield return FilterState.Have;
         }
 
         // Yield the data
@@ -132,7 +133,13 @@ Process(
             new DataToken(
                 new string( data.Stream().AsEnumerable().ToArray() ),
                 linenum ) );
-        yield return true;
+        yield return FilterState.Have;
+    }
+
+    int stopcount = (int)stops.Count.GetValue();
+    for( int i = 0; i < stopcount; i++ ) {
+        put( new DeindentToken( linenum ) );
+        yield return FilterState.Have;
     }
 }
 
