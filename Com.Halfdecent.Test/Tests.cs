@@ -894,6 +894,49 @@ Test_ITupleAsSystemTuple()
 #endif
 
 
+[Test( "Maybe" )]
+public static void
+Test_Maybe()
+{
+    IMaybe< string > m;
+    IMaybe< object > mo;
+    ITuple< bool, string > t;
+
+    Print( "Without value" );
+    m = Maybe.Create< string >();
+    Assert( !m.HasValue );
+    Expect< System.InvalidOperationException>( () => {
+        if( m.Value == null ) {} } );
+
+    Print( "Without value, as tuple" );
+    t = m;
+    Assert( !t.A );
+    Assert( t.B == default( string ) );
+
+    Print( "With value" );
+    m = Maybe.Create( "abc" );
+    Assert( m.HasValue );
+    Assert( m.Value == "abc" );
+
+    Print( "With value, as tuple" );
+    t = m;
+    Assert( t.A );
+    Assert( t.B == "abc" );
+
+    Print( "With value, covaried explicitly" );
+    mo = m.Covary< string, object >();
+    Assert( mo.HasValue );
+    Assert( m.Value.Equals( "abc" ) );
+
+    #if DOTNET40
+    Print( "With value, covaried implicitly" );
+    mo = m;
+    Assert( mo.HasValue );
+    Assert( m.Value.Equals( "abc" ) );
+    #endif
+}
+
+
 
 
 } // type
