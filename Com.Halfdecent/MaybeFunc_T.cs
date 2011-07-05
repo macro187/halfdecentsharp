@@ -27,7 +27,7 @@ Com.Halfdecent
 
 public delegate
     bool
-Maybe<
+MaybeFunc<
     T
 >(
     out T result

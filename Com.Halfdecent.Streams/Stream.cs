@@ -101,7 +101,7 @@ public static
 Create<
     T
 >(
-    Maybe< T > maybeFunc
+    MaybeFunc< T > maybeFunc
 )
 {
     return Create( maybeFunc, () => {;} );
@@ -113,7 +113,7 @@ public static
 Create<
     T
 >(
-    Maybe< T >      maybeFunc,
+    MaybeFunc< T >  maybeFunc,
     System.Action   disposeFunc
 )
 {
