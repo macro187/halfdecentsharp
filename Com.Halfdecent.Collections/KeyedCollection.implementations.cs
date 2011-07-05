@@ -66,7 +66,7 @@ GetAndReplaceAllViaUniqueKeyedCollection<
 }
 
 private static
-    SCG.IEnumerator< bool >
+    SCG.IEnumerator< FilterState >
 GetAndReplaceAllViaUniqueKeyedCollectionFilter<
     TKey,
     T

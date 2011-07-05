@@ -67,7 +67,7 @@ GetAndReplaceWhereViaUniqueKeyedCollection<
 }
 
 private static
-    SCG.IEnumerator< bool >
+    SCG.IEnumerator< FilterState >
 GetAndReplaceWhereViaUniqueKeyedCollectionFilter<
     TKey,
     T

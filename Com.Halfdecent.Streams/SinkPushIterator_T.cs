@@ -43,7 +43,11 @@ public delegate
     /// @returns An enumerator that processes another sink input item on each
     /// <tt>.MoveNext()</tt>
 SinkPushIterator<
+    #if DOTNET40
     in T
+    #else
+    T
+    #endif
 >(
     System.Func< T > Get
     ///< Function that retrieves the next input item
