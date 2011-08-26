@@ -126,6 +126,23 @@ AsSystemTuple<
 #endif
 
 
+public static
+    IMaybe< T >
+AsMaybe<
+    T
+>(
+    this ITuple< bool, T > dis
+)
+{
+    if( object.ReferenceEquals( dis, null ) )
+        throw new System.ArgumentNullException( "dis" );
+    if( dis.A )
+        return Maybe.Create< T >( dis.B );
+    else
+        return Maybe.Create< T >();
+}
+
+
 
 
 } // type
