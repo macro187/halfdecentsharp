@@ -58,7 +58,7 @@ Assert123(
     IStream< int > s
 )
 {
-    ITuple< bool, int > t;
+    IMaybe< int > t;
 
     t = s.TryPull();
     Assert( t.A );
@@ -86,8 +86,8 @@ Test_Stream_T()
     IStream< int > s = new Stream< int >(
         () =>
             i <= 3
-                ? Tuple.Create( true, i++ )
-                : Tuple.Create( false, -1 ),
+                ? Maybe.Create( i++ )
+                : Maybe.Create< int >(),
         () => {;} );
     Assert123( s );
 }
@@ -138,7 +138,7 @@ void
 Test_Stream_Create_params()
 {
     IStream< int > s = Stream.Create( 1, 2, 3 );
-    ITuple< bool, int > t;
+    IMaybe< int > t;
     t = s.TryPull();
     Assert( t.A );
     Assert( t.B == 1 );

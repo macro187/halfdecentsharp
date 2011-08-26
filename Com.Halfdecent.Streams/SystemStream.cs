@@ -45,8 +45,8 @@ AsHalfdecentStream(
         () => {
             int i = dis.ReadByte();
             return i >= 0
-                ? Tuple.Create( true, (byte)i )
-                : Tuple.Create( false, default( byte ) ); },
+                ? Maybe.Create( (byte)i )
+                : Maybe.Create< byte >(); },
         () => {
             dis.Close(); });
 }

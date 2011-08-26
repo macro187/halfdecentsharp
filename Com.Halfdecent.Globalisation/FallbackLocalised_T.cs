@@ -48,7 +48,7 @@ public
 FallbackLocalised(
     Func< CultureInfo, IEnumerable< CultureInfo > > fallbacksForFunc,
     ///< See <tt>FallbacksFor()</tt>
-    Func< CultureInfo, ITuple< bool, T > >          tryInFunc,
+    Func< CultureInfo, IMaybe< T > >                tryInFunc,
     ///< See <tt>TryIn()</tt>
     Func< T >                                       defaultFunc
     ///< See <tt>Default()</tt>
@@ -74,7 +74,7 @@ FallbacksForFunc = null;
 
 
 private
-Func< CultureInfo, ITuple< bool, T > >
+Func< CultureInfo, IMaybe< T > >
 TryInFunc = null;
 
 
@@ -106,7 +106,7 @@ FallbacksFor(
 
 
 protected virtual
-    ITuple< bool, T >
+    IMaybe< T >
 TryIn(
     CultureInfo culture
 )

@@ -146,7 +146,7 @@ FallbacksFor(
 
 
 protected override
-    ITuple< bool, T >
+    IMaybe< T >
 TryIn(
     CultureInfo culture
 )
@@ -170,14 +170,14 @@ TryIn(
     } catch( MissingManifestResourceException ) {
         set = null;
     }
-    if( set == null ) return Tuple.Create( false, default( T ) );
+    if( set == null ) return Maybe.Create< T >();
 
     // Once we have a ResourceSet, GetObject() will give us the embedded
     // resource as an object, or null if it doesn't have anything under the
     // given name
     //
     object obj = set.GetObject( this.name );
-    if( obj == null ) return Tuple.Create( false, default( T ) );
+    if( obj == null ) return Maybe.Create< T >();
 
     // Blow up if it's not of the expected type
     //
@@ -189,7 +189,7 @@ TryIn(
             this.name,
             culture.Name );
 
-    return Tuple.Create( true, (T)obj );
+    return Maybe.Create( (T)obj );
 }
 
 

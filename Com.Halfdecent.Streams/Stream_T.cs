@@ -41,8 +41,8 @@ Stream<
 
 public
 Stream(
-    System.Func< ITuple< bool, T > >    tryPullFunc,
-    System.Action                       disposeFunc
+    System.Func< IMaybe< T > >  tryPullFunc,
+    System.Action               disposeFunc
 )
 {
     NonNull.CheckParameter( tryPullFunc, "tryPullFunc" );
@@ -59,7 +59,7 @@ Stream(
 // -----------------------------------------------------------------------------
 
 private
-System.Func< ITuple< bool, T > >
+System.Func< IMaybe< T > >
 TryPullFunc;
 
 
@@ -79,7 +79,7 @@ Disposed;
 // -----------------------------------------------------------------------------
 
 public
-    ITuple< bool, T >
+    IMaybe< T >
 TryPull()
 {
     if( this.Disposed )

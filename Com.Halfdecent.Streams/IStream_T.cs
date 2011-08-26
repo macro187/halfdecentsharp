@@ -43,7 +43,7 @@ IStream<
 
 /// Try to pull the next item from the stream
 ///
-    ITuple< bool, T >
+    IMaybe< T >
     /// @returns
     /// A tuple whose first value indicates whether the end of the stream has
     /// been reached and whose second value is either the next value or, if the

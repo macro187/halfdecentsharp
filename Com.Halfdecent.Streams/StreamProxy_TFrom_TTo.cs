@@ -61,10 +61,10 @@ From
 
 
 public
-    ITuple< bool, TTo >
+    IMaybe< TTo >
 TryPull()
 {
-    return this.From.TryPull().Covary< bool, TFrom, bool, TTo >();
+    return this.From.TryPull().Covary< TFrom, TTo >();
 }
 
 

@@ -88,8 +88,8 @@ Create<
     return Create< T >(
         () =>
             canPullFunc()
-                ? Tuple.Create( true, pullFunc() )
-                : Tuple.Create( false, default( T ) ),
+                ? Maybe.Create( pullFunc() )
+                : Maybe.Create< T >(),
         disposeFunc );
 }
 
@@ -122,8 +122,8 @@ Create<
         () => {
             T r;
             return maybeFunc( out r )
-                ? Tuple.Create( true, r )
-                : Tuple.Create( false, default( T ) ); },
+                ? Maybe.Create( r )
+                : Maybe.Create< T >(); },
         disposeFunc );
 }
 
@@ -135,7 +135,7 @@ public static
 Create<
     T
 >(
-    System.Func< ITuple< bool, T > > tryPullFunc
+    System.Func< IMaybe< T > > tryPullFunc
 )
 {
     return Create( tryPullFunc, () => {;} );
@@ -147,7 +147,7 @@ public static
 Create<
     T
 >(
-    System.Func< ITuple< bool, T > >    tryPullFunc,
+    System.Func< IMaybe< T > >          tryPullFunc,
     System.Action                       disposeFunc
 )
 {
@@ -215,7 +215,7 @@ TryPull<
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    ITuple< bool, T > t = dis.TryPull();
+    IMaybe< T > t = dis.TryPull();
     item = t.B;
     return t.A;
 }
@@ -429,9 +429,9 @@ To<
             TIn i;
             for( ;; ) {
                 if( filter.State == FilterState.Closed )
-                    return Tuple.Create( false, default( TOut ) );
+                    return Maybe.Create< TOut >();
                 if( filter.State == FilterState.Have )
-                    return Tuple.Create( true, filter.Take() );
+                    return Maybe.Create( filter.Take() );
                 if( dis.TryPull( out i ) )
                     filter.Give( i );
                 else
