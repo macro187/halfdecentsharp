@@ -67,6 +67,71 @@ Create<
 // -----------------------------------------------------------------------------
 
 public static
+    IMaybe< U >
+If<
+    T,
+    U
+>(
+    this IMaybe< T >    dis,
+    System.Func< T, U > hasValueFunc
+)
+{
+    if( dis == null )
+        throw new System.ArgumentNullException( "dis" );
+    if( hasValueFunc == null )
+        throw new System.ArgumentNullException( "hasValueFunc" );
+    if( dis.HasValue )
+        return Maybe.Create( hasValueFunc( dis.Value ) );
+    else
+        return Maybe.Create< U >();
+}
+
+
+public static
+    void
+If<
+    T
+>(
+    this IMaybe< T >    dis,
+    System.Action< T >  hasValueAction,
+    System.Action       hasNoValueAction
+)
+{
+    if( dis == null )
+        throw new System.ArgumentNullException( "dis" );
+    if( hasValueAction == null )
+        throw new System.ArgumentNullException( "hasValueAction" );
+    if( hasNoValueAction == null )
+        hasNoValueAction = () => {};
+    if( dis.HasValue )
+        hasValueAction( dis.Value );
+    else
+        hasNoValueAction();
+}
+
+
+public static
+    T
+Else<
+    T
+>(
+    this IMaybe< T >    dis,
+    System.Func< T >    hasNoValueFunc
+)
+{
+    if( dis == null )
+        throw new System.ArgumentNullException( "dis" );
+    if( hasNoValueFunc == null )
+        throw new System.ArgumentNullException( "hadNoValueFunc" );
+    return
+        dis.HasValue
+        ? dis.Value
+        : hasNoValueFunc();
+}
+
+
+
+public static
     IMaybe< TTo >
 Covary<
     TFrom,

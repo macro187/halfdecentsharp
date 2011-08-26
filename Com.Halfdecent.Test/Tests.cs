@@ -901,6 +901,7 @@ Test_Maybe()
     IMaybe< string > m;
     IMaybe< object > mo;
     ITuple< bool, string > t;
+    bool success = false;
 
     Print( "Without value" );
     m = Maybe.Create< string >();
@@ -934,6 +935,40 @@ Test_Maybe()
     Assert( mo.HasValue );
     Assert( m.Value.Equals( "abc" ) );
     #endif
+
+    Print( ".If( Func<T,U> )" );
+    Assert(
+        Maybe.Create( "a" )
+        .If( s => 1 )
+        .Value == 1 );
+    Assert(
+        Maybe.Create< string >()
+        .If( s => 1 )
+        .HasValue == false );
+
+    Print( ".If( Action<T>, Action )" );
+    success = false;
+    Maybe.Create( "a" )
+        .If(
+            s => { success = true; },
+            () => { success = false; } );
+    Assert( success );
+    success = false;
+    Maybe.Create< string >()
+        .If(
+            s => { success = false; },
+            () => { success = true; } );
+    Assert( success );
+
+    Print( ".Else( Func< T > )" );
+    Assert(
+        Maybe.Create( "good" )
+        .Else( () => "bad" )
+        == "good" );
+    Assert(
+        Maybe.Create< string >()
+        .Else( () => "good" )
+        == "good" );
 }
 
 
