@@ -73,8 +73,6 @@ public static
 void
 Test_SystemObject()
 {
-    bool ok;
-
     object str = "match";
     object strproxy = new TestProxy( str );
     object obj = new object();
@@ -91,52 +89,144 @@ Test_SystemObject()
     Assert( !( objproxy.Is< string >() ) );
     Assert( !( nul.Is< string >() ) );
 
-    Print( "Match< T >( action )" );
-    ok = false;
-    Assert( str.Match< string >( s => ok = true ) );
-    Assert( ok );
-    ok = false;
-    Assert( strproxy.Match< string >( s => ok = true ) );
-    Assert( ok );
-    ok = true;
-    Assert( !( objproxy.Match< string >( s => ok = false ) ) );
-    Assert( ok );
-    ok = true;
-    Assert( !( nul.Match< string >( s => ok = false ) ) );
-    Assert( ok );
-
-    Print( ".Match< T >( predicate )" );
-    Assert( str.Match< string >( s => s == "match" ) );
-    Assert( strproxy.Match< string >( s => s == "match" ) );
-    Assert( !( strproxy.Match< string >( s => s == "NOMATCH" ) ) );
-    Assert( !( objproxy.Match< string >( s => s == "match" ) ) );
-    Assert( !( nul.Match< string >( s => s == "match" ) ) );
-
-    Print( ".Match< T >( predicate, action )" );
-    ok = false;
-    Assert( str.Match<
-        string >( s => s == "match", s => ok = true ) );
-    Assert( ok );
-    ok = false;
-    Assert( strproxy.Match<
-        string >( s => s == "match", s => ok = true ) );
-    Assert( ok );
-    ok = true;
-    Assert( !( strproxy.Match<
-        string >( s => s == "NOMATCH", s => ok = false ) ) );
-    Assert( ok );
-    ok = true;
-    Assert( !( objproxy.Match<
-        string >( s => s == "match", s => ok = false ) ) );
-    Assert( ok );
-    ok = true;
-    Assert( !( nul.Match<
-        string >( s => s == "match", s => ok = false ) ) );
-    Assert( ok );
+    Print( ".Is< T >( Predicate< T > )" );
+    Assert( str.Is< string >( s => s == "match" ) );
+    Assert( strproxy.Is< string >( s => s == "match" ) );
+    Assert( !( strproxy.Is< string >( s => s == "NOMATCH" ) ) );
+    Assert( !( objproxy.Is< string >( s => s == "match" ) ) );
+    Assert( !( nul.Is< string >( s => s == "match" ) ) );
 
     Print( "GetUnderlying()" );
     Assert( obj.GetUnderlying() == obj );
     Assert( objproxy.GetUnderlying() == obj );
+
+    Print( ".Match(), first .When() matches" );
+    Assert(
+        "abc"
+            .Match()
+            .Returns< int >()
+            .When(
+                s => true,
+                s => 1 )
+            .When(
+                s => false,
+                s => 2 )
+            .Else(
+                () => 3 )
+        == 1 );
+
+    Print( ".Match(), first and second .When()s match" );
+    Assert(
+        "abc"
+            .Match()
+            .Returns< int >()
+            .When(
+                s => true,
+                s => 1 )
+            .When(
+                s => true,
+                s => 2 )
+            .Else(
+                () => 3 )
+        == 1 );
+
+    Print( ".Match(), second .When() matches" );
+    Assert(
+        "abc"
+            .Match()
+            .Returns< int >()
+            .When(
+                s => false,
+                s => 1 )
+            .When(
+                s => true,
+                s => 2 )
+            .Else(
+                () => 3 )
+        == 2 );
+
+    Print( ".Match(), neither .When() matches" );
+    Assert(
+        "abc"
+            .Match()
+            .Returns< int >()
+            .When(
+                s => false,
+                s => 1 )
+            .When(
+                s => false,
+                s => 2 )
+            .Else(
+                () => 3 )
+        == 3 );
+
+    Print( ".Match< T >(), first .When() matches" );
+    Assert(
+        ((object)"abc")
+            .Match()
+            .Returns< int >()
+            .When<
+                string >(
+                s => true,
+                s => 1 )
+            .When<
+                string >(
+                s => false,
+                s => 2 )
+            .Else(
+                () => 3 )
+        == 1 );
+
+    Print( ".Match< T >(), first .When() predicate fails" );
+    Assert(
+        ((object)"abc")
+            .Match()
+            .Returns< int >()
+            .When<
+                string >(
+                s => false,
+                s => 1 )
+            .When<
+                string >(
+                s => true,
+                s => 2 )
+            .Else(
+                () => 3 )
+        == 2 );
+
+    Print( ".Match< T >(), first .When() type fails" );
+    Assert(
+        ((object)"abc")
+            .Match()
+            .Returns< int >()
+            .When<
+                System.Exception >(
+                e => false,
+                e => 1 )
+            .When<
+                string >(
+                s => true,
+                s => 2 )
+            .Else(
+                () => 3 )
+        == 2 );
+
+    Print( ".Match< T >(), neither .When() matches" );
+    Assert(
+        ((object)"abc")
+            .Match()
+            .Returns< int >()
+            .When<
+                System.Exception >(
+                e => false,
+                e => 1 )
+            .When<
+                string >(
+                s => false,
+                s => 2 )
+            .Else(
+                () => 3 )
+        == 3 );
 }
 
 

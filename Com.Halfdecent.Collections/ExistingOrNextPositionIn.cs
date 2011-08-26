@@ -131,7 +131,7 @@ DirectionalEquals(
 {
     return
         base.DirectionalEquals( that )
-        && that.Match<
+        && that.Is<
             ExistingOrNextPositionIn >(
             rt => (object)(rt.Collection) == this.Collection );
 }

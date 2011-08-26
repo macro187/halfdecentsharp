@@ -91,7 +91,7 @@ ExpectFixedData(
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( data, "data" );
-    if( !dis.Match< DataToken >( dt => dt.Data == data ) )
+    if( !dis.Is< DataToken >( dt => dt.Data == data ) )
         throw new ParseException(
             LocalisedString.Format( "Expected '{0}'", data ),
             dis );
@@ -108,11 +108,12 @@ ExpectData(
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( description, "description" );
     return
-        dis.MatchElse< DataToken >(
-            () => {
-                throw new ParseException(
-                    LocalisedString.Format( "Expected {0}", description ),
-                    dis ); } )
+        dis
+        .As< DataToken >()
+        .Else( () => {
+            throw new ParseException(
+                LocalisedString.Format( "Expected {0}", description ),
+                dis ); } )
         .Data;
 }
 

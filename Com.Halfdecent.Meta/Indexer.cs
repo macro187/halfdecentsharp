@@ -87,7 +87,7 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    return that.Match<
+    return that.Is<
         Indexer >(
         i => object.Equals( i.Index, this.Index ) );
 }

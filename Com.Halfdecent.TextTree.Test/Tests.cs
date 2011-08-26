@@ -63,7 +63,7 @@ Test_OutputTokenStreams()
 
     t = tokens.Pull();
     Assert( t.LineNumber == 1 );
-    Assert( t.Match< DataToken >( dt => dt.Data == "a" ) );
+    Assert( t.Is< DataToken >( dt => dt.Data == "a" ) );
 
     t = tokens.Pull();
     Assert( t.LineNumber == 2 );
@@ -71,11 +71,11 @@ Test_OutputTokenStreams()
 
     t = tokens.Pull();
     Assert( t.LineNumber == 2 );
-    Assert( t.Match< DataToken >( dt => dt.Data == "aa" ) );
+    Assert( t.Is< DataToken >( dt => dt.Data == "aa" ) );
 
     t = tokens.Pull();
     Assert( t.LineNumber == 3 );
-    Assert( t.Match< DataToken >( dt => dt.Data == "ab" ) );
+    Assert( t.Is< DataToken >( dt => dt.Data == "ab" ) );
 
     t = tokens.Pull();
     Assert( t.LineNumber == 4 );
@@ -91,7 +91,7 @@ Test_OutputTokenStreams()
 
     t = tokens.Pull();
     Assert( t.LineNumber == 7 );
-    Assert( t.Match< DataToken >( dt => dt.Data == "b" ) );
+    Assert( t.Is< DataToken >( dt => dt.Data == "b" ) );
 
     t = tokens.Pull();
     Assert( t.LineNumber == 8 );
@@ -99,11 +99,11 @@ Test_OutputTokenStreams()
 
     t = tokens.Pull();
     Assert( t.LineNumber == 8 );
-    Assert( t.Match< DataToken >( dt => dt.Data == "ba" ) );
+    Assert( t.Is< DataToken >( dt => dt.Data == "ba" ) );
 
     t = tokens.Pull();
     Assert( t.LineNumber == 9 );
-    Assert( t.Match< DataToken >( dt => dt.Data == "bb" ) );
+    Assert( t.Is< DataToken >( dt => dt.Data == "bb" ) );
 
     t = tokens.Pull();
     Assert( t.LineNumber == 9 );

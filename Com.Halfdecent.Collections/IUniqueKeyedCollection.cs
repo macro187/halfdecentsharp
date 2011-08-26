@@ -16,6 +16,10 @@
 // -----------------------------------------------------------------------------
 
 
+using Com.Halfdecent.Streams;
+using SCG = System.Collections.Generic;
+
+
 namespace
 Com.Halfdecent.Collections
 {
@@ -36,6 +40,23 @@ IUniqueKeyedCollection
 // -----------------------------------------------------------------------------
 // Trait IUniqueKeyedCollection.Statics
 // -----------------------------------------------------------------------------
+
+public static
+    IUniqueKeyedCollectionRCSG< TKey, T >
+Create<
+    TKey,
+    T
+>(
+    IStream< ITuple< TKey, T > > items
+)
+{
+    items = items ?? Stream.Create< ITuple< TKey, T > >();
+    var dict = new SCG.Dictionary< TKey, T >();
+    foreach( var tuple in items.AsEnumerable() )
+        dict.Add( tuple.A, tuple.B );
+    return dict.AsHalfdecentCollection();
+}
+
 #endif
 
 

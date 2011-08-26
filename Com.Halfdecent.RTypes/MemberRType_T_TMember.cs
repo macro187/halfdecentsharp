@@ -161,7 +161,7 @@ DirectionalEquals(
 {
     return
         base.DirectionalEquals( that )
-        && that.Match<
+        && that.Is<
             MemberRType< T, TMember > >(
             mrt =>
                 mrt.GetMemberFunc == this.GetMemberFunc

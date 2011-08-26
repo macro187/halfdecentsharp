@@ -36,6 +36,7 @@ IOrderedCollectionRCSG<
     , IOrderedCollectionRCG< T >
     , IOrderedCollectionRSG< T >
     , IOrderedCollectionCSG< T >
+    , ICollectionRCSG< T >
     , IUniqueKeyedCollectionRCSG< IInteger, T >
     , IImplicitUniqueKeyedCollectionRSG< IInteger, T >
 {

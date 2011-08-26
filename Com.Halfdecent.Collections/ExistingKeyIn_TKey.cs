@@ -148,7 +148,7 @@ DirectionalEquals(
 {
     return
         base.DirectionalEquals( that )
-        && that.Match<
+        && that.Is<
             // XXX Won't work if 'that' has been varied through an adapter
             ExistingKeyIn< TKey, T > >(
             rt => ((object)(rt.Collection)) == this.Collection );

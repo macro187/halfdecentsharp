@@ -59,6 +59,19 @@ ToString(
 // Extension Methods
 // -----------------------------------------------------------------------------
 
+// TODO Document Match() - Returns() - When() - Else() pattern
+//
+public static
+    MatchResult< T >
+Match<
+    T
+>(
+    this T dis
+)
+{
+    return new MatchResult< T >( dis );
+}
+
 
 public static
     bool
@@ -68,126 +81,55 @@ Is<
     this object dis
 )
 {
-    return dis.Match< T >( t => true );
+    return dis.As< T >().HasValue;
 }
 
 
 public static
     bool
-Match<
-    T
->(
-    this object         dis,
-    System.Action< T >  action
-)
-{
-    return dis.Match< T >( t => true, action );
-}
-
-
-public static
-    T
-MatchElse<
-    T
->(
-    this object     dis,
-    System.Action   else_
-)
-{
-    return dis.MatchElse< T >( t => true, else_ );
-}
-
-
-public static
-    bool
-TryMatch<
-    T
->(
-    this object dis,
-    out T       match
-)
-{
-    return dis.TryMatch< T >( t => true, out match );
-}
-
-
-public static
-    bool
-Match<
+Is<
     T
 >(
     this object             dis,
     System.Predicate< T >   predicate
 )
 {
-    return dis.Match< T >( predicate, t => {;} );
+    return dis.As< T >( predicate ).HasValue;
 }
 
 
 public static
-    bool
-Match<
+    IMaybe< T >
+As<
     T
 >(
-    this object             dis,
-    System.Predicate< T >   predicate,
-    System.Action< T >      action
+    this object dis
 )
 {
-    if( action == null )
-        throw new System.ArgumentNullException( "action" );
-    T t;
-    if( !dis.TryMatch< T >( predicate, out t ) ) return false;
-    action( t );
-    return true;
+    return dis.As< T >( t => true );
 }
 
 
 public static
-    T
-MatchElse<
-    T
->(
-    this object             dis,
-    System.Predicate< T >   predicate,
-    System.Action           else_
-)
-{
-    if( else_ == null )
-        throw new System.ArgumentNullException( "else_" );
-    T match = default( T );
-    if( !dis.TryMatch< T >( predicate, out match ) )
-        else_();
-    return match;
-}
-
-
-public static
-    bool
-TryMatch<
+    IMaybe< T >
+As<
     T
 >(
     this object             dis,
-    System.Predicate< T >   predicate,
-    out T                   match
+    System.Predicate< T >   predicate
 )
 {
     if( predicate == null )
         throw new System.ArgumentNullException( "predicate" );
-
-    match = default( T );
-
-    if( dis == null ) return false;
-
+    if( dis == null )
+        return Maybe.Create< T >();
     foreach( object obj in dis.ProxyChain() ) {
         if( !( obj is T ) ) continue;
         T t = (T)obj;
         if( !predicate( t ) ) continue;
-        match = t;
-        return true;
+        return Maybe.Create( t );
     }
-
-    return false;
+    return Maybe.Create< T >();
 }
 
 

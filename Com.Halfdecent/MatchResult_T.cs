@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,21 +16,19 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Globalisation;
-
-
 namespace
-Com.Halfdecent.Meta
+Com.Halfdecent
 {
 
 
 // =============================================================================
-/// Reference to a thread
+// TODO
 // =============================================================================
 
-public class
-Thread
-    : IValueReferenceComponent
+public struct
+MatchResult<
+    T
+>
 {
 
 
@@ -39,13 +37,14 @@ Thread
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Initialise a new thread representing the caller
-///
-public
-Thread()
+internal
+MatchResult(
+    T item
+)
 {
-    this.ID = System.Threading.Thread.CurrentThread.ManagedThreadId;
+    this.item = item;
 }
+
 
 
 // -----------------------------------------------------------------------------
@@ -53,76 +52,29 @@ Thread()
 // -----------------------------------------------------------------------------
 
 public
-int
-ID
+T
+Item
 {
-    get;
-    private set;
+    get { return this.item; }
 }
 
-
-
-// -----------------------------------------------------------------------------
-// IValueReferenceComponent
-// -----------------------------------------------------------------------------
-
-public override
-    string
-ToString()
-{
-    return string.Concat( "(Thread ", this.ID.ToString(), ") " );
-}
+private
+T
+item;
 
 
 
 // -----------------------------------------------------------------------------
-// IEquatable< IValueReferenceComponent >
+// Methods
 // -----------------------------------------------------------------------------
 
 public
-    bool
-Equals(
-    IValueReferenceComponent that
-)
+    MatchResult< T, TResult >
+Returns<
+    TResult
+>()
 {
-    return Equatable.Equals< IValueReferenceComponent >( this, that );
-}
-
-
-public virtual
-    bool
-DirectionalEquals(
-    IValueReferenceComponent that
-)
-{
-    return that.Is<
-        Thread >(
-        t => t.ID == this.ID );
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return
-        typeof( Thread ).GetHashCode()
-        ^ this.ID;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// System.Object
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Equals(
-    object that
-)
-{
-    throw new System.NotSupportedException();
+    return new MatchResult< T, TResult >( this.Item );
 }
 
 

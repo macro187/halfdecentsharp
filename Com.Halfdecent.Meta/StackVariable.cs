@@ -101,7 +101,7 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    return that.Match<
+    return that.Is<
         StackVariable >(
         v =>
             v.GetUnderlying().GetType() == this.GetType()

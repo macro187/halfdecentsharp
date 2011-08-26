@@ -131,8 +131,7 @@ IEquatable< IEqualityComparer >.DirectionalEquals(
 )
 {
     return
-        that != null
-        && that.Match<
+        that.Is<
             SystemEnumerableComparer< T > >(
             c => c.ItemComparer.Equals( this.ItemComparer ) );
 }

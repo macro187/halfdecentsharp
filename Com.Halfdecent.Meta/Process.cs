@@ -95,7 +95,7 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    return that.Match<
+    return that.Is<
         Process >(
         p => p.ID == this.ID );
 }

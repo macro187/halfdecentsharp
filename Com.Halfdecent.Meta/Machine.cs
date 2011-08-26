@@ -95,7 +95,7 @@ DirectionalEquals(
     IValueReferenceComponent that
 )
 {
-    return that.Match<
+    return that.Is<
         Machine >(
         m => m.Name == this.Name );
 }
