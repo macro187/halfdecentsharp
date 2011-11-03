@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -22,35 +22,20 @@ Com.Halfdecent
 
 
 // =============================================================================
-// <tt>IComparer<T></tt> Library
+// A function that determines whether two items of the same type are equal
 // =============================================================================
 
-public static class
-Comparer
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Extension Methods
-// -----------------------------------------------------------------------------
-
-public static
-    IComparer< T >
-Contravary<
-    TFrom,
+public delegate
+    bool
+EqualsFunc<
     T
 >(
-    this IComparer< TFrom > dis
-)
-    where T : TFrom
-{
-    return new ComparerProxy< TFrom, T >( dis );
-}
+    T x,
+    T y
+);
 
 
 
 
-} // type
 } // namespace
 

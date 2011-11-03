@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Linq;
-using SCG = System.Collections.Generic;
+using System.Collections.Generic;
 
 
 namespace
@@ -90,8 +91,8 @@ public static
 Is<
     T
 >(
-    this object             dis,
-    System.Predicate< T >   predicate
+    this object     dis,
+    Predicate< T >  predicate
 )
 {
     return dis.As< T >( predicate ).HasValue;
@@ -115,12 +116,12 @@ public static
 As<
     T
 >(
-    this object             dis,
-    System.Predicate< T >   predicate
+    this object     dis,
+    Predicate< T >  predicate
 )
 {
     if( predicate == null )
-        throw new System.ArgumentNullException( "predicate" );
+        throw new ArgumentNullException( "predicate" );
     if( dis == null )
         return Maybe.Create< T >();
     foreach( object obj in dis.ProxyChain() ) {
@@ -141,7 +142,8 @@ GetUnderlying(
     this object dis
 )
 {
-    if( dis == null ) throw new System.ArgumentNullException( "dis" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
     return dis.ProxyChain().Last();
 }
 
@@ -149,12 +151,13 @@ GetUnderlying(
 /// Iterate through this object and any proxies, recursively
 ///
 public static
-    SCG.IEnumerable< object >
+    IEnumerable< object >
 ProxyChain(
     this object dis
 )
 {
-    if( dis == null ) throw new System.ArgumentNullException( "dis" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
     return SystemEnumerable.Recurse(
         dis,
         obj => obj is IProxy ? ((IProxy)obj).Underlying : null );

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -67,8 +67,8 @@ public static
 Recurse<
     T
 >(
-    T                   seed,
-    System.Func< T, T > func
+    T               seed,
+    Func< T, T >    func
 )
 {
     for(
@@ -116,9 +116,11 @@ StartsWith<
     this IEnumerable< T >   dis,
     IEnumerable< T >        sequence
 )
-    where T : System.IEquatable< T >
+    where T : IEquatable< T >
 {
-    return dis.StartsWith< T >( sequence, new SystemEquatableComparer< T >() );
+    return dis.StartsWith< T >(
+        sequence,
+        (x,y) => x.Equals( y ) );
 }
 
 
@@ -132,18 +134,18 @@ StartsWith<
 >(
     this IEnumerable< T >   dis,
     IEnumerable< T >        sequence,
-    IEqualityComparer< T >  comparer
+    EqualsFunc< T >         equalsFunc
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    if( object.ReferenceEquals( sequence, null ) )
-        throw new System.ArgumentNullException( "sequence" );
-    if( object.ReferenceEquals( comparer, null ) )
-        throw new System.ArgumentNullException( "comparer" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    if( sequence == null )
+        throw new ArgumentNullException( "sequence" );
+    if( equalsFunc == null )
+        throw new ArgumentNullException( "equalsFunc" );
     return dis.StartsWith< T >(
         sequence.Select( s =>
-            (Predicate< T >)( item => comparer.Equals( item, s ) ) ) );
+            (Predicate< T >)( item => equalsFunc( item, s ) ) ) );
 }
 
 
@@ -181,10 +183,10 @@ StartsWith<
     IEnumerable< Predicate< T > >   criteria
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    if( object.ReferenceEquals( criteria, null ) )
-        throw new System.ArgumentNullException( "criteria" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    if( criteria == null )
+        throw new ArgumentNullException( "criteria" );
     IEnumerator< T > d = dis.GetEnumerator();
     IEnumerator< Predicate< T > > c = criteria.GetEnumerator();
     for( ;; ) {
@@ -210,19 +212,21 @@ IndexOf<
     this IEnumerable< T >   dis,
     IEnumerable< T >        subsequence
 )
-    where T : System.IEquatable< T >
+    where T : IEquatable< T >
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    if( object.ReferenceEquals( subsequence, null ) )
-        throw new System.ArgumentNullException( "subsequence" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    if( subsequence == null )
+        throw new ArgumentNullException( "subsequence" );
 
-    return dis.IndexOf( subsequence, new SystemEquatableComparer< T >() );
+    return dis.IndexOf(
+        subsequence,
+        (x,y) => x.Equals( y ) );
 }
 
 
 /// Locate the first instance of a specified subsequence, matched according to a
-/// specified equality comparer
+/// specified equality function
 ///
 public static
     int
@@ -234,19 +238,19 @@ IndexOf<
 >(
     this IEnumerable< T >   dis,
     IEnumerable< T >        subsequence,
-    IEqualityComparer< T >  comparer
+    EqualsFunc< T >         equalsFunc
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    if( object.ReferenceEquals( subsequence, null ) )
-        throw new System.ArgumentNullException( "subsequence" );
-    if( object.ReferenceEquals( comparer, null ) )
-        throw new System.ArgumentNullException( "comparer" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    if( subsequence == null )
+        throw new ArgumentNullException( "subsequence" );
+    if( equalsFunc == null )
+        throw new ArgumentNullException( "equalsFunc" );
 
     return dis.IndexOf(
         subsequence.Select( s =>
-            (Predicate< T >)( item => comparer.Equals( item, s ) ) ) );
+            (Predicate< T >)( item => equalsFunc( item, s ) ) ) );
 }
 
 
@@ -264,10 +268,10 @@ IndexOf<
     IEnumerable< Predicate< T > >   criteria
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    if( object.ReferenceEquals( criteria, null ) )
-        throw new System.ArgumentNullException( "criteria" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    if( criteria == null )
+        throw new ArgumentNullException( "criteria" );
 
     int dcount = dis.Count();
     int ccount = criteria.Count();

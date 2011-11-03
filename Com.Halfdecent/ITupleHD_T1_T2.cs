@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -15,41 +15,23 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
 
-#if DOTNET40
-
 
 namespace
 Com.Halfdecent
 {
 
 
-// =============================================================================
-/// TODO
-// =============================================================================
-
-public class
-TupleFromSystemTupleAdapter<
+public interface
+ITupleHD<
+#if DOTNET40
+    out T1,
+    out T2
+#else
     T1,
     T2
+#endif
 >
-    : ITuple< T1, T2 >
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-internal
-TupleFromSystemTupleAdapter(
-    System.Tuple< T1, T2 > from
-)
-{
-    if( object.ReferenceEquals( from, null ) )
-        throw new System.ArgumentNullException( "from" );
-    this.From = from;
-}
 
 
 
@@ -57,33 +39,17 @@ TupleFromSystemTupleAdapter(
 // Properties
 // -----------------------------------------------------------------------------
 
-public
-System.Tuple< T1, T2 >
-From
-{
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// ITuple< T1, T2 >
-// -----------------------------------------------------------------------------
-
-public
 T1
 A
 {
-    get { return this.From.Item1; }
+    get;
 }
 
 
-public
 T2
 B
 {
-    get { return this.From.Item2; }
+    get;
 }
 
 
@@ -91,6 +57,4 @@ B
 
 } // type
 } // namespace
-
-#endif
 

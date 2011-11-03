@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,76 +16,85 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+
+
 namespace
 Com.Halfdecent
 {
 
 
 // =============================================================================
-/// TODO
+/// <tt>ComparerHD<T></tt> Library
 // =============================================================================
 
-public class
-TupleProxy<
-    TFrom1,
-    TFrom2,
-    TTo1,
-    TTo2
->
-    : ITuple< TTo1, TTo2 >
-    where TFrom1 : TTo1
-    where TFrom2 : TTo2
+public static class
+ComparerHD
 {
 
 
-
 // -----------------------------------------------------------------------------
-// Constructors
+// Static Methods
 // -----------------------------------------------------------------------------
 
-internal
-TupleProxy(
-    ITuple< TFrom1, TFrom2 > from
+/// TODO
+//
+public static
+    IComparer< T >
+Create<
+    T
+>()
+    where T : IComparable< T >
+{
+    return Create< T >(
+        obj => obj.GetHashCode() );
+}
+
+
+/// TODO
+//
+public static
+    IComparer< T >
+Create<
+    T
+>(
+    GetHashCodeFunc< T > getHashCodeFunc
+)
+    where T : IComparable< T >
+{
+    return Create< T >(
+        (x,y) => x.CompareToBidirectional( y ),
+        getHashCodeFunc );
+}
+
+
+public static
+    IComparer< T >
+Create<
+    T
+>(
+    CompareFunc< T > compareFunc
 )
 {
-    if( object.ReferenceEquals( from, null ) )
-        throw new System.ArgumentNullException( "from" );
-    this.From = from;
+    return Create< T >(
+        compareFunc,
+        obj => obj.GetHashCode() );
 }
 
 
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-public
-ITuple< TFrom1, TFrom2 >
-From
+public static
+    IComparer< T >
+Create<
+    T
+>(
+    CompareFunc< T >        compareFunc,
+    GetHashCodeFunc< T >    getHashCodeFunc
+)
 {
-    get;
-    private set;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// ITuple< TTo1, TTo2 >
-// -----------------------------------------------------------------------------
-
-public
-TTo1
-A
-{
-    get { return this.From.A; }
-}
-
-
-public
-TTo2
-B
-{
-    get { return this.From.B; }
+    return new ComparerHD< T >(
+        compareFunc,
+        getHashCodeFunc );
 }
 
 

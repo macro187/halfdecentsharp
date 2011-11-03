@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
@@ -28,7 +31,7 @@ Com.Halfdecent
 
 public class
 BugException
-    : System.Exception
+    : Exception
 {
 
 
@@ -55,7 +58,7 @@ BugException(
 
 public
 BugException(
-    System.Exception innerException
+    Exception innerException
 )
     : this( null, innerException )
 {
@@ -64,8 +67,8 @@ BugException(
 
 public
 BugException(
-    string              message,
-    System.Exception    innerException
+    string      message,
+    Exception   innerException
 )
     : base(
         message ?? "A programming error has been encountered",

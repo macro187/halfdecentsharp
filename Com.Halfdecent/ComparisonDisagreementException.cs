@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
@@ -29,7 +32,7 @@ Com.Halfdecent
 
 public class
 ComparisonDisagreementException
-    : System.Exception
+    : Exception
 {
 
 
@@ -40,19 +43,19 @@ ComparisonDisagreementException
 
 internal
 ComparisonDisagreementException(
-    System.Type comparableType,
+    Type    comparableType,
     ///< The type of comparison involved, ie. the <tt>IComparable<T></tt> type
-    System.Type thisType,
+    Type    thisType,
     ///< The type of the object on the <tt>this</tt> side of the comparison
-    object      thisValue,
+    object  thisValue,
     ///< The value of the object on the <tt>this</tt> side of the comparison
-    int         thisResult,
+    int     thisResult,
     ///< The comparison result from the <tt>this</tt> side of the comparison
-    System.Type thatType,
+    Type    thatType,
     ///< The type of the object on the <tt>that</tt> side of the comparison
-    object      thatValue,
+    object  thatValue,
     ///< The value of the object on the <tt>that</tt> side of the comparison
-    int         thatResult
+    int     thatResult
     ///< The comparison result from the <tt>that</tt> side of the comparison
 )
     : base(

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,33 +16,25 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
-
-
 namespace
 Com.Halfdecent
 {
 
 
 // =============================================================================
-// A definition of equality between items of a particular type
+// A function that computes hash codes for items of a particular type
 // =============================================================================
 
-public interface
-IEqualityComparer<
-#if DOTNET40
-    in T
-#else
+public delegate
+    int
+GetHashCodeFunc<
     T
-#endif
->
-    : IEqualityComparer
-    , SCG.IEqualityComparer< T >
-{
+>(
+    T obj
+);
 
 
 
 
-} // type
 } // namespace
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,100 +16,69 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
-
-
 namespace
 Com.Halfdecent
 {
 
 
-// =============================================================================
-/// An equality comparer that uses <tt>System.Object.Equals()</tt> and
-/// <tt>System.Object.GetHashCode()</tt>
-// =============================================================================
-
 public struct
-ObjectComparer
-    : IEqualityComparer< object >
+TupleHD<
+    T1,
+    T2
+>
+    : ITupleHD< T1, T2 >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// System.Collections.Generic.IEqualityComparer< object >
+// Constructors
 // -----------------------------------------------------------------------------
 
-public new
-    bool
-Equals(
-    object item,
-    object anotherItem
+public
+TupleHD(
+    T1  a,
+    T2  b
 )
 {
-    if( item == null && anotherItem == null ) return true;
-    if( item == null || anotherItem == null ) return false;
-    return item.Equals( anotherItem );
+    this.a = a;
+    this.b = b;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Fields
+// -----------------------------------------------------------------------------
+
+private
+T1
+a;
+
+
+private
+T2
+b;
+
+
+
+// -----------------------------------------------------------------------------
+// ITuple< T1, T2 >
+// -----------------------------------------------------------------------------
+
+public
+T1
+A
+{
+    get { return this.a; }
 }
 
 
 public
-    int
-GetHashCode(
-    object item
-)
+T2
+B
 {
-    if( item == null )
-        throw new System.ArgumentNullException( "item" );
-    return item.GetHashCode();
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IEquatable< IEqualityComparer >
-// -----------------------------------------------------------------------------
-
-public
-    bool
-Equals(
-    IEqualityComparer that
-)
-{
-    return Equatable.Equals( this, that );
-}
-
-
-public
-    bool
-DirectionalEquals(
-    IEqualityComparer that
-)
-{
-    return that.Is< ObjectComparer >();
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return typeof( ObjectComparer ).GetHashCode();
-}
-
-
-
-// -----------------------------------------------------------------------------
-// System.Object
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Equals(
-    object that
-)
-{
-    throw new System.NotSupportedException();
+    get { return this.b; }
 }
 
 

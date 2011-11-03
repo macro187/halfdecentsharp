@@ -33,7 +33,7 @@ IMaybe<
     T
     #endif
 >
-    : ITuple< bool, T >
+    : ITupleHD< bool, T >
 {
 
 

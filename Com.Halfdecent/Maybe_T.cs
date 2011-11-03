@@ -16,6 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
@@ -69,7 +72,7 @@ Value
     get
     {
         if( !this.HasValue )
-            throw new System.InvalidOperationException( "No underlying value" );
+            throw new InvalidOperationException( "No underlying value" );
         return this.value;
     }
 }
@@ -81,18 +84,18 @@ value;
 
 
 // -----------------------------------------------------------------------------
-// ITuple< bool, T >
+// ITupleHD< bool, T >
 // -----------------------------------------------------------------------------
 
     bool
-ITuple< bool, T >.A
+ITupleHD< bool, T >.A
 {
     get { return this.HasValue; }
 }
 
 
     T
-ITuple< bool, T >.B
+ITupleHD< bool, T >.B
 {
     get { return this.HasValue ? this.Value : default( T ); }
 }

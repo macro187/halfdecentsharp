@@ -16,6 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
@@ -107,7 +110,7 @@ Result
     get
     {
         if( !this.Matched )
-            throw new System.InvalidOperationException(
+            throw new InvalidOperationException(
                 "Hasn't .Matched, so no .Result" );
         return this.result;
     }
@@ -126,8 +129,8 @@ result;
 public
     MatchResult< T, TResult >
 When(
-    System.Predicate< T >       predicate,
-    System.Func< T, TResult >   resultFunc
+    Predicate< T >      predicate,
+    Func< T, TResult >  resultFunc
 )
 {
     return this.When< T >( predicate, resultFunc );
@@ -139,15 +142,15 @@ public
 When<
     TMatch
 >(
-    System.Predicate< TMatch >      predicate,
-    System.Func< TMatch, TResult >  resultFunc
+    Predicate< TMatch >     predicate,
+    Func< TMatch, TResult > resultFunc
 )
     where TMatch : T
 {
     if( predicate == null )
-        throw new System.ArgumentNullException( "predicate" );
+        throw new ArgumentNullException( "predicate" );
     if( resultFunc == null )
-        throw new System.ArgumentNullException( "resultFunc" );
+        throw new ArgumentNullException( "resultFunc" );
     if( this.Matched ) return this;
     IMaybe< TMatch > m = this.Item.As< TMatch >( predicate );
     if( m.HasValue )
@@ -179,18 +182,18 @@ IMaybe< TResult >.Value
 
 
 // -----------------------------------------------------------------------------
-// ITuple< bool, TResult >
+// ITupleHD< bool, TResult >
 // -----------------------------------------------------------------------------
 
 bool
-ITuple< bool, TResult >.A
+ITupleHD< bool, TResult >.A
 {
     get { return this.Matched; }
 }
 
 
 TResult
-ITuple< bool, TResult >.B
+ITupleHD< bool, TResult >.B
 {
     get { return this.Matched ? this.Result : default( TResult ); }
 }

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,48 +16,49 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+
+
 namespace
 Com.Halfdecent
 {
 
 
 // =============================================================================
-/// TODO
+/// <tt>EnumerableComparer<T></tt> Library
 // =============================================================================
 
-public interface
-ITuple<
-#if DOTNET40
-    out T1,
-    out T2
-#else
-    T1,
-    T2
-#endif
->
+public static class
+EnumerableComparer
 {
 
 
-
 // -----------------------------------------------------------------------------
-// Properties
+// Static Methods
 // -----------------------------------------------------------------------------
 
-/// TODO
-///
-T1
-A
+public static
+    EnumerableComparer< T >
+Create<
+    T
+>()
+    where T : IEquatable< T >
 {
-    get;
+    return Create< T >(
+        EqualityComparerHD.Create< T >() );
 }
 
 
-/// TODO
-///
-T2
-B
+public static
+    EnumerableComparer< T >
+Create<
+    T
+>(
+    IEqualityComparer< T > itemComparer
+)
 {
-    get;
+    return new EnumerableComparer< T >( itemComparer );
 }
 
 

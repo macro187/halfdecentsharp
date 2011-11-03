@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,45 +16,35 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
 
 
 // =============================================================================
-/// <tt>SystemEnumerableComparer<T></tt> Library
+/// A type whose values have an inherent notion of order
+///
+/// This enhanced <tt>IComparable<T></tt> implies <tt>IEquatableHD<T></tt>
+/// because comparability implies equatability.
+///
+/// Note that to compare conclusively, <em>both</em> items'
+/// <tt>IComparable<T>.CompareTo()</tt> must be consulted.  The reason is that
+/// the other item may be a subtype with a more specific comparison definition.
+//
+//  [TODO reference to convenience method for above]
+//
 // =============================================================================
 
-public static class
-SystemEnumerableComparer
-{
-
-
-// -----------------------------------------------------------------------------
-// Static Methods
-// -----------------------------------------------------------------------------
-
-public static
-    SystemEnumerableComparer< T >
-Create<
+public interface
+IComparableHD<
     T
->()
-    where T : IEquatable< T >
+>
+    : IComparable< T >
+    , IEquatableHD< T >
 {
-    return Create< T >( new EquatableComparer< T >() );
-}
-
-
-public static
-    SystemEnumerableComparer< T >
-Create<
-    T
->(
-    IEqualityComparer< T > itemComparer
-)
-{
-    return new SystemEnumerableComparer< T >( itemComparer );
-}
 
 
 

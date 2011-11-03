@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009
+// Copyright (c) 2008, 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,10 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+
+
 namespace
 Com.Halfdecent
 {
@@ -29,7 +33,7 @@ public interface
 IInterval<
     T
 >
-    : IEquatable< IInterval< T > >
+    : IEquatableHD< IInterval< T > >
 {
 
 
@@ -39,10 +43,19 @@ IInterval<
 // -----------------------------------------------------------------------------
 
 
-/// The ordering in effect
+/// Ordering
 ///
-IComparer< T >
-Comparer
+CompareFunc< T >
+CompareFunc
+{
+    get;
+}
+
+
+/// Hash code implementation
+//
+GetHashCodeFunc< T >
+GetHashCodeFunc
 {
     get;
 }

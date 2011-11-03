@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,17 +16,20 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
 
 
 // =============================================================================
-/// <tt>ITuple< T1, T2 ></tt> Library
+/// <tt>ITupleHD< T1, T2 ></tt> Library
 // =============================================================================
 
 public static class
-Tuple
+TupleHD
 {
 
 
@@ -34,7 +37,7 @@ Tuple
 /// Create a tuple
 ///
 public static
-    ITuple< T1, T2 >
+    ITupleHD< T1, T2 >
 Create<
     T1,
     T2
@@ -43,7 +46,7 @@ Create<
     T2 b
 )
 {
-    return new Tuple< T1, T2 >( a, b );
+    return new TupleHD< T1, T2 >( a, b );
 }
 
 
@@ -57,12 +60,12 @@ BothEqual<
     P1,
     P2
 >(
-    this ITuple< T1, T2 >   dis,
+    this ITupleHD< T1, T2 > dis,
     P1                      a,
     P2                      b
 )
-    where P1 : System.IEquatable< P1 >
-    where P2 : System.IEquatable< P2 >
+    where P1 : IEquatable< P1 >
+    where P2 : IEquatable< P2 >
     where T1 : P1
     where T2 : P2
 {
@@ -78,50 +81,50 @@ AssignTo<
     T1,
     T2
 >(
-    this ITuple< T1, T2 >   dis,
+    this ITupleHD< T1, T2 > dis,
     out T1                  a,
     out T2                  b
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
     a = dis.A;
     b = dis.B;
 }
 
 
 public static
-    ITuple< TTo1, TTo2 >
+    ITupleHD< TTo1, TTo2 >
 Covary<
     TFrom1,
     TFrom2,
     TTo1,
     TTo2
 >(
-    this ITuple< TFrom1, TFrom2 > dis
+    this ITupleHD< TFrom1, TFrom2 > dis
 )
     where TFrom1 : TTo1
     where TFrom2 : TTo2
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    return new TupleProxy< TFrom1, TFrom2, TTo1, TTo2 >( dis );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    return Create< TTo1, TTo2 >( dis.A, dis.B );
 }
 
 
 #if DOTNET40
 public static
-    System.Tuple< T1, T2 >
-AsSystemTuple<
+    Tuple< T1, T2 >
+AsTuple<
     T1,
     T2
 >(
-    this ITuple< T1, T2 > dis
+    this ITupleHD< T1, T2 > dis
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    return new System.Tuple< T1, T2 >( dis.A, dis.B );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    return new Tuple< T1, T2 >( dis.A, dis.B );
 }
 #endif
 
@@ -131,10 +134,10 @@ public static
 AsMaybe<
     T
 >(
-    this ITuple< bool, T > dis
+    this ITupleHD< bool, T > dis
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
+    if( dis == null )
         throw new System.ArgumentNullException( "dis" );
     if( dis.A )
         return Maybe.Create< T >( dis.B );

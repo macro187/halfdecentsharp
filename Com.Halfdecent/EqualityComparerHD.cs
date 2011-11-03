@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 
 
 namespace
@@ -25,20 +26,72 @@ Com.Halfdecent
 
 
 // =============================================================================
-// A definition of comparison between items of a particular type
+/// <tt>EqualityComparerHD<T></tt> Library
 // =============================================================================
 
-public interface
-IComparer<
-#if DOTNET40
-    in T
-#else
-    T
-#endif
->
-    : IEqualityComparer< T >
-    , SCG.IComparer< T >
+public static class
+EqualityComparerHD
 {
+
+
+// -----------------------------------------------------------------------------
+// Static Methods
+// -----------------------------------------------------------------------------
+
+public static
+    IEqualityComparer< T >
+Create<
+    T
+>()
+    where T : IEquatable< T >
+{
+    return Create< T >(
+        obj => obj.GetHashCode() );
+}
+
+
+public static
+    IEqualityComparer< T >
+Create<
+    T
+>(
+    GetHashCodeFunc< T > getHashCodeFunc
+)
+    where T : IEquatable< T >
+{
+    return Create< T >(
+        (x,y) => x.EqualsBidirectional( y ),
+        getHashCodeFunc );
+}
+
+
+public static
+    IEqualityComparer< T >
+Create<
+    T
+>(
+    EqualsFunc< T > equalsFunc
+)
+{
+    return Create< T >(
+        equalsFunc,
+        obj => obj.GetHashCode() );
+}
+
+
+public static
+    IEqualityComparer< T >
+Create<
+    T
+>(
+    EqualsFunc< T >         equalsFunc,
+    GetHashCodeFunc< T >    getHashCodeFunc
+)
+{
+    return new EqualityComparerHD< T >(
+        equalsFunc,
+        getHashCodeFunc );
+}
 
 
 

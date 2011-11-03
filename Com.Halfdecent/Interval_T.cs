@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -14,6 +14,10 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
+
+
+using System;
+using System.Collections.Generic;
 
 
 namespace
@@ -39,24 +43,28 @@ Interval<
 
 public
 Interval(
-    T               from,
-    bool            fromInclusive,
-    T               to,
-    bool            toInclusive,
-    IComparer< T >  comparer
+    T                       from,
+    bool                    fromInclusive,
+    T                       to,
+    bool                    toInclusive,
+    CompareFunc< T >        compareFunc,
+    GetHashCodeFunc< T >    getHashCodeFunc
 )
 {
-    if( object.ReferenceEquals( from, null ) )
-        throw new System.ArgumentNullException( "from" );
-    if( object.ReferenceEquals( to, null ) )
-        throw new System.ArgumentNullException( "to" );
-    if( object.ReferenceEquals( comparer, null ) )
-        throw new System.ArgumentNullException( "comparer" );
+    if( from == null )
+        throw new ArgumentNullException( "from" );
+    if( to == null )
+        throw new ArgumentNullException( "to" );
+    if( compareFunc == null )
+        throw new ArgumentNullException( "compareFunc" );
+    if( getHashCodeFunc == null )
+        throw new ArgumentNullException( "getHashCodeFunc" );
     this.From = from;
     this.FromInclusive = fromInclusive;
     this.To = to;
     this.ToInclusive = toInclusive;
-    this.Comparer = comparer;
+    this.CompareFunc = compareFunc;
+    this.GetHashCodeFunc = getHashCodeFunc;
 }
 
 
@@ -66,8 +74,17 @@ Interval(
 // -----------------------------------------------------------------------------
 
 public
-IComparer< T >
-Comparer
+CompareFunc< T >
+CompareFunc
+{
+    get;
+    private set;
+}
+
+
+public
+GetHashCodeFunc< T >
+GetHashCodeFunc
 {
     get;
     private set;
@@ -118,28 +135,10 @@ ToInclusive
 public
     bool
 Equals(
-    IInterval< T > that
+    IInterval< T > other
 )
 {
-    return Equatable.Equals( this, that );
-}
-
-
-public
-    bool
-DirectionalEquals(
-    IInterval< T > that
-)
-{
-    return Interval.DirectionalEquals( this, that );
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return Interval.GetHashCode( this  );
+    return Interval.Equals( this, other );
 }
 
 
@@ -154,7 +153,17 @@ Equals(
     object that
 )
 {
-    throw new System.NotSupportedException();
+    return
+        that.Is< IInterval< T > >()
+        && this.Equals( (IInterval< T >)that );
+}
+
+
+public override
+    int
+GetHashCode()
+{
+    return Interval.GetHashCode( this );
 }
 
 

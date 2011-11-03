@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 
 namespace
@@ -25,94 +27,72 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// An equality comparer that compares strictly by object reference
-///
-/// <tt>System.Object.ReferenceEquals()</tt> is used interally to do reference
-/// equality ignoring any <tt>System.Object.Equals()</tt> overrides.  There is
-/// no equivalent mechanism for <tt>GetHashCode()</tt>, so hash codes produced
-/// by this comparer shouldn't be trusted.
+/// An equality comparer for sequences based on an individual item comparer
 // =============================================================================
 
-public struct
-ReferenceComparer
-    : IEqualityComparer< object >
+public class
+EnumerableComparer<
+    T
+>
+    : IEqualityComparer< IEnumerable< T > >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// System.Collections.Generic.IEqualityComparer< object >
+// Constructors
 // -----------------------------------------------------------------------------
 
-public new
-    bool
-Equals(
-    object item,
-    object anotherItem
+public
+EnumerableComparer(
+    IEqualityComparer< T > itemComparer
 )
 {
+    if( itemComparer == null )
+        throw new ArgumentNullException( "itemComparer" );
+    this.ItemComparer = itemComparer;
+}
 
-    return object.ReferenceEquals( item, anotherItem );
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+private
+IEqualityComparer< T >
+ItemComparer;
+
+
+
+// -----------------------------------------------------------------------------
+// IEqualityComparer< IEnumerable< T > >
+// -----------------------------------------------------------------------------
+
+public
+    bool
+Equals(
+    IEnumerable< T > x,
+    IEnumerable< T > y
+)
+{
+    if( x == null && y == null ) return true;
+    if( x == null || y == null ) return false;
+    return x.SequenceEqual( y, this.ItemComparer );
 }
 
 
 public
     int
 GetHashCode(
-    object item
+    IEnumerable< T > obj
 )
 {
-    if( item == null )
-        throw new System.ArgumentNullException( "item" );
-    return item.GetHashCode();
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IEquatable< IEqualityComparer >
-// -----------------------------------------------------------------------------
-
-public
-    bool
-Equals(
-    IEqualityComparer that
-)
-{
-    return Equatable.Equals( this, that );
-}
-
-
-public
-    bool
-DirectionalEquals(
-    IEqualityComparer that
-)
-{
-    return that.Is< ReferenceComparer >();
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return typeof( ReferenceComparer ).GetHashCode();
-}
-
-
-
-// -----------------------------------------------------------------------------
-// System.Object
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Equals(
-    object that
-)
-{
-    throw new System.NotSupportedException();
+    if( obj == null )
+        throw new ArgumentNullException( "obj" );
+    return obj.Aggregate(
+        typeof( EnumerableComparer< T > ).GetHashCode(),
+        (a,i) => a ^ this.ItemComparer.GetHashCode( i ) );
 }
 
 

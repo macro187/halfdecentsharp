@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using SCG = System.Collections.Generic;
 
 
@@ -25,35 +26,34 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// An adapter that turns a comparer into one that compares a more specific
-/// kind of item
+/// A <tt>System.Collections.Generic.IEqualityComparer<T></tt> based on
+/// <tt>EqualsFunc<T></tt> and <tt>GetHashCodeFunc<T></tt> functions
 // =============================================================================
 
 public class
-ComparerProxy<
-    TFrom,
+EqualityComparerHD<
     T
 >
-    : IComparer< T >
-    , IProxy
-
-    where T : TFrom
+    : SCG.IEqualityComparer< T >
 {
-
 
 
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
-internal
-ComparerProxy(
-    IComparer< TFrom > from
+public
+EqualityComparerHD(
+    EqualsFunc< T >         equalsFunc,
+    GetHashCodeFunc< T >    getHashCodeFunc
 )
 {
-    if( object.ReferenceEquals( from, null ) )
-        throw new System.ArgumentNullException( "from" );
-    this.From = from;
+    if( equalsFunc == null )
+        throw new ArgumentNullException( "equalsFunc" );
+    if( getHashCodeFunc == null )
+        throw new ArgumentNullException( "getHashCodeFunc" );
+    this.EqualsFunc = equalsFunc;
+    this.GetHashCodeFunc = getHashCodeFunc;
 }
 
 
@@ -62,30 +62,14 @@ ComparerProxy(
 // Properties
 // -----------------------------------------------------------------------------
 
-public
-IComparer< TFrom >
-From
-{
-    get;
-    private set;
-}
+private
+EqualsFunc< T >
+EqualsFunc;
 
 
-
-
-// -----------------------------------------------------------------------------
-// System.Collections.Generic.IComparer< T >
-// -----------------------------------------------------------------------------
-
-public
-    int
-Compare(
-    T dis,
-    T that
-)
-{
-    return this.From.Compare( dis, that );
-}
+private
+GetHashCodeFunc< T >
+GetHashCodeFunc;
 
 
 
@@ -96,81 +80,21 @@ Compare(
 public
     bool
 Equals(
-    T a,
-    T b
+    T x,
+    T y
 )
 {
-    return this.From.Equals( a, b );
+    return this.EqualsFunc( x, y );
 }
 
 
 public
     int
 GetHashCode(
-    T item
+    T obj
 )
 {
-    return this.From.GetHashCode( item );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IProxy
-// -----------------------------------------------------------------------------
-
-object
-IProxy.Underlying
-{
-    get { return this.From; }
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IEquatable< IEqualityComparer >
-// -----------------------------------------------------------------------------
-
-public
-    bool
-Equals(
-    IEqualityComparer that
-)
-{
-    return this.From.Equals( that );
-}
-
-
-public
-    bool
-DirectionalEquals(
-    IEqualityComparer that
-)
-{
-    return this.From.DirectionalEquals( that );
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return this.From.GetHashCode();
-}
-
-
-
-// -----------------------------------------------------------------------------
-// System.Object
-// -----------------------------------------------------------------------------
-
-public override
-    bool
-Equals(
-    object that
-)
-{
-    throw new System.NotSupportedException();
+    return this.GetHashCodeFunc( obj );
 }
 
 

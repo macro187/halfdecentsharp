@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,6 +18,9 @@
 #if DOTNET40
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
@@ -34,17 +37,17 @@ SystemTuple
 
 
 public static
-    ITuple< T1, T2 >
-AsHalfdecentTuple<
+    ITupleHD< T1, T2 >
+AsTupleHD<
     T1,
     T2
 >(
-    this System.Tuple< T1, T2 > dis
+    this Tuple< T1, T2 > dis
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    return new TupleFromSystemTupleAdapter< T1, T2 >( dis );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    return TupleHD.Create< T1, T2 >( dis.Item1, dis.Item2 );
 }
 
 

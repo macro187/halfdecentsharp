@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,56 +16,67 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
 
 
 // =============================================================================
-/// A type that introduces a new definition of ordering
-///
-/// Both items are asked how they compare to each other through their
-/// respective <tt>DirectionalCompareTo()</tt> methods.  The final result is
-/// determined according to the following logic:
-///
-/// -   If both items agree, the agreed result is used
-/// -   If one item says equal and the other says greater or less than,
-///     the latter is assumed to be more specific and is used
-/// -   If the items return opposite results, an exception is thrown
-///
-/// Use <tt>Comparable.CompareTo()</tt> to implement
-/// <tt>System.IComparable<T>.CompareTo()</tt>.
+/// <tt>System.IEquatable<T></tt> library
 // =============================================================================
 
-public interface
-IComparable<
-    T
->
-    : IEquatable< T >
-    , System.IComparable< T >
+public static class
+SystemEquatable
 {
 
 
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+public static
+    bool
+EqualsBidirectional<
+    T
+>(
+    this T  dis,
+    T       that
+)
+    where T : IEquatable< T >
+{
+    return EqualsBidirectional< T >(
+        dis,
+        that,
+        (x,y) => x.Equals( y ),
+        (x,y) => y.Equals( x ) );
+}
+
+
 
 // -----------------------------------------------------------------------------
-// Methods
+// Static Methods
 // -----------------------------------------------------------------------------
 
-/// Determine whether this item considers itself less than, equal to, or
-/// greater than another
-///
-    int
-    /// @returns
-    /// A positive integer if <tt>this</tt> considers itself greater than
-    /// <tt>that</tt>
-    /// - OR -
-    /// 0 if <tt>this</tt> considers itself equal to <tt>that</tt>
-    /// - OR -
-    /// A negative integer if <tt>this</tt> considers itself less than
-    /// <tt>that</tt>
-DirectionalCompareTo(
-    T that
-);
+public static
+    bool
+EqualsBidirectional<
+    T
+>(
+    T               x,
+    T               y,
+    EqualsFunc< T > equalsFunc1,
+    EqualsFunc< T > equalsFunc2
+)
+{
+    if( equalsFunc1 == null )
+        throw new ArgumentNullException( "equalsFunc1" );
+    if( equalsFunc2 == null )
+        throw new ArgumentNullException( "equalsFunc2" );
+    return equalsFunc1( x, y ) && equalsFunc2( x, y );
+}
 
 
 

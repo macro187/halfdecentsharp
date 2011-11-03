@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,19 +16,21 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
 
 
 // =============================================================================
-/// <tt>IComparable<T></tt> Library
+/// <tt>System.IComparable<T></tt> library
 // =============================================================================
 
 public static class
-Comparable
+SystemComparable
 {
-
 
 
 // -----------------------------------------------------------------------------
@@ -36,16 +38,34 @@ Comparable
 // -----------------------------------------------------------------------------
 
 public static
+    int
+CompareToBidirectional<
+    T
+>(
+    this T  dis,
+    T       that
+)
+    where T : IComparable< T >
+{
+    return CompareBidirectional< T >(
+        dis,
+        that,
+        (x,y) => x.CompareTo( y ),
+        (x,y) => y.CompareTo( x ) );
+}
+
+
+public static
     bool
 GT<
     T
 >(
-    this IComparable< T >   dis,
-    T                       that
+    this T  dis,
+    T       that
 )
     where T : IComparable< T >
 {
-    return dis.CompareTo( that ) > 0;
+    return dis.CompareToBidirectional( that ) > 0;
 }
 
 
@@ -54,12 +74,12 @@ public static
 GTE<
     T
 >(
-    this IComparable< T >   dis,
-    T                       that
+    this T  dis,
+    T       that
 )
     where T : IComparable< T >
 {
-    return dis.CompareTo( that ) >= 0;
+    return dis.CompareToBidirectional( that ) >= 0;
 }
 
 
@@ -68,12 +88,12 @@ public static
 LT<
     T
 >(
-    this IComparable< T >   dis,
-    T                       that
+    this T  dis,
+    T       that
 )
     where T : IComparable< T >
 {
-    return dis.CompareTo( that ) < 0;
+    return dis.CompareToBidirectional( that ) < 0;
 }
 
 
@@ -82,12 +102,12 @@ public static
 LTE<
     T
 >(
-    this IComparable< T >   dis,
-    T                       that
+    this T  dis,
+    T       that
 )
     where T : IComparable< T >
 {
-    return dis.CompareTo( that ) <= 0;
+    return dis.CompareToBidirectional( that ) <= 0;
 }
 
 
@@ -96,61 +116,54 @@ LTE<
 // Static Methods
 // -----------------------------------------------------------------------------
 
-/// Implementation of <tt>System.IComparable<T>.CompareTo()</tt> in terms of
-/// <tt>IComparable<T></tt>
-///
-/// @exception ComparisonDisagreementException
-/// The items completely disagree on how they compare to one another
-///
 public static
     int
-    /// @returns
-    /// A positive integer if <tt>this</tt> is greater than <tt>that</tt>
-    /// - OR -
-    /// 0 if the items are equal to one another
-    /// - OR -
-    /// A negative integer if <tt>this</tt> is less than <tt>that</tt>
-CompareTo<
+CompareBidirectional<
     T
 >(
-    T dis,
-    T that
+    T                   x,
+    T                   y,
+    CompareFunc< T >    compareFunc1,
+    CompareFunc< T >    compareFunc2
 )
-    where T : IComparable< T >
 {
-    // Handle nulls according to System.IComparable.CompareTo() rules
-    if( object.ReferenceEquals( dis, null ) &&
-        object.ReferenceEquals( that, null ) ) return 0;
-    if( object.ReferenceEquals( dis, null ) ) return -1;
-    if( object.ReferenceEquals( that, null ) ) return 1;
+    if( compareFunc1 == null )
+        throw new ArgumentNullException( "compareFunc1" );
+    if( compareFunc2 == null )
+        throw new ArgumentNullException( "compareFunc2" );
 
-    // Get both items' opinion
-    int dissays = dis.DirectionalCompareTo( that );
-    int thatsays = that.DirectionalCompareTo( dis );
+    // Handle nulls according to System.IComparable.CompareTo() rules
+    if( x == null && y == null ) return 0;
+    if( x == null ) return -1;
+    if( y == null ) return 1;
+
+    // Get both opinions
+    int r1 = compareFunc1( x, y );
+    int r2 = compareFunc2( x, y );
 
     // If both items agree, use the agreed result
-    if( dissays == 0 && thatsays == 0 ) return 0;
-    if( dissays > 0 && thatsays < 0 ) return 1;
-    if( dissays < 0 && thatsays > 0 ) return -1;
+    if( r1 == 0 && r2 == 0 ) return 0;
+    if( r1 > 0 && r2 < 0 ) return 1;
+    if( r1 < 0 && r2 > 0 ) return -1;
 
     // If one says equal and the other says greater or less than, assume the
     // latter is more specific and go with that
-    if( dissays == 0 && thatsays < 0 ) return 1;
-    if( dissays == 0 && thatsays > 0 ) return -1;
-    if( dissays > 0 && thatsays == 0 ) return 1;
-    if( dissays < 0 && thatsays == 0 ) return -1;
+    if( r1 == 0 && r2 < 0 ) return 1;
+    if( r1 == 0 && r2 > 0 ) return -1;
+    if( r1 > 0 && r2 == 0 ) return 1;
+    if( r1 < 0 && r2 == 0 ) return -1;
 
     // If neither of the above is the case, then the items completely disagree
-    // which means something's wrong with one or both of their comparison
+    // which means something's wrong with one or both of their CompareTo()
     // implementations
     throw new ComparisonDisagreementException(
         typeof( T ),
-        dis.GetType(),
-        dis,
-        dissays,
-        that.GetType(),
-        that,
-        thatsays );
+        x.GetType(),
+        x,
+        r1,
+        y.GetType(),
+        y,
+        r2 );
 }
 
 

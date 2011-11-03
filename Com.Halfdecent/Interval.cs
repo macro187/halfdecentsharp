@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -14,6 +14,10 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
+
+
+using System;
+using System.Collections.Generic;
 
 
 namespace
@@ -35,9 +39,7 @@ Interval
 // Static Methods
 // -----------------------------------------------------------------------------
 
-/// Create an interval of comparable items that includes both endpoints
-///
-/// Using the default implementation (<tt>Interval<T></tt>)
+/// Create an interval between comparable values including both endpoints
 ///
 public static
     IInterval< T >
@@ -47,16 +49,18 @@ Create<
     T from,
     T to
 )
-    where T : System.IComparable< T >
+    where T : IComparable< T >
 {
-    return Create( from, true, to, true );
+    return Create< T >(
+        from,
+        true,
+        to,
+        true );
 }
 
 
-/// Create an interval of comparable items with specified inclusion/exclusion
-/// of endpoints
-///
-/// Using the default implementation (<tt>Interval<T></tt>)
+/// Create an interval between comparable values with specified endpoint
+/// inclusion
 ///
 public static
     IInterval< T >
@@ -68,82 +72,104 @@ Create<
     T    to,
     bool toInclusive
 )
-    where T : System.IComparable< T >
+    where T : IComparable< T >
 {
-    return Create(
-        from, fromInclusive, to, toInclusive,
-        new SystemComparableComparer< T >() );
+    //
+    // XXX
+    // Hack around the fact that overloading doesn't consider generic
+    // constraints, i.e. we can't have a Create() for IComparable<T>'s and
+    // another for IComparableHD<T>'s
+    //
+    if( from is IComparableHD< T > ) {
+        return Create< T >(
+            from,
+            fromInclusive,
+            to,
+            toInclusive,
+            (x,y) => x.CompareToBidirectional( y ),
+            (IComparableHD< T > cmp) => cmp.GetHashCode() );
+    } else {
+        return Create< T >(
+            from,
+            fromInclusive,
+            to,
+            toInclusive,
+            (x,y) => x.CompareToBidirectional( y ),
+            obj => obj.GetHashCode() );
+    }
+
 }
 
 
-/// Create an interval with specified inclusion/exclusion of endpoints, ordered
-/// by a specified comparer
-///
-/// Using the default implementation (<tt>Interval<T></tt>)
+/// Create an interval between values with specified endpoint inclusion,
+/// comparison, and hash code implementation
 ///
 public static
     IInterval< T >
 Create<
     T
 >(
-    T               from,
-    bool            fromInclusive,
-    T               to,
-    bool            toInclusive,
-    IComparer< T >  comparer
+    T                       from,
+    bool                    fromInclusive,
+    T                       to,
+    bool                    toInclusive,
+    CompareFunc< T >        compareFunc,
+    GetHashCodeFunc< T >    getHashCodeFunc
 )
 {
-    return new Interval< T >( from, fromInclusive, to, toInclusive, comparer );
+    return new Interval< T >(
+        from,
+        fromInclusive,
+        to,
+        toInclusive,
+        compareFunc,
+        getHashCodeFunc );
 }
 
 
-/// <tt>IInterval<T>.DirectionalEquals()</tt> implementation
-///
 public static
     bool
-DirectionalEquals<
+Equals<
     T
 >(
-    IInterval< T > dis,
-    IInterval< T > that
+    IInterval< T > x,
+    IInterval< T > y
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
+    if( x == null && y == null ) return true;
+    if( x == null || y == null ) return false;
+
     return
-        that != null &&
-        that.Comparer.Equals( dis.Comparer ) &&
-        that.From.Equals( dis.From ) &&
-        that.FromInclusive == dis.FromInclusive &&
-        that.To.Equals( dis.To ) &&
-        that.ToInclusive == dis.ToInclusive;
+        x.CompareFunc == y.CompareFunc
+        && x.GetHashCodeFunc == y.GetHashCodeFunc
+        && x.CompareFunc( x.From, y.From ) == 0
+        && x.FromInclusive == y.FromInclusive
+        && x.CompareFunc( x.To, y.To ) == 0
+        && x.ToInclusive == y.ToInclusive;
 }
 
 
-/// <tt>IInterval<T>.GetHashCode()</tt> implementation
-///
 public static
     int
 GetHashCode<
     T
 >(
-    IInterval< T > dis
+    IInterval< T > i
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
+    if( i == null )
+        throw new ArgumentNullException( "i" );
     return
-        typeof( IInterval< T > ).GetHashCode() ^
-        dis.Comparer.GetHashCode() ^
-        dis.From.GetHashCode() ^
-        dis.FromInclusive.GetHashCode() ^
-        dis.To.GetHashCode() ^
-        dis.ToInclusive.GetHashCode();
+        typeof( IInterval< T > ).GetHashCode()
+        ^ i.CompareFunc.GetHashCode()
+        ^ i.GetHashCodeFunc.GetHashCode()
+        ^ i.GetHashCodeFunc( i.From )
+        ^ i.FromInclusive.GetHashCode()
+        ^ i.GetHashCodeFunc( i.To )
+        ^ i.ToInclusive.GetHashCode();
 }
 
 
-/// <tt>IInterval<T>.ToString()</tt> implementation
-///
 public static
     string
 ToString<
@@ -152,8 +178,8 @@ ToString<
     IInterval< T > dis
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
     return string.Format(
         "{0} {1} x {2} {3}",
         dis.From,
@@ -168,7 +194,7 @@ ToString<
 // Extension Methods
 // -----------------------------------------------------------------------------
 
-/// Determine whether a value is within the interval
+/// Determine if a value is within the interval
 ///
 public static
     bool
@@ -179,43 +205,17 @@ Contains<
     T                   value
 )
 {
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    if( object.ReferenceEquals( value, null ) )
-        throw new System.ArgumentNullException( "value" );
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    if( value == null )
+        throw new ArgumentNullException( "value" );
     return
-        ( dis.FromInclusive ?
-            dis.Comparer.Compare( value, dis.From ) >= 0 :
-            dis.Comparer.Compare( value, dis.From ) > 0 ) &&
-        ( dis.ToInclusive ?
-            dis.Comparer.Compare( value, dis.To ) <= 0 :
-            dis.Comparer.Compare( value, dis.To ) < 0 );
-}
-
-
-/// Covary the interval into one of a less-specific type
-///
-public static
-    IInterval< T >
-Covary<
-    TFrom,
-    T
->(
-    this IInterval< TFrom > dis,
-    IComparer< T >          comparer
-)
-    where TFrom : T
-{
-    if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
-    if( object.ReferenceEquals( comparer, null ) )
-        throw new System.ArgumentNullException( "comparer" );
-    return new Interval< T >(
-        dis.From,
-        dis.FromInclusive,
-        dis.To,
-        dis.ToInclusive,
-        comparer );
+        ( dis.FromInclusive
+            ? dis.CompareFunc( value, dis.From ) >= 0
+            : dis.CompareFunc( value, dis.From ) > 0 )
+        && ( dis.ToInclusive
+            ? dis.CompareFunc( value, dis.To ) <= 0
+            : dis.CompareFunc( value, dis.To ) < 0 );
 }
 
 

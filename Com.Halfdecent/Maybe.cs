@@ -16,6 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
+
+
 namespace
 Com.Halfdecent
 {
@@ -73,13 +76,13 @@ If<
     U
 >(
     this IMaybe< T >    dis,
-    System.Func< T, U > hasValueFunc
+    Func< T, U >        hasValueFunc
 )
 {
     if( dis == null )
-        throw new System.ArgumentNullException( "dis" );
+        throw new ArgumentNullException( "dis" );
     if( hasValueFunc == null )
-        throw new System.ArgumentNullException( "hasValueFunc" );
+        throw new ArgumentNullException( "hasValueFunc" );
     if( dis.HasValue )
         return Maybe.Create( hasValueFunc( dis.Value ) );
     else
@@ -93,14 +96,14 @@ If<
     T
 >(
     this IMaybe< T >    dis,
-    System.Action< T >  hasValueAction,
-    System.Action       hasNoValueAction
+    Action< T >         hasValueAction,
+    Action              hasNoValueAction
 )
 {
     if( dis == null )
-        throw new System.ArgumentNullException( "dis" );
+        throw new ArgumentNullException( "dis" );
     if( hasValueAction == null )
-        throw new System.ArgumentNullException( "hasValueAction" );
+        throw new ArgumentNullException( "hasValueAction" );
     if( hasNoValueAction == null )
         hasNoValueAction = () => {};
     if( dis.HasValue )
@@ -116,13 +119,13 @@ Else<
     T
 >(
     this IMaybe< T >    dis,
-    System.Func< T >    hasNoValueFunc
+    Func< T >           hasNoValueFunc
 )
 {
     if( dis == null )
-        throw new System.ArgumentNullException( "dis" );
+        throw new ArgumentNullException( "dis" );
     if( hasNoValueFunc == null )
-        throw new System.ArgumentNullException( "hadNoValueFunc" );
+        throw new ArgumentNullException( "hadNoValueFunc" );
     return
         dis.HasValue
         ? dis.Value
@@ -142,7 +145,7 @@ Covary<
     where TFrom : TTo
 {
     if( object.ReferenceEquals( dis, null ) )
-        throw new System.ArgumentNullException( "dis" );
+        throw new ArgumentNullException( "dis" );
     return new Maybe< TTo >(
         dis.HasValue,
         dis.HasValue ? dis.Value : default( TTo ) );
