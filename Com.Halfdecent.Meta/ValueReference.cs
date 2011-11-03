@@ -34,7 +34,7 @@ Com.Halfdecent.Meta
 
 public class
 ValueReference
-    : IEquatable< ValueReference >
+    : IEquatableHD< ValueReference >
     , IList< IValueReferenceComponent >
 {
 
@@ -228,26 +228,14 @@ IEnumerable.GetEnumerator()
 // IEquatable< ValueReference >
 // -----------------------------------------------------------------------------
 
-public
+public virtual
     bool
 Equals(
     ValueReference that
 )
 {
-    return Equatable.Equals< ValueReference >( this, that );
-}
-
-
-public virtual
-    bool
-DirectionalEquals(
-    ValueReference that
-)
-{
     if( object.ReferenceEquals( that, null ) ) return false;
-    return this.SequenceEqual(
-        that,
-        new EquatableComparer< IValueReferenceComponent >() );
+    return this.SequenceEqual( that );
 }
 
 

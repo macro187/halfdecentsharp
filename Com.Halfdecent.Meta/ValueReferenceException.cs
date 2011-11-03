@@ -86,7 +86,7 @@ Map<
 
     return Map< T >(
         SystemEnumerable.Create(
-            Tuple.Create<
+            TupleHD.Create<
                 System.Func< Frame, ValueReference >,
                 System.Func< Frame, ValueReference > >(
                 // Make up for this method's frame
@@ -110,7 +110,7 @@ Map<
     T
 >(
     SCG.IEnumerable<
-        ITuple<
+        ITupleHD<
             System.Func< Frame, ValueReference >,
             System.Func< Frame, ValueReference > > >    mappings,
     System.Func< T >                                    func

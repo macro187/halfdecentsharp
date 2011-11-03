@@ -30,7 +30,7 @@ Com.Halfdecent.Meta
 
 public interface
 IValueReferenceComponent
-    : IEquatable< IValueReferenceComponent >
+    : IEquatableHD< IValueReferenceComponent >
 {
 
 

@@ -79,19 +79,9 @@ ToString()
 // IEquatable< IValueReferenceComponent >
 // -----------------------------------------------------------------------------
 
-public
-    bool
-Equals(
-    IValueReferenceComponent that
-)
-{
-    return Equatable.Equals< IValueReferenceComponent >( this, that );
-}
-
-
 public virtual
     bool
-DirectionalEquals(
+Equals(
     IValueReferenceComponent that
 )
 {

@@ -39,19 +39,9 @@ Member
 // IEquatable< IValueReferenceComponent >
 // -----------------------------------------------------------------------------
 
-public
-    bool
-Equals(
-    IValueReferenceComponent that
-)
-{
-    return Equatable.Equals< IValueReferenceComponent >( this, that );
-}
-
-
 public abstract
     bool
-DirectionalEquals(
+Equals(
     IValueReferenceComponent that
 );
 

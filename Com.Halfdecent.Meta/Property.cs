@@ -84,7 +84,7 @@ ToString()
 
 public override
     bool
-DirectionalEquals(
+Equals(
     IValueReferenceComponent that
 )
 {
