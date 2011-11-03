@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2007, 2008
+// Copyright (c) 2007, 2008, 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,9 +18,7 @@
 
 using System;
 using System.Globalization;
-using System.Threading;
 using Com.Halfdecent.Testing;
-using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Resources;
 
 
@@ -39,7 +37,6 @@ ResourcesTests
 {
 
 
-
 public static
 int
 Main()
@@ -48,155 +45,57 @@ Main()
 }
 
 
-/*
 [Test( "Resource.Get<T>()" )]
 public static
 void
 Test_Resource_Get()
 {
-    CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
-    CultureInfo         en_CA = CultureInfo.GetCultureInfo( "en-CA" );
-    CultureInfo         en_US = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo         fr_FR = CultureInfo.GetCultureInfo( "fr-FR" );
+    CultureInfo en = CultureInfo.GetCultureInfo( "en" );
+    CultureInfo en_AU = CultureInfo.GetCultureInfo( "en-AU" );
+    CultureInfo en_CA = CultureInfo.GetCultureInfo( "en-CA" );
+    CultureInfo es = CultureInfo.GetCultureInfo( "es" );
+    CultureInfo es_MX = CultureInfo.GetCultureInfo( "es-MX" );
+    CultureInfo inv = CultureInfo.InvariantCulture;
 
-
-    Print( "Correct when exact version exists" );
+    Print( "Specific, exists" );
     Assert(
-        Resource.Get<string>(
-            typeof(TestRes),
-            "teststring",
-            en_AU ) ==
-        "Hello (en-AU)" );
+        Resource.Get< string >( typeof(TestRes), "teststring", en_AU )
+            .Value == "Hello (en-AU)" );
 
-
-    Print( "Correct when only neutral version exists" );
+    Print( "Specific, doesn't exist, parent neutral exists" );
     Assert(
-        Resource.Get<string>(
-            typeof(TestRes),
-            "teststring",
-            en_CA ) ==
-        "Hello (en)" );
+        Resource.Get< string >( typeof(TestRes), "teststring", en_CA )
+            .HasValue == false );
 
-
-    Print( "Correct when only invariant version exists" );
+    Print( "Specific, doesn't exist, parent neutral doesn't exist" );
     Assert(
-        Resource.Get<string>(
-            typeof(TestRes),
-            "teststring",
-            fr_FR ) ==
-        "Hello (invariant)" );
+        Resource.Get< string >( typeof(TestRes), "teststring", es_MX )
+            .HasValue == false );
 
-
-    Print( "Null when no version exists (but other resources exist in the assembly)" );
+    Print( "Neutral, exists" );
     Assert(
-        Resource.Get<string>(
-            typeof(TestRes),
-            "nonexistent",
-            en_US ) ==
-        null );
+        Resource.Get< string >( typeof(TestRes), "teststring", en )
+            .Value == "Hello (en)" );
 
-
-    Print( "Null when no version exists (no resources in the assembly at all)" );
+    Print( "Neutral, doesn't exist" );
     Assert(
-        Resource.Get<string>(
-            typeof(NoRes),
-            "nonexistent",
-            en_US ) ==
-        null );
-}
-*/
+        Resource.Get< string >( typeof(TestRes), "teststring", es )
+            .HasValue == false );
 
+    Print( "Invariant, exists" );
+    Assert(
+        Resource.Get< string >( typeof(TestRes), "teststring", inv )
+            .Value == "Hello (invariant)" );
 
-[Test( "Resource._R()" )]
-public static
-void
-Test_Resource__R()
-{
-    Localised<string>   ls;
-    CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
+    Print( "Invariant, doesn't exist" );
+    Assert(
+        Resource.Get< string >( typeof(TestRes), "nonexistent", inv )
+            .HasValue == false );
 
-    Print( "Can retrieve a resource (that exists)" );
-    ls = Resource._R< string >( typeof( TestRes ), "teststring" );
-
-    Print( "...and it isn't null" );
-    Assert( ls != null );
-
-    Print( "...and it works" );
-    Assert( ls.In( en_AU ) == "Hello (en-AU)" );
-
-
-    Print( "ResourceMissingException if missing (other resources exist)" );
-    Expect< ResourceMissingException >( delegate() {
-        if(
-            Resource._R< string >( typeof( TestRes ), "nonexistent" )
-            == null
-        ){}
-    } );
-
-
-    Print( "ResourceMissingException if missing (no other resources exist)" );
-    Expect< ResourceMissingException >( delegate() {
-        if(
-            Resource._R< string >( typeof( NoRes ), "nonexistent" )
-            == null
-        ){}
-    } );
-}
-
-
-[Test( "Resource._S()" )]
-public static
-void
-Test_Resource__S()
-{
-    Localised<string>   ls;
-    CultureInfo         en_AU = CultureInfo.GetCultureInfo( "en-AU" );
-    CultureInfo         en_CA = CultureInfo.GetCultureInfo( "en-CA" );
-    CultureInfo         fr_FR = CultureInfo.GetCultureInfo( "fr-FR" );
-    CultureInfo         ja_JP = CultureInfo.GetCultureInfo( "ja-JP" );
-
-    Print( "Can retrieve with resource translations" );
-    ls = Resource._S( typeof( TestRes ), "Hello (code)" );
-
-    Print( "... and it isn't null" );
-    Assert( ls != null );
-
-    Print( "Exact culture variation is correct" );
-    Assert( ls.In( en_AU ) == "Hello (en-AU)" );
-
-    Print( "Neutral culture variation is correct" );
-    Assert( ls.In( en_CA ) == "Hello (en)" );
-
-    Print( "Invariant culture variation is correct" );
-    Assert( ls.In( fr_FR ) == "Hello (invariant)" );
-
-    Print( "Can retrieve without resource translations" );
-    ls = Resource._S( typeof( NoRes ), "Hello (code)" );
-
-    Print( "...and it isn't null" );
-    Assert( ls != null );
-
-    Print( "Value is always the original untranslated string" );
-    Assert( ls.In( en_AU ) == "Hello (code)" );
-    Assert( ls.In( en_CA ) == "Hello (code)" );
-    Assert( ls.In( fr_FR ) == "Hello (code)" );
-    Assert( ls.In( ja_JP ) == "Hello (code)" );
-
-
-    Print( "NOTE: CAN'T AUTOMATICALLY CHECK THE FOLLOWING, PLEASE VERIFY" );
-    Print( "(due to possible implementation differences in formatting)" );
-
-    ls = Resource._S( typeof( TestRes ), "Today is {0:f}", DateTime.Now );
-    Print( "Today's Date" );
-    Print( "en-AU: " + ls.In( en_AU ) );
-    Print( "fr-FR: " + ls.In( fr_FR ) );
-    Print( "ja-JP: " + ls.In( ja_JP ) );
-
-    ls = Resource._S( typeof( TestRes ), "Pi is {0:f}", 3.14 );
-    Print( "A Big Number" );
-    Print( "en-AU: " + ls.In( en_AU ) );
-    Print( "fr-FR: " + ls.In( fr_FR ) );
-    Print( "ja-JP: " + ls.In( ja_JP ) );
+    Print( "No resources in assembly" );
+    Assert(
+        Resource.Get< string >( typeof(NoRes), "teststring", inv )
+            .HasValue == false );
 }
 
 

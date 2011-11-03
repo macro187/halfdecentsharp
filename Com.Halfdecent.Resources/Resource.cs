@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008 Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+// Copyright (c) 2008, 2009, 2010, 2011
+// Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -16,12 +17,9 @@
 
 
 using System;
-using System.Diagnostics;
 using System.Resources;
 using System.Globalization;
-using System.Collections.Generic;
 using System.IO;
-using Com.Halfdecent.Globalisation;
 
 
 namespace
@@ -30,12 +28,7 @@ Com.Halfdecent.Resources
 
 
 // =============================================================================
-/// Utilities for working with resources
-///
-/// Suggested private localised string convenience function:
-/// <code>
-/// private static global::Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return global::Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
-/// </code>
+/// Embedded resources
 // =============================================================================
 
 public static class
@@ -43,62 +36,38 @@ Resource
 {
 
 
-
 // -----------------------------------------------------------------------------
-// Methods
+// Static
 // -----------------------------------------------------------------------------
 
-public static
-    Localised< string >
-_S(
-    Type            type,
-    string          untranslated,
-    params object[] formatargs
-)
-{
-    if( type == null )
-        throw new ArgumentNullException( "type" );
-    if( untranslated == null )
-        throw new ArgumentNullException( "untranslated" );
-    if( untranslated == "" )
-        throw new ArgumentException( "Is blank", "s" );
-    if( formatargs == null )
-        throw new ArgumentNullException( "formatargs" );
-
-    Localised< string > ls = new LocalisedStringResource( type, untranslated );
-    if( formatargs.Length > 0 ) {
-        ls = LocalisedString.Format( ls, formatargs );
-    }
-    return ls;
-}
-
-
-/// Get a <tt>Localised< T ></tt> whose localised variations are embedded under
-/// a given name as resources belonging to a given type
+/// Retrieve an embedded resource
 ///
-/// @exception ResourceMissingException
-/// The specified resource doesn't exist for the invariant culture
+/// @exception ResourceTypeMismatchException
+/// The resource was found but was not of the expected type
 ///
 /// @exception ArgumentNullException
-/// <tt>type</tt> or <tt>name</tt> are <tt>null</tt>
+/// <tt>type</tt> is <tt>null</tt>
+/// <strong>OR</strong>
+/// <tt>name</tt> is <tt>null</tt>
+/// <strong>OR</strong>
+/// <tt>language</tt> is <tt>null</tt>
 ///
 /// @exception ArgumentException
 /// <tt>name</tt> is a blank string
 ///
 public static
-    Localised< T >
-    /// @returns
-    /// A <tt>Localised< T ></tt> whose localised variations are embedded
-    /// resources
-_R<
+    IMaybe< T >
+    ///< @returns The specified resource, if it was found
+Get<
     T
-    ///< Type of the resource(s)
+    ///< Type the resource is expected to be
 >(
-    Type type,
-    ///< Type the resource(s) belong to
-
-    string name
-    ///< Name the resources are embedded under
+    Type        type,
+    ///< Type the resource belongs to
+    string      name,
+    ///< Name of the resource
+    CultureInfo language
+    ///< Language
 )
 {
     if( type == null )
@@ -106,21 +75,34 @@ _R<
     if( name == null )
         throw new ArgumentNullException( "name" );
     if( name == "" )
-        throw new ArgumentException( "Is blank", "name" );
+        throw new ArgumentException( "name is blank", "name" );
+    if( language == null )
+        throw new ArgumentNullException( "language" );
 
-    Localised< T > r = new LocalisedResource< T >( type, name );
+    ResourceManager mgr = new InternalResourceManager( type );
 
-    // Fail early if a version for the invariant culture doesn't exist
+    ResourceSet set;
     try {
-        if( object.ReferenceEquals(
-            r.In( CultureInfo.InvariantCulture ), null ) ) {}
-    // TODO Create and throw a more specific exception from
-    //      ExceptionBase< T >, and catch only that here
-    } catch( Exception e ) {
-        throw new ResourceMissingException( type, name, e );
+        set = mgr.GetResourceSet( language, true, false );
+    } catch( MissingManifestResourceException ) {
+        set = null;
+    } catch( MissingSatelliteAssemblyException ) {
+        set = null;
     }
+    if( set == null ) return Maybe.Create< T >();
 
-    return r;
+    object obj = set.GetObject( name );
+    if( obj == null ) return Maybe.Create< T >();
+
+    if( !(obj is T) )
+        throw new ResourceTypeMismatchException(
+            typeof( T ).FullName,
+            obj.GetType().FullName,
+            type.FullName,
+            name,
+            language.Name );
+
+    return Maybe.Create( (T)obj );
 }
 
 

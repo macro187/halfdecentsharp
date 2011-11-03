@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,43 +18,48 @@
 
 
 // =============================================================================
-/// Assets embedded in assemblies
+/// Localisable assets embedded in assemblies
 ///
+/// @section problem Problems
 ///
-/// @section problem Problem
+///     -   The static resource retrieval methods in
+///         <tt>System.Resources.ResourceManager</tt> are not strongly typed.
 ///
-///     Provide a convenient, easy-to-understand way to make use of localisable
-///     embedded resources.
+///     -   Depending on the .NET implementation,
+///         <tt>System.Resources.ResourceManager</tt> may or may not search the
+///         main assembly for resources before searching satellite assemblies.
+///
+///     -   If a resource can't be found,
+///         <tt>System.Resources.ResourceManager</tt> behaves differently
+///         depending on whether it's because it wasn't among the resources that
+///         were there or because there were no resources at all; this
+///         distinction is irrelevant and only adds complication that is
+///         unnecessary and easy to overlook.
+///
+///     -   The parent-based culture fallback mechanism built into
+///         <tt>System.Resources.ResourceManager</tt> may be overly-simplistic
+///         and cannot be modified.
 ///
 ///
 /// @section solution Solution
 ///
 ///     @subsection api Static API
 ///
-///         A terse, easy-to-understand API for referencing resources that "does
-///         the right thing":
+///         A simple, predictable API for retrieving resources.
 ///
-///         -   <tt>Resource._R<T>()</tt>, for getting resources of any type by
-///             name
+///         -   <tt>Resource.Get<T>()</tt>, for retrieving resources
 ///
-///         -   <tt>Resource._S()</tt>, for localisable strings that
-///             <em>may</em> have localised variations in resources
+///         -   <tt>ResourceTypeMismatchException</tt>, for when a resource is
+///             not of the expected type
 ///
-///         -   <tt>ResourceMissingException</tt>, for when an embedded resource
-///             is expected to be there, but isn't
+///         -   Strongly-typed
 ///
-///         -   <tt>ResourceTypeMismatchException</tt>, for when an embedded
-///             resource is not of the expected type
+///         -   No culture fallback occurs; either the exact resource you
+///             request is there or it isn't.  Sophisticated culture fallback
+///             mechanisms can be (and are) built on top of this API.
 ///
-///         The API methods return lazy
-///         <tt>Com.Halfdecent.Globalisation.Localised<T></tt>'s that do the
-///         resource retrieval only when actually used, and only for the
-///         language(s) required.
-///
-///     @subsection oneliner One-liner
-///
-///         An optional one-line code snippet that makes a private <tt>_S()</tt>
-///         that only accesses resources belonging to that class.
+///         -   Always checks for resources in the containing type's main
+///             assembly first
 ///
 ///
 /// @section reference Embedded Resources in .NET Reference

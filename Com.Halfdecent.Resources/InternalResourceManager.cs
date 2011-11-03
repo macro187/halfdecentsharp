@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2010
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,8 +17,9 @@
 
 
 using System;
+using System.Resources;
 using System.Globalization;
-using Com.Halfdecent.Globalisation;
+using System.IO;
 
 
 namespace
@@ -27,27 +28,14 @@ Com.Halfdecent.Resources
 
 
 // =============================================================================
-/// A <tt>Localised<string></tt> that represents a (possibly) localised
-/// string
+/// <tt>System.Resources.ResourceManager</tt> that never does parent culture
+/// fallback
 // =============================================================================
 
-public class
-LocalisedStringResource
-    : LocalisedResource< string >
+internal class
+InternalResourceManager
+    : ResourceManager
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Constants
-// -----------------------------------------------------------------------------
-
-/// Localised variations of strings are named the untranslated string itself
-/// prefixed by this
-///
-public static readonly
-string
-RESOURCE_NAME_PREFIX = "__";
 
 
 
@@ -55,45 +43,54 @@ RESOURCE_NAME_PREFIX = "__";
 // Constructors
 // -----------------------------------------------------------------------------
 
-/// Create a new <tt>LocalisedStringResource</tt> which may have translated
-/// versions available as embedded resources in a given type
-///
-internal
-LocalisedStringResource(
-    Type    type,
-    string  untranslated
+public
+InternalResourceManager(
+    Type resourceSource
 )
-    : base(
-        type,
-        RESOURCE_NAME_PREFIX + (untranslated ?? "(null)") )
+    : base( resourceSource )
 {
-    if( untranslated == null )
-        throw new ArgumentNullException( "untranslated" );
-    if( untranslated == "" )
-        throw new ArgumentException( "Is blank", "untranslated" );
-
-    this.Untranslated = untranslated;
+    if( resourceSource == null )
+        throw new ArgumentNullException( "resourceSource" );
+    this.ResourceSource = resourceSource;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Private
+// Properties
 // -----------------------------------------------------------------------------
 
-private string Untranslated;
+private
+Type
+ResourceSource;
 
 
 
 // -----------------------------------------------------------------------------
-// FallbackLocalised< T >
+// ResourceManager
 // -----------------------------------------------------------------------------
 
 protected override
-    string
-Default()
+    ResourceSet
+InternalGetResourceSet(
+    CultureInfo culture,
+    bool        createIfNotExists,
+    bool        tryParents
+)
 {
-    return this.Untranslated;
+    if( culture == null )
+        throw new ArgumentNullException( "culture" );
+
+    Stream s = null;
+    try {
+        s = this.MainAssembly.GetManifestResourceStream(
+            this.ResourceSource,
+            this.GetResourceFileName( culture ) );
+    } catch( FileNotFoundException ) {
+    }
+    if( s != null ) return new ResourceSet( s );
+
+    return base.InternalGetResourceSet( culture, createIfNotExists, false );
 }
 
 

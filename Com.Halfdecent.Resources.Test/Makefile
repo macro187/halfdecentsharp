@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Copyright (c) 2007, 2008, 2009, 2010
+# Copyright (c) 2007, 2008, 2009, 2010, 2011
 # Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 #
 # Permission to use, copy, modify, and distribute this software for any
@@ -22,7 +22,6 @@ MODULES_use += dotnet.resbian
 
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Testing)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Resources)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Globalisation)
 
 DOTNET_required_generation = 35
 
