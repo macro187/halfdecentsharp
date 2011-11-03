@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,9 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using System.Globalization;
-using System.Collections.Generic;
 
 
 namespace
@@ -26,52 +24,27 @@ Com.Halfdecent.Globalisation
 {
 
 
-// =============================================================================
-/// <tt>FallbackLocalised<T></tt> library
-// =============================================================================
-
 public static class
-FallbackLocalised
+CultureValuePair
 {
 
 
+
 // -----------------------------------------------------------------------------
-// Culture Fallback Algorithms
+// Static
 // -----------------------------------------------------------------------------
 
-/// Culture fallback algorithm: Parent culture(s)
-///
 public static
-    IEnumerable< CultureInfo >
-ParentFallbacksFor(
-    CultureInfo culture
+    CultureValuePair< T >
+Create<
+    T
+>(
+    CultureInfo culture,
+    T           value
 )
 {
-    if( culture == null ) throw new ArgumentNullException( "culture" );
-    CultureInfo c = culture;
-    while( c.Name != "" ) {
-        c = c.Parent;
-        yield return c;
-    }
+    return new CultureValuePair< T >( culture, value );
 }
-
-
-// Culture fallback algorithm: Similar culture(s)
-//
-// TODO Fallback algorithm which also checks other regions with the same
-//      language in some prioritised order eg:
-//
-//          en-AU => en, en-US, en-GB, en-CA, ..., (invariant)
-//          fr-CA => fr, fr-FR, ..., (invariant)
-//
-//public static
-//    IEnumerable< CultureInfo >
-//SimilarFallbacksFor(
-//    CultureInfo culture
-//)
-//{
-//    yield return ...;
-//}
 
 
 

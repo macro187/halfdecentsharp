@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Copyright (c) 2008, 2009, 2010
+# Copyright (c) 2008, 2009, 2010, 2011
 # Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 #
 # Permission to use, copy, modify, and distribute this software for any
@@ -23,6 +23,7 @@ MODULES_use += testable
 DOTNET_required_generation = 35
 
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent)
+DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Resources)
 
 
 include $(MAKERY)/makery.mk

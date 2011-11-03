@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,7 +17,6 @@
 
 
 using System;
-using System.Globalization;
 
 
 namespace
@@ -26,16 +25,13 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// <tt>Localised<T></tt> proxy
+/// An exception indicating that there was no invariant culture variation of an
+/// embedded resource
 // =============================================================================
 
 public class
-LocalisedProxy<
-    TFrom,
-    TTo
->
-    : Localised< TTo >
-    where TFrom : TTo
+InvariantResourceMissingException
+    : Exception
 {
 
 
@@ -45,12 +41,50 @@ LocalisedProxy<
 // -----------------------------------------------------------------------------
 
 public
-LocalisedProxy(
-    Localised< TFrom > from
+InvariantResourceMissingException(
+    Type    type,
+    string  name
 )
+    : this( type, name, null )
 {
-    if( from == null ) throw new ArgumentNullException( "from" );
-    this.From = from;
+}
+
+
+/// Initialise an <tt>InvariantResourceMissingException</tt>
+///
+/// @exception ArgumentNullException
+/// <tt>typename</tt> is <tt>null</tt>
+/// -OR-
+/// <tt>name</tt> is <tt>null</tt>
+///
+/// @exception ArgumentException
+/// <tt>name</tt> is blank
+///
+public
+InvariantResourceMissingException(
+    Type        type,
+    ///< Name of the type the missing resource was supposed to belong to
+    string      name,
+    ///< Name of the missing resource
+    Exception   innerException
+    ///< (See <tt>System.Exception</tt>)
+)
+    : base(
+        string.Format(
+            "Type '{0}' contains no embedded resources named '{1}' for the invariant culture",
+            type != null ? type.FullName : "(unknown)",
+            name ),
+        innerException )
+
+{
+    if( type == null )
+        throw new ArgumentNullException( "type" );
+    if( name == null )
+        throw new ArgumentNullException( "name" );
+    if( name == "" )
+        throw new ArgumentException( "Is blank", "name" );
+    this.Type = type;
+    this.Name = name;
 }
 
 
@@ -60,26 +94,20 @@ LocalisedProxy(
 // -----------------------------------------------------------------------------
 
 public
-Localised< TFrom >
-From
+Type
+Type
 {
     get;
     private set;
 }
 
 
-
-// -----------------------------------------------------------------------------
-// Localised< TTo >
-// -----------------------------------------------------------------------------
-
-protected override
-    TTo
-ProtectedIn(
-    CultureInfo culture
-)
+public
+string
+Name
 {
-    return this.From.In( culture );
+    get;
+    private set;
 }
 
 

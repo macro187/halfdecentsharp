@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2010
+// Copyright (c) 2008, 2009, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -28,13 +28,6 @@ Com.Halfdecent.Globalisation
 
 // =============================================================================
 /// %Localised string manipulation routines
-///
-/// These methods are modelled after the string manipulation methods in the Base
-/// Class Library.  The <tt>Localised< string ></tt>s they return evaluate their
-/// arguments and perform their operations lazily, and can do so repeatedly for
-/// different languages/cultures.  This means that multiple operations
-/// effectively queue up, with the entire series of operations evaluating (and
-/// reevaluating) as necessary in different languages.
 // =============================================================================
 
 public static class
@@ -59,16 +52,19 @@ Format(
     if( format == null ) throw new ArgumentNullException( "format" );
     if( args == null ) throw new ArgumentNullException( "args" );
 
-    return new Localised< string >(
-        lang =>
-            String.Format(
-                lang,
-                format.In( lang ),
-                args.Select( (arg) =>
-                    arg is ILocalised
-                        ? ((ILocalised)arg).In( lang )
-                        : arg )
-                    .ToArray() ) );
+    return Localised.Create(
+        (uic,c) =>
+            Maybe.Create(
+                string.Format(
+                    c,
+                    format.In( uic, c ),
+                    args.Select( arg =>
+                        arg is ILocalised
+                            ? ((ILocalised)arg)
+                                .AsLocalisedObject()
+                                .In( uic, c )
+                            : arg )
+                        .ToArray() ) ) );
 }
 
 
@@ -81,10 +77,14 @@ Concat(
     Localised< string > b
 )
 {
-    a = a ?? new Localised< string >( "" );
-    b = b ?? new Localised< string >( "" );
-    return new Localised< string >(
-        lang => string.Concat( a.In( lang ), b.In( lang ) ) );
+    a = a ?? Localised.Create( "" );
+    b = b ?? Localised.Create( "" );
+    return Localised.Create(
+        (uic,c) =>
+            Maybe.Create(
+                string.Concat(
+                    a.In( uic, c ),
+                    b.In( uic, c ) ) ) );
 }
 
 
@@ -97,8 +97,10 @@ ToLower(
 )
 {
     if( s == null ) throw new ArgumentNullException( "s" );
-    return new Localised< string >(
-        lang => s.In( lang ).ToLower( lang ) );
+    return Localised.Create(
+        (uic,c) =>
+            s.TryIn( uic, c )
+            .If( t => t.ToLower( uic ) ) );
 }
 
 
@@ -111,8 +113,10 @@ ToUpper(
 )
 {
     if( s == null ) throw new ArgumentNullException( "s" );
-    return new Localised< string >(
-        lang => s.In( lang ).ToUpper( lang ) );
+    return Localised.Create(
+        (uic,c) =>
+            s.TryIn( uic, c )
+            .If( t => t.ToUpper( uic ) ) );
 }
 
 

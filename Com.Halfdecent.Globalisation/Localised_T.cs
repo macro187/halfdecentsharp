@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2010
+// Copyright (c) 2008, 2010, 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -50,7 +50,6 @@ Com.Halfdecent.Globalisation
 public class
 Localised<
     T
-    ///< The type of underlying values
 >
     : ILocalised
 {
@@ -63,58 +62,23 @@ Localised<
 
 public
 Localised(
-    T singleValue
-    ///< A single value to be used for all cultures
-)
-    : this( culture => singleValue )
-{
-    if( object.ReferenceEquals( singleValue, null ) )
-        throw new ArgumentNullException( "singleValue" );
-}
-
-
-public
-Localised(
-    Func< CultureInfo, T > inFunc
-    ///< Function from a non-null culture to a non-null value
+    LocalisedFunc< T > tryInFunc
 )
 {
-    if( object.ReferenceEquals( inFunc, null ) )
-        throw new ArgumentNullException( "inFunc" );
-    this.InFunc = inFunc;
+    if( tryInFunc == null )
+        throw new ArgumentNullException( "tryInFunc" );
+    this.TryInFunc = tryInFunc;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Private
+// Properties
 // -----------------------------------------------------------------------------
 
 private
-Func< CultureInfo, T >
-InFunc = null;
-
-
-
-// -----------------------------------------------------------------------------
-// Protected
-// -----------------------------------------------------------------------------
-
-protected
-Localised()
-{
-}
-
-
-protected virtual
-    T
-ProtectedIn(
-    CultureInfo culture
-)
-{
-    if( this.InFunc != null ) return this.InFunc( culture );
-    throw new NotImplementedException();
-}
+LocalisedFunc< T >
+TryInFunc = null;
 
 
 
@@ -122,41 +86,21 @@ ProtectedIn(
 // Methods
 // -----------------------------------------------------------------------------
 
-/// Retrieve the most applicable variation for a specified culture
-///
-/// If a variation is not available for the exact culture specified, some
-/// "close" variant will be provided.
-///
-/// @exception ArgumentNullException
-/// The specified <tt>culture</tt> is <tt>null</tt>
-///
-/// @exception Exception
-/// <tt>this.InFunc</tt> yielded a <tt>null</tt> value
-///
 public
-    T
-In(
+    IMaybe< T >
+TryIn(
+    CultureInfo uiculture,
     CultureInfo culture
 )
 {
+    if( uiculture == null ) throw new ArgumentNullException( "uiculture" );
     if( culture == null ) throw new ArgumentNullException( "culture" );
-    T result = this.ProtectedIn( culture );
-    if( object.ReferenceEquals( result, null ) )
-        throw new Exception( "Bug: InFunc/ProtectedIn() returned null" );
-    return result;
-}
-
-
-
-/// Produce the value of the localisable item in the current language/culture
-///
-/// As indicated by <tt>System.Globalization.CultureInfo.CurrentCulture</tt>.
-///
-public
-    T
-InCurrent()
-{
-    return this.In( CultureInfo.CurrentCulture );
+    IMaybe< T > r = this.TryInFunc( uiculture, culture );
+    if( uiculture == CultureInfo.InvariantCulture && !r.HasValue )
+        throw new BugException(
+            "this.TryInFunc couldn't produce a variation for the invariant"
+            + " culture" );
+    return r;
 }
 
 
@@ -165,19 +109,13 @@ InCurrent()
 // ILocalised
 // -----------------------------------------------------------------------------
 
-    object
-ILocalised.In(
+    IMaybe< object >
+ILocalised.TryIn(
+    CultureInfo uiculture,
     CultureInfo culture
 )
 {
-    return this.In( culture );
-}
-
-
-    object
-ILocalised.InCurrent()
-{
-    return this.InCurrent();
+    return this.TryIn( uiculture, culture );
 }
 
 
@@ -214,8 +152,9 @@ explicit operator T(
     Localised< T > localised
 )
 {
-    if( object.ReferenceEquals( localised, null ) ) return default( T );
-    return localised.InCurrent();
+    return localised != null
+        ? localised.InCurrent()
+        : default( T );
 }
 
 
@@ -229,8 +168,9 @@ implicit operator Localised< T >(
     T value
 )
 {
-    if( object.ReferenceEquals( value, null ) ) return null;
-    return new Localised< T >( value );
+    return value != null
+        ? Localised.Create< T >( value )
+        : null;
 }
 
 

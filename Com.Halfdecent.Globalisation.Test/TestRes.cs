@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,35 +16,18 @@
 // -----------------------------------------------------------------------------
 
 
-using System.Globalization;
-
-
 namespace
-Com.Halfdecent.Globalisation
+Com.Halfdecent.Globalisation.Test
 {
 
 
 // =============================================================================
-/// Non-generic interface to <tt>Localised<T></tt>
+/// Container type for test resources
 // =============================================================================
 
-public interface
-ILocalised
+public class
+TestRes
 {
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// See <tt>Localised<T>.In()</tt>
-///
-    IMaybe< object >
-TryIn(
-    CultureInfo uiculture,
-    CultureInfo culture
-);
 
 
 

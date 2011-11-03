@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System.Collections.Generic;
 using System.Globalization;
 
 
@@ -25,30 +26,24 @@ Com.Halfdecent.Globalisation
 
 
 // =============================================================================
-/// Non-generic interface to <tt>Localised<T></tt>
+/// A function that, given a culture, produces a prioritised sequence of other
+/// cultures that may be "similar" enough for use in cases where resources or
+/// functionality is not available
+///
+/// Culture fallback order is a political problem, with no single "correct" way
+/// to do it.  All culture-sensitive operations should allow callers to specify
+/// it by supplying a <tt>CultureFallbackFunc</tt>.
 // =============================================================================
 
-public interface
-ILocalised
-{
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-/// See <tt>Localised<T>.In()</tt>
-///
-    IMaybe< object >
-TryIn(
-    CultureInfo uiculture,
+public delegate
+    IEnumerable< CultureInfo >
+CultureFallbackFunc
+(
     CultureInfo culture
 );
 
 
 
 
-} // type
 } // namespace
 

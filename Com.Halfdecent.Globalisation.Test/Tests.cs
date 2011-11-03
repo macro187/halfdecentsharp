@@ -51,12 +51,12 @@ public static
 void
 Test_Localised()
 {
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    var en = CultureInfo.GetCultureInfo( "en-US" );
+    var fr = CultureInfo.GetCultureInfo( "fr-FR" );
     Localised< string > ls;
 
     Print( "Create single value" );
-    ls = new Localised< string >( "all" );
+    ls = Localised.Create( "all" );
 
     Print( "Check In()" );
     Assert( ls.In( en ) == "all" );
@@ -69,17 +69,22 @@ Test_Localised()
     Assert( ((string)ls) == "all" );
 
     Print( "Create multi value" );
-    ls = new Localised< string >( lang =>
-        lang.Equals( en ) ? "english" :
-        lang.Equals( fr ) ? "french" :
-        "default" );
+    ls = Localised.Create(
+        (uic,c) =>
+            Maybe.Create(
+                uic
+                    .Match()
+                    .Returns< string >()
+                    .When( u => u.Equals( en ), u => "english" )
+                    .When( u => u.Equals( fr ), u => "french" )
+                    .Else( () => "default" ) ) );
 
     Print( "Check In()" );
     Assert( ls.In( en ) == "english" );
     Assert( ls.In( fr ) == "french" );
 
     Print( "Check via Covary()" );
-    Localised< object> lo = ls.Covary< string, object >();
+    Localised< object > lo = ls.Covary< string, object >();
     Assert( lo.In( en ).ToString() == "english" );
     Assert( lo.In( fr ).ToString() == "french" );
 }
@@ -90,21 +95,28 @@ public static
 void
 Test_LocalisedString_Format()
 {
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    var en = CultureInfo.GetCultureInfo( "en-US" );
+    var fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
-    Localised<string> format = new Localised<string>( lang =>
-        lang.Equals( fr )
-            ? "Bonjour, {0}"
-            : "Hello, {0}" );
+    Localised< string > format
+        = Localised.Create(
+            (uic,c) =>
+                Maybe.Create(
+                    uic.Equals( fr )
+                        ? "Bonjour, {0}"
+                        : "Hello, {0}" ) );
 
-    Localised<string> name = new Localised<string>( lang =>
-        lang.Equals( fr )
-            ? "Pierre"
-            : "John" );
+    Localised< string > name
+        = Localised.Create(
+            (uic,c) =>
+                Maybe.Create(
+                    uic.Equals( fr )
+                        ? "Pierre"
+                        : "John" ) );
 
     Print( "Format() a greeting from localised parts" );
-    Localised<string> greeting = LocalisedString.Format( format, name );
+    Localised< string > greeting
+        = LocalisedString.Format( format, name );
 
     Print( "Make sure it's right in english" );
     Assert( greeting.In( en ) == "Hello, John" );
@@ -119,21 +131,27 @@ public static
 void
 Test_LocalisedString_Concat()
 {
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    var en = CultureInfo.GetCultureInfo( "en-US" );
+    var fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
-    Localised<string> a = new Localised<string>( lang =>
-        lang.Equals( fr )
-            ? "Un"
-            : "One" );
+    Localised< string > a
+        = Localised.Create(
+            (uic,c) =>
+                Maybe.Create(
+                    uic.Equals( fr )
+                        ? "Un"
+                        : "One" ));
 
-    Localised<string> b = new Localised<string>( lang =>
-        lang.Equals( fr )
-            ? "Deux"
-            : "Two" );
+    Localised< string > b
+        = Localised.Create(
+            (uic,c) =>
+                Maybe.Create(
+                    uic.Equals( fr )
+                        ? "Deux"
+                        : "Two" ));
 
     Print( "Concat() a couple of Localised<string>s" );
-    Localised<string> ab = LocalisedString.Concat( a, b );
+    Localised< string > ab = LocalisedString.Concat( a, b );
 
     Print( "Make sure it's right in english" );
     Assert( ab.In( en ) == "OneTwo" );
@@ -150,13 +168,16 @@ public static
 void
 Test_LocalisedString_ToLower()
 {
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    var en = CultureInfo.GetCultureInfo( "en-US" );
+    var fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
-    Localised<string> s = new Localised<string>( lang =>
-        lang.Equals( fr )
-            ? "Bonjour"
-            : "Hello" )
+    Localised< string > s
+        = Localised.Create(
+            (uic,c) =>
+                Maybe.Create(
+                    uic.Equals( fr )
+                        ? "Bonjour"
+                        : "Hello" ))
         .ToLower();
 
     Print( "Make sure it's right in english" );
@@ -174,13 +195,16 @@ public static
 void
 Test_LocalisedString_ToUpper()
 {
-    CultureInfo en = CultureInfo.GetCultureInfo( "en-US" );
-    CultureInfo fr = CultureInfo.GetCultureInfo( "fr-FR" );
+    var en = CultureInfo.GetCultureInfo( "en-US" );
+    var fr = CultureInfo.GetCultureInfo( "fr-FR" );
 
-    Localised<string> s = new Localised<string>( lang =>
-        lang.Equals( fr )
-            ? "Bonjour"
-            : "Hello" )
+    Localised< string > s
+        = Localised.Create(
+            (uic,c) =>
+                Maybe.Create(
+                    uic.Equals( fr )
+                        ? "Bonjour"
+                        : "Hello" ))
         .ToUpper();
 
     Print( "Make sure it's right in english" );
@@ -197,7 +221,7 @@ void
 Test_LocalisedExceptions()
 {
     Exception           ie = new Exception();
-    Localised< string > m = new Localised< string >( "message" );
+    Localised< string > m = Localised.Create( "message" );
     string              pn = "paramname";
     object              av = new object();
 
@@ -252,6 +276,114 @@ Test_LocalisedExceptions()
         Assert( e.Message == m );
         Assert( e.InnerException == ie );
     }
+}
+
+
+[Test( "LocalisedResource._R()" )]
+public static
+void
+Test_LocalisedResource__R()
+{
+    var en_AU = CultureInfo.GetCultureInfo( "en-AU" );
+    var en_US = CultureInfo.GetCultureInfo( "en-US" );
+    var es_MX = CultureInfo.GetCultureInfo( "es-MX" );
+    var en = CultureInfo.GetCultureInfo( "en" );
+    var fr = CultureInfo.GetCultureInfo( "fr" );
+    var es = CultureInfo.GetCultureInfo( "es" );
+
+    Localised< string > ls =
+        LocalisedResource._R< string >( typeof( TestRes ), "teststring" );
+
+    Print( "Exact, present" );
+    Assert( ls.In( en_AU ) == "Hello (en-AU)" );
+
+    Print( "Exact, not present, neutral present" );
+    Assert( ls.In( en_US ) == "Hello (en)" );
+
+    Print( "Exact, not present, neutral not present, invariant present" );
+    Assert( ls.In( es_MX ) == "Hello (invariant)" );
+
+    Print( "Neutral, present, exacts too" );
+    Assert( ls.In( en ) == "Hello (en)" );
+
+    Print( "Neutral, present, no exacts" );
+    Assert( ls.In( fr ) == "Hello (fr)" );
+
+    Print( "Neutral, not present, invariant present" );
+    Assert( ls.In( es ) == "Hello (invariant)" );
+
+    Print( "ResourceMissingException if no invariant" );
+    Expect< InvariantResourceMissingException >( () => {
+        LocalisedResource._R< string >( typeof( TestRes ), "nonexistent" ); } );
+}
+
+
+[Test( "Resource._S()" )]
+public static
+void
+Test_Resource__S()
+{
+    var en_AU = CultureInfo.GetCultureInfo( "en-AU" );
+    var en_US = CultureInfo.GetCultureInfo( "en-US" );
+    var es_MX = CultureInfo.GetCultureInfo( "es-MX" );
+    var fr_FR = CultureInfo.GetCultureInfo( "fr-FR" );
+    var ja_JP = CultureInfo.GetCultureInfo( "ja-JP" );
+    var en = CultureInfo.GetCultureInfo( "en" );
+    var fr = CultureInfo.GetCultureInfo( "fr" );
+    var es = CultureInfo.GetCultureInfo( "es" );
+
+    Localised< string > ls;
+
+    ls = LocalisedResource._S( typeof( TestRes ), "Hello (code)" );;
+
+    Print( "Exact, present" );
+    Assert( ls.In( en_AU ) == "Hello (en-AU)" );
+
+    Print( "Exact, not present, neutral present" );
+    Assert( ls.In( en_US ) == "Hello (en)" );
+
+    Print( "Exact, not present, neutral not present, invariant present" );
+    Assert( ls.In( es_MX ) == "Hello (invariant)" );
+
+    Print( "Neutral, present, exacts too" );
+    Assert( ls.In( en ) == "Hello (en)" );
+
+    Print( "Neutral, present, no exacts" );
+    Assert( ls.In( fr ) == "Hello (fr)" );
+
+    Print( "Neutral, not present, invariant present" );
+    Assert( ls.In( es ) == "Hello (invariant)" );
+
+    Print( "Invariant, present" );
+    Assert( ls.In( CultureInfo.InvariantCulture ) == "Hello (invariant)" );
+
+    ls = LocalisedResource._S( typeof( TestRes ), "nonexistent" );;
+
+    Print( "Exact, not present" );
+    Assert( ls.In( en_AU ) == "nonexistent" );
+
+    Print( "Neutral, not present" );
+    Assert( ls.In( en ) == "nonexistent" );
+
+    Print( "Invariant, not present" );
+    Assert( ls.In( CultureInfo.InvariantCulture ) == "nonexistent" );
+
+    Print( "NOTE: CAN'T AUTOMATICALLY CHECK THE FOLLOWING, PLEASE VERIFY" );
+    Print( "(due to possible implementation differences in formatting)" );
+
+    ls = LocalisedResource._S(
+        typeof( TestRes ), "Today is {0:f}", DateTime.Now );
+    Print( "Today's Date" );
+    Print( "en-AU: " + ls.In( en_AU ) );
+    Print( "fr-FR: " + ls.In( fr_FR ) );
+    Print( "ja-JP: " + ls.In( ja_JP ) );
+
+    ls = LocalisedResource._S(
+        typeof( TestRes ), "Pi is {0:f}", 3.14 );
+    Print( "A Big Number" );
+    Print( "en-AU: " + ls.In( en_AU ) );
+    Print( "fr-FR: " + ls.In( fr_FR ) );
+    Print( "ja-JP: " + ls.In( ja_JP ) );
 }
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Globalization;
+using Com.Halfdecent;
 
 
 namespace
@@ -24,27 +26,78 @@ Com.Halfdecent.Globalisation
 {
 
 
-// =============================================================================
-/// Non-generic interface to <tt>Localised<T></tt>
-// =============================================================================
-
-public interface
-ILocalised
+public struct
+CultureValuePair<
+    T
+>
+    : ITupleHD< CultureInfo, T >
 {
 
 
 
 // -----------------------------------------------------------------------------
-// Methods
+// Constructors
 // -----------------------------------------------------------------------------
 
-/// See <tt>Localised<T>.In()</tt>
-///
-    IMaybe< object >
-TryIn(
-    CultureInfo uiculture,
-    CultureInfo culture
-);
+public
+CultureValuePair(
+    CultureInfo culture,
+    T           value
+)
+{
+    if( culture == null )
+        throw new ArgumentNullException( "culture" );
+    this.culture = culture;
+    this.value = value;
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Properties
+// -----------------------------------------------------------------------------
+
+public
+CultureInfo
+Culture
+{
+    get { return this.culture; }
+}
+
+private
+CultureInfo
+culture;
+
+
+public
+T
+Value
+{
+    get { return this.value; }
+}
+
+private
+T
+value;
+
+
+
+// -----------------------------------------------------------------------------
+// ITupleHD< CultureInfo, T >
+// -----------------------------------------------------------------------------
+
+    CultureInfo
+ITupleHD< CultureInfo, T >.A
+{
+    get { return this.Culture; }
+}
+
+
+    T
+ITupleHD< CultureInfo, T >.B
+{
+    get { return this.Value; }
+}
 
 
 
