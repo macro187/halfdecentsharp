@@ -30,7 +30,7 @@ Com.Halfdecent
 
 public interface
 IComparerHD<
-    T
+    in T
 >
     : IComparer< T >
     , IEqualityComparer< T >
