@@ -33,9 +33,8 @@ Com.Halfdecent
 /// Note that to conclusively determine equality, <em>both</em> items'
 /// <tt>IEquatable<T>.Equals()</tt> must be consulted.  The reason is that the
 /// other item may be a subtype with a more specific definition of equality.
-//
-//  [TODO reference to convenience method for above]
-//
+/// A convenient way to do this is
+/// <tt>SystemEquatable.EqualsBidirectional()</tt>.
 // =============================================================================
 
 public interface

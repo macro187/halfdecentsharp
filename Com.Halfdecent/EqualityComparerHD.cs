@@ -38,6 +38,19 @@ EqualityComparerHD
 // Static Methods
 // -----------------------------------------------------------------------------
 
+/// Make an equality comparer for a type that is <tt>System.IEquatable<T></tt>
+///
+/// The resultant comparer performs bidirectional comparisons using
+/// <tt>SystemEquatable.EqualsBidirectional()</tt>.
+///
+/// If <tt>T</tt> is also <tt>IEquatableHD<T></tt>, then
+/// <tt>IEquatableHD<T>.GetHashCode()</tt> is used.
+///
+/// IMPORTANT: If <tt>T</tt> is <strong>not</strong> <tt>IEquatableHD<T></tt>,
+/// then <tt>System.Object.GetHashCode()</tt> is used, which must work according
+/// to the same definition of equality as
+/// <tt>System.IComparable<T>.Equals()</tt>.
+///
 public static
     IEqualityComparer< T >
 Create<
@@ -46,10 +59,23 @@ Create<
     where T : IEquatable< T >
 {
     return Create< T >(
-        obj => obj.GetHashCode() );
+        // XXX must be a better way to do this
+        obj =>
+            obj is IEquatableHD< T >
+                ? ((IEquatableHD< T >)obj).GetHashCode()
+                : obj.GetHashCode() );
 }
 
 
+/// Make an equality comparer for a type that is <tt>System.IEquatable<T></tt>
+/// using a specified hash code function
+///
+/// The resultant comparer performs bidirectional comparisons using
+/// <tt>SystemEquatable.EqualsBidirectional()</tt>.
+///
+/// IMPORTANT: <tt>getHashCodeFunc</tt> must work according to the same
+/// definition of equality as <tt>System.IEquatable<T>.Equals()</tt>.
+///
 public static
     IEqualityComparer< T >
 Create<
@@ -65,20 +91,12 @@ Create<
 }
 
 
-public static
-    IEqualityComparer< T >
-Create<
-    T
->(
-    EqualsFunc< T > equalsFunc
-)
-{
-    return Create< T >(
-        equalsFunc,
-        obj => obj.GetHashCode() );
-}
-
-
+/// Make an equality comparer out of an equality function and a hash code
+/// function
+///
+/// IMPORTANT: <tt>equalsFunc</tt> and <tt>getHashCodeFunc</t> must work
+/// according to the same definition of equality.
+///
 public static
     IEqualityComparer< T >
 Create<

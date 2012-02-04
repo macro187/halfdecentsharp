@@ -17,7 +17,7 @@
 
 
 using System;
-using SCG = System.Collections.Generic;
+using System.Collections.Generic;
 
 
 namespace
@@ -34,7 +34,7 @@ public class
 EqualityComparerHD<
     T
 >
-    : SCG.IEqualityComparer< T >
+    : IEqualityComparer< T >
 {
 
 

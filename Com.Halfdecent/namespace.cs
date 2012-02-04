@@ -61,21 +61,25 @@
 ///         Existing comparison mechanisms have a number of shortcomings,
 ///         especially when abstract types and/or subtypes are involved.
 ///
-///         -   C# comparison operators (<tt>==, !=, <, ></tt> and friends)
-///             don't work on abstract types.
+///         -   C# operators (<tt>==, !=, <, ></tt> and friends) don't work on
+///             abstract types.
 ///
-///         -   <tt>System.Object.Equals()</tt> and
-///             <tt>System.Object.GetHashCode()</tt> allow only one kind of
+///         -   <tt>System.Object.Equals()</tt> is untyped.
+///
+///         -   The combination of <tt>System.Object.Equals()</tt> and
+///             <tt>System.Object.GetHashCode()</tt> allows for only one kind of
 ///             comparison per concrete class, but classes may implement any
-///             number of abstract types, each, possibly, with their own kind of
-///             comparison.
-///
-///         -   <tt>System.IEquatable<T></tt> doesn't include a
-///             <tt>.GetHashCode()</tt> to match its <tt>.Equals()</tt>.
-///             <sup>1</sup>
+///             number of abstract types, each, possibly, with their own
+///             kind of comparison.
 ///
 ///         -   <tt>System.IComparable<T></tt> doesn't imply
-///             <tt>System.IEquatable<T></tt>.
+///             <tt>System.IEquatable<T></tt>.  Wrong because if something can
+///             be compared, it can be tested for equality.
+///
+///         -   Neither <tt>System.IEquatable<T></tt> nor
+///             <tt>System.IComparable<T></tt> include <tt>GetHashCode()</tt>
+///             to match their definitions of equality / comparison.
+///             <sup>1</sup>
 ///
 ///         -   Normally, <tt>System.IEquatable<T></tt> and
 ///             <tt>System.IComparable<T></tt> are used in a unidirectional
@@ -86,18 +90,21 @@
 ///             examination and analysis of the two objects at runtime).
 ///
 ///         -   <tt>System.Collections.Generic.IComparer<T></tt> doesn't imply
-///             <tt>System.Collections.Generic.IEqualityComparer<T></tt>.
+///             <tt>System.Collections.Generic.IEqualityComparer<T></tt>.  Wrong
+///             because if something can compare, it can test for equality.
+///
+///         -   <tt>System.Collections.Generic.IComparer<T></tt> does not
+///             include a <tt>GetHashCode()</tt> to match its comparison.
 ///
 ///         -   <tt>System.Collections.Generic.EqualityComparer<T></tt> and
 ///             <tt>System.Collections.Generic.Comparer<T></tt> provide no
-///             support for creating ad hoc comparers out of <tt>.Equals()</tt>,
-///             <tt>CompareTo()</tt>, and <tt>.GetHashCode()</tt> delegates.
+///             support for creating comparers on-the-fly out of functions.
 ///
 ///         <small>
 ///         <sup>1</sup> For a detailed explanation of the connection between
-///         <tt>GetHashCode()</tt> and <tt>Equals()</tt>, consult the
+///         <tt>GetHashCode()</tt> and equality / comparison, consult the
 ///         <tt>System.Object.GetHashCode()</tt> section of your Base Class
-///         Library documentation
+///         Library documentation.
 ///         </small>
 ///
 ///
@@ -106,34 +113,40 @@
 ///         Replacement comparison patterns and types that fix design flaws and
 ///         work correctly with abstract types and subtypes.
 ///
-///         -   <tt>EqualsFunc<T></tt>, <tt>CompareFunc<T></tt>, and
-///             <tt>GetHashCodeFunc<T></tt> delegate types.
+///         -   Delegate types for equality and comparison-related functions:
+///             <tt>EqualsFunc<T></tt>, <tt>CompareFunc<T></tt>, and
+///             <tt>GetHashCodeFunc<T></tt>
 ///
-///         -   <tt>IEquatableHD<T></tt> interface which defines an
-///             <tt>IEquatableHD<T>.GetHashCode()</tt> to go with the
-///             <tt>IEquatable<T>.Equals()</tt>.
+///         -   Equatable interface which includes a hash code method:
+///             <tt>IEquatableHD<T></tt>
 ///
-///         -   <tt>SystemEquatable.EqualsBidirectional()<T></tt> and
+///         -   Comparable interface which implies equatability:
+///             <tt>IComparableHD<T></tt>
+///
+///         -   Extension methods that perform bidirectional equality and
+///             comparisons:
+///             <tt>SystemEquatable.EqualsBidirectional()<T></tt> and
 ///             <tt>SystemComparable.CompareToBidirectional()<T></tt>
-///             extension methods that perform bidirectional -- and therefore
-///             correct -- comparisons.
 ///
-///         -   <tt>ComparisonDisagreementException</tt>, an exception
-///             indicating that the two comparisons involved in a bidirectional
-///             comparison were in complete disagreement, indicating a bug in
-///             one or both.
+///         -   Exception indicating that the two items' comparison
+///             implementations completely disagreed, indicating a bug in one or
+///             both: <tt>ComparisonDisagreementException</tt>
 ///
-///         -   <tt>SystemComparable</tt>, an extension methods library for
-///             <tt>IComparable<T></tt> providing convenience comparison methods
-///             such as <tt>Comparable.GT()</tt>, <tt>Comparable.LT()</tt>, etc.
+///         -   Convenient comparison extension methods for
+///             <tt>System.IComparable<T></tt>: <tt>SystemComparable.GT()</tt>,
+///             <tt>SystemComparable.GTE()</tt>, <tt>SystemComparable.LT()</tt>,
+///             <tt>SystemComparable.LTE()</tt>
 ///
-///         -   <tt>EqualityComparerHD<T></tt> made out of <tt>.Equals()</tt>
-///             and <tt>.GetHashCode()</tt> functions.
+///         -   Comparer interface that implies equality comparer and hash code
+///             functionality: IComparerHD<T>
 ///
-///         -   <tt>ComparerHD<T></tt> made out of <tt>.CompareTo()</tt> and
-///             <tt>.GetHashCode()</tt> functions.  Also serves as an equality
-///             comparer, unlike
-///             <tt>System.Collections.Generic.Comparer<T></tt>.
+///         -   Equality comparer made out of <tt>.Equals()</tt> and
+///             <tt>.GetHashCode()</tt> functions:
+///             <tt>EqualityComparerHD<T></tt>
+///
+///         -   Comparer (plus equality comparer) made out of
+///             <tt>.CompareTo()</tt> and <tt>.GetHashCode()</tt> functions:
+///             <tt>System.Collections.Generic.Comparer<T></tt>
 ///
 ///
 /// @section maybes Maybes

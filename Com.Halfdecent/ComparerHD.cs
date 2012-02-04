@@ -38,24 +38,45 @@ ComparerHD
 // Static Methods
 // -----------------------------------------------------------------------------
 
-/// TODO
-//
+/// Make a comparer for a type that is <tt>System.IComparable<T></tt>
+///
+/// The resultant comparer performs bidirectional comparisons using
+/// <tt>SystemComparable.CompareToBidirectional()</tt>.
+///
+/// If <tt>T</tt> is also <tt>IEquatableHD<T></tt>, then
+/// <tt>IEquatableHD<T>.GetHashCode()</tt> is used.
+///
+/// IMPORTANT: If <tt>T</tt> is <strong>not</strong> <tt>IEquatableHD<T></tt>,
+/// then <tt>System.Object.GetHashCode()</tt> is used. Callers are responsible
+/// for ensuring it matches <tt>System.IComparable<T>.Equals()</tt>.
+///
 public static
-    IComparer< T >
+    IComparerHD< T >
 Create<
     T
 >()
     where T : IComparable< T >
 {
     return Create< T >(
-        obj => obj.GetHashCode() );
+        // XXX must be a better way to do this
+        obj =>
+            obj is IEquatableHD< T >
+                ? ((IEquatableHD< T >)obj).GetHashCode()
+                : obj.GetHashCode() );
 }
 
 
-/// TODO
-//
+/// Make a comparer for a type that is <tt>System.IComparable<T></tt> using a
+/// specified hash code function
+///
+/// The resultant comparer performs bidirectional comparisons using
+/// <tt>SystemComparable.CompareToBidirectional()</tt>.
+///
+/// IMPORTANT: <tt>getHashCodeFunc</tt> must work according to the same
+/// definition of equality as <tt>System.IComparable<T>.CompareTo()</tt>.
+///
 public static
-    IComparer< T >
+    IComparerHD< T >
 Create<
     T
 >(
@@ -69,22 +90,15 @@ Create<
 }
 
 
+/// Make a comparer out of a comparison function and a hash code function
+///
+/// The comparison function is used to derive an equality function.
+///
+/// IMPORTANT: <tt>compareFunc</tt> and <tt>getHashCodeFunc</t> must work
+/// according to the same definition of equality.
+///
 public static
-    IComparer< T >
-Create<
-    T
->(
-    CompareFunc< T > compareFunc
-)
-{
-    return Create< T >(
-        compareFunc,
-        obj => obj.GetHashCode() );
-}
-
-
-public static
-    IComparer< T >
+    IComparerHD< T >
 Create<
     T
 >(
@@ -92,8 +106,33 @@ Create<
     GetHashCodeFunc< T >    getHashCodeFunc
 )
 {
+    return Create< T >(
+        compareFunc,
+        (x,y) => compareFunc( x, y ) == 0,
+        getHashCodeFunc );
+}
+
+
+/// Make a comparer out of a comparison function, an equality function, and a
+/// hash code function
+///
+/// IMPORTANT: <tt>compareFunc</tt>, <tt>equalsFunc</tt>, and
+/// <tt>getHashCodeFunc</t> must all work according to the same definition of
+/// equality.
+///
+public static
+    IComparerHD< T >
+Create<
+    T
+>(
+    CompareFunc< T >        compareFunc,
+    EqualsFunc< T >         equalsFunc,
+    GetHashCodeFunc< T >    getHashCodeFunc
+)
+{
     return new ComparerHD< T >(
         compareFunc,
+        equalsFunc,
         getHashCodeFunc );
 }
 

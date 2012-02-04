@@ -17,7 +17,7 @@
 
 
 using System;
-using SCG = System.Collections.Generic;
+using System.Collections.Generic;
 
 
 namespace
@@ -26,8 +26,8 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// A <tt>System.Collections.Generic.IComparer<T></tt> based on
-/// <tt>CompareFunc<T></tt> and <tt>GetHashCodeFunc<T></tt> functions
+/// An <tt>IComparerHD<T></tt> based on <tt>CompareFunc<T></tt>,
+/// <tt>CompareFunc<T></tt>, and <tt>GetHashCodeFunc<T></tt> functions
 // =============================================================================
 
 public class
@@ -35,7 +35,7 @@ ComparerHD<
     T
 >
     : EqualityComparerHD< T >
-    , SCG.IComparer< T >
+    , IComparerHD< T >
 {
 
 
@@ -47,12 +47,15 @@ ComparerHD<
 public
 ComparerHD(
     CompareFunc< T >        compareFunc,
+    EqualsFunc< T >         equalsFunc,
     GetHashCodeFunc< T >    getHashCodeFunc
 )
     : base(
-        (x,y) => compareFunc( x, y ) == 0,
+        equalsFunc,
         getHashCodeFunc )
 {
+    if( compareFunc == null )
+        throw new ArgumentNullException( "compareFunc" );
     if( compareFunc == null )
         throw new ArgumentNullException( "compareFunc" );
     this.CompareFunc = compareFunc;
