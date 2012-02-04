@@ -228,6 +228,40 @@ Test_SystemObject()
             .Else(
                 () => 3 )
         == 3 );
+
+    Print( ".Match(), constant result" );
+    Assert(
+        "abc"
+            .Match()
+            .Returns< int >()
+            .When(
+                s => true,
+                1 )
+            .Else(
+                () => 3 )
+        == 1 );
+
+    Print( ".Match< TMatch >(), constant result" );
+    Assert(
+        ((object)"abc")
+            .Match()
+            .Returns< int >()
+            .When<
+                string >(
+                s => true,
+                1 )
+            .Else(
+                () => 3 )
+        == 1 );
+
+    Print( ".Match< TMatch >(), no predicate, constant result" );
+    Assert(
+        ((object)"abc")
+            .Match()
+            .Returns< int >()
+            .When< string >( 1 )
+            .Else( () => 3 )
+        == 1 );
 }
 
 
@@ -851,6 +885,16 @@ Test_Maybe()
     Assert(
         Maybe.Create< string >()
         .Else( () => "good" )
+        == "good" );
+
+    Print( ".Else( T )" );
+    Assert(
+        Maybe.Create( "good" )
+        .Else( "bad" )
+        == "good" );
+    Assert(
+        Maybe.Create< string >()
+        .Else( "good" )
         == "good" );
 }
 

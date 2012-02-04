@@ -119,6 +119,19 @@ Else<
     T
 >(
     this IMaybe< T >    dis,
+    T                   hasNoValue
+)
+{
+    return dis.Else( () => hasNoValue );
+}
+
+
+public static
+    T
+Else<
+    T
+>(
+    this IMaybe< T >    dis,
     Func< T >           hasNoValueFunc
 )
 {

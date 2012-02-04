@@ -129,11 +129,49 @@ result;
 public
     MatchResult< T, TResult >
 When(
+    Predicate< T >  predicate,
+    TResult         result
+)
+{
+    return this.When( predicate, r => result );
+}
+
+
+public
+    MatchResult< T, TResult >
+When(
     Predicate< T >      predicate,
     Func< T, TResult >  resultFunc
 )
 {
     return this.When< T >( predicate, resultFunc );
+}
+
+
+public
+    MatchResult< T, TResult >
+When<
+    TMatch
+>(
+    TResult result
+)
+    where TMatch : T
+{
+    return this.When< TMatch >( m => true, result );
+}
+
+
+public
+    MatchResult< T, TResult >
+When<
+    TMatch
+>(
+    Predicate< TMatch > predicate,
+    TResult             result
+)
+    where TMatch : T
+{
+    return this.When< TMatch >( predicate, r => result );
 }
 
 
