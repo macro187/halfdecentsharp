@@ -46,7 +46,7 @@
 ///         <tt>Property</tt>, <tt>Indexer</tt>
 ///
 ///     -   <tt>ValueReference</tt>, an exact globally-unique "path" to a value
-///         expressed using the above parts
+///         composed of the above parts
 ///
 ///     -   <tt>ValueReferenceException</tt>, an exception containing a
 ///         <tt>ValueReference</tt> to the problematic value indicated by its
@@ -60,11 +60,10 @@
 ///         with a particular value and able to describe that problem in terms
 ///         of a natural-language description of that problematic value
 ///
-///     -   Versions of some BCL exceptions that implement
-///         <tt>IValueException</tt>: <tt>IValueException</tt>,
-///         <tt>ValueException</tt>, <tt>ValueArgumentException</tt>,
-///         <tt>ValueArgumentNullException</tt>, and
-///         <tt>ValueArgumentOutOfRangeException</tt>.
+///     -   Subclasses of some commonly-used BCL exceptions that implement
+///         <tt>IValueException</tt>: <tt>ValueException</tt>,
+///         <tt>ValueArgumentException</tt>, and
+///         <tt>ValueArgumentNullException</tt>
 ///
 ///
 // =============================================================================
