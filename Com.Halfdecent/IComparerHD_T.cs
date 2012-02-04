@@ -25,7 +25,8 @@ Com.Halfdecent
 
 
 // =============================================================================
-// TODO
+// A <tt>System.Collections.Generic.IComparer<T></tt> that is also an equality
+// comparer and hash code provider
 // =============================================================================
 
 public interface
