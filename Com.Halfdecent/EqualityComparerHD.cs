@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -38,14 +38,11 @@ EqualityComparerHD
 // Static Methods
 // -----------------------------------------------------------------------------
 
-/// Make an equality comparer for an equatable type
+/// Create a default equality comparer for a specified type
 ///
 /// Comparisons are bidirectional.
 ///
-/// [TODO finish]
-///
-/// @exception NotSupportedException
-/// <tt>T</tt> is not <tt>System.IEquatable<T></tt> or <tt>IEquatableHD<T></tt>
+/// [TODO Discuss IEquatableHD<T>, IEquatable<T>, object]
 ///
 public static
     IEqualityComparerHD< T >
@@ -53,7 +50,7 @@ Create<
     T
 >()
 {
-    return new EquatableEqualityComparerHD< T >();
+    return new DefaultEqualityComparerHD< T >();
 }
 
 

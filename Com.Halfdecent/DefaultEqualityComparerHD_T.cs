@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -25,16 +25,14 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// (See <tt>ComparerHD.Create<T>()</tt>)
+/// (See <tt>EqualityComparerHD.Create<T>()</tt>)
 // =============================================================================
 
 public class
-ComparableComparerHD<
+DefaultEqualityComparerHD<
     T
 >
-    : ComparerHD< T >
-
-    where T : IComparable< T >
+    : EqualityComparerHD< T >
 {
 
 
@@ -43,10 +41,31 @@ ComparableComparerHD<
 // -----------------------------------------------------------------------------
 
 internal
-ComparableComparerHD()
+DefaultEqualityComparerHD()
     : base(
 
-        (x,y) => x.CompareToBidirectional( y ),
+        // IEquatableHD<T>.Equals()
+        typeof( IEquatableHD< T > ).IsAssignableFrom( typeof( T ) )
+            ? (EqualsFunc< T >)(
+                (x,y) => SystemEquatable.EqualsBidirectional< T >(
+                    x, y,
+                    (a,b) => ((IEquatableHD< T >)a).Equals( b ),
+                    (a,b) => ((IEquatableHD< T >)b).Equals( a ) ) )
+
+            // IEquatable<T>.Equals()
+            : typeof( IEquatable< T > ).IsAssignableFrom( typeof( T ) )
+                ? (EqualsFunc< T >)(
+                    (x,y) => SystemEquatable.EqualsBidirectional< T >(
+                        x, y,
+                        (a,b) => ((IEquatable< T >)a).Equals( b ),
+                        (a,b) => ((IEquatable< T >)b).Equals( a ) ) )
+
+                // System.Object.Equals()
+                : (EqualsFunc< T >)(
+                    (x,y) => SystemEquatable.EqualsBidirectional< T >(
+                        x, y,
+                        (a,b) => ((object)a).Equals( b ),
+                        (a,b) => ((object)b).Equals( a ) ) ),
 
         // IEquatableHD<T>.GetHashCode()
         typeof( IEquatableHD< T > ).IsAssignableFrom( typeof( T ) )
@@ -61,18 +80,18 @@ ComparableComparerHD()
 
 
 // -----------------------------------------------------------------------------
-// IEquatableHD< IComparerHD >
+// IEquatableHD< IEqualityComparerHD >
 // -----------------------------------------------------------------------------
 
 public override
     bool
 Equals(
-    IComparerHD that
+    IEqualityComparerHD that
 )
 {
     return
         that != null
-        && that.Is< ComparableComparerHD< T > >();
+        && that.Is< DefaultEqualityComparerHD< T > >();
 }
 
 
@@ -81,33 +100,7 @@ public override
 GetHashCode()
 {
     return
-        typeof( ComparableComparerHD< T > ).GetHashCode();
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IEquatableHD< IEqualityComparerHD >
-// -----------------------------------------------------------------------------
-
-    bool
-IEquatableHD< IEqualityComparerHD >.Equals(
-    IEqualityComparerHD that
-)
-{
-    return
-        that != null
-        && (
-            that.Is< ComparableComparerHD< T > >()
-            || that.Is< EquatableEqualityComparerHD< T > >() );
-}
-
-
-    int
-IEquatableHD< IEqualityComparerHD >.GetHashCode()
-{
-    return
-        typeof( EquatableEqualityComparerHD< T > ).GetHashCode();
+        typeof( DefaultEqualityComparerHD< T > ).GetHashCode();
 }
 
 

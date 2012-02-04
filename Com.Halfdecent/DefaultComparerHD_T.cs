@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,7 +17,6 @@
 
 
 using System;
-using System.Collections.Generic;
 
 
 namespace
@@ -26,52 +25,69 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>ComparerHD<T></tt> Library
+/// (See <tt>ComparerHD.Create<T>()</tt>)
 // =============================================================================
 
-public static class
-ComparerHD
-{
-
-
-// -----------------------------------------------------------------------------
-// Static Methods
-// -----------------------------------------------------------------------------
-
-/// Make a comparer for a comparable type
-///
-/// [TODO]
-///
-public static
-    IComparerHD< T >
-Create<
+public class
+DefaultComparerHD<
     T
->()
+>
+    : DefaultEqualityComparerHD< T >
+    , IComparerHD< T >
+
     where T : IComparable< T >
 {
-    return new DefaultComparerHD< T >();
+
+
+// -----------------------------------------------------------------------------
+// Constructors
+// -----------------------------------------------------------------------------
+
+internal
+DefaultComparerHD()
+{
 }
 
 
-/// Make a comparer out of a comparison function and a hash code function
-///
-/// The comparison function is used to derive an equality function.
-///
-/// IMPORTANT: <tt>compareFunc</tt> and <tt>getHashCodeFunc</t> must work
-/// according to the same definition of equality.
-///
-public static
-    IComparerHD< T >
-Create<
-    T
->(
-    CompareFunc< T >        compareFunc,
-    GetHashCodeFunc< T >    getHashCodeFunc
+
+// -----------------------------------------------------------------------------
+// IComparer< T >
+// -----------------------------------------------------------------------------
+
+public
+    int
+Compare(
+    T x,
+    T y
 )
 {
-    return new ComparerHD< T >(
-        compareFunc,
-        getHashCodeFunc );
+    return x.CompareToBidirectional( y );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEquatableHD< IComparerHD >
+// -----------------------------------------------------------------------------
+
+public
+    bool
+Equals(
+    IComparerHD that
+)
+{
+    return
+        that != null
+        && that.Is< DefaultComparerHD< T > >();
+}
+
+
+public new
+    int
+GetHashCode()
+{
+    return
+        typeof( DefaultComparerHD< T > ).GetHashCode();
 }
 
 
