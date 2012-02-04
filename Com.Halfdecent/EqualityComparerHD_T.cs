@@ -17,7 +17,6 @@
 
 
 using System;
-using System.Collections.Generic;
 
 
 namespace
@@ -26,8 +25,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// An equality comparer based on <tt>EqualsFunc<T></tt> and
-/// <tt>GetHashCodeFunc<T></tt> functions
+/// (See <tt>EqualityComparerHD.Create<T>()</tt>)
 // =============================================================================
 
 public class

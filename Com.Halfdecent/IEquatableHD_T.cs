@@ -28,13 +28,20 @@ Com.Halfdecent
 /// A type whose values have an inherent notion of equality
 ///
 /// This enhanced <tt>IEquatable<T></tt> carries its own <tt>GetHashCode()</tt>,
-/// allowing types to implement equality/hashcode for more than one interface.
+/// allowing types to implement paired equality + hashcode for more than one
+/// interface.
 ///
 /// Note that to conclusively determine equality, <em>both</em> items'
 /// <tt>IEquatable<T>.Equals()</tt> must be consulted.  The reason is that the
 /// other item may be a subtype with a more specific definition of equality.
 /// A convenient way to do this is
 /// <tt>SystemEquatable.EqualsBidirectional()</tt>.
+///
+/// Equatability is contravariant in nature but, for unknown reasons, the BCL
+/// designers chose not to make <tt>System.IEquatable<T></tt> contravariant in
+/// <tt>T</tt> - a decision that could be considered a mistake.  Whatever the
+/// case, <em>this</em> interface is contravariant in <tt>T</tt> and so,
+/// unfortunately, cannot imply <tt>System.IEquatable<T></tt>.
 // =============================================================================
 
 public interface

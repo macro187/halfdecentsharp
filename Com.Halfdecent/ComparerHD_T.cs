@@ -26,8 +26,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// A comparer based on <tt>CompareFunc<T></tt>, <tt>CompareFunc<T></tt>, and
-/// <tt>GetHashCodeFunc<T></tt> functions
+/// (See <tt>ComparerHD.Create<T>()</tt>)
 // =============================================================================
 
 public class
