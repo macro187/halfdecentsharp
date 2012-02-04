@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -74,30 +74,12 @@ Create<
 )
     where T : IComparable< T >
 {
-    //
-    // XXX
-    // Hack around the fact that overloading doesn't consider generic
-    // constraints, i.e. we can't have a Create() for IComparable<T>'s and
-    // another for IComparableHD<T>'s
-    //
-    if( from is IComparableHD< T > ) {
-        return Create< T >(
-            from,
-            fromInclusive,
-            to,
-            toInclusive,
-            (x,y) => x.CompareToBidirectional( y ),
-            (IComparableHD< T > cmp) => cmp.GetHashCode() );
-    } else {
-        return Create< T >(
-            from,
-            fromInclusive,
-            to,
-            toInclusive,
-            (x,y) => x.CompareToBidirectional( y ),
-            obj => obj.GetHashCode() );
-    }
-
+    return Create< T >(
+        from,
+        fromInclusive,
+        to,
+        toInclusive,
+        ComparerHD.Create< T >() );
 }
 
 
@@ -109,12 +91,11 @@ public static
 Create<
     T
 >(
-    T                       from,
-    bool                    fromInclusive,
-    T                       to,
-    bool                    toInclusive,
-    CompareFunc< T >        compareFunc,
-    GetHashCodeFunc< T >    getHashCodeFunc
+    T                   from,
+    bool                fromInclusive,
+    T                   to,
+    bool                toInclusive,
+    IComparerHD< T >    comparer
 )
 {
     return new Interval< T >(
@@ -122,8 +103,7 @@ Create<
         fromInclusive,
         to,
         toInclusive,
-        compareFunc,
-        getHashCodeFunc );
+        comparer );
 }
 
 
@@ -138,13 +118,11 @@ Equals<
 {
     if( x == null && y == null ) return true;
     if( x == null || y == null ) return false;
-
     return
-        x.CompareFunc == y.CompareFunc
-        && x.GetHashCodeFunc == y.GetHashCodeFunc
-        && x.CompareFunc( x.From, y.From ) == 0
+        x.Comparer.Equals( (IComparerHD)y.Comparer )
+        && x.Comparer.Compare( x.From, y.From ) == 0
         && x.FromInclusive == y.FromInclusive
-        && x.CompareFunc( x.To, y.To ) == 0
+        && x.Comparer.Compare( x.To, y.To ) == 0
         && x.ToInclusive == y.ToInclusive;
 }
 
@@ -161,11 +139,10 @@ GetHashCode<
         throw new ArgumentNullException( "i" );
     return
         typeof( IInterval< T > ).GetHashCode()
-        ^ i.CompareFunc.GetHashCode()
-        ^ i.GetHashCodeFunc.GetHashCode()
-        ^ i.GetHashCodeFunc( i.From )
+        ^ ((IEquatableHD<IComparerHD>)i.Comparer).GetHashCode()
+        ^ i.Comparer.GetHashCode( i.From )
         ^ i.FromInclusive.GetHashCode()
-        ^ i.GetHashCodeFunc( i.To )
+        ^ i.Comparer.GetHashCode( i.To )
         ^ i.ToInclusive.GetHashCode();
 }
 
@@ -175,17 +152,17 @@ public static
 ToString<
     T
 >(
-    IInterval< T > dis
+    IInterval< T > i
 )
 {
-    if( dis == null )
-        throw new ArgumentNullException( "dis" );
+    if( i == null )
+        throw new ArgumentNullException( "i" );
     return string.Format(
         "{0} {1} x {2} {3}",
-        dis.From,
-        dis.FromInclusive ? "<=" : "<",
-        dis.ToInclusive ? "<=" : "<",
-        dis.To );
+        i.From,
+        i.FromInclusive ? "<=" : "<",
+        i.ToInclusive ? "<=" : "<",
+        i.To );
 }
 
 
@@ -211,11 +188,11 @@ Contains<
         throw new ArgumentNullException( "value" );
     return
         ( dis.FromInclusive
-            ? dis.CompareFunc( value, dis.From ) >= 0
-            : dis.CompareFunc( value, dis.From ) > 0 )
+            ? dis.Comparer.Compare( value, dis.From ) >= 0
+            : dis.Comparer.Compare( value, dis.From ) > 0 )
         && ( dis.ToInclusive
-            ? dis.CompareFunc( value, dis.To ) <= 0
-            : dis.CompareFunc( value, dis.To ) < 0 );
+            ? dis.Comparer.Compare( value, dis.To ) <= 0
+            : dis.Comparer.Compare( value, dis.To ) < 0 );
 }
 
 

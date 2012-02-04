@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010, 2011
+// Copyright (c) 2008, 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -43,19 +43,10 @@ IInterval<
 // -----------------------------------------------------------------------------
 
 
-/// Ordering
+/// Ordering and hash code
 ///
-CompareFunc< T >
-CompareFunc
-{
-    get;
-}
-
-
-/// Hash code implementation
-//
-GetHashCodeFunc< T >
-GetHashCodeFunc
+IComparerHD< T >
+Comparer
 {
     get;
 }

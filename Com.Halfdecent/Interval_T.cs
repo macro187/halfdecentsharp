@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010, 2011
+// Copyright (c) 2008, 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -43,28 +43,24 @@ Interval<
 
 public
 Interval(
-    T                       from,
-    bool                    fromInclusive,
-    T                       to,
-    bool                    toInclusive,
-    CompareFunc< T >        compareFunc,
-    GetHashCodeFunc< T >    getHashCodeFunc
+    T                   from,
+    bool                fromInclusive,
+    T                   to,
+    bool                toInclusive,
+    IComparerHD< T >    comparer
 )
 {
     if( from == null )
         throw new ArgumentNullException( "from" );
     if( to == null )
         throw new ArgumentNullException( "to" );
-    if( compareFunc == null )
-        throw new ArgumentNullException( "compareFunc" );
-    if( getHashCodeFunc == null )
-        throw new ArgumentNullException( "getHashCodeFunc" );
+    if( comparer == null )
+        throw new ArgumentNullException( "comparer" );
     this.From = from;
     this.FromInclusive = fromInclusive;
     this.To = to;
     this.ToInclusive = toInclusive;
-    this.CompareFunc = compareFunc;
-    this.GetHashCodeFunc = getHashCodeFunc;
+    this.Comparer = comparer;
 }
 
 
@@ -74,17 +70,8 @@ Interval(
 // -----------------------------------------------------------------------------
 
 public
-CompareFunc< T >
-CompareFunc
-{
-    get;
-    private set;
-}
-
-
-public
-GetHashCodeFunc< T >
-GetHashCodeFunc
+IComparerHD< T >
+Comparer
 {
     get;
     private set;
@@ -135,10 +122,10 @@ ToInclusive
 public
     bool
 Equals(
-    IInterval< T > other
+    IInterval< T > that
 )
 {
-    return Interval.Equals( this, other );
+    return Interval.Equals( this, that );
 }
 
 

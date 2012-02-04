@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010, 2011
+// Copyright (c) 2008, 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -792,14 +792,6 @@ Test_Interval()
 
     Print( ".GetHashCode()" );
     Assert( inc.GetHashCode() == anotherinc.GetHashCode() );
-
-    Print( "Static Create() distinguishes IComparable(HD)<T>" );
-    Assert(
-        Interval.Create( new TestComparable(), new TestComparable() )
-            .GetHashCodeFunc( new TestComparable() ) == 0x0B );
-    Assert(
-        Interval.Create( new TestComparableHD(), new TestComparableHD() )
-            .GetHashCodeFunc( new TestComparableHD() ) == 0xC0 );
 }
 
 
