@@ -41,6 +41,7 @@ IComparerHD<
     #endif
 >
     : IComparer< T >
+    , IComparerHD
     , IEqualityComparerHD< T >
 {
 

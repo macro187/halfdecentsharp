@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,7 +17,6 @@
 
 
 using System;
-using System.Collections.Generic;
 
 
 namespace
@@ -26,17 +25,15 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// (See <tt>ComparerHD.Create<T>()</tt>)
+/// (See <tt>EqualityComparerHD.Create<T>()</tt>)
 // =============================================================================
 
 public class
-ComparerHD<
+EquatableEqualityComparerHD<
     T
 >
     : EqualityComparerHD< T >
-    , IComparerHD< T >
 {
-
 
 
 // -----------------------------------------------------------------------------
@@ -44,74 +41,66 @@ ComparerHD<
 // -----------------------------------------------------------------------------
 
 internal
-ComparerHD(
-    CompareFunc< T >        compareFunc,
-    GetHashCodeFunc< T >    getHashCodeFunc
-)
+EquatableEqualityComparerHD()
     : base(
-        (x,y) => compareFunc( x, y ) == 0,
-        getHashCodeFunc )
+
+        // IEquatableHD<T>.Equals()
+        typeof( IEquatableHD< T > ).IsAssignableFrom( typeof( T ) )
+            ? (EqualsFunc< T >)(
+                (x,y) => SystemEquatable.EqualsBidirectional< T >(
+                    x, y,
+                    (a,b) => ((IEquatableHD< T >)a).Equals( b ),
+                    (a,b) => ((IEquatableHD< T >)b).Equals( a ) ) )
+
+            // IEquatable<T>.Equals()
+            : typeof( IEquatable< T > ).IsAssignableFrom( typeof( T ) )
+                ? (EqualsFunc< T >)(
+                    (x,y) => SystemEquatable.EqualsBidirectional< T >(
+                        x, y,
+                        (a,b) => ((IEquatable< T >)a).Equals( b ),
+                        (a,b) => ((IEquatable< T >)b).Equals( a ) ) )
+
+                // (error)
+                : (x,y) => false,
+
+        // IEquatableHD<T>.GetHashCode()
+        typeof( IEquatableHD< T > ).IsAssignableFrom( typeof( T ) )
+            ? (GetHashCodeFunc< T >)(
+                x => ((IEquatableHD< T >)x).GetHashCode() )
+
+            // System.Object.GetHashCode()
+            : x => ((object)x).GetHashCode() )
+
 {
-    if( compareFunc == null )
-        throw new ArgumentNullException( "compareFunc" );
-    this.CompareFunc = compareFunc;
+    if( !typeof( IEquatableHD< T > ).IsAssignableFrom( typeof( T ) )
+        && !typeof( IEquatable< T > ).IsAssignableFrom( typeof( T ) ) )
+        throw new NotSupportedException();
 }
 
 
 
 // -----------------------------------------------------------------------------
-// Properties
+// IEquatableHD< IEqualityComparerHD >
 // -----------------------------------------------------------------------------
 
-private
-CompareFunc< T >
-CompareFunc;
-
-
-
-// -----------------------------------------------------------------------------
-// System.Collections.Generic.IComparer< T >
-// -----------------------------------------------------------------------------
-
-public
-    int
-Compare(
-    T x,
-    T y
-)
-{
-    return this.CompareFunc( x, y );
-}
-
-
-
-// -----------------------------------------------------------------------------
-// IEquatableHD< IComparerHD >
-// -----------------------------------------------------------------------------
-
-public virtual
+public override
     bool
 Equals(
-    IComparerHD that
+    IEqualityComparerHD that
 )
 {
     return
         that != null
-        && that.Is<
-            ComparerHD< T > >(
-            c => c.CompareFunc == this.CompareFunc
-                && c.GetHashCodeFunc == this.GetHashCodeFunc );
+        && that.Is< EquatableEqualityComparerHD< T > >();
 }
 
 
-public new virtual
+public override
     int
 GetHashCode()
 {
     return
-        typeof( ComparerHD< T > ).GetHashCode()
-        ^ this.CompareFunc.GetHashCode()
-        ^ this.GetHashCodeFunc.GetHashCode();
+        typeof( EquatableEqualityComparerHD< T > ).GetHashCode();
 }
 
 

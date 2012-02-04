@@ -444,25 +444,65 @@ Test_IEquatableHD_T()
 }
 
 
-[Test( "EqualityComparer< T >" )]
+[Test( "EqualityComparerHD< T >" )]
 public static
 void
-Test_EqualityComparer_T()
+Test_EqualityComparerHD_T()
 {
-    var c1 =
-        EqualityComparerHD.Create< string >(
-            (s,t) => s == t,
-            s => s.GetHashCode() );
-    var c3 =
-        EqualityComparerHD.Create< string >(
-            (s,t) => s.ToLowerInvariant() == t.ToLowerInvariant(),
-            s => s.ToLowerInvariant().GetHashCode() );
+    EqualsFunc< string > e1 = (s,t) => s == t;
+    EqualsFunc< string > e2 = (s,t) => s == t;
+    EqualsFunc< string > e3 =
+        (s,t) => s.ToLowerInvariant() == t.ToLowerInvariant();
+    GetHashCodeFunc< string > hc1 = s => s.GetHashCode();
+    GetHashCodeFunc< string > hc2 = s => s.GetHashCode();
+    GetHashCodeFunc< string > hc3 = s => s.ToLowerInvariant().GetHashCode();
+    var c1 = EqualityComparerHD.Create< string >( e1, hc1 );
+    var c3 = EqualityComparerHD.Create< string >( e3, hc3 );
 
+    Print( ".Equals() and .GetHashCode()" );
     Assert( c1.Equals( "abc", "abc" ) );
     Assert( !c1.Equals( "abc", "def" ) );
     Assert( c1.GetHashCode( "abc" ) == c1.GetHashCode( "abc" ) );
     Assert( c3.Equals( "abc", "ABC" ) );
     Assert( !c3.Equals( "abc", "def" ) );
+
+    Print( "Equality of comparers" );
+    Assert(
+        EqualityComparerHD.Create( e1, hc1 ).Equals(
+        EqualityComparerHD.Create( e1, hc1 ) ) );
+    Assert( !
+        EqualityComparerHD.Create( e1, hc1 ).Equals(
+        EqualityComparerHD.Create( e2, hc1 ) ) );
+    Assert( !
+        EqualityComparerHD.Create( e1, hc1 ).Equals(
+        EqualityComparerHD.Create( e1, hc2 ) ) );
+}
+
+
+[Test( "EquatableEqualityComparerHD< T >" )]
+public static
+void
+Test_EquatableEqualityComparerHD_T()
+{
+    var ic = EqualityComparerHD.Create< int >();
+    var ic2 = EqualityComparerHD.Create< int >();
+    var ac = EqualityComparerHD.Create< A >();
+    var bc = EqualityComparerHD.Create< B >();
+    var c = new C();
+
+    Print( "Equals(), IEquatable<T>" );
+    Assert( ic.Equals( 1, 1 ) );
+    Assert( !ic.Equals( 1, 2 ) );
+
+    Print( "GetHashCode(), IEquatable<T>" );
+    Assert( ic.GetHashCode( 1 ) == 1.GetHashCode() );
+
+    Print( "GetHashCode(), IEquatableHD<T>" );
+    Assert( ac.GetHashCode( c ) == 0xCA );
+    Assert( bc.GetHashCode( c ) == 0xCB );
+
+    Print( "Comparer equality" );
+    Assert( ic.EqualsBidirectional( (IEqualityComparerHD)ic2 ) );
 }
 
 
@@ -474,7 +514,7 @@ public class AlwaysBigger : I {
     public int CompareTo( I that ) {
         return 1;
     }
-    // IEquatable< I >
+    // IEquatableHD< I >
     public bool Equals(
         I that
     ) {
@@ -493,7 +533,7 @@ public class AlwaysEqual : I {
     public int CompareTo( I that ) {
         return 0;
     }
-    // IEquatable< I >
+    // IEquatableHD< I >
     public bool Equals(
         I that
     ) {
@@ -512,7 +552,7 @@ public class AlwaysSmaller : I {
     public int CompareTo( I that ) {
         return -1;
     }
-    // IEquatable< I >
+    // IEquatableHD< I >
     public bool Equals(
         I that
     ) {
@@ -570,18 +610,66 @@ Test_IComparableHD()
 }
 
 
-[Test( "Comparer< T >" )]
+[Test( "ComparerHD< T >" )]
 public static
 void
-Test_Comparer_T()
+Test_ComparerHD_T()
 {
-    var c = ComparerHD.Create< int >(
-        (x,y) => x.CompareTo( y ),
-        x => x.GetHashCode() );
+    CompareFunc< int > cf1 = (x,y) => x.CompareTo( y );
+    CompareFunc< int > cf2 = (x,y) => x.CompareTo( y );
+    GetHashCodeFunc< int > hcf1 = x => x.GetHashCode();
+    GetHashCodeFunc< int > hcf2 = x => x.GetHashCode();
 
-    Assert( c.Compare( 5, 5 ) == 0 );
-    Assert( c.Compare( 0, 5 ) < 0 );
-    Assert( c.Compare( 10, 5 ) > 0 );
+
+    Print( ".Compare(), .Equals(), .GetHashCode() (implicit .Equals())" );
+    var c1 = ComparerHD.Create( cf1, hcf1 );
+    Assert( c1.Compare( 5, 5 ) == 0 );
+    Assert( c1.Compare( 0, 5 ) < 0 );
+    Assert( c1.Compare( 10, 5 ) > 0 );
+    Assert( c1.Equals( 5, 5 ) );
+    Assert( !c1.Equals( 5, 10 ) );
+    Assert( c1.GetHashCode( 5 ) == c1.GetHashCode( 5 ) );
+
+    Print( "Comparer equality" );
+    Assert( c1.Equals(
+        (IComparerHD)( ComparerHD.Create( cf1, hcf1 ) ) ) );
+    Assert( !c1.Equals(
+        (IComparerHD)( ComparerHD.Create( cf2, hcf1 ) ) ) );
+    Assert( !c1.Equals(
+        (IComparerHD)( ComparerHD.Create( cf1, hcf2 ) ) ) );
+}
+
+
+[Test( "ComparableComparerHD< T >" )]
+public static
+void
+Test_ComparableComparerHD_T()
+{
+    var c = ComparerHD.Create< int >();
+    var c2 = ComparerHD.Create< int >();
+    var c3 = ComparerHD.Create< I >();
+
+    Print( "Compare(), IComparable<T>" );
+    Assert( c.Compare( 1, 1 ) == 0 );
+    Assert( c.Compare( 1, 2 ) < 0 );
+    Assert( c.Compare( 2, 1 ) > 0 );
+
+    Print( "GetHashCode(), IComparable<T>" );
+    Assert( c.GetHashCode( 1 ) == 1.GetHashCode() );
+
+    Print( "GetHashCode(), IComparableHD<T>" );
+    Assert( c3.GetHashCode( new AlwaysBigger() ) == 1 );
+
+    Print( "Comparer equality" );
+    Assert( c.Equals( (IComparerHD)c ) );
+    Assert( c.Equals( (IComparerHD)c2 ) );
+    Assert( !c.Equals( (IComparerHD)c3 ) );
+
+    Print( "Comparer equality, as IEqualityComparerHD" );
+    Assert( c.Equals( (IEqualityComparerHD)c ) );
+    Assert( c.Equals( (IEqualityComparerHD)c2 ) );
+    Assert( c.Equals( EqualityComparerHD.Create< int >() ) );
+    Assert( !c.Equals( (IEqualityComparerHD)c3 ) );
 }
 
 

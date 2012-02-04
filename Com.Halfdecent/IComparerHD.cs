@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using System;
 using System.Collections.Generic;
 
 
@@ -26,53 +25,13 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>ComparerHD<T></tt> Library
+// An comparer that can be compared for equality with other comparers
 // =============================================================================
 
-public static class
-ComparerHD
+public interface
+IComparerHD
+    : IEquatableHD< IComparerHD >
 {
-
-
-// -----------------------------------------------------------------------------
-// Static Methods
-// -----------------------------------------------------------------------------
-
-/// Make a comparer for a comparable type
-///
-/// [TODO]
-///
-public static
-    IComparerHD< T >
-Create<
-    T
->()
-    where T : IComparable< T >
-{
-    return new ComparableComparerHD< T >();
-}
-
-
-/// Make a comparer out of a comparison function and a hash code function
-///
-/// The comparison function is used to derive an equality function.
-///
-/// IMPORTANT: <tt>compareFunc</tt> and <tt>getHashCodeFunc</t> must work
-/// according to the same definition of equality.
-///
-public static
-    IComparerHD< T >
-Create<
-    T
->(
-    CompareFunc< T >        compareFunc,
-    GetHashCodeFunc< T >    getHashCodeFunc
-)
-{
-    return new ComparerHD< T >(
-        compareFunc,
-        getHashCodeFunc );
-}
 
 
 

@@ -61,14 +61,22 @@ EqualityComparerHD(
 // Properties
 // -----------------------------------------------------------------------------
 
-private
+protected
 EqualsFunc< T >
-EqualsFunc;
+EqualsFunc
+{
+    get;
+    private set;
+}
 
 
-private
+protected
 GetHashCodeFunc< T >
-GetHashCodeFunc;
+GetHashCodeFunc
+{
+    get;
+    private set;
+}
 
 
 

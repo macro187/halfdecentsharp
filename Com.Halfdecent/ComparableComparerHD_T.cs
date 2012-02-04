@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2011
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -17,7 +17,6 @@
 
 
 using System;
-using System.Collections.Generic;
 
 
 namespace
@@ -30,13 +29,13 @@ Com.Halfdecent
 // =============================================================================
 
 public class
-ComparerHD<
+ComparableComparerHD<
     T
 >
-    : EqualityComparerHD< T >
-    , IComparerHD< T >
-{
+    : ComparerHD< T >
 
+    where T : IComparable< T >
+{
 
 
 // -----------------------------------------------------------------------------
@@ -44,43 +43,19 @@ ComparerHD<
 // -----------------------------------------------------------------------------
 
 internal
-ComparerHD(
-    CompareFunc< T >        compareFunc,
-    GetHashCodeFunc< T >    getHashCodeFunc
-)
+ComparableComparerHD()
     : base(
-        (x,y) => compareFunc( x, y ) == 0,
-        getHashCodeFunc )
+
+        (x,y) => x.CompareToBidirectional( y ),
+
+        // IEquatableHD<T>.GetHashCode()
+        typeof( IEquatableHD< T > ).IsAssignableFrom( typeof( T ) )
+            ? (GetHashCodeFunc< T >)(
+                x => ((IEquatableHD< T >)x).GetHashCode() )
+
+            // System.Object.GetHashCode()
+            : x => ((object)x).GetHashCode() )
 {
-    if( compareFunc == null )
-        throw new ArgumentNullException( "compareFunc" );
-    this.CompareFunc = compareFunc;
-}
-
-
-
-// -----------------------------------------------------------------------------
-// Properties
-// -----------------------------------------------------------------------------
-
-private
-CompareFunc< T >
-CompareFunc;
-
-
-
-// -----------------------------------------------------------------------------
-// System.Collections.Generic.IComparer< T >
-// -----------------------------------------------------------------------------
-
-public
-    int
-Compare(
-    T x,
-    T y
-)
-{
-    return this.CompareFunc( x, y );
 }
 
 
@@ -89,7 +64,7 @@ Compare(
 // IEquatableHD< IComparerHD >
 // -----------------------------------------------------------------------------
 
-public virtual
+public override
     bool
 Equals(
     IComparerHD that
@@ -97,21 +72,42 @@ Equals(
 {
     return
         that != null
-        && that.Is<
-            ComparerHD< T > >(
-            c => c.CompareFunc == this.CompareFunc
-                && c.GetHashCodeFunc == this.GetHashCodeFunc );
+        && that.Is< ComparableComparerHD< T > >();
 }
 
 
-public new virtual
+public override
     int
 GetHashCode()
 {
     return
-        typeof( ComparerHD< T > ).GetHashCode()
-        ^ this.CompareFunc.GetHashCode()
-        ^ this.GetHashCodeFunc.GetHashCode();
+        typeof( ComparableComparerHD< T > ).GetHashCode();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEquatableHD< IEqualityComparerHD >
+// -----------------------------------------------------------------------------
+
+    bool
+IEquatableHD< IEqualityComparerHD >.Equals(
+    IEqualityComparerHD that
+)
+{
+    return
+        that != null
+        && (
+            that.Is< ComparableComparerHD< T > >()
+            || that.Is< EquatableEqualityComparerHD< T > >() );
+}
+
+
+    int
+IEquatableHD< IEqualityComparerHD >.GetHashCode()
+{
+    return
+        typeof( EquatableEqualityComparerHD< T > ).GetHashCode();
 }
 
 
