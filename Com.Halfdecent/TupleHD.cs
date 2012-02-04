@@ -52,24 +52,27 @@ Create<
 
 /// Determine whether both tuple values are equal to the specified values
 ///
+/// @exception NotSupportedException
+/// <tt>T1</tt> is not <tt>System.IEquatable<T1></tt> or
+/// <tt>IEquatableHD<T1></tt>
+/// - OR -
+/// <tt>T2</tt> is not <tt>System.IEquatable<T2></tt> or
+/// <tt>IEquatableHD<T2></tt>
+///
 public static
     bool
 BothEqual<
     T1,
-    T2,
-    P1,
-    P2
+    T2
 >(
     this ITupleHD< T1, T2 > dis,
-    P1                      a,
-    P2                      b
+    T1                      a,
+    T2                      b
 )
-    where P1 : IEquatable< P1 >
-    where P2 : IEquatable< P2 >
-    where T1 : P1
-    where T2 : P2
 {
-    return a.Equals( dis.A ) && b.Equals( dis.B );
+    return
+        EqualityComparerHD.Create< T1 >().Equals( a, dis.A )
+        && EqualityComparerHD.Create< T2 >().Equals( b, dis.B );
 }
 
 

@@ -33,7 +33,7 @@ EqualityComparerHD<
     T
 >
     : IEqualityComparerHD< T >
-    , IEquatable< IEqualityComparerHD >
+    , IEquatableHD< IEqualityComparerHD >
 {
 
 

@@ -108,6 +108,9 @@ Append<
 /// Determine whether an enumerable begins with a specified sequence of
 /// equatable items
 ///
+/// @exception NotSupportedException
+/// <tt>T</tt> is not <tt>System.IEquatable<T></tt> or <tt>IEquatableHD<T></tt>
+///
 public static
     bool
 StartsWith<
@@ -116,16 +119,36 @@ StartsWith<
     this IEnumerable< T >   dis,
     IEnumerable< T >        sequence
 )
-    where T : IEquatable< T >
 {
     return dis.StartsWith< T >(
         sequence,
-        (x,y) => x.Equals( y ) );
+        EqualityComparerHD.Create< T >() );
+}
+
+
+/// Determine whether an enumerable begins with a specified sequence of
+/// items according to a specifed equality comparer
+///
+public static
+    bool
+StartsWith<
+    T
+>(
+    this IEnumerable< T >       dis,
+    IEnumerable< T >            sequence,
+    IEqualityComparerHD< T >    comparer
+)
+{
+    if( comparer == null )
+        throw new ArgumentNullException( "comparer" );
+    return dis.StartsWith< T >(
+        sequence,
+        (x,y) => comparer.Equals( x, y ) );
 }
 
 
 /// Determine whether an enumerable begins with a specified sequence of items
-/// according to a specified comparer
+/// according to a specified equals function
 ///
 public static
     bool
@@ -199,7 +222,10 @@ StartsWith<
 }
 
 
-/// Locate the first instance of a specified subsequence
+/// Locate the first instance of a specified subsequence of equatable items
+///
+/// @exception NotSupportedException
+/// <tt>T</tt> is not <tt>System.IEquatable<T></tt> or <tt>IEquatableHD<T></tt>
 ///
 public static
     int
@@ -212,7 +238,6 @@ IndexOf<
     this IEnumerable< T >   dis,
     IEnumerable< T >        subsequence
 )
-    where T : IEquatable< T >
 {
     if( dis == null )
         throw new ArgumentNullException( "dis" );
@@ -221,12 +246,41 @@ IndexOf<
 
     return dis.IndexOf(
         subsequence,
-        (x,y) => x.Equals( y ) );
+        EqualityComparerHD.Create< T >() );
 }
 
 
-/// Locate the first instance of a specified subsequence, matched according to a
-/// specified equality function
+/// Locate the first instance of a specified subsequence according to a
+/// specified item equality comparer
+///
+public static
+    int
+    /// @returns
+    /// The index of the beginning of the subsequence, or <tt>-1</tt> if not
+    /// found
+IndexOf<
+    T
+>(
+    this IEnumerable< T >       dis,
+    IEnumerable< T >            subsequence,
+    IEqualityComparerHD< T >    comparer
+)
+{
+    if( dis == null )
+        throw new ArgumentNullException( "dis" );
+    if( subsequence == null )
+        throw new ArgumentNullException( "subsequence" );
+    if( comparer == null )
+        throw new ArgumentNullException( "comparer" );
+
+    return dis.IndexOf(
+        subsequence,
+        (x,y) => comparer.Equals( x, y ) );
+}
+
+
+/// Locate the first instance of a specified subsequence according to a
+/// specified item equality function
 ///
 public static
     int

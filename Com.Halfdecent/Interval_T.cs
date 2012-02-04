@@ -116,7 +116,7 @@ ToInclusive
 
 
 // -----------------------------------------------------------------------------
-// IEquatable< IInterval< T > >
+// IEquatableHD< IInterval< T > >
 // -----------------------------------------------------------------------------
 
 public
@@ -126,6 +126,14 @@ Equals(
 )
 {
     return Interval.Equals( this, that );
+}
+
+
+public override
+    int
+GetHashCode()
+{
+    return Interval.GetHashCode( this );
 }
 
 
@@ -143,14 +151,6 @@ Equals(
     return
         that.Is< IInterval< T > >()
         && this.Equals( (IInterval< T >)that );
-}
-
-
-public override
-    int
-GetHashCode()
-{
-    return Interval.GetHashCode( this );
 }
 
 

@@ -38,12 +38,14 @@ EnumerableComparer
 // Static Methods
 // -----------------------------------------------------------------------------
 
+/// @exception NotSupportedException
+/// <tt>T</tt> is not <tt>System.IEquatable<T></tt> or <tt>IEquatableHD<T></tt>
+///
 public static
     EnumerableComparer< T >
 Create<
     T
 >()
-    where T : IEquatable< T >
 {
     return Create< T >(
         EqualityComparerHD.Create< T >() );
