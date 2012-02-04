@@ -99,11 +99,12 @@ GetHashCode(
 }
 
 
+
 // -----------------------------------------------------------------------------
 // IEquatableHD< IEqualityComparerHD >
 // -----------------------------------------------------------------------------
 
-public
+public virtual
     bool
 Equals(
     IEqualityComparerHD that
@@ -112,8 +113,7 @@ Equals(
     return
         that != null
         && that.Is<
-            EqualityComparerHD< T > >(
-            ec =>
+            EqualityComparerHD< T > >( ec =>
                 ec.EqualsFunc == this.EqualsFunc
                 && ec.GetHashCodeFunc == this.GetHashCodeFunc );
 }

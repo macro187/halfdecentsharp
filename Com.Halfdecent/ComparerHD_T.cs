@@ -90,31 +90,29 @@ Compare(
 
 
 // -----------------------------------------------------------------------------
-// IEquatableHD< IComparerHD >
+// IEquatableHD< IEqualityComparerHD >
 // -----------------------------------------------------------------------------
 
-public
+public override
     bool
 Equals(
-    IComparerHD that
+    IEqualityComparerHD that
 )
 {
     return
-        that != null
+        base.Equals( that )
         && that.Is<
-            ComparerHD< T > >(
-            c =>
-                ((EqualityComparerHD< T >)c).Equals( that )
-                && c.CompareFunc == this.CompareFunc );
+            ComparerHD< T > >( c =>
+                c.CompareFunc == this.CompareFunc );
 }
 
 
-public new
+public override
     int
 GetHashCode()
 {
     return
-        ((EqualityComparerHD< T >)this).GetHashCode()
+        base.GetHashCode()
         ^ typeof( ComparerHD< T > ).GetHashCode()
         ^ this.CompareFunc.GetHashCode();
 }
