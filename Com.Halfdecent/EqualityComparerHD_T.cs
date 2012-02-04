@@ -43,7 +43,7 @@ EqualityComparerHD<
 // Constructors
 // -----------------------------------------------------------------------------
 
-public
+internal
 EqualityComparerHD(
     EqualsFunc< T >         equalsFunc,
     GetHashCodeFunc< T >    getHashCodeFunc

@@ -44,7 +44,7 @@ ComparerHD<
 // Constructors
 // -----------------------------------------------------------------------------
 
-public
+internal
 ComparerHD(
     CompareFunc< T >        compareFunc,
     EqualsFunc< T >         equalsFunc,
