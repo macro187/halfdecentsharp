@@ -52,7 +52,7 @@ EqualityComparerHD
 /// <tt>System.IComparable<T>.Equals()</tt>.
 ///
 public static
-    IEqualityComparer< T >
+    IEqualityComparerHD< T >
 Create<
     T
 >()
@@ -77,7 +77,7 @@ Create<
 /// definition of equality as <tt>System.IEquatable<T>.Equals()</tt>.
 ///
 public static
-    IEqualityComparer< T >
+    IEqualityComparerHD< T >
 Create<
     T
 >(
@@ -98,7 +98,7 @@ Create<
 /// according to the same definition of equality.
 ///
 public static
-    IEqualityComparer< T >
+    IEqualityComparerHD< T >
 Create<
     T
 >(

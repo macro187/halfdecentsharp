@@ -26,15 +26,16 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// A <tt>System.Collections.Generic.IEqualityComparer<T></tt> based on
-/// <tt>EqualsFunc<T></tt> and <tt>GetHashCodeFunc<T></tt> functions
+/// An equality comparer based on <tt>EqualsFunc<T></tt> and
+/// <tt>GetHashCodeFunc<T></tt> functions
 // =============================================================================
 
 public class
 EqualityComparerHD<
     T
 >
-    : IEqualityComparer< T >
+    : IEqualityComparerHD< T >
+    , IEquatable< IEqualityComparerHD >
 {
 
 
@@ -95,6 +96,37 @@ GetHashCode(
 )
 {
     return this.GetHashCodeFunc( obj );
+}
+
+
+// -----------------------------------------------------------------------------
+// IEquatableHD< IEqualityComparerHD >
+// -----------------------------------------------------------------------------
+
+public
+    bool
+Equals(
+    IEqualityComparerHD that
+)
+{
+    return
+        that != null
+        && that.Is<
+            EqualityComparerHD< T > >(
+            ec =>
+                ec.EqualsFunc == this.EqualsFunc
+                && ec.GetHashCodeFunc == this.GetHashCodeFunc );
+}
+
+
+public override
+    int
+GetHashCode()
+{
+    return
+        typeof( EqualityComparerHD< T > ).GetHashCode()
+        ^ this.EqualsFunc.GetHashCode()
+        ^ this.GetHashCodeFunc.GetHashCode();
 }
 
 

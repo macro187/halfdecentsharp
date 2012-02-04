@@ -25,16 +25,24 @@ Com.Halfdecent
 
 
 // =============================================================================
-// A <tt>System.Collections.Generic.IComparer<T></tt> that is also an equality
-// comparer and hash code provider
+// An improved comparer
+//
+// - Is an equality comparer
+// - Is a hash code provider
+// - Can be compared for equality with other comparers
 // =============================================================================
 
 public interface
 IComparerHD<
+    #if DOTNET40
     in T
+    #else
+    T
+    #endif
 >
-    : IComparer< T >
-    , IEqualityComparer< T >
+    : IComparerHD
+    , IComparer< T >
+    , IEqualityComparerHD< T >
 {
 
 

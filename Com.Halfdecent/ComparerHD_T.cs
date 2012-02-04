@@ -26,8 +26,8 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// An <tt>IComparerHD<T></tt> based on <tt>CompareFunc<T></tt>,
-/// <tt>CompareFunc<T></tt>, and <tt>GetHashCodeFunc<T></tt> functions
+/// A comparer based on <tt>CompareFunc<T></tt>, <tt>CompareFunc<T></tt>, and
+/// <tt>GetHashCodeFunc<T></tt> functions
 // =============================================================================
 
 public class
@@ -85,6 +85,38 @@ Compare(
 )
 {
     return this.CompareFunc( x, y );
+}
+
+
+
+// -----------------------------------------------------------------------------
+// IEquatableHD< IComparerHD >
+// -----------------------------------------------------------------------------
+
+public
+    bool
+Equals(
+    IComparerHD that
+)
+{
+    return
+        that != null
+        && that.Is<
+            ComparerHD< T > >(
+            c =>
+                ((EqualityComparerHD< T >)c).Equals( that )
+                && c.CompareFunc == this.CompareFunc );
+}
+
+
+public new
+    int
+GetHashCode()
+{
+    return
+        ((EqualityComparerHD< T >)this).GetHashCode()
+        ^ typeof( ComparerHD< T > ).GetHashCode()
+        ^ this.CompareFunc.GetHashCode();
 }
 
 
