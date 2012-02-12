@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent.Globalisation;
 
 
@@ -36,6 +37,7 @@ Member
 
 
 // -----------------------------------------------------------------------------
+// IEquatableHD< IValueReferenceComponent >
 // IEquatable< IValueReferenceComponent >
 // -----------------------------------------------------------------------------
 
@@ -51,6 +53,21 @@ public override
 GetHashCode()
 {
     return this.GetType().GetHashCode();
+}
+
+
+
+// -----------------------------------------------------------------------------
+// Object
+// -----------------------------------------------------------------------------
+
+public override
+    bool
+Equals(
+    object that
+)
+{
+    throw new NotSupportedException();
 }
 
 

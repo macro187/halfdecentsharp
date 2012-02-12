@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Diagnostics;
 using Com.Halfdecent.Globalisation;
 
@@ -182,6 +183,7 @@ ToString()
 
 
 // -----------------------------------------------------------------------------
+// IEquatableHD< IValueReferenceComponent >
 // IEquatable< IValueReferenceComponent >
 // -----------------------------------------------------------------------------
 
@@ -210,7 +212,7 @@ GetHashCode()
 
 
 // -----------------------------------------------------------------------------
-// System.Object
+// Object
 // -----------------------------------------------------------------------------
 
 public override
@@ -219,7 +221,7 @@ Equals(
     object that
 )
 {
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 

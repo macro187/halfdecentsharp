@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,8 +35,9 @@ Com.Halfdecent.Meta
 
 public class
 ValueReference
-    : IEquatableHD< ValueReference >
-    , IList< IValueReferenceComponent >
+    : IList< IValueReferenceComponent >
+    , IEquatableHD< ValueReference >
+    , IEquatable< ValueReference >
 {
 
 
@@ -101,7 +103,7 @@ this[
 ]
 {
     get { return this.Components[ index ]; }
-    set { throw new System.NotSupportedException(); }
+    set { throw new NotSupportedException(); }
 }
 
 
@@ -111,7 +113,7 @@ IList< IValueReferenceComponent >.IndexOf(
 )
 {
     // NOTE Could be implemented using IValueReferenceComponent equality
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 
@@ -121,7 +123,7 @@ IList< IValueReferenceComponent >.Insert(
     IValueReferenceComponent    item
 )
 {
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 
@@ -130,7 +132,7 @@ IList< IValueReferenceComponent >.RemoveAt(
     int index
 )
 {
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 
@@ -159,14 +161,14 @@ ICollection< IValueReferenceComponent >.Add(
     IValueReferenceComponent item
 )
 {
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 
 void
 ICollection< IValueReferenceComponent >.Clear()
 {
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 
@@ -176,7 +178,7 @@ ICollection< IValueReferenceComponent >.Contains(
 )
 {
     // NOTE Could be implemented using IValueReferenceComponent equality
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 
@@ -195,7 +197,7 @@ ICollection< IValueReferenceComponent >.Remove(
     IValueReferenceComponent item
 )
 {
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 
@@ -225,6 +227,7 @@ IEnumerable.GetEnumerator()
 
 
 // -----------------------------------------------------------------------------
+// IEquatableHD< ValueReference >
 // IEquatable< ValueReference >
 // -----------------------------------------------------------------------------
 
@@ -251,7 +254,7 @@ GetHashCode()
 
 
 // -----------------------------------------------------------------------------
-// System.Object
+// Object
 // -----------------------------------------------------------------------------
 
 public override
@@ -260,7 +263,7 @@ Equals(
     object that
 )
 {
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 
