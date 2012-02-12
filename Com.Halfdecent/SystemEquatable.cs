@@ -75,6 +75,8 @@ EqualsBidirectional<
         throw new ArgumentNullException( "equalsFunc1" );
     if( equalsFunc2 == null )
         throw new ArgumentNullException( "equalsFunc2" );
+    if( x == null && y == null ) return true;
+    if( x == null || y == null ) return false;
     return equalsFunc1( x, y ) && equalsFunc2( x, y );
 }
 

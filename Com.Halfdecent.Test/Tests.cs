@@ -357,6 +357,37 @@ Test_SystemEnumerable()
 }
 
 
+[Test( "SystemEquatable" )]
+public static
+void
+Test_SystemEquatable()
+{
+    EqualsFunc< object > always = (x,y) => true;
+    EqualsFunc< object > never = (x,y) => false;
+
+    Print( "EqualsBidirectional() equates nulls correctly" );
+    Assert(
+        SystemEquatable.EqualsBidirectional(
+            null,
+            null,
+            never,
+            never ) );
+    Assert( !
+        SystemEquatable.EqualsBidirectional(
+            null,
+            new object(),
+            always,
+            always ) );
+    Assert( !
+        SystemEquatable.EqualsBidirectional(
+            new object(),
+            null,
+            always,
+            always ) );
+
+}
+
+
 [Test( "SystemException" )]
 public static
 void
