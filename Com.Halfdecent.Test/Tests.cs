@@ -479,10 +479,10 @@ Test_EqualityComparerHD_T()
 }
 
 
-[Test( "EquatableEqualityComparerHD< T >" )]
+[Test( "DefaultEqualityComparerHD< T >" )]
 public static
 void
-Test_EquatableEqualityComparerHD_T()
+Test_DefaultEqualityComparerHD_T()
 {
     var ic = EqualityComparerHD.Create< int >();
     var ic2 = EqualityComparerHD.Create< int >();
@@ -640,10 +640,10 @@ Test_ComparerHD_T()
 }
 
 
-[Test( "ComparableComparerHD< T >" )]
+[Test( "DefaultComparerHD< T >" )]
 public static
 void
-Test_ComparableComparerHD_T()
+Test_DefaultComparerHD_T()
 {
     var c = ComparerHD.Create< int >();
     var c2 = ComparerHD.Create< int >();
