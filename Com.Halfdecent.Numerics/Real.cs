@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
@@ -39,11 +38,9 @@ Real
 // Static Methods
 // -----------------------------------------------------------------------------
 
-/// Produce an <tt>IReal</tt> from a <tt>System.Decimal</tt>
-///
 public static
     IReal
-From(
+Create(
     decimal value
 )
 {
@@ -51,46 +48,45 @@ From(
 }
 
 
-/// <tt>IReal.DirectionalCompareTo()</tt> implementation
-///
 public static
     int
-DirectionalCompareTo(
-    IReal dis,
-    IReal that
+Compare(
+    IReal x,
+    IReal y
 )
 {
-    NonNull.CheckParameter( dis, "dis" );
-    if( object.ReferenceEquals( that, null ) ) return 1;
-    return dis.GetValue().CompareTo( that.GetValue() );
+    if( x == null && y == null ) return 0;
+    if( x == null ) return -1;
+    if( y == null ) return 1;
+    if( object.ReferenceEquals( x, y ) ) return 0;
+    return x.GetValue().CompareTo( y.GetValue() );
 }
 
 
-/// <tt>IReal.DirectionalEquals()</tt> implementation
-///
 public static
     bool
-DirectionalEquals(
-    IReal dis,
-    IReal that
+Equals(
+    IReal x,
+    IReal y
 )
 {
-    NonNull.CheckParameter( dis, "dis" );
-    if( object.ReferenceEquals( that, null ) ) return false;
-    return dis.GetValue() == that.GetValue();
+    if( x == null && y == null ) return true;
+    if( x == null || y == null ) return false;
+    if( object.ReferenceEquals( x, y ) ) return true;
+    return x.GetValue() == y.GetValue();
 }
 
 
-/// <tt>IReal.GetHashCode()</tt> implementation
-///
 public static
     int
 GetHashCode(
-    IReal dis
+    IReal x
 )
 {
-    NonNull.CheckParameter( dis, "dis" );
-    return dis.GetValue().GetHashCode();
+    NonNull.CheckParameter( x, "x" );
+    return
+        typeof( IReal ).GetHashCode()
+        ^ x.GetValue().GetHashCode();
 }
 
 
@@ -110,7 +106,7 @@ Plus(
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( that, "that" );
-    return new DecimalReal( dis.GetValue() + that.GetValue() );
+    return Create( dis.GetValue() + that.GetValue() );
 }
 
 
@@ -125,7 +121,7 @@ Minus(
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( that, "that" );
-    return new DecimalReal( dis.GetValue() - that.GetValue() );
+    return Create( dis.GetValue() - that.GetValue() );
 }
 
 
@@ -140,7 +136,7 @@ Times(
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( that, "that" );
-    return new DecimalReal( dis.GetValue() * that.GetValue() );
+    return Create( dis.GetValue() * that.GetValue() );
 }
 
 
@@ -156,7 +152,8 @@ DividedBy(
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( that, "that" );
-    return new DecimalReal( dis.GetValue() / that.GetValue() );
+    NonZero.CheckParameter( that, "that" );
+    return Create( dis.GetValue() / that.GetValue() );
 }
 
 

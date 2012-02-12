@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -39,15 +40,38 @@ Integer
 // Static Methods
 // -----------------------------------------------------------------------------
 
-/// Produce an <tt>IInteger</tt> from a <tt>System.Int32</tt>
-///
 public static
     IInteger
-From(
-    int from
+Create(
+    IReal value
+    ///< - <tt>NonNull</tt>
+    ///  - <tt>NonFractional</tt>
 )
 {
-    return new DecimalInteger( from );
+    NonNull.CheckParameter( value, "value" );
+    NonFractional.CheckParameter( value, "value" );
+    return new DecimalInteger( value.GetValue() );
+}
+
+
+public static
+    IInteger
+Create(
+    decimal value
+    ///< - Must be an integer value
+)
+{
+    return Create( Real.Create( value ) );
+}
+
+
+public static
+    IInteger
+Create(
+    long value
+)
+{
+    return Create( (decimal)value );
 }
 
 
@@ -110,7 +134,8 @@ RemainderWhenDividedBy(
     IInteger        that
 )
 {
-    throw new System.NotImplementedException();
+    // TODO
+    throw new NotImplementedException();
 }
 
 

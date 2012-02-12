@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
 
@@ -44,7 +43,7 @@ DecimalInteger
 internal
 DecimalInteger(
     decimal value
-    /// - Must be <tt>NonFractional</tt>
+    ///< Assumed to be non-null and non-fractional
 )
     : base( value )
 {

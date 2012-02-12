@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
@@ -86,23 +87,14 @@ CompareTo(
     IReal that
 )
 {
-    return Comparable.CompareTo( this, that );
-}
-
-
-public
-    int
-DirectionalCompareTo(
-    IReal that
-)
-{
-    return Real.DirectionalCompareTo( this, that );
+    return Real.Compare( this, that );
 }
 
 
 
 // -----------------------------------------------------------------------------
 // IEquatable< IReal >
+// IEquatableHD< IReal >
 // -----------------------------------------------------------------------------
 
 public
@@ -111,22 +103,12 @@ Equals(
     IReal that
 )
 {
-    return Equatable.Equals( this, that );
-}
-
-
-public
-    bool
-DirectionalEquals(
-    IReal that
-)
-{
-    return Real.DirectionalEquals( this, that );
+    return Real.Equals( this, that );
 }
 
 
     int
-IEquatable<IReal>.GetHashCode()
+IEquatableHD<IReal>.GetHashCode()
 {
     return Real.GetHashCode( this );
 }
@@ -134,8 +116,16 @@ IEquatable<IReal>.GetHashCode()
 
 
 // -----------------------------------------------------------------------------
-// System.Object
+// Object
 // -----------------------------------------------------------------------------
+
+public override
+    string
+ToString()
+{
+    return this.GetValue().ToString();
+}
+
 
 public override
     bool
@@ -143,10 +133,7 @@ Equals(
     object that
 )
 {
-    return
-        that != null &&
-        that is IReal &&
-        this.Equals( (IReal)that );
+    throw new NotSupportedException();
 }
 
 
@@ -154,15 +141,7 @@ public override
     int
 GetHashCode()
 {
-    return ((IEquatable<IReal>)this).GetHashCode();
-}
-
-
-public override
-    string
-ToString()
-{
-    return this.GetValue().ToString();
+    throw new NotSupportedException();
 }
 
 

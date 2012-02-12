@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -52,9 +52,9 @@ public static void
 Test_DecimalReal()
 {
     decimal d = 3.14159m;
-    IReal r = Real.From( d );
-    IReal l = Real.From( (d - 2m) );
-    IReal g = Real.From( (d + 2m) );
+    IReal r = Real.Create( d );
+    IReal l = Real.Create( (d - 2m) );
+    IReal g = Real.Create( (d + 2m) );
 
     Print( "ToDecimal()" );
     Assert( r.GetValue() == 3.14159m );
@@ -80,20 +80,20 @@ Test_DecimalReal()
     Assert( r.LTE( g ) );
 
     Print( "Plus()" );
-    Assert( r.Plus( Real.From( 2m ) ).GetValue() == d + 2m );
-    Assert( r.Plus( Real.From( -2m ) ).GetValue() == d - 2m );
+    Assert( r.Plus( Real.Create( 2m ) ).GetValue() == d + 2m );
+    Assert( r.Plus( Real.Create( -2m ) ).GetValue() == d - 2m );
 
     Print( "Minus()" );
-    Assert( r.Minus( Real.From( 2m ) ).GetValue() == d - 2m );
-    Assert( r.Minus( Real.From( -2m ) ).GetValue() == d - -2m );
+    Assert( r.Minus( Real.Create( 2m ) ).GetValue() == d - 2m );
+    Assert( r.Minus( Real.Create( -2m ) ).GetValue() == d - -2m );
 
     Print( "Times()" );
-    Assert( r.Times( Real.From( 2m ) ).GetValue() == d * 2m );
-    Assert( r.Times( Real.From( -2m ) ).GetValue() == d * -2m );
+    Assert( r.Times( Real.Create( 2m ) ).GetValue() == d * 2m );
+    Assert( r.Times( Real.Create( -2m ) ).GetValue() == d * -2m );
 
     Print( "DividedBy()" );
-    Assert( r.DividedBy( Real.From( 2m ) ).GetValue() == d / 2m );
-    Assert( r.DividedBy( Real.From( -2m ) ).GetValue() == d / -2m );
+    Assert( r.DividedBy( Real.Create( 2m ) ).GetValue() == d / 2m );
+    Assert( r.DividedBy( Real.Create( -2m ) ).GetValue() == d / -2m );
 
     Print( "Truncate()" );
     Assert( r.Truncate().GetValue() == decimal.Truncate( d ) );
@@ -105,9 +105,9 @@ public static void
 Test_DecimalInteger()
 {
     decimal d = 5;
-    IInteger i = Real.From( d ).Truncate();
-    IInteger l = Real.From( d - 2m ).Truncate();
-    IInteger g = Real.From( d + 2m ).Truncate();
+    IInteger i = Real.Create( d ).Truncate();
+    IInteger l = Real.Create( d - 2m ).Truncate();
+    IInteger g = Real.Create( d + 2m ).Truncate();
 
     IInteger result;
 
@@ -167,24 +167,24 @@ Test_NonZero()
     NonZero.Check( null );
 
     Print( "Negative passes" );
-    NonZero.Check( Real.From( -5m ) );
+    NonZero.Check( Real.Create( -5m ) );
 
     Print( "Positive passes" );
-    NonZero.Check( Real.From( 5m ) );
+    NonZero.Check( Real.Create( 5m ) );
 
     Print( "Zero fails" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
             rt => rt.Equals( new NonZero() ) ),
-        () => NonZero.Check( Real.From( 0m ) ) );
+        () => NonZero.Check( Real.Create( 0m ) ) );
 
     Print( "CheckParameter()" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Parameter( "param" ) ),
             rt => rt.Equals( new NonZero() ) ),
-        () => NonZero.CheckParameter( Real.From( 0m ), "param" ) );
+        () => NonZero.CheckParameter( Real.Create( 0m ), "param" ) );
 }
 
 
@@ -208,13 +208,13 @@ Test_NonNegative()
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
             rt => rt.Equals( new NonNegative() ) ),
-        () => NonNegative.Check( Real.From( -5m ) ) );
+        () => NonNegative.Check( Real.Create( -5m ) ) );
 
     Print( "Zero passes" );
-    NonNegative.Check( Real.From( 0m ) );
+    NonNegative.Check( Real.Create( 0m ) );
 
     Print( "Positive passes" );
-    NonNegative.Check( Real.From( 5m ) );
+    NonNegative.Check( Real.Create( 5m ) );
 }
 
 
@@ -234,31 +234,31 @@ Test_NonFractional()
     NonFractional.Check( null );
 
     Print( "Not fractional passes" );
-    NonFractional.Check( Real.From( 5m ) );
+    NonFractional.Check( Real.Create( 5m ) );
 
     Print( "Fractional fails" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
             rt => rt.Equals( new NonFractional() ) ),
-        () => NonFractional.Check( Real.From( 5.5m ) ) );
+        () => NonFractional.Check( Real.Create( 5.5m ) ) );
 
     Print( "Negative not fractional passes" );
-    NonFractional.Check( Real.From( -5m ) );
+    NonFractional.Check( Real.Create( -5m ) );
 
     Print( "Negative fractional fails" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
             rt => rt.Equals( new NonFractional() ) ),
-        () => NonFractional.Check( Real.From( -5.5m ) ) );
+        () => NonFractional.Check( Real.Create( -5.5m ) ) );
 
     Print( ".CheckParameter()" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Parameter( "param" ) ),
             rt => rt.Equals( new NonFractional() ) ),
-        () => NonFractional.CheckParameter( Real.From( -5.5m ), "param" ) );
+        () => NonFractional.CheckParameter( Real.Create( -5.5m ), "param" ) );
 }
 
 
@@ -268,90 +268,107 @@ Test_InByteRange()
 {
     Test_InRange(
         new InByteRange(),
-        Real.From( System.Byte.MinValue ),
-        Real.From( System.Byte.MaxValue ),
+        Real.Create( System.Byte.MinValue ),
+        Real.Create( System.Byte.MaxValue ),
         false );
 }
+
+
 [Test( "InSByteRange" )]
 public static void
 Test_InSByteRange()
 {
     Test_InRange(
         new InSByteRange(),
-        Real.From( System.SByte.MinValue ),
-        Real.From( System.SByte.MaxValue ),
+        Real.Create( System.SByte.MinValue ),
+        Real.Create( System.SByte.MaxValue ),
         false );
 }
+
+
 [Test( "InInt16Range" )]
 public static void
 Test_InInt16Range()
 {
     Test_InRange(
         new InInt16Range(),
-        Real.From( System.Int16.MinValue ),
-        Real.From( System.Int16.MaxValue ),
+        Real.Create( System.Int16.MinValue ),
+        Real.Create( System.Int16.MaxValue ),
         false );
 }
+
+
 [Test( "InUInt16Range" )]
 public static void
 Test_InUInt16Range()
 {
     Test_InRange(
         new InUInt16Range(),
-        Real.From( System.UInt16.MinValue ),
-        Real.From( System.UInt16.MaxValue ),
+        Real.Create( System.UInt16.MinValue ),
+        Real.Create( System.UInt16.MaxValue ),
         false );
 }
+
+
 [Test( "InInt32Range" )]
 public static void
 Test_InInt32Range()
 {
     Test_InRange(
         new InInt32Range(),
-        Real.From( System.Int32.MinValue ),
-        Real.From( System.Int32.MaxValue ),
+        Real.Create( System.Int32.MinValue ),
+        Real.Create( System.Int32.MaxValue ),
         false );
 }
+
+
 [Test( "InUInt32Range" )]
 public static void
 Test_InUInt32Range()
 {
     Test_InRange(
         new InUInt32Range(),
-        Real.From( System.UInt32.MinValue ),
-        Real.From( System.UInt32.MaxValue ),
+        Real.Create( System.UInt32.MinValue ),
+        Real.Create( System.UInt32.MaxValue ),
         false );
 }
+
+
 [Test( "InInt64Range" )]
 public static void
 Test_InInt64Range()
 {
     Test_InRange(
         new InInt64Range(),
-        Real.From( System.Int64.MinValue ),
-        Real.From( System.Int64.MaxValue ),
+        Real.Create( System.Int64.MinValue ),
+        Real.Create( System.Int64.MaxValue ),
         false );
 }
+
+
 [Test( "InUInt64Range" )]
 public static void
 Test_InUInt64Range()
 {
     Test_InRange(
         new InUInt64Range(),
-        Real.From( System.UInt64.MinValue ),
-        Real.From( System.UInt64.MaxValue ),
+        Real.Create( System.UInt64.MinValue ),
+        Real.Create( System.UInt64.MaxValue ),
         false );
 }
+
+
 [Test( "InDecimalRange" )]
 public static void
 Test_InDecimalRange()
 {
     Test_InRange(
         new InDecimalRange(),
-        Real.From( System.Decimal.MinValue ),
-        Real.From( System.Decimal.MaxValue ),
+        Real.Create( System.Decimal.MinValue ),
+        Real.Create( System.Decimal.MaxValue ),
         true );
 }
+
 
 public static void
 Test_InRange(
@@ -369,11 +386,11 @@ Test_InRange(
             e => RTypeException.Match( e,
                 (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
                 rt => rt.Equals( t ) ),
-            () => t.Check( min.Minus( Real.From( 1m ) ) ) );
+            () => t.Check( min.Minus( Real.Create( 1m ) ) ) );
     Print( "Min passes" );
     t.Check( min );
     Print( "In range passes" );
-    t.Check( Real.From( 10 ) );
+    t.Check( Real.Create( 10 ) );
     Print( "Max passes" );
     t.Check( max );
     Print( "Bigger fails" );
@@ -382,252 +399,8 @@ Test_InRange(
             e => RTypeException.Match( e,
                 (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
                 rt => rt.Equals( t ) ),
-            () => t.Check( max.Plus( Real.From( 1m ) ) ) );
+            () => t.Check( max.Plus( Real.Create( 1m ) ) ) );
 }
-
-
-/*
-[Test( "InUInt64Range" )]
-public static void
-Test_InUInt64Range()
-{
-    IReal smaller = Real.From( System.UInt64.MinValue - 1m );
-    IReal min = Real.From( System.UInt64.MinValue );
-    IReal inrange = Real.From( 10 );
-    IReal max = Real.From( System.UInt64.MaxValue );
-    IReal bigger = Real.From( System.UInt64.MaxValue + 1m );
-    Value _smaller = new Local( "smaller" );
-    Value _min = new Local( "min" );
-    Value _inrange = new Local( "inrange" );
-    Value _max = new Local( "max" );
-    Value _bigger = new Local( "bigger" );
-    Print( "null passes" );
-    InUInt64Range.Require( null, new Literal() );
-    Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        InUInt64Range.Require( smaller, _smaller ) );
-    Print( "Min passes" );
-    InUInt64Range.Require( min, _min );
-    Print( "In range passes" );
-    InUInt64Range.Require( inrange, _inrange );
-    Print( "Max passes" );
-    InUInt64Range.Require( max, _max );
-    Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        InUInt64Range.Require( bigger, _bigger ) );
-}
-
-
-[Test( "InInt64Range" )]
-public static void
-Test_InInt64Range()
-{
-    IReal smaller = Real.From( System.Int64.MinValue - 1m );
-    IReal min = Real.From( System.Int64.MinValue );
-    IReal inrange = Real.From( 10 );
-    IReal max = Real.From( System.Int64.MaxValue );
-    IReal bigger = Real.From( System.Int64.MaxValue + 1m );
-    Value _smaller = new Local( "smaller" );
-    Value _min = new Local( "min" );
-    Value _inrange = new Local( "inrange" );
-    Value _max = new Local( "max" );
-    Value _bigger = new Local( "bigger" );
-    Print( "null passes" );
-    InInt64Range.Require( null, new Literal() );
-    Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        InInt64Range.Require( smaller, _smaller ) );
-    Print( "Min passes" );
-    InInt64Range.Require( min, _min );
-    Print( "In range passes" );
-    InInt64Range.Require( inrange, _inrange );
-    Print( "Max passes" );
-    InInt64Range.Require( max, _max );
-    Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        InInt64Range.Require( bigger, _bigger ) );
-}
-
-
-[Test( "InUInt32Range" )]
-public static void
-Test_InUInt32Range()
-{
-    IReal smaller = Real.From( System.UInt32.MinValue - 1m );
-    IReal min = Real.From( System.UInt32.MinValue );
-    IReal inrange = Real.From( 10 );
-    IReal max = Real.From( System.UInt32.MaxValue );
-    IReal bigger = Real.From( System.UInt32.MaxValue + 1m );
-    Value _smaller = new Local( "smaller" );
-    Value _min = new Local( "min" );
-    Value _inrange = new Local( "inrange" );
-    Value _max = new Local( "max" );
-    Value _bigger = new Local( "bigger" );
-    Print( "null passes" );
-    InUInt32Range.Require( null, new Literal() );
-    Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        InUInt32Range.Require( smaller, _smaller ) );
-    Print( "Min passes" );
-    InUInt32Range.Require( min, _min );
-    Print( "In range passes" );
-    InUInt32Range.Require( inrange, _inrange );
-    Print( "Max passes" );
-    InUInt32Range.Require( max, _max );
-    Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        InUInt32Range.Require( bigger, _bigger ) );
-}
-
-
-[Test( "InInt32Range" )]
-public static void
-Test_InInt32Range()
-{
-    IReal smaller = Real.From( System.Int32.MinValue - 1m );
-    IReal min = Real.From( System.Int32.MinValue );
-    IReal inrange = Real.From( 10 );
-    IReal max = Real.From( System.Int32.MaxValue );
-    IReal bigger = Real.From( System.Int32.MaxValue + 1m );
-    Value _smaller = new Local( "smaller" );
-    Value _min = new Local( "min" );
-    Value _inrange = new Local( "inrange" );
-    Value _max = new Local( "max" );
-    Value _bigger = new Local( "bigger" );
-    Print( "null passes" );
-    InInt32Range.Require( null, new Literal() );
-    Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        InInt32Range.Require( smaller, _smaller ) );
-    Print( "Min passes" );
-    InInt32Range.Require( min, _min );
-    Print( "In range passes" );
-    InInt32Range.Require( inrange, _inrange );
-    Print( "Max passes" );
-    InInt32Range.Require( max, _max );
-    Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        InInt32Range.Require( bigger, _bigger ) );
-}
-
-
-[Test( "InUInt16Range" )]
-public static void
-Test_InUInt16Range()
-{
-    IReal smaller = Real.From( System.UInt16.MinValue - 1m );
-    IReal min = Real.From( System.UInt16.MinValue );
-    IReal inrange = Real.From( 10 );
-    IReal max = Real.From( System.UInt16.MaxValue );
-    IReal bigger = Real.From( System.UInt16.MaxValue + 1m );
-    Value _smaller = new Local( "smaller" );
-    Value _min = new Local( "min" );
-    Value _inrange = new Local( "inrange" );
-    Value _max = new Local( "max" );
-    Value _bigger = new Local( "bigger" );
-    Print( "null passes" );
-    InUInt16Range.Require( null, new Literal() );
-    Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        InUInt16Range.Require( smaller, _smaller ) );
-    Print( "Min passes" );
-    InUInt16Range.Require( min, _min );
-    Print( "In range passes" );
-    InUInt16Range.Require( inrange, _inrange );
-    Print( "Max passes" );
-    InUInt16Range.Require( max, _max );
-    Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        InUInt16Range.Require( bigger, _bigger ) );
-}
-
-
-[Test( "InInt16Range" )]
-public static void
-Test_InInt16Range()
-{
-    IReal smaller = Real.From( System.Int16.MinValue - 1m );
-    IReal min = Real.From( System.Int16.MinValue );
-    IReal inrange = Real.From( 10 );
-    IReal max = Real.From( System.Int16.MaxValue );
-    IReal bigger = Real.From( System.Int16.MaxValue + 1m );
-    Value _smaller = new Local( "smaller" );
-    Value _min = new Local( "min" );
-    Value _inrange = new Local( "inrange" );
-    Value _max = new Local( "max" );
-    Value _bigger = new Local( "bigger" );
-    Print( "null passes" );
-    InInt16Range.Require( null, new Literal() );
-    Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        InInt16Range.Require( smaller, _smaller ) );
-    Print( "Min passes" );
-    InInt16Range.Require( min, _min );
-    Print( "In range passes" );
-    InInt16Range.Require( inrange, _inrange );
-    Print( "Max passes" );
-    InInt16Range.Require( max, _max );
-    Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        InInt16Range.Require( bigger, _bigger ) );
-}
-
-
-[Test( "InSByteRange" )]
-public static void
-Test_InSByteRange()
-{
-    IReal smaller = Real.From( System.SByte.MinValue - 1m );
-    IReal min = Real.From( System.SByte.MinValue );
-    IReal inrange = Real.From( 10 );
-    IReal max = Real.From( System.SByte.MaxValue );
-    IReal bigger = Real.From( System.SByte.MaxValue + 1m );
-    Value _smaller = new Local( "smaller" );
-    Value _min = new Local( "min" );
-    Value _inrange = new Local( "inrange" );
-    Value _max = new Local( "max" );
-    Value _bigger = new Local( "bigger" );
-    Print( "null passes" );
-    InSByteRange.Require( null, new Literal() );
-    Print( "Smaller fails" );
-    Expect< RTypeException >( () =>
-        InSByteRange.Require( smaller, _smaller ) );
-    Print( "Min passes" );
-    InSByteRange.Require( min, _min );
-    Print( "In range passes" );
-    InSByteRange.Require( inrange, _inrange );
-    Print( "Max passes" );
-    InSByteRange.Require( max, _max );
-    Print( "Bigger fails" );
-    Expect< RTypeException >( () =>
-        InSByteRange.Require( bigger, _bigger ) );
-}
-
-
-[Test( "InDecimalRange" )]
-public static void
-Test_InDecimalRange()
-{
-    IReal min = Real.From( System.Decimal.MinValue );
-    IReal inrange = Real.From( 10 );
-    IReal max = Real.From( System.Decimal.MaxValue );
-    Value _min = new Local( "min" );
-    Value _inrange = new Local( "inrange" );
-    Value _max = new Local( "max" );
-    Print( "null passes" );
-    InDecimalRange.Require( null, new Literal() );
-    Print( "Min passes" );
-    InDecimalRange.Require( min, _min );
-    Print( "In range passes" );
-    InDecimalRange.Require( inrange, _inrange );
-    Print( "Max passes" );
-    InDecimalRange.Require( max, _max );
-}
-
-
-
-
-*/
 
 
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -72,13 +71,8 @@ public static
     RType< IReal >
 Create()
 {
-    return instance;
+    return new NonZero();
 }
-
-
-private static
-    NonZero
-instance = new NonZero();
 
 
 
@@ -90,7 +84,7 @@ public
 NonZero()
     : base(
         SystemEnumerable.Create(
-            NEQ.Create( Real.From( 0 ) ) ),
+            NEQ.Create( Real.Create( 0 ) ) ),
         r => _S("{0} is not zero", r),
         r => _S("{0} is zero", r),
         r => _S("{0} must not be zero", r) )
@@ -100,7 +94,7 @@ NonZero()
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

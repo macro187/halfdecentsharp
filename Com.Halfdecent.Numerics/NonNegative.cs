@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
-using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -69,13 +67,8 @@ public static
     RType< IReal >
 Create()
 {
-    return instance;
+    return new NonNegative();
 }
-
-
-private static
-    NonNegative
-instance = new NonNegative();
 
 
 
@@ -87,7 +80,7 @@ public
 NonNegative()
     : base(
         SystemEnumerable.Create(
-            GTE.Create( Real.From( 0 ) ) ),
+            GTE.Create( Real.Create( 0 ) ) ),
         r => _S("{0} is not negative",r),
         r => _S("{0} is negative", r),
         r => _S("{0} must not be negative", r) )
@@ -97,7 +90,7 @@ NonNegative()
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace
