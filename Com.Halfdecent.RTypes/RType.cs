@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 
@@ -37,7 +38,7 @@ Com.Halfdecent.RTypes
 
 public abstract class
 RType
-    : IEquatable< RType >
+    : IEquatableHD< RType >
 {
 
 
@@ -47,9 +48,9 @@ RType
 
 protected
 RType(
-    System.Func< Localised< string >, Localised< string > > sayIsFunc,
-    System.Func< Localised< string >, Localised< string > > sayIsNotFunc,
-    System.Func< Localised< string >, Localised< string > > sayMustBeFunc
+    Func< Localised< string >, Localised< string > >    sayIsFunc,
+    Func< Localised< string >, Localised< string > >    sayIsNotFunc,
+    Func< Localised< string >, Localised< string > >    sayMustBeFunc
 )
 {
     this.SayIsFunc = sayIsFunc;
@@ -64,17 +65,17 @@ RType(
 // -----------------------------------------------------------------------------
 
 private
-System.Func< Localised< string >, Localised< string > >
+Func< Localised< string >, Localised< string > >
 SayIsFunc;
 
 
 private
-System.Func< Localised< string >, Localised< string > >
+Func< Localised< string >, Localised< string > >
 SayIsNotFunc;
 
 
 private
-System.Func< Localised< string >, Localised< string > >
+Func< Localised< string >, Localised< string > >
 SayMustBeFunc;
 
 
@@ -149,22 +150,13 @@ SayMustBe(
 
 
 // -----------------------------------------------------------------------------
+// IEquatableHD< RType >
 // IEquatable< RType >
 // -----------------------------------------------------------------------------
 
-public
-    bool
-Equals(
-    RType that
-)
-{
-    return Equatable.Equals( this, that );
-}
-
-
 public virtual
     bool
-DirectionalEquals(
+Equals(
     RType that
 )
 {
@@ -183,7 +175,7 @@ GetHashCode()
 
 
 // -----------------------------------------------------------------------------
-// System.Object
+// Object
 // -----------------------------------------------------------------------------
 
 public override sealed
@@ -192,13 +184,13 @@ Equals(
     object that
 )
 {
-    throw new System.NotSupportedException();
+    throw new NotSupportedException();
 }
 
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

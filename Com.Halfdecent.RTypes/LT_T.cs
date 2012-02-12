@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
@@ -45,7 +45,7 @@ CheckParameter<
     T       item,
     string  paramName
 )
-    where T : System.IComparable< T >
+    where T : IComparable< T >
 {
     if( paramName == null )
         throw new LocalisedArgumentNullException( "paramName" );
@@ -66,10 +66,10 @@ public static
 CheckParameter<
     T
 >(
-    T               compareTo,
-    IComparer< T >  comparer,
-    T               item,
-    string          paramName
+    T                   compareTo,
+    IComparerHD< T >    comparer,
+    T                   item,
+    string              paramName
 )
 {
     if( paramName == null )
@@ -94,7 +94,7 @@ Check<
     T compareTo,
     T item
 )
-    where T : System.IComparable< T >
+    where T : IComparable< T >
 {
     ValueReferenceException.Map(
         f => f.Parameter( "item" ),
@@ -108,9 +108,9 @@ public static
 Check<
     T
 >(
-    T               compareTo,
-    IComparer< T >  comparer,
-    T               item
+    T                   compareTo,
+    IComparerHD< T >    comparer,
+    T                   item
 )
 {
     ValueReferenceException.Map(
@@ -127,9 +127,9 @@ Create<
 >(
     T compareTo
 )
-    where T : System.IComparable< T >
+    where T : IComparable< T >
 {
-    return Create( compareTo, new SystemComparableComparer< T >() );
+    return Create( compareTo, ComparerHD.Create< T >() );
 }
 
 
@@ -138,8 +138,8 @@ public static
 Create<
     T
 >(
-    T               compareTo,
-    IComparer< T >  comparer
+    T                   compareTo,
+    IComparerHD< T >    comparer
 )
 {
     return new LT< T >( compareTo, comparer );
@@ -170,8 +170,8 @@ LT<
 
 public
 LT(
-    T               compareTo,
-    IComparer< T >  comparer
+    T                   compareTo,
+    IComparerHD< T >    comparer
 )
     : base(
         SystemEnumerable.Create(
@@ -188,7 +188,7 @@ LT(
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

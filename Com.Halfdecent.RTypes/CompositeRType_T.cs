@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Linq;
-using SCG = System.Collections.Generic;
+using System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
@@ -46,10 +47,10 @@ CompositeRType<
 
 public
 CompositeRType(
-    SCG.IEnumerable< RType< T > >                           components,
-    System.Func< Localised< string >, Localised< string > > sayIsFunc,
-    System.Func< Localised< string >, Localised< string > > sayIsNotFunc,
-    System.Func< Localised< string >, Localised< string > > sayMustBeFunc
+    IEnumerable< RType< T > >                           components,
+    Func< Localised< string >, Localised< string > >    sayIsFunc,
+    Func< Localised< string >, Localised< string > >    sayIsNotFunc,
+    Func< Localised< string >, Localised< string > >    sayMustBeFunc
 )
     : base( null, sayIsFunc, sayIsNotFunc, sayMustBeFunc )
 {
@@ -63,7 +64,7 @@ CompositeRType(
 // -----------------------------------------------------------------------------
 
 private
-SCG.IEnumerable< RType< T > >
+IEnumerable< RType< T > >
 Components;
 
 
@@ -95,7 +96,7 @@ Check(
                 f => f.Down().Parameter( "item" ),
                 () => c.Check( item ) );
 
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         RTypeException.Match(
             e,
             (vr,f) => vr.Equals( f.Parameter( "item" ) ),
@@ -111,17 +112,18 @@ Check(
 
 
 // -----------------------------------------------------------------------------
+// IEquatableHD< RType >
 // IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
-DirectionalEquals(
+Equals(
     RType that
 )
 {
     return
-        base.DirectionalEquals( that )
+        base.Equals( that )
         && that.Is<
             CompositeRType< T > >(
             crt =>
@@ -136,7 +138,7 @@ DirectionalEquals(
                     .Cast< RType >()
 #endif
                     ,
-                    new EquatableComparer< RType >() ) );
+                    EqualityComparerHD.Create< RType >() ) );
 }
 
 
@@ -152,9 +154,6 @@ GetHashCode()
 
 
 
-
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

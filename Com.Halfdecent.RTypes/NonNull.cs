@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2010
+// Copyright (c) 2008, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
@@ -98,7 +97,11 @@ public
 NonNull()
     : base(
         SystemEnumerable.Create(
-            NEQ.Create( null, new ReferenceComparer() ) ),
+            NEQ.Create(
+                null,
+                EqualityComparerHD.Create< object >(
+                    (x,y) => object.ReferenceEquals( x, y ),
+                    x => x.GetHashCode() ) ) ),
         ls => _S("{0} is non-null", ls),
         ls => _S("{0} is null", ls),
         ls => _S("{0} must not be null", ls) )
@@ -108,7 +111,7 @@ NonNull()
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

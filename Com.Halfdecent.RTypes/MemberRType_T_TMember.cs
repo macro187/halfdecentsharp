@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Linq;
-using SCG = System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
@@ -53,14 +53,10 @@ MemberRType<
 
 public
 MemberRType(
-    System.Func< T, TMember >
-        getMemberFunc,
-    System.Func< ValueReference, ValueReference >
-        getMemberReferenceFunc,
-    System.Func< Localised< string >, Localised< string > >
-        getNaturalReferenceFunc,
-    RType< TMember >
-        rType
+    Func< T, TMember >                                  getMemberFunc,
+    Func< ValueReference, ValueReference >              getMemberReferenceFunc,
+    Func< Localised< string >, Localised< string > >    getNaturalReferenceFunc,
+    RType< TMember >                                    rType
 )
     : base(
         null,
@@ -88,12 +84,12 @@ MemberRType(
 // -----------------------------------------------------------------------------
 
 private
-System.Func< T, TMember >
+Func< T, TMember >
 GetMemberFunc;
 
 
 private
-System.Func< ValueReference, ValueReference >
+Func< ValueReference, ValueReference >
 GetMemberReferenceFunc;
 
 
@@ -132,7 +128,7 @@ Check(
             f => f.Down().Parameter( "item" ),
             () => this.RType.Check( this.GetMemberFunc( item ) ) );
 
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         RTypeException.Match(
             e,
             (vr,f) =>
@@ -150,17 +146,18 @@ Check(
 
 
 // -----------------------------------------------------------------------------
+// IEquatableHD< RType >
 // IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
-DirectionalEquals(
+Equals(
     RType that
 )
 {
     return
-        base.DirectionalEquals( that )
+        base.Equals( that )
         && that.Is<
             MemberRType< T, TMember > >(
             mrt =>
@@ -181,8 +178,6 @@ GetHashCode()
 
 
 
-
-//private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

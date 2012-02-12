@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
@@ -43,14 +44,10 @@ RTypeException
 public static
     void
 Match(
-    System.Exception
-        ex,
-    System.Func< ValueReference, Frame, bool >
-        valueReferencePredicate,
-    System.Predicate< RType >
-        rTypePredicate,
-    System.Action< ValueReference, Frame, RTypeException >
-        action
+    Exception                                       ex,
+    Func< ValueReference, Frame, bool >             valueReferencePredicate,
+    Predicate< RType >                              rTypePredicate,
+    Action< ValueReference, Frame, RTypeException > action
 )
 {
     if( ex == null )
@@ -74,12 +71,9 @@ Match(
 public static
     bool
 Match(
-    System.Exception
-        ex,
-    System.Func< ValueReference, Frame, bool >
-        valueReferencePredicate,
-    System.Predicate< RType >
-        rTypePredicate
+    Exception                           ex,
+    Func< ValueReference, Frame, bool > valueReferencePredicate,
+    Predicate< RType >                  rTypePredicate
 )
 {
     if( ex == null )
@@ -104,11 +98,11 @@ public static
 Match<
     TRType
 >(
-    System.Exception
+    Exception
         ex,
-    System.Func< ValueReference, Frame, bool >
+    Func< ValueReference, Frame, bool >
         valueReferencePredicate,
-    System.Action< ValueReference, Frame, TRType, RTypeException >
+    Action< ValueReference, Frame, TRType, RTypeException >
         action
 )
     where TRType : RType
@@ -134,7 +128,7 @@ public static
 Match<
     TRType
 >(
-    System.Exception ex
+    Exception ex
 )
     where TRType : RType
 {
@@ -153,10 +147,8 @@ public static
 Match<
     TRType
 >(
-    System.Exception
-        ex,
-    System.Func< ValueReference, Frame, bool >
-        valueReferencePredicate
+    Exception                           ex,
+    Func< ValueReference, Frame, bool > valueReferencePredicate
 )
     where TRType : RType
 {
@@ -195,8 +187,8 @@ RTypeException(
 ///
 public
 RTypeException(
-    RType               rtype,
-    System.Exception    innerException
+    RType       rtype,
+    Exception   innerException
 )
     : base( null, innerException )
 {

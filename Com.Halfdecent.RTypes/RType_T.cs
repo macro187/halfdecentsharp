@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Linq;
-using SCG = System.Collections.Generic;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
 
@@ -47,10 +47,10 @@ RType<
 
 protected
 RType(
-    System.Predicate< T >                                   isFunc,
-    System.Func< Localised< string >, Localised< string > > sayIsFunc,
-    System.Func< Localised< string >, Localised< string > > sayIsNotFunc,
-    System.Func< Localised< string >, Localised< string > > sayMustBeFunc
+    Predicate< T >                                      isFunc,
+    Func< Localised< string >, Localised< string > >    sayIsFunc,
+    Func< Localised< string >, Localised< string > >    sayIsNotFunc,
+    Func< Localised< string >, Localised< string > >    sayMustBeFunc
 )
     : base( sayIsFunc, sayIsNotFunc, sayMustBeFunc )
 {
@@ -64,7 +64,7 @@ RType(
 // -----------------------------------------------------------------------------
 
 private
-System.Predicate< T >
+Predicate< T >
 IsFunc;
 
 
@@ -117,7 +117,7 @@ Contravary<
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

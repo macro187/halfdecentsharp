@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
 using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Testing;
@@ -92,7 +92,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         RTypeException.Match(
             e,
             (vr,f) => vr.Equals( f.Local( "local" ) ),
@@ -107,7 +107,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = true;
         RTypeException.Match(
             e,
@@ -123,7 +123,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = true;
         RTypeException.Match(
             e,
@@ -139,7 +139,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = RTypeException.Match(
             e,
             (vr,f) => vr.Equals( f.Local( "local" ) ),
@@ -153,7 +153,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = true;
         ok = !( RTypeException.Match(
             e,
@@ -168,7 +168,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = true;
         ok = !( RTypeException.Match(
             e,
@@ -183,7 +183,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         RTypeException.Match<
             FakeRType >(
             e,
@@ -198,7 +198,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = true;
         RTypeException.Match<
             FakeRType >(
@@ -214,7 +214,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = true;
         RTypeException.Match<
             FakeRType2 >(
@@ -230,7 +230,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = RTypeException.Match<
             FakeRType >(
             e,
@@ -244,7 +244,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = true;
         ok = !( RTypeException.Match< FakeRType >(
             e,
@@ -258,7 +258,7 @@ Test_RTypeException()
         throw new ValueReferenceException(
             new Frame().Local( "local" ),
             new RTypeException( new FakeRType() ) );
-    } catch( System.Exception e ) {
+    } catch( Exception e ) {
         ok = true;
         ok = !( RTypeException.Match<
             FakeRType2 >(
@@ -276,26 +276,26 @@ Test_EQ_T()
 {
     Print( "Equality" );
     Assert(
-        new EQ<object>( 1, new ObjectComparer() ).Equals(
-        new EQ<object>( 1, new ObjectComparer() ) ) );
+        EQ.Create( 1 ).Equals(
+        EQ.Create( 1 ) ) );
     Assert(
-        new EQ<object>( 1, new ObjectComparer() ).GetHashCode() ==
-        new EQ<object>( 1, new ObjectComparer() ).GetHashCode() );
+        EQ.Create( 1 ).GetHashCode() ==
+        EQ.Create( 1 ).GetHashCode() );
     Assert( !
-        new EQ<object>( 1, new ObjectComparer() ).Equals(
-        new EQ<object>( 2, new ObjectComparer() ) ) );
+        EQ.Create( 1 ).Equals(
+        EQ.Create( 2 ) ) );
     Assert(
-        new EQ<object>( null, new ObjectComparer() ).Equals(
-        new EQ<object>( null, new ObjectComparer() ) ) );
+        EQ.Create< object >( null ).Equals(
+        EQ.Create< object >( null ) ) );
     Assert(
-        new EQ<object>( null, new ObjectComparer() ).GetHashCode() ==
-        new EQ<object>( null, new ObjectComparer() ).GetHashCode() );
+        EQ.Create< object >( null ).GetHashCode() ==
+        EQ.Create< object >( null ).GetHashCode() );
     Assert( !
-        new EQ<object>( 1, new ObjectComparer() ).Equals(
-        new EQ<object>( null, new ObjectComparer() ) ) );
+        EQ.Create< object >( 1 ).Equals(
+        EQ.Create< object >( null ) ) );
 
     Print( "Null passes" );
-    EQ.Check( (object)1, new ObjectComparer(), (object)null );
+    EQ.Check< object >( 1, null );
 
     Print( "Equal passes" );
     EQ.Check( 1, 1 );
@@ -308,14 +308,14 @@ Test_EQ_T()
         () => EQ.Check( 1, 2 ) );
 
     Print( "With null CompareTo, null passes" );
-    EQ.Check( null, new ObjectComparer(), null );
+    EQ.Check< object >( null, null );
 
     Print( "With null CompareTo, non-null fails" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.Equals( EQ.Create( null, new ObjectComparer() ) ) ),
-        () => EQ.Check( null, new ObjectComparer(), new object() ) );
+            rt => rt.Equals( EQ.Create< object >( null ) ) ),
+        () => EQ.Check( null, new object() ) );
 
     Print( "CheckParameter()" );
     Expect(
@@ -333,26 +333,26 @@ Test_NEQ_T()
 {
     Print( "Equality" );
     Assert(
-        new NEQ<object>( 1, new ObjectComparer() ).Equals(
-        new NEQ<object>( 1, new ObjectComparer() ) ) );
+        NEQ.Create( 1 ).Equals(
+        NEQ.Create( 1 ) ) );
     Assert(
-        new NEQ<object>( 1, new ObjectComparer() ).GetHashCode() ==
-        new NEQ<object>( 1, new ObjectComparer() ).GetHashCode() );
+        NEQ.Create( 1 ).GetHashCode() ==
+        NEQ.Create( 1 ).GetHashCode() );
     Assert( !(
-        new NEQ<object>( 1, new ObjectComparer() ).GetHashCode() ==
-        new NEQ<object>( 2, new ObjectComparer() ).GetHashCode() ) );
+        NEQ.Create( 1 ).GetHashCode() ==
+        NEQ.Create( 2 ).GetHashCode() ) );
     Assert(
-        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() ==
-        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() );
+        NEQ.Create< object >( null ).GetHashCode() ==
+        NEQ.Create< object >( null ).GetHashCode() );
     Assert(
-        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() ==
-        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() );
+        NEQ.Create< object >( null ).GetHashCode() ==
+        NEQ.Create< object >( null ).GetHashCode() );
     Assert( !(
-        new NEQ<object>( 1, new ObjectComparer() ).GetHashCode() ==
-        new NEQ<object>( null, new ObjectComparer() ).GetHashCode() ) );
+        NEQ.Create< object >( 1 ).GetHashCode() ==
+        NEQ.Create< object >( null ).GetHashCode() ) );
 
     Print( "Null passes" );
-    NEQ.Check( (object)1, new ObjectComparer(), null );
+    NEQ.Check< object >( 1, null );
 
     Print( "Inequal passes" );
     NEQ.Check( 1, 2 );
@@ -365,14 +365,14 @@ Test_NEQ_T()
         () => NEQ.Check( 1, 1 ) );
 
     Print( "With null CompareTo, non-null passes" );
-    NEQ.Check( null, new ObjectComparer(), new object() );
+    NEQ.Check< object >( null, new object() );
 
     Print( "With null CompareTo, null fails" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.Equals( NEQ.Create( null, new ObjectComparer() ) ) ),
-        () => NEQ.Check( null, new ObjectComparer(), null ) );
+            rt => rt.Equals( NEQ.Create< object >( null ) ) ),
+        () => NEQ.Check< object >( null, null ) );
 
     Print( "CheckParameter()" );
     Expect(
@@ -561,14 +561,14 @@ Test_NonNull()
 {
     Print( ".Equals() and .GetHashCode()" );
     Assert(
-        new NonNull()
-        .Equals( new NonNull() ) );
+        NonNull.Create()
+        .Equals( NonNull.Create() ) );
     Assert(
-        new NonNull().GetHashCode() ==
-        new NonNull().GetHashCode() );
+        NonNull.Create().GetHashCode() ==
+        NonNull.Create().GetHashCode() );
     Assert( !(
-        new NonNull()
-        .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
+        NonNull.Create()
+        .Equals( EQ.Create( new object() ) ) ) );
 
     Print( "Non-null passes" );
     NonNull.Check( new object() );
@@ -577,14 +577,14 @@ Test_NonNull()
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.Equals( new NonNull() ) ),
+            rt => rt.Equals( NonNull.Create() ) ),
         () => NonNull.Check( null ) );
 
     Print( "CheckParameter()" );
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Parameter( "param" ) ),
-            rt => rt.Equals( new NonNull() ) ),
+            rt => rt.Equals( NonNull.Create() ) ),
         () => NonNull.CheckParameter( null, "param" ) );
 }
 
@@ -596,14 +596,14 @@ Test_NonBlankString()
 {
     Print( ".Equals() and .GetHashCode()" );
     Assert(
-        new NonBlankString()
-        .Equals( new NonBlankString() ) );
+        NonBlankString.Create()
+        .Equals( NonBlankString.Create() ) );
     Assert(
-        new NonBlankString().GetHashCode() ==
-        new NonBlankString().GetHashCode() );
+        NonBlankString.Create().GetHashCode() ==
+        NonBlankString.Create().GetHashCode() );
     Assert( !(
-        new NonBlankString()
-        .Equals( new EQ<object>( 1, new ObjectComparer() ) ) ) );
+        NonBlankString.Create()
+        .Equals( EQ.Create( new object() ) ) ) );
 
     Print( "Non-blank string passes" );
     NonBlankString.Check( "Not blank" );
@@ -612,7 +612,7 @@ Test_NonBlankString()
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Down().Parameter( "item" ) ),
-            rt => rt.Equals( new NonBlankString() ) ),
+            rt => rt.Equals( NonBlankString.Create() ) ),
         () => NonBlankString.Check( "" ) );
 
     Print( "Null passes" );
@@ -622,7 +622,7 @@ Test_NonBlankString()
     Expect(
         e => RTypeException.Match( e,
             (vr,f) => vr.Equals( f.Parameter( "param" ) ),
-            rt => rt.Equals( new NonBlankString() ) ),
+            rt => rt.Equals( NonBlankString.Create() ) ),
         () => NonBlankString.CheckParameter( "", "param" ) );
 }
 
@@ -645,10 +645,10 @@ Test_GTE_T()
 
     Print( "Null arguments to constructor throw ArgumentNullException" );
     Expect<
-        System.ArgumentNullException >(
+        ArgumentNullException >(
         () => GTE.Create< string >( null ) );
     Expect<
-        System.ArgumentNullException >(
+        ArgumentNullException >(
         () => GTE.Create( 0, null ) );
 
     Print( "null passes" );
@@ -694,10 +694,10 @@ Test_LTE_T()
 
     Print( "Null arguments to constructor throw ArgumentNullException" );
     Expect<
-        System.ArgumentNullException >(
+        ArgumentNullException >(
         () => LTE.Create< string >( null ) );
     Expect<
-        System.ArgumentNullException >(
+        ArgumentNullException >(
         () => LTE.Create( 0, null ) );
 
     Print( "null passes" );
@@ -944,9 +944,9 @@ public static
 void
 Test_Contravariance()
 {
-    RType< object > t = new EQ<object>( "apple", new ObjectComparer() );
-    RType< object > u = new EQ<object>( "apple", new ObjectComparer() );
-    RType< object > v = new EQ<object>( "orange", new ObjectComparer() );
+    RType< object > t = EQ.Create< object >( "apple" );
+    RType< object > u = EQ.Create< object >( "apple" );
+    RType< object > v = EQ.Create< object >( "orange" );
     RType< string > w = t.Contravary< string >();
     RType< string > x = u.Contravary< string >();
     RType< string > y = v.Contravary< string >();

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -74,16 +74,17 @@ From;
 
 
 // -----------------------------------------------------------------------------
+// IEquatableHD< RType >
 // IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
-DirectionalEquals(
+Equals(
     RType that
 )
 {
-    return this.From.DirectionalEquals( that );
+    return this.From.Equals( that );
 }
 
 

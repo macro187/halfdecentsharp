@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010
+// Copyright (c) 2008, 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.Meta;
@@ -44,7 +45,7 @@ CheckParameter<
     T       item,
     string  paramName
 )
-    where T : System.IComparable< T >
+    where T : IComparable< T >
 {
     if( paramName == null )
         throw new LocalisedArgumentNullException( "paramName" );
@@ -65,10 +66,10 @@ public static
 CheckParameter<
     T
 >(
-    T               compareTo,
-    IComparer< T >  comparer,
-    T               item,
-    string          paramName
+    T                   compareTo,
+    IComparerHD< T >    comparer,
+    T                   item,
+    string              paramName
 )
 {
     if( paramName == null )
@@ -93,7 +94,7 @@ Check<
     T compareTo,
     T item
 )
-    where T : System.IComparable< T >
+    where T : IComparable< T >
 {
     ValueReferenceException.Map(
         f => f.Parameter( "item" ),
@@ -107,9 +108,9 @@ public static
 Check<
     T
 >(
-    T               compareTo,
-    IComparer< T >  comparer,
-    T               item
+    T                   compareTo,
+    IComparerHD< T >    comparer,
+    T                   item
 )
 {
     ValueReferenceException.Map(
@@ -126,9 +127,9 @@ Create<
 >(
     T compareTo
 )
-    where T : System.IComparable< T >
+    where T : IComparable< T >
 {
-    return Create( compareTo, new SystemComparableComparer< T >() );
+    return Create( compareTo, ComparerHD.Create< T >() );
 }
 
 
@@ -137,8 +138,8 @@ public static
 Create<
     T
 >(
-    T               compareTo,
-    IComparer< T >  comparer
+    T                   compareTo,
+    IComparerHD< T >    comparer
 )
 {
     return new GTE< T >( compareTo, comparer );
@@ -170,8 +171,8 @@ GTE<
 
 public
 GTE(
-    T               compareTo,
-    IComparer< T >  comparer
+    T                   compareTo,
+    IComparerHD< T >    comparer
 )
     : base(
         item =>
@@ -212,7 +213,7 @@ CompareTo
 /// The ordering to use to make the comparison
 ///
 public
-IComparer< T >
+IComparerHD< T >
 Comparer
 {
     get;
@@ -222,21 +223,22 @@ Comparer
 
 
 // -----------------------------------------------------------------------------
+// IEquatableHD< RType >
 // IEquatable< RType >
 // -----------------------------------------------------------------------------
 
 public override
     bool
-DirectionalEquals(
+Equals(
     RType that
 )
 {
     return
-        base.DirectionalEquals( that )
+        base.Equals( that )
         && that.Is<
             GTE< T > >(
             gte =>
-                gte.Comparer.Equals( this.Comparer ) &&
+                gte.Comparer.Equals( (IComparerHD)this.Comparer ) &&
                 this.Comparer.Equals( gte.CompareTo, this.CompareTo ) );
 }
 
@@ -247,14 +249,14 @@ GetHashCode()
 {
     return
         base.GetHashCode() ^
-        this.Comparer.GetHashCode() ^
+        ((IEquatableHD<IComparerHD>)this.Comparer).GetHashCode() ^
         this.Comparer.GetHashCode( this.CompareTo );
 }
 
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace
