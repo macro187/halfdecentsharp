@@ -76,6 +76,28 @@ Create<
 
 
 
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+public static
+    IComparerHD< TTo >
+Contravary<
+    T,
+    TTo
+>(
+    this IComparerHD< T > dis
+)
+    where TTo : T
+{
+    if( dis == null ) throw new ArgumentNullException( "dis" );
+    return Create< TTo >(
+        (x,y) => dis.Compare( x, y ),
+        obj => dis.GetHashCode( obj ) );
+}
+
+
+
 
 } // type
 } // namespace

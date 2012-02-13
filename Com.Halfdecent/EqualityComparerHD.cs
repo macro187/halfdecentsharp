@@ -76,6 +76,28 @@ Create<
 
 
 
+// -----------------------------------------------------------------------------
+// Extension Methods
+// -----------------------------------------------------------------------------
+
+public static
+    IEqualityComparerHD< TTo >
+Contravary<
+    T,
+    TTo
+>(
+    this IEqualityComparerHD< T > dis
+)
+    where TTo : T
+{
+    if( dis == null ) throw new ArgumentNullException( "dis" );
+    return Create< TTo >(
+        (x,y) => dis.Equals( x, y ),
+        obj => dis.GetHashCode( obj ) );
+}
+
+
+
 
 } // type
 } // namespace
