@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using Com.Halfdecent.RTypes;
 
 
@@ -47,7 +48,7 @@ Create<
     TIn,
     TOut
 >(
-    System.Converter< TIn, TOut > convertFunc
+    Converter< TIn, TOut > convertFunc
 )
 {
     return Create< TIn, TOut >( convertFunc, () => {;} );
@@ -60,8 +61,8 @@ Create<
     TIn,
     TOut
 >(
-    System.Converter< TIn, TOut >   convertFunc,
-    System.Action                   disposeFunc
+    Converter< TIn, TOut >  convertFunc,
+    Action                  disposeFunc
 )
 {
     NonNull.CheckParameter( convertFunc, "convertFunc" );
@@ -106,7 +107,7 @@ Create<
     TOut
 >(
     FilterStepIterator< TIn, TOut > stepIterator,
-    System.Action                   disposeFunc
+    Action                          disposeFunc
 )
 {
     return new Filter< TIn, TOut >( stepIterator, null, disposeFunc );
@@ -159,7 +160,7 @@ To<
 }
 
 private static
-    SCG.IEnumerator< FilterState >
+    IEnumerator< FilterState >
 ComposeFilterStepIterator<
     TIn,
     TBetween,
@@ -167,9 +168,9 @@ ComposeFilterStepIterator<
 >(
     IFilter< TIn, TBetween >    f1,
     IFilter< TBetween, TOut >   f2,
-    System.Func< FilterState >  getState,
-    System.Func< TIn >          get,
-    System.Action< TOut >       put
+    Func< FilterState >         getState,
+    Func< TIn >                 get,
+    Action< TOut >              put
 )
 {
     NonNull.CheckParameter( f1, "f1" );

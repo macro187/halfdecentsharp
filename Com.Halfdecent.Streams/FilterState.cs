@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -64,7 +64,7 @@ Closed = new FilterState( "Closed" );
 
 
 // -----------------------------------------------------------------------------
-// System.Object
+// Object
 // -----------------------------------------------------------------------------
 
 public override

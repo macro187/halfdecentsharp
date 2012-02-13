@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
@@ -45,7 +46,7 @@ public
 Filter(
     FilterStepIterator< TIn, TOut > stepIterator,
     FilterStepFunc< TIn, TOut >     stepFunc,
-    System.Action                   disposeFunc
+    Action                          disposeFunc
 )
 {
     if( stepIterator == null && stepFunc == null )
@@ -56,7 +57,7 @@ Filter(
     // If we're given an iterator, turn it into a repeatedly-callable
     // FilterStepFunc
     if( stepIterator != null ) {
-        SCG.IEnumerator< FilterState > e = null;
+        IEnumerator< FilterState > e = null;
         stepFunc =
             (GetState,Get,Put) => {
                 if( GetState() == FilterState.NotStarted )
@@ -86,7 +87,7 @@ StepFunc;
 
 
 private
-System.Action
+Action
 DisposeFunc;
 
 
@@ -122,8 +123,7 @@ private
 GetState()
 {
     if( this.Disposed )
-        throw new BugException(
-            new System.ObjectDisposedException( null ) );
+        throw new BugException( new ObjectDisposedException( null ) );
     return this.State;
 }
 
@@ -138,8 +138,7 @@ private
 Get()
 {
     if( this.Disposed )
-        throw new BugException(
-            new System.ObjectDisposedException( null ) );
+        throw new BugException( new ObjectDisposedException( null ) );
     if( this.State != FilterState.Want )
         throw new BugException(
             new LocalisedInvalidOperationException(
@@ -155,8 +154,7 @@ private
 Put( TOut item )
 {
     if( this.Disposed )
-        throw new BugException(
-            new System.ObjectDisposedException( null ) );
+        throw new BugException( new ObjectDisposedException( null ) );
     this.outputitem = item;
 }
 
@@ -220,8 +218,7 @@ Give(
 )
 {
     if( this.Disposed )
-        throw new BugException(
-            new System.ObjectDisposedException( null ) );
+        throw new BugException( new ObjectDisposedException( null ) );
     if( this.State != FilterState.Want )
         throw new LocalisedInvalidOperationException(
             _S(".State must be Want in order to Give()") );
@@ -235,8 +232,7 @@ public
 Peek()
 {
     if( this.Disposed )
-        throw new BugException(
-            new System.ObjectDisposedException( null ) );
+        throw new BugException( new ObjectDisposedException( null ) );
     if( this.State != FilterState.Have )
         throw new LocalisedInvalidOperationException(
             _S(".State must be Have in order to Peek()") );
@@ -249,8 +245,7 @@ public
 Take()
 {
     if( this.Disposed )
-        throw new BugException(
-            new System.ObjectDisposedException( null ) );
+        throw new BugException( new ObjectDisposedException( null ) );
     if( this.State != FilterState.Have )
         throw new LocalisedInvalidOperationException(
             _S(".State must be Have in order to Take()") );
@@ -265,8 +260,7 @@ public
 Close()
 {
     if( this.Disposed )
-        throw new BugException(
-            new System.ObjectDisposedException( null ) );
+        throw new BugException( new ObjectDisposedException( null ) );
     if( this.State != FilterState.Want )
         throw new LocalisedInvalidOperationException(
             _S(".State must be Want in order to Close()") );
@@ -278,7 +272,7 @@ Close()
 
 
 // -----------------------------------------------------------------------------
-// System.IDisposable
+// IDisposable
 // -----------------------------------------------------------------------------
 
 public
@@ -293,7 +287,7 @@ Dispose()
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

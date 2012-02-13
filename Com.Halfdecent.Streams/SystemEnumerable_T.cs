@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
-using SC = System.Collections;
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Com.Halfdecent.RTypes;
 
 
@@ -34,7 +35,7 @@ internal class
 SystemEnumerable<
     T
 >
-    : SCG.IEnumerable< T >
+    : IEnumerable< T >
 {
 
 
@@ -45,7 +46,7 @@ SystemEnumerable<
 
 public
 SystemEnumerable(
-    System.Func< SCG.IEnumerator< T > > getEnumeratorFunc
+    Func< IEnumerator< T > > getEnumeratorFunc
 )
 {
     NonNull.CheckParameter( getEnumeratorFunc, "getEnumeratorFunc" );
@@ -59,7 +60,7 @@ SystemEnumerable(
 // -----------------------------------------------------------------------------
 
 private
-System.Func< SCG.IEnumerator< T > >
+Func< IEnumerator< T > >
 GetEnumeratorFunc
 {
     get;
@@ -73,7 +74,7 @@ GetEnumeratorFunc
 // -----------------------------------------------------------------------------
 
 public
-    SCG.IEnumerator< T >
+    IEnumerator< T >
 GetEnumerator()
 {
     return this.GetEnumeratorFunc();
@@ -85,8 +86,8 @@ GetEnumerator()
 // IEnumerable
 // -----------------------------------------------------------------------------
 
-    SC.IEnumerator
-SC.IEnumerable.GetEnumerator()
+    IEnumerator
+IEnumerable.GetEnumerator()
 {
     return this.GetEnumerator();
 }

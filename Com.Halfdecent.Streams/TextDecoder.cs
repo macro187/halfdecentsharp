@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -40,7 +42,7 @@ TextDecoder
 
 public
 TextDecoder(
-    System.Text.Encoding encoding
+    Encoding encoding
 )
     : base(
         (getState,get,put) => StepIterator( encoding, getState, get, put ),
@@ -57,15 +59,15 @@ TextDecoder(
 // -----------------------------------------------------------------------------
 
 private static
-    SCG.IEnumerator< FilterState >
+    IEnumerator< FilterState >
 StepIterator(
-    System.Text.Encoding        encoding,
-    System.Func< FilterState >  getState,
-    System.Func< byte >         get,
-    System.Action< char >       put
+    Encoding            encoding,
+    Func< FilterState > getState,
+    Func< byte >        get,
+    Action< char >      put
 )
 {
-    System.Text.Decoder d = encoding.GetDecoder();
+    Decoder d = encoding.GetDecoder();
     byte[] b = new byte[ 1 ];
     int csize = 1;
     char[] c = new char[ csize ];

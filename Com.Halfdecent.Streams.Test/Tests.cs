@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2008, 2009, 2010, 2011
+// Copyright (c) 2008, 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,9 +16,12 @@
 // -----------------------------------------------------------------------------
 
 
-using SC = System.Collections;
-using SCG = System.Collections.Generic;
+using System;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
@@ -226,8 +229,8 @@ void
 Test_IStream_AsEnumerator()
 {
     IStream< int > s;
-    SC.IEnumerator e;
-    SCG.IEnumerator< int > ge;
+    IEnumerator e;
+    IEnumerator< int > ge;
 
     s = Stream.Create( 1, 2, 3 );
 
@@ -265,8 +268,8 @@ void
 Test_IStream_AsEnumerable()
 {
     IStream< int > s;
-    SC.IEnumerable e;
-    SCG.IEnumerable< int > ge;
+    IEnumerable e;
+    IEnumerable< int > ge;
 
     Print( "Single .AsEnumerable()" );
     s = Stream.Create( 1, 2, 3 );
@@ -445,8 +448,8 @@ public static
 void
 Test_IStream_EmptyTo()
 {
-    SCG.IEnumerable< int > from = new int[] { 1, 2, 3 };
-    SCG.ICollection< int > to = new SCG.List< int >();
+    IEnumerable< int > from = new int[] { 1, 2, 3 };
+    ICollection< int > to = new List< int >();
     from.AsStream().EmptyTo(
         Sink.Create< int >(
             item => to.Add( item ) ) );
@@ -487,8 +490,8 @@ public static
 void
 Test_SystemCollection_AsSink()
 {
-    SCG.IEnumerable< int > from = new int[] { 1, 2, 3 };
-    SCG.ICollection< int > to = new SCG.List< int >();
+    IEnumerable< int > from = new int[] { 1, 2, 3 };
+    ICollection< int > to = new List< int >();
     from.AsStream().EmptyTo(
         to.AsSink() );
     Assert( to.SequenceEqual( from ) );
@@ -526,8 +529,8 @@ public static
 void
 Test_IStream_SequenceEqual_IStream_IEqualityComparer()
 {
-    SCG.IEqualityComparer< char > comparer =
-        new EqualityComparer< char >(
+    IEqualityComparerHD< char > comparer =
+        EqualityComparerHD.Create< char >(
             (c1,c2) =>
                 char.ToLowerInvariant( c1 ) == char.ToLowerInvariant( c2 ),
             c => char.ToLowerInvariant( c ).GetHashCode() );
@@ -561,7 +564,7 @@ void
 Test_SystemStream_AsHalfdecentStream()
 {
     IStream< byte > s =
-        new System.IO.MemoryStream(
+        new MemoryStream(
             new byte[] { 0, 1, 2, 3 } )
         .AsHalfdecentStream();
     Assert( s.Pull() == 0 );
@@ -578,7 +581,7 @@ public static
 void
 Test_SystemStream_AsHalfdecentSink()
 {
-    System.IO.MemoryStream ms = new System.IO.MemoryStream();
+    MemoryStream ms = new MemoryStream();
     ISink< byte > s = ms.AsHalfdecentSink();
     s.Push( (byte)0 );
     s.Push( (byte)1 );
@@ -706,11 +709,11 @@ Test_Filter_filterStepIterator_onetomany()
 }
 
 private static
-SCG.IEnumerator< FilterState >
+IEnumerator< FilterState >
 DoubleUp3FilterIterator(
-    System.Func< FilterState > getState,
-    System.Func< int > get,
-    System.Action< int > put
+    Func< FilterState > getState,
+    Func< int >         get,
+    Action< int >       put
 )
 {
     int count = 0;
@@ -761,11 +764,11 @@ Test_Filter_filterStepIterator_manytomany()
 }
 
 private static
-SCG.IEnumerator< FilterState >
+IEnumerator< FilterState >
 Add3PairsFilterIterator(
-    System.Func< FilterState > GetState,
-    System.Func< int > Get,
-    System.Action< int > Put
+    Func< FilterState > GetState,
+    Func< int >         Get,
+    Action< int >       Put
 )
 {
     int count = 0;
@@ -827,7 +830,7 @@ Test_IFilter_To_sink()
     IStream< int > stream = Stream.Create( 1, 2, 3, 999, 999 );
     IFilter< int, int > f;
     ISink< int > sink;
-    SCG.ICollection< int > c = new SCG.List< int >();
+    ICollection< int > c = new List< int >();
 
     Print( "Basic behaviour" );
     c.Clear();
@@ -864,7 +867,7 @@ Test_TextLineSplitter()
                     "", "line1", "line2", "line3", "line4", "", "line6", "",
                     "line8", "line9" ) ) );
     Print( "Push" );
-    var lines = new SCG.List< string >();
+    var lines = new List< string >();
     var sink =
         new TextLineSplitter()
         .To( lines.AsSink() );
@@ -888,7 +891,7 @@ void
 Test_TextDecoder()
 {
     char[] src = { '\u65E5', '\u672C', '\u8A9E' };
-    System.Text.Encoding e;
+    Encoding e;
 
     Print( "UTF8" );
     e = Encodings.UTF8;
@@ -939,7 +942,7 @@ void
 Test_TextEncoder()
 {
     char[] src = { '\u65E5', '\u672C', '\u8A9E' };
-    System.Text.Encoding e;
+    Encoding e;
 
     Print( "UTF8" );
     e = Encodings.UTF8;

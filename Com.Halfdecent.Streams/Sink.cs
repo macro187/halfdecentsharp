@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -48,7 +49,7 @@ public static
 Create<
     T
 >(
-    System.Action< T > pushFunc
+    Action< T > pushFunc
 )
 {
     return Create< T >( pushFunc, () => {;} );
@@ -60,8 +61,8 @@ public static
 Create<
     T
 >(
-    System.Action< T >  pushFunc,
-    System.Action       disposeFunc
+    Action< T > pushFunc,
+    Action      disposeFunc
 )
 {
     NonNull.CheckParameter( pushFunc, "pushFunc" );
@@ -81,8 +82,8 @@ public static
 Create<
     T
 >(
-    System.Func< bool > canPushFunc,
-    System.Action< T >  pushFunc
+    Func< bool >    canPushFunc,
+    Action< T >     pushFunc
 )
 {
     return Create< T >( canPushFunc, pushFunc, () => {;} );
@@ -94,9 +95,9 @@ public static
 Create<
     T
 >(
-    System.Func< bool > canPushFunc,
-    System.Action< T >  pushFunc,
-    System.Action       disposeFunc
+    Func< bool >    canPushFunc,
+    Action< T >     pushFunc,
+    Action          disposeFunc
 )
 {
     NonNull.CheckParameter( canPushFunc, "canPushFunc" );
@@ -121,7 +122,7 @@ public static
 Create<
     T
 >(
-    System.Func< T, bool > tryPushFunc
+    Func< T, bool > tryPushFunc
 )
 {
     return Create< T >( tryPushFunc, () => {;} );
@@ -133,8 +134,8 @@ public static
 Create<
     T
 >(
-    System.Func< T, bool >  tryPushFunc,
-    System.Action           disposeFunc
+    Func< T, bool > tryPushFunc,
+    Action          disposeFunc
 )
 {
     NonNull.CheckParameter( tryPushFunc, "tryPushFunc" );
@@ -145,12 +146,12 @@ Create<
 
 
 private static
-    SCG.IEnumerator< object >
+    IEnumerator< object >
 TryPushFuncToPushIterator<
     T
 >(
-    System.Func< T >        get,
-    System.Func< T, bool >  tryPushFunc
+    Func< T >       get,
+    Func< T, bool > tryPushFunc
 )
 {
     for( ;; ) {
@@ -180,7 +181,7 @@ Create<
     T
 >(
     SinkPushIterator< T >   pushIterator,
-    System.Action           disposeFunc
+    Action                  disposeFunc
 )
 {
     NonNull.CheckParameter( pushIterator, "pushIterator" );

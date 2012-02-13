@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -47,7 +47,7 @@ public static
 AsSink<
     T
 >(
-    this SCG.ICollection< T > dis
+    this ICollection< T > dis
 )
 {
     NonNull.CheckParameter( dis, "dis" );

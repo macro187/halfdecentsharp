@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,9 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 
@@ -56,14 +58,14 @@ TextLineSplitter()
 // -----------------------------------------------------------------------------
 
 private static
-    SCG.IEnumerator< FilterState >
+    IEnumerator< FilterState >
 StepIterator(
-    System.Func< FilterState >  getState,
-    System.Func< char >         get,
-    System.Action< string >     put
+    Func< FilterState > getState,
+    Func< char >        get,
+    Action< string >    put
 )
 {
-    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+    StringBuilder sb = new StringBuilder();
     bool r = false;
     for( ;; ) {
 

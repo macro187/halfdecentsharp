@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 
 
 namespace
@@ -39,7 +40,7 @@ Com.Halfdecent.Streams
 // =============================================================================
 
 public delegate
-    SCG.IEnumerator< object >
+    IEnumerator< object >
     /// @returns An enumerator that processes another sink input item on each
     /// <tt>.MoveNext()</tt>
 SinkPushIterator<
@@ -49,7 +50,7 @@ SinkPushIterator<
     T
     #endif
 >(
-    System.Func< T > Get
+    Func< T > Get
     ///< Function that retrieves the next input item
 );
 

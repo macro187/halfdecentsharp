@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 
 
 namespace
@@ -39,7 +40,7 @@ Com.Halfdecent.Streams
 // =============================================================================
 
 public delegate
-    SCG.IEnumerator< FilterState >
+    IEnumerator< FilterState >
     /// @returns An enumerator that performs a filter processing step on each
     /// <tt>.MoveNext()</tt>
 FilterStepIterator<
@@ -51,11 +52,11 @@ FilterStepIterator<
     TOut
     #endif
 >(
-    System.Func< FilterState >  GetState,
+    Func< FilterState > GetState,
     ///< Function indicating the current filter state
-    System.Func< TIn >          Get,
+    Func< TIn >         Get,
     ///< Function that retrieves the next input item
-    System.Action< TOut >       Put
+    Action< TOut >      Put
     ///< Function that outputs an item
 );
 

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Globalisation;
 using Com.Halfdecent.RTypes;
@@ -42,7 +43,7 @@ Sink<
 public
 Sink(
     SinkPushIterator< T >   pushIterator,
-    System.Action           disposeFunc
+    Action                  disposeFunc
 )
 {
     NonNull.CheckParameter( pushIterator, "pushIterator" );
@@ -85,7 +86,7 @@ Get()
 
 
 private
-SCG.IEnumerator< object >
+IEnumerator< object >
 PushEnumerator;
 
 
@@ -95,7 +96,7 @@ Open;
 
 
 private
-System.Action
+Action
 DisposeFunc;
 
 
@@ -116,8 +117,7 @@ TryPush(
 )
 {
     if( this.Disposed )
-        throw new BugException(
-            new System.ObjectDisposedException( null ) );
+        throw new BugException( new ObjectDisposedException( null ) );
     if( !this.Open ) return false;
     this.NextItem = item;
     this.NextItemReady = true;
@@ -128,7 +128,7 @@ TryPush(
 
 
 // -----------------------------------------------------------------------------
-// System.IDisposable
+// IDisposable
 // -----------------------------------------------------------------------------
 
 public
@@ -143,7 +143,7 @@ Dispose()
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

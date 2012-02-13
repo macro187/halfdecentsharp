@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System.Collections.Generic;
 using Com.Halfdecent.RTypes;
 
 
@@ -46,7 +46,7 @@ public static
 AsStream<
     T
 >(
-    this SCG.IEnumerable< T > dis
+    this IEnumerable< T > dis
 )
 {
     NonNull.CheckParameter( dis, "dis" );

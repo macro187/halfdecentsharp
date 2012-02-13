@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -14,6 +14,9 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
+
+
+using System;
 
 
 namespace
@@ -64,11 +67,11 @@ FilterStepFunc<
     TOut
     #endif
 >(
-    System.Func< FilterState >  GetState,
+    Func< FilterState > GetState,
     ///< Function indicating the current filter state
-    System.Func< TIn >          Get,
+    Func< TIn >         Get,
     ///< Function that retrieves the next input item
-    System.Action< TOut >       Put
+    Action< TOut >      Put
     ///< Function that outputs an item
 );
 

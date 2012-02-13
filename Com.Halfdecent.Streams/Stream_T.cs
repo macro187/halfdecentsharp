@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
@@ -41,8 +42,8 @@ Stream<
 
 public
 Stream(
-    System.Func< IMaybe< T > >  tryPullFunc,
-    System.Action               disposeFunc
+    Func< IMaybe< T > > tryPullFunc,
+    Action              disposeFunc
 )
 {
     NonNull.CheckParameter( tryPullFunc, "tryPullFunc" );
@@ -59,12 +60,12 @@ Stream(
 // -----------------------------------------------------------------------------
 
 private
-System.Func< IMaybe< T > >
+Func< IMaybe< T > >
 TryPullFunc;
 
 
 private
-System.Action
+Action
 DisposeFunc;
 
 
@@ -83,15 +84,14 @@ public
 TryPull()
 {
     if( this.Disposed )
-        throw new BugException(
-            new System.ObjectDisposedException( null ) );
+        throw new BugException( new ObjectDisposedException( null ) );
     return this.TryPullFunc();
 }
 
 
 
 // -----------------------------------------------------------------------------
-// System.IDisposable
+// IDisposable
 // -----------------------------------------------------------------------------
 
 public

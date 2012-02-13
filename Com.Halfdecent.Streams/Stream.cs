@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,7 +16,8 @@
 // -----------------------------------------------------------------------------
 
 
-using SCG = System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
@@ -65,8 +66,8 @@ public static
 Create<
     T
 >(
-    System.Func< bool > canPullFunc,
-    System.Func< T >    pullFunc
+    Func< bool >    canPullFunc,
+    Func< T >       pullFunc
 )
 {
     return Create( canPullFunc, pullFunc, () => {;} );
@@ -78,9 +79,9 @@ public static
 Create<
     T
 >(
-    System.Func< bool > canPullFunc,
-    System.Func< T >    pullFunc,
-    System.Action       disposeFunc
+    Func< bool >    canPullFunc,
+    Func< T >       pullFunc,
+    Action          disposeFunc
 )
 {
     NonNull.CheckParameter( canPullFunc, "canPullFunc" );
@@ -114,7 +115,7 @@ Create<
     T
 >(
     MaybeFunc< T >  maybeFunc,
-    System.Action   disposeFunc
+    Action          disposeFunc
 )
 {
     NonNull.CheckParameter( maybeFunc, "maybeFunc" );
@@ -135,7 +136,7 @@ public static
 Create<
     T
 >(
-    System.Func< IMaybe< T > > tryPullFunc
+    Func< IMaybe< T > > tryPullFunc
 )
 {
     return Create( tryPullFunc, () => {;} );
@@ -147,8 +148,8 @@ public static
 Create<
     T
 >(
-    System.Func< IMaybe< T > >          tryPullFunc,
-    System.Action                       disposeFunc
+    Func< IMaybe< T > > tryPullFunc,
+    Action              disposeFunc
 )
 {
     return new Stream< T >( tryPullFunc, disposeFunc );
@@ -252,7 +253,6 @@ SequenceEqual<
     this IStream< T >   dis,
     IStream< T >        that
 )
-    where T : System.IEquatable< T >
 {
     return dis.SequenceEqual< T, T >( that );
 }
@@ -269,11 +269,10 @@ SequenceEqual<
     IStream< T >        that
 )
     where T : TEquatable
-    where TEquatable : System.IEquatable< TEquatable >
 {
     return dis.SequenceEqual< T >(
         that,
-        new SystemEquatableComparer< TEquatable >()
+        EqualityComparerHD.Create< TEquatable >()
             .Contravary< TEquatable, T >() );
 }
 
@@ -285,7 +284,7 @@ SequenceEqual<
 >(
     this IStream< T >           dis,
     IStream< T >                that,
-    SCG.IEqualityComparer< T >  comparer
+    IEqualityComparerHD< T >    comparer
     ///< Equality comparer to use
 )
 {
@@ -305,7 +304,7 @@ ForEach<
     T
 >(
     this IStream< T >   stream,
-    System.Action< T >  action
+    Action< T >         action
 )
 {
     NonNull.CheckParameter( stream, "stream" );
@@ -341,7 +340,7 @@ EmptyTo<
 /// Present the stream as an enumerator
 ///
 public static
-    SCG.IEnumerator< T >
+    IEnumerator< T >
 AsEnumerator<
     T
 >(
@@ -368,7 +367,7 @@ AsEnumerator<
 /// pull items from a single stream.
 ///
 public static
-    SCG.IEnumerable< T >
+    IEnumerable< T >
 AsEnumerable<
     T
 >(
