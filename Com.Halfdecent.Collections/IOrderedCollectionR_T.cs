@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Linq;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
@@ -64,14 +65,14 @@ IndexWhere<
     T
 >(
     this IOrderedCollectionR< T >   dis,
-    System.Predicate< T >           where
+    Predicate< T >                  where
 )
 {
     NonNull.CheckParameter( where, "where" );
-    foreach( ITuple< IInteger, T > t in dis.StreamPairs().AsEnumerable() ) {
+    foreach( ITupleHD< IInteger, T > t in dis.StreamPairs().AsEnumerable() ) {
         if( where( t.B ) ) return t.A;
     }
-    return Integer.From( -1 );
+    return Integer.Create( -1 );
 }
 
 
@@ -97,7 +98,7 @@ Covary<
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITuple< IInteger, T > >
+    IStream< ITupleHD< IInteger, T > >
 StreamPairs()
 {
     return
@@ -129,7 +130,7 @@ public T Get( IInteger key ) { return this.From.Get( key ); }
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITuple< IInteger, T > >
+    IStream< ITupleHD< IInteger, T > >
 StreamPairs()
 {
     return this.From.StreamPairs();
@@ -169,26 +170,24 @@ Get(
 
 
 public
-    IStream< ITuple< IInteger, T > >
+    IStream< ITupleHD< IInteger, T > >
 StreamPairs()
 {
     return this.StreamPairsIterator().AsStream();
 }
 
 private
-    SCG.IEnumerable< ITuple< IInteger, T > >
+    SCG.IEnumerable< ITupleHD< IInteger, T > >
 StreamPairsIterator()
 {
     IInteger to = this.SliceIndex.Plus( this.SliceCount );
-    IInteger one = Integer.From( 1 );
+    IInteger one = Integer.Create( 1 );
     for(
         IInteger i = this.SliceIndex;
         i.LT( to );
         i = i.Plus( one )
     ) {
-        yield return new Tuple< IInteger, T >(
-            i,
-            this.From.Get( i ) );
+        yield return TupleHD.Create( i, this.From.Get( i ) );
     }
 }
 
@@ -200,7 +199,7 @@ Contains(
 )
 {
     NonNull.CheckParameter( key, "key" );
-    return key.GTE< IReal >( Integer.From( 0 ) ) && key.LT( this.SliceCount );
+    return key.GTE< IReal >( Integer.Create( 0 ) ) && key.LT( this.SliceCount );
 }
 
 

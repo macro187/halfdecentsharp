@@ -3,7 +3,7 @@
 // filename IndexSlice/*PERMUDA*//*PERMUDA FILESUFFIX*/.cs
 #endregion
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -59,10 +59,12 @@ IndexSlice/*PERMUDA*/(
 {
     NonNull.CheckParameter( from, "from" );
     NonNull.CheckParameter( sliceIndex, "sliceIndex" );
-    GTE.CheckParameter< IReal >( Integer.From( 0 ), sliceIndex, "sliceIndex" );
+    GTE.CheckParameter< IReal >(
+        Integer.Create( 0 ), sliceIndex, "sliceIndex" );
     LTE.CheckParameter< IReal >( from.Count, sliceIndex, "sliceIndex" );
     NonNull.CheckParameter( sliceCount, "sliceCount" );
-    GTE.CheckParameter< IReal >( Integer.From( 0 ), sliceCount, "sliceCount" );
+    GTE.CheckParameter< IReal >(
+        Integer.Create( 0 ), sliceCount, "sliceCount" );
     LTE.CheckParameter<
         IReal >(
         from.Count.Minus( sliceIndex ), sliceCount, "sliceCount" );
@@ -120,7 +122,7 @@ Trans(
 )
 {
     return
-        this.SliceIndex.Equals( Integer.From( 0 ) )
+        this.SliceIndex.Equals( Integer.Create( 0 ) )
             ? index
             : this.SliceIndex.Plus( index );
 }

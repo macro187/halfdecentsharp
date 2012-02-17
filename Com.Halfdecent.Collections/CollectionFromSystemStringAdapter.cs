@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -93,19 +93,18 @@ Get(
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITuple< IInteger, char > >
+    IStream< ITupleHD< IInteger, char > >
 StreamPairs()
 {
     return this.StreamPairsIterator().AsStream();
 }
 
 private
-    SCG.IEnumerator< ITuple< IInteger, char > >
+    SCG.IEnumerator< ITupleHD< IInteger, char > >
 StreamPairsIterator()
 {
     for( int i = 0; i < this.From.Length; i++ ) {
-        yield return new Tuple< IInteger, char >(
-            Integer.From( i ), this.From[ i ] );
+        yield return TupleHD.Create( Integer.Create( i ), this.From[ i ] );
     }
 }
 
@@ -117,8 +116,8 @@ Contains(
 )
 {
     if( key == null ) return false;
-    if( key.LT( Integer.From( 0 ) ) ) return false;
-    if( key.GTE( Integer.From( this.From.Length ) ) ) return false;
+    if( key.LT( Integer.Create( 0 ) ) ) return false;
+    if( key.GTE( Integer.Create( this.From.Length ) ) ) return false;
     return true;
 }
 
@@ -142,7 +141,7 @@ public
     IInteger
 Count
 {
-    get { return Integer.From( this.From.Length ); }
+    get { return Integer.Create( this.From.Length ); }
 }
 
 

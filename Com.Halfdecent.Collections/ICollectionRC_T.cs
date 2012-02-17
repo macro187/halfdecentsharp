@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent.Streams;
 
 
@@ -47,7 +48,7 @@ ICollectionRC<
 ///
     IFilter< T, T >
 GetAndReplaceWhere(
-    System.Predicate< T > where
+    Predicate< T > where
 );
 
 
@@ -66,7 +67,7 @@ GetAndReplaceWhere(
 // -----------------------------------------------------------------------------
 
 public IFilter< T, T >
-    GetAndReplaceWhere( System.Predicate< T > where ) {
+    GetAndReplaceWhere( Predicate< T > where ) {
         return this.From.GetAndReplaceWhere( where ); }
 #endif
 

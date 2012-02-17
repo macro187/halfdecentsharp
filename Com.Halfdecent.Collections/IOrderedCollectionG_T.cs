@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -91,7 +91,7 @@ Add(
     NonNull.CheckParameter( key, "key" );
     ExistingOrNextPositionIn.CheckParameter( this, key, "key" );
     this.From.Add( this.Trans( key ), item );
-    this.SliceCount = this.SliceCount.Plus( Integer.From( 1 ) );
+    this.SliceCount = this.SliceCount.Plus( Integer.Create( 1 ) );
 }
 
 

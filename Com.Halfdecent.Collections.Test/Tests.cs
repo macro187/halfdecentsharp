@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -97,39 +97,39 @@ Test_CollectionFromSystemListAdapter()
             SystemEnumerable.Create( 20, 40, 60 ) ) );
 
     Print( ".Get( TKey )" );
-    Assert( c.Get( Integer.From( 0 ) ) == 1 );
-    Assert( c.Get( Integer.From( 1 ) ) == 3 );
-    Assert( c.Get( Integer.From( 2 ) ) == 5 );
+    Assert( c.Get( Integer.Create( 0 ) ) == 1 );
+    Assert( c.Get( Integer.Create( 1 ) ) == 3 );
+    Assert( c.Get( Integer.Create( 2 ) ) == 5 );
 
     Print( ".Replace( TKey, T )" );
-    c.Replace( Integer.From( 1 ), 2 );
+    c.Replace( Integer.Create( 1 ), 2 );
     Assert(
         c.Stream()
         .SequenceEqual(
             Stream.Create( 1, 2, 5 ) ) );
 
     Print( ".Remove( TKey )" );
-    c.Remove( Integer.From( 1 ) );
+    c.Remove( Integer.Create( 1 ) );
     Assert(
         c.Stream()
         .SequenceEqual(
             Stream.Create( 1, 5 ) ) );
 
     Print( ".Contains( TKey )" );
-    Assert( c.Contains( Integer.From( 0 ) ) );
-    Assert( c.Contains( Integer.From( 1 ) ) );
-    Assert( !c.Contains( Integer.From( 2 ) ) );
+    Assert( c.Contains( Integer.Create( 0 ) ) );
+    Assert( c.Contains( Integer.Create( 1 ) ) );
+    Assert( !c.Contains( Integer.Create( 2 ) ) );
 
     Print( ".Stream( TKey )" );
     Assert(
-        c.Stream( Integer.From( 1 ) )
+        c.Stream( Integer.Create( 1 ) )
         .SequenceEqual(
             Stream.Create( 5 ) ) );
 
     Print( ".GetAndReplaceAll( TKey )" );
     to.Clear();
     Stream.Create( 6 )
-        .To( c.GetAndReplaceAll( Integer.From( 1 ) ) )
+        .To( c.GetAndReplaceAll( Integer.Create( 1 ) ) )
         .EmptyTo( to.AsSink() );
     Assert(
         c.Stream()
@@ -141,7 +141,7 @@ Test_CollectionFromSystemListAdapter()
 
     Print( ".GetAndRemoveAll( TKey )" );
     to.Clear();
-    c.GetAndRemoveAll( Integer.From( 1 ) )
+    c.GetAndRemoveAll( Integer.Create( 1 ) )
         .EmptyTo(
             to.AsSink() );
     Assert(
@@ -152,23 +152,23 @@ Test_CollectionFromSystemListAdapter()
             SystemEnumerable.Create( 6 ) ) );
 
     Print( ".Add( TKey, T )" );
-    c.Add( Integer.From( 0 ), 0 );
-    c.Add( Integer.From( 2 ), 2 );
-    c.Add( Integer.From( 1 ), 1 );
+    c.Add( Integer.Create( 0 ), 0 );
+    c.Add( Integer.Create( 2 ), 2 );
+    c.Add( Integer.Create( 1 ), 1 );
     Assert(
         c.Stream()
         .SequenceEqual(
             Stream.Create( 0, 1, 1, 2 ) ) );
 
     Print( ".Count" );
-    Assert( c.Count.Equals( Integer.From( 4 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 4 ) ) );
 
     Print( ".StreamPairs()" );
     var ts = c.StreamPairs();
-    Assert( ts.Pull().BothEqual( Real.From( 0 ), 0 ) );
-    Assert( ts.Pull().BothEqual( Real.From( 1 ), 1 ) );
-    Assert( ts.Pull().BothEqual( Real.From( 2 ), 1 ) );
-    Assert( ts.Pull().BothEqual( Real.From( 3 ), 2 ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 0 ), 0 ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 1 ), 1 ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 2 ), 1 ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 3 ), 2 ) );
     Assert( !ts.TryPull().A );
 }
 
@@ -189,36 +189,36 @@ Test_CollectionFromStringAdapter()
             new char[] { 'a', 'b', 'c' } ) );
 
     Print( ".Get( TKey )" );
-    Assert( c.Get( Integer.From( 0 ) ) == 'a' );
-    Assert( c.Get( Integer.From( 1 ) ) == 'b' );
-    Assert( c.Get( Integer.From( 2 ) ) == 'c' );
+    Assert( c.Get( Integer.Create( 0 ) ) == 'a' );
+    Assert( c.Get( Integer.Create( 1 ) ) == 'b' );
+    Assert( c.Get( Integer.Create( 2 ) ) == 'c' );
 
     Print( ".Contains( TKey )" );
-    Assert( !c.Contains( Integer.From( -1 ) ) );
-    Assert( c.Contains( Integer.From( 0 ) ) );
-    Assert( c.Contains( Integer.From( 1 ) ) );
-    Assert( c.Contains( Integer.From( 2 ) ) );
-    Assert( !c.Contains( Integer.From( 3 ) ) );
+    Assert( !c.Contains( Integer.Create( -1 ) ) );
+    Assert( c.Contains( Integer.Create( 0 ) ) );
+    Assert( c.Contains( Integer.Create( 1 ) ) );
+    Assert( c.Contains( Integer.Create( 2 ) ) );
+    Assert( !c.Contains( Integer.Create( 3 ) ) );
 
     Print( ".Stream( TKey )" );
     Assert(
-        c.Stream( Integer.From( 1 ) )
+        c.Stream( Integer.Create( 1 ) )
         .AsEnumerable()
         .SequenceEqual(
             new char[] { 'b' } ) );
 
     Print( ".Count" );
-    Assert( c.Count.Equals( Integer.From( 3 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 3 ) ) );
 
     Print( ".StreamPairs()" );
-    IStream< ITuple< IInteger, char > > ts = c.StreamPairs();
-    ITuple< IInteger, char > tup;
+    IStream< ITupleHD< IInteger, char > > ts = c.StreamPairs();
+    ITupleHD< IInteger, char > tup;
     Assert( ts.TryPull( out tup ) );
-    Assert( tup.A.Equals( Integer.From( 0 ) ) );  Assert( tup.B == 'a' );
+    Assert( tup.A.Equals( Integer.Create( 0 ) ) );  Assert( tup.B == 'a' );
     Assert( ts.TryPull( out tup ) );
-    Assert( tup.A.Equals( Integer.From( 1 ) ) );  Assert( tup.B == 'b' );
+    Assert( tup.A.Equals( Integer.Create( 1 ) ) );  Assert( tup.B == 'b' );
     Assert( ts.TryPull( out tup ) );
-    Assert( tup.A.Equals( Integer.From( 2 ) ) );  Assert( tup.B == 'c' );
+    Assert( tup.A.Equals( Integer.Create( 2 ) ) );  Assert( tup.B == 'c' );
     Assert( !ts.TryPull( out tup ) );
 }
 
@@ -267,42 +267,42 @@ Test_CollectionFromSystemStringBuilderAdapter()
             SystemEnumerable.Create( 'B' ) ) );
 
     Print( ".Get( IInteger )" );
-    Assert( c.Get( Integer.From( 0 ) ) == 'a' );
-    Assert( c.Get( Integer.From( 1 ) ) == 'c' );
-    Assert( c.Get( Integer.From( 2 ) ) == 'd' );
-    Assert( c.Get( Integer.From( 3 ) ) == 'e' );
+    Assert( c.Get( Integer.Create( 0 ) ) == 'a' );
+    Assert( c.Get( Integer.Create( 1 ) ) == 'c' );
+    Assert( c.Get( Integer.Create( 2 ) ) == 'd' );
+    Assert( c.Get( Integer.Create( 3 ) ) == 'e' );
 
     Print( ".Replace( IInteger, char )" );
-    c.Replace( Integer.From( 1 ), 'C' );
+    c.Replace( Integer.Create( 1 ), 'C' );
     Assert(
         c.Stream()
         .SequenceEqual(
             Stream.Create( 'a', 'C', 'd', 'e' ) ) );
 
     Print( ".Remove( IInteger )" );
-    c.Remove( Integer.From( 1 ) );
+    c.Remove( Integer.Create( 1 ) );
     Assert(
         c.Stream()
         .SequenceEqual(
             Stream.Create( 'a', 'd', 'e' ) ) );
 
     Print( ".Contains( IInteger )" );
-    Assert( !c.Contains( Integer.From( -1 ) ) );
-    Assert( c.Contains( Integer.From( 0 ) ) );
-    Assert( c.Contains( Integer.From( 1 ) ) );
-    Assert( c.Contains( Integer.From( 2 ) ) );
-    Assert( !c.Contains( Integer.From( 3 ) ) );
+    Assert( !c.Contains( Integer.Create( -1 ) ) );
+    Assert( c.Contains( Integer.Create( 0 ) ) );
+    Assert( c.Contains( Integer.Create( 1 ) ) );
+    Assert( c.Contains( Integer.Create( 2 ) ) );
+    Assert( !c.Contains( Integer.Create( 3 ) ) );
 
     Print( ".Stream( IInteger )" );
     Assert(
-        c.Stream( Integer.From( 1 ) )
+        c.Stream( Integer.Create( 1 ) )
         .SequenceEqual(
             Stream.Create( 'd' ) ) );
 
     Print( ".GetAndReplaceAll( IInteger )" );
     to.Clear();
     Stream.Create( 'D' )
-        .To( c.GetAndReplaceAll( Integer.From( 1 ) ) )
+        .To( c.GetAndReplaceAll( Integer.Create( 1 ) ) )
         .EmptyTo( to.AsSink() );
     Assert(
         c.Stream()
@@ -314,7 +314,7 @@ Test_CollectionFromSystemStringBuilderAdapter()
 
     Print( ".GetAndRemoveAll( IInteger )" );
     to.Clear();
-    c.GetAndRemoveAll( Integer.From( 1 ) )
+    c.GetAndRemoveAll( Integer.Create( 1 ) )
         .EmptyTo( to.AsSink() );
     Assert(
         c.Stream()
@@ -325,26 +325,26 @@ Test_CollectionFromSystemStringBuilderAdapter()
             SystemEnumerable.Create( 'D' ) ) );
 
     Print( ".Add( IInteger, char )" );
-    c.Add( Integer.From( 1 ), 'b' );
-    c.Add( Integer.From( 2 ), 'c' );
-    c.Add( Integer.From( 3 ), 'd' );
-    c.Add( Integer.From( 5 ), 'f' );
+    c.Add( Integer.Create( 1 ), 'b' );
+    c.Add( Integer.Create( 2 ), 'c' );
+    c.Add( Integer.Create( 3 ), 'd' );
+    c.Add( Integer.Create( 5 ), 'f' );
     Assert(
         c.Stream()
         .SequenceEqual(
             Stream.Create( 'a', 'b', 'c', 'd', 'e', 'f' ) ) );
 
     Print( ".Count" );
-    Assert( c.Count.Equals( Integer.From( 6 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 6 ) ) );
 
     Print( ".StreamPairs()" );
     var ts = c.StreamPairs();
-    Assert( ts.Pull().BothEqual( Real.From( 0 ), 'a' ) );
-    Assert( ts.Pull().BothEqual( Real.From( 1 ), 'b' ) );
-    Assert( ts.Pull().BothEqual( Real.From( 2 ), 'c' ) );
-    Assert( ts.Pull().BothEqual( Real.From( 3 ), 'd' ) );
-    Assert( ts.Pull().BothEqual( Real.From( 4 ), 'e' ) );
-    Assert( ts.Pull().BothEqual( Real.From( 5 ), 'f' ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 0 ), 'a' ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 1 ), 'b' ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 2 ), 'c' ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 3 ), 'd' ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 4 ), 'e' ) );
+    Assert( ts.Pull().BothEqual( Integer.Create( 5 ), 'f' ) );
     Assert( !ts.TryPull().A );
 }
 
@@ -360,35 +360,35 @@ Test_CollectionFromSystemDictionaryAdapter()
         .AsHalfdecentCollection();
 
     Print( "Check that it's empty" );
-    Assert( c.Count.Equals( Integer.From( 0 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 0 ) ) );
 
     Print( ".Add() and check" );
     c.Add( "1", 1 );
-    Assert( c.Count.Equals( Integer.From( 1 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 1 ) ) );
     Assert( c.Contains( "1" ) );
     Assert( c.Get( "1" ) == 1 );
 
     Print( ".Add() and check" );
     c.Add( "2", 2 );
-    Assert( c.Count.Equals( Integer.From( 2 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 2 ) ) );
     Assert( c.Contains( "2" ) );
     Assert( c.Get( "2" ) == 2 );
 
     Print( ".Add() and check" );
     c.Add( "3", 3 );
-    Assert( c.Count.Equals( Integer.From( 3 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 3 ) ) );
     Assert( c.Contains( "3" ) );
     Assert( c.Get( "3" ) == 3 );
 
     Print( ".Replace() and check" );
     c.Replace( "2", 22 );
-    Assert( c.Count.Equals( Integer.From( 3 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 3 ) ) );
     Assert( c.Contains( "2" ) );
     Assert( c.Get( "2" ) == 22 );
 
     Print( ".Remove() and check" );
     c.Remove( "2" );
-    Assert( c.Count.Equals( Integer.From( 2 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 2 ) ) );
     Assert( !c.Contains( "2" ) );
     Expect(
         e => RTypeException.Match(
@@ -412,19 +412,19 @@ Test_IUniqueKeyedCollectionRSG_AsImplicitUniqueKeyedCollection()
 
     Print( "Add() an item and check" );
     c.Add( 1 );
-    Assert( c.Count.Equals( Integer.From( 1 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 1 ) ) );
     Assert( c.Contains( "1" ) );
     Assert( c.Get( "1" ) == 1 );
 
     Print( "Add() another item and check" );
     c.Add( 2 );
-    Assert( c.Count.Equals( Integer.From( 2 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 2 ) ) );
     Assert( c.Contains( "2" ) );
     Assert( c.Get( "2" ) == 2 );
 
     Print( "Remove() an item and check" );
     c.Remove( "1" );
-    Assert( c.Count.Equals( Integer.From( 1 ) ) );
+    Assert( c.Count.Equals( Integer.Create( 1 ) ) );
     Assert( c.Contains( "2" ) );
     Assert( c.Get( "2" ) == 2 );
 
@@ -447,7 +447,7 @@ Test_OrderedCollectionR()
         "abcdcdc"
         .AsHalfdecentCollection()
         .IndexWhere( c => c == 'c' )
-        .Equals( Integer.From( 2 ) ) );
+        .Equals( Integer.Create( 2 ) ) );
 }
 
 
@@ -477,7 +477,7 @@ Test_ArrayList()
 
     Print( "ArrayList()" );
     l = ArrayList.Create< int >();
-    Assert( l.Count.Equals( Integer.From( 0 ) ) );
+    Assert( l.Count.Equals( Integer.Create( 0 ) ) );
 
     Print( "ArrayList( ICollectionR<T> )" );
     l = ArrayList.Create( 1, 2, 3 );
@@ -501,7 +501,7 @@ Test_IndexSliceRCSG_T()
 
     Print( "Slice" );
     IOrderedCollectionRCSG< int > s =
-        c.Slice( Integer.From( 1 ), Integer.From( 3 ) );
+        c.Slice( Integer.Create( 1 ), Integer.Create( 3 ) );
     Assert(
         s.Stream().AsEnumerable().SequenceEqual(
             new int[] { 2, 3, 4 } ) );
@@ -510,7 +510,7 @@ Test_IndexSliceRCSG_T()
             new int[] { 1, 2, 3, 4, 5 } ) );
 
     Print( "Insert an item at the beginning" );
-    s.Add( Integer.From( 0 ), 11 );
+    s.Add( Integer.Create( 0 ), 11 );
     Assert(
         s.Stream().AsEnumerable().SequenceEqual(
             new int[] { 11, 2, 3, 4 } ) );
@@ -519,7 +519,7 @@ Test_IndexSliceRCSG_T()
             new int[] { 1, 11, 2, 3, 4, 5 } ) );
 
     Print( "Insert an item in the middle" );
-    s.Add( Integer.From( 2 ), 22 );
+    s.Add( Integer.Create( 2 ), 22 );
     Assert(
         s.Stream().AsEnumerable().SequenceEqual(
             new int[] { 11, 2, 22, 3, 4 } ) );
@@ -537,7 +537,7 @@ Test_IndexSliceRCSG_T()
             new int[] { 1, 11, 2, 22, 3, 4, 44, 5 } ) );
 
     Print( "Remove an item from the beginning" );
-    s.Remove( Integer.From( 0 ) );
+    s.Remove( Integer.Create( 0 ) );
     Assert(
         s.Stream().AsEnumerable().SequenceEqual(
             new int[] { 2, 22, 3, 4, 44 } ) );
@@ -546,7 +546,7 @@ Test_IndexSliceRCSG_T()
             new int[] { 1, 2, 22, 3, 4, 44, 5 } ) );
 
     Print( "Remove an item from the middle" );
-    s.Remove( Integer.From( 1 ) );
+    s.Remove( Integer.Create( 1 ) );
     Assert(
         s.Stream().AsEnumerable().SequenceEqual(
             new int[] { 2, 3, 4, 44 } ) );
@@ -555,7 +555,7 @@ Test_IndexSliceRCSG_T()
             new int[] { 1, 2, 3, 4, 44, 5 } ) );
 
     Print( "Remove an item from the end" );
-    s.Remove( Integer.From( 3 ) );
+    s.Remove( Integer.Create( 3 ) );
     Assert(
         s.Stream().AsEnumerable().SequenceEqual(
             new int[] { 2, 3, 4 } ) );
@@ -564,9 +564,9 @@ Test_IndexSliceRCSG_T()
             new int[] { 1, 2, 3, 4, 5 } ) );
 
     Print( "Remove all items" );
-    s.Remove( Integer.From( 0 ) );
-    s.Remove( Integer.From( 0 ) );
-    s.Remove( Integer.From( 0 ) );
+    s.Remove( Integer.Create( 0 ) );
+    s.Remove( Integer.Create( 0 ) );
+    s.Remove( Integer.Create( 0 ) );
     Assert(
         s.Stream().AsEnumerable().SequenceEqual(
             new int[] { } ) );
@@ -601,7 +601,7 @@ Test_ICollectionS_RemoveFirst()
         chars.Stream().AsEnumerable().SequenceEqual(
             new char[]{ 'b', 'c', 'd', 'e', 'f', 'g' } ) );
     Print( ".RemoveFirst( IInteger )" );
-    chars.RemoveFirst( Integer.From( 2 ) );
+    chars.RemoveFirst( Integer.Create( 2 ) );
     Assert(
         chars.Stream().AsEnumerable().SequenceEqual(
             new char[]{ 'd', 'e', 'f', 'g' } ) );
@@ -611,7 +611,7 @@ Test_ICollectionS_RemoveFirst()
         chars.Stream().AsEnumerable().SequenceEqual(
             new char[]{ 'd', 'e', 'f' } ) );
     Print( ".RemoveLast( IInteger )" );
-    chars.RemoveLast( Integer.From( 2 ) );
+    chars.RemoveLast( Integer.Create( 2 ) );
     Assert(
         chars.Stream().AsEnumerable().SequenceEqual(
             new char[]{ 'd' } ) );

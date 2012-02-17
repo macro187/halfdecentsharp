@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -117,7 +117,7 @@ OptimisedCreateInternalListFrom(
 {
     NonNull.CheckParameter( from, "from" );
     var list = new SCG.List< T >(
-        from.Count.LT( Integer.From( int.MaxValue ) )
+        from.Count.LT( Integer.Create( int.MaxValue ) )
             ? (int)( from.Count.GetValue() )
             : int.MaxValue );
     from.Stream().EmptyTo( list.AsSink() );

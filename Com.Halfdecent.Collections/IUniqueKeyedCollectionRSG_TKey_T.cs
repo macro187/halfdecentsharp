@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -14,6 +14,9 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 // -----------------------------------------------------------------------------
+
+
+using System;
 
 
 namespace
@@ -50,7 +53,7 @@ AsImplicitUniqueKeyedCollection<
     T
 >(
     this IUniqueKeyedCollectionRSG< TKey, T >   from,
-    System.Func< T, TKey >                      extractKeyFunc
+    Func< T, TKey >                             extractKeyFunc
 )
 {
     return

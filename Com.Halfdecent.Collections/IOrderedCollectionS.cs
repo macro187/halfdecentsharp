@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -50,7 +50,7 @@ RemoveFirst(
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    dis.RemoveFirst( Integer.From( 1 ) );
+    dis.RemoveFirst( Integer.Create( 1 ) );
 }
 
 
@@ -62,12 +62,12 @@ RemoveFirst(
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    GTE.CheckParameter< IReal >( Integer.From( 0 ), count, "count" );
+    GTE.CheckParameter< IReal >( Integer.Create( 0 ), count, "count" );
     LTE.CheckParameter< IReal >( dis.Count, count, "count" );
 
-    while( count.GT( Integer.From( 0 ) ) ) {
-        dis.Remove( Integer.From( 0 ) );
-        count = count.Minus( Integer.From( 1 ) );
+    while( count.GT( Integer.Create( 0 ) ) ) {
+        dis.Remove( Integer.Create( 0 ) );
+        count = count.Minus( Integer.Create( 1 ) );
     }
 }
 
@@ -79,7 +79,7 @@ RemoveLast(
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    dis.RemoveLast( Integer.From( 1 ) );
+    dis.RemoveLast( Integer.Create( 1 ) );
 }
 
 
@@ -91,12 +91,12 @@ RemoveLast(
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    GTE.CheckParameter< IReal >( Integer.From( 0 ), count, "count" );
+    GTE.CheckParameter< IReal >( Integer.Create( 0 ), count, "count" );
     LTE.CheckParameter< IReal >( dis.Count, count, "count" );
 
-    while( count.GT( Integer.From( 0 ) ) ) {
-        dis.Remove( dis.Count.Minus( Integer.From( 1 ) ) );
-        count = count.Minus( Integer.From( 1 ) );
+    while( count.GT( Integer.Create( 0 ) ) ) {
+        dis.Remove( dis.Count.Minus( Integer.Create( 1 ) ) );
+        count = count.Minus( Integer.Create( 1 ) );
     }
 }
 #endif
@@ -127,10 +127,10 @@ Remove(
 )
 {
     NonNull.CheckParameter( key, "key" );
-    GTE.CheckParameter< IReal >( Integer.From( 0 ), key, "key" );
+    GTE.CheckParameter< IReal >( Integer.Create( 0 ), key, "key" );
     LTE.CheckParameter< IReal >( this.Count, key, "key" );
     this.From.Remove( this.Trans( key ) );
-    this.SliceCount = this.SliceCount.Minus( Integer.From( 1 ) );
+    this.SliceCount = this.SliceCount.Minus( Integer.Create( 1 ) );
 }
 
 

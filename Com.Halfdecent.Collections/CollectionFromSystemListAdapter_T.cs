@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent;
@@ -200,19 +201,18 @@ GetAndRemoveAll(
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITuple< IInteger, T > >
+    IStream< ITupleHD< IInteger, T > >
 StreamPairs()
 {
     return this.StreamPairsIterator().AsStream();
 }
 
 private
-    SCG.IEnumerator< ITuple< IInteger, T > >
+    SCG.IEnumerator< ITupleHD< IInteger, T > >
 StreamPairsIterator()
 {
     for( int i = 0; i < this.From.Count; i++ ) {
-        yield return new Tuple< IInteger, T >(
-            Integer.From( i ), this.From[ i ] );
+        yield return TupleHD.Create( Integer.Create( i ), this.From[ i ] );
     }
 }
 
@@ -224,8 +224,8 @@ Contains(
 )
 {
     if( key == null ) return false;
-    if( key.LT( Integer.From( 0 ) ) ) return false;
-    if( key.GTE( Integer.From( this.From.Count ) ) ) return false;
+    if( key.LT( Integer.Create( 0 ) ) ) return false;
+    if( key.GTE( Integer.Create( this.From.Count ) ) ) return false;
     return true;
 }
 
@@ -249,7 +249,7 @@ public
     IInteger
 Count
 {
-    get { return Integer.From( this.From.Count ); }
+    get { return Integer.Create( this.From.Count ); }
 }
 
 
@@ -276,7 +276,7 @@ Add(
 public
     IFilter< T, T >
 GetAndReplaceWhere(
-    System.Predicate< T > where
+    Predicate< T > where
 )
 {
     return Collection.GetAndReplaceWhereViaUniqueKeyedCollection( this, where );
@@ -291,7 +291,7 @@ GetAndReplaceWhere(
 public
     IStream< T >
 GetAndRemoveWhere(
-    System.Predicate< T > where
+    Predicate< T > where
 )
 {
     return Collection.GetAndRemoveWhereViaUniqueKeyedCollection( this, where );

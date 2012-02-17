@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -89,7 +89,7 @@ Replace(
 )
 {
     NonNull.CheckParameter( key, "key" );
-    GTE.CheckParameter< IReal >( Integer.From( 0 ), key, "key" );
+    GTE.CheckParameter< IReal >( Integer.Create( 0 ), key, "key" );
     LTE.CheckParameter< IReal >( this.Count, key, "key" );
     this.From.Replace( this.Trans( key ), replacement );
 }

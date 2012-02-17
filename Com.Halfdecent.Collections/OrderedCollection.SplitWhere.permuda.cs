@@ -3,7 +3,7 @@
 // filename OrderedCollection/*PERMUDA*/.SplitWhere.cs
 #endregion
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -20,6 +20,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
@@ -57,13 +58,13 @@ SplitWhere<
     T
 >(
     this IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
-    System.Predicate< T > where
+    Predicate< T > where
 )
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( where, "where" );
     return
-        SplitWhereIterator< T >( dis, where, false, Integer.From( -1 ) )
+        SplitWhereIterator< T >( dis, where, false, Integer.Create( -1 ) )
         .AsStream();
 }
 
@@ -78,33 +79,30 @@ SplitWhere<
 /// The slices are produced using <tt>.Slice()</tt>.
 ///
 public static
-    ITuple<
+    ITupleHD<
         IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/,
         IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
 SplitAtFirstWhere<
     T
 >(
     this IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
-    System.Predicate< T > where
+    Predicate< T > where
 )
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( where, "where" );
 
     IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ > slices =
-        SplitWhereIterator< T >( dis, where, false, Integer.From( 2 ) )
+        SplitWhereIterator< T >( dis, where, false, Integer.Create( 2 ) )
         .AsStream();
 
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s1;
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s2;
     s1 = slices.Pull();
     if( !slices.TryPull( out s2 ) )
-        s2 = dis.Slice( dis.Count, Integer.From( 0 ) );
+        s2 = dis.Slice( dis.Count, Integer.Create( 0 ) );
 
-    return new Tuple< 
-        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/,
-        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >(
-            s1, s2 );
+    return TupleHD.Create( s1, s2 );
 }
 
 
@@ -122,13 +120,13 @@ SplitBeforeWhere<
     T
 >(
     this IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
-    System.Predicate< T > where
+    Predicate< T > where
 )
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( where, "where" );
     return
-        SplitWhereIterator< T >( dis, where, true, Integer.From( -1 ) )
+        SplitWhereIterator< T >( dis, where, true, Integer.Create( -1 ) )
         .AsStream();
 }
 
@@ -142,33 +140,30 @@ SplitBeforeWhere<
 /// The slices are produced using <tt>.Slice()</tt>.
 ///
 public static
-    ITuple<
+    ITupleHD<
         IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/,
         IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >
 SplitBeforeFirstWhere<
     T
 >(
     this IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
-    System.Predicate< T > where
+    Predicate< T > where
 )
 {
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( where, "where" );
 
     IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ > slices =
-        SplitWhereIterator< T >( dis, where, true, Integer.From( 2 ) )
+        SplitWhereIterator< T >( dis, where, true, Integer.Create( 2 ) )
         .AsStream();
 
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s1;
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s2;
     s1 = slices.Pull();
     if( !slices.TryPull( out s2 ) )
-        s2 = dis.Slice( dis.Count, Integer.From( 0 ) );
+        s2 = dis.Slice( dis.Count, Integer.Create( 0 ) );
 
-    return new Tuple< 
-        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/,
-        IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ >(
-            s1, s2 );
+    return TupleHD.Create( s1, s2 );
 }
 
 
@@ -178,44 +173,44 @@ SplitWhereIterator<
     T
 >(
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
-    System.Predicate< T >   where,
+    Predicate< T >          where,
     bool                    includeSeparator,
     IInteger                maxSlices
 )
 {
-    if( maxSlices.Equals( Integer.From( 1 ) ) ) {
-        yield return dis.Slice( Integer.From( 0 ), dis.Count );
+    if( maxSlices.Equals( Integer.Create( 1 ) ) ) {
+        yield return dis.Slice( Integer.Create( 0 ), dis.Count );
         yield break;
     }
 
-    IInteger from = Integer.From( 0 );
-    IInteger count = Integer.From( 0 );
-    IInteger slices = Integer.From( 0 );
+    IInteger from = Integer.Create( 0 );
+    IInteger count = Integer.Create( 0 );
+    IInteger slices = Integer.Create( 0 );
     for(
-        IInteger i = Integer.From( 0 );
+        IInteger i = Integer.Create( 0 );
         i.LT( dis.Count );
-        i = i.Plus( Integer.From( 1 ) )
+        i = i.Plus( Integer.Create( 1 ) )
     ){
         // This item is a separator
         if( where( dis.Get( i ) ) ) {
 
             // Yield the slice leading up to this separator
             yield return dis.Slice( from, count );
-            slices = slices.Plus( Integer.From( 1 ) );
+            slices = slices.Plus( Integer.Create( 1 ) );
 
             // Start the next slice
             if( includeSeparator ) {
                 from = i;
-                count = Integer.From( 1 );
+                count = Integer.Create( 1 );
             } else {
-                from = i.Plus( Integer.From( 1 ) );
-                count = Integer.From( 0 );
+                from = i.Plus( Integer.Create( 1 ) );
+                count = Integer.Create( 0 );
             }
 
             // If we're one away from the desired number of slices, bail out
             // and use the rest as the last slice
-            if( maxSlices.GT( Integer.From( 0 ) ) ) {
-                if( slices.GTE( maxSlices.Minus( Integer.From( 1 ) ) ) ) {
+            if( maxSlices.GT( Integer.Create( 0 ) ) ) {
+                if( slices.GTE( maxSlices.Minus( Integer.Create( 1 ) ) ) ) {
                     count = dis.Count.Minus( from );
                     break;
                 }
@@ -223,7 +218,7 @@ SplitWhereIterator<
 
         // This item is not a separator
         } else {
-            count = count.Plus( Integer.From( 1 ) );
+            count = count.Plus( Integer.Create( 1 ) );
             continue;
         }
     }

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -93,7 +93,7 @@ ExistingOrNextPositionIn(
 )
     : base(
         SystemEnumerable.Create(
-            GTE.Create< IReal >( Integer.From( 0 ) ).Contravary< IInteger >(),
+            GTE.Create< IReal >( Integer.Create( 0 ) ).Contravary< IInteger >(),
             LTE.Create< IReal >( collection.Count ).Contravary< IInteger >() ),
         r => _S( "{0} is an existing or the next position in the collection", r ),
         r => _S( "{0} is not an existing or the next position in the collection", r ),
@@ -125,12 +125,12 @@ Collection
 
 public override
     bool
-DirectionalEquals(
+Equals(
     RType that
 )
 {
     return
-        base.DirectionalEquals( that )
+        base.Equals( that )
         && that.Is<
             ExistingOrNextPositionIn >(
             rt => (object)(rt.Collection) == this.Collection );
@@ -149,7 +149,7 @@ GetHashCode()
 
 
 
-private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Resources.Resource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
+private static Com.Halfdecent.Globalisation.Localised< string > _S( string s, params object[] args ) { return Com.Halfdecent.Globalisation.LocalisedResource._S( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, s, args ); }
 
 } // type
 } // namespace

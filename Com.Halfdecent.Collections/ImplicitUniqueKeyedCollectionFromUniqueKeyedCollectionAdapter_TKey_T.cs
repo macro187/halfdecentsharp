@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
@@ -48,7 +49,7 @@ ImplicitUniqueKeyedCollectionFromUniqueKeyedCollectionAdapter<
 internal
 ImplicitUniqueKeyedCollectionFromUniqueKeyedCollectionAdapter(
     IUniqueKeyedCollectionRSG< TKey, T >    from,
-    System.Func< T, TKey >                  extractKeyFunc
+    Func< T, TKey >                         extractKeyFunc
 )
     : base( from )
 {
@@ -74,7 +75,7 @@ From
 
 
 protected
-System.Func< T, TKey >
+Func< T, TKey >
 ExtractKeyFunc
 {
     get;

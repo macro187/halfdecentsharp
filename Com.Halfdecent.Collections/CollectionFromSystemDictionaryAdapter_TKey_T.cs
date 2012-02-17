@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using SCG = System.Collections.Generic;
 using System.Linq;
 using Com.Halfdecent;
@@ -192,12 +193,12 @@ GetAndRemoveAll(
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITuple< TKey, T > >
+    IStream< ITupleHD< TKey, T > >
 StreamPairs()
 {
     return
         this.From
-        .Select( kvp => Tuple.Create( kvp.Key, kvp.Value ) )
+        .Select( kvp => TupleHD.Create( kvp.Key, kvp.Value ) )
         .AsStream();
 }
 
@@ -234,7 +235,7 @@ public
     IInteger
 Count
 {
-    get { return Integer.From( this.From.Count ); }
+    get { return Integer.Create( this.From.Count ); }
 }
 
 
@@ -246,7 +247,7 @@ Count
 public
     IFilter< T, T >
 GetAndReplaceWhere(
-    System.Predicate< T > where
+    Predicate< T > where
 )
 {
     NonNull.CheckParameter( where, "where" );
@@ -262,7 +263,7 @@ GetAndReplaceWhere(
 public
     IStream< T >
 GetAndRemoveWhere(
-    System.Predicate< T > where
+    Predicate< T > where
 )
 {
     NonNull.CheckParameter( where, "where" );

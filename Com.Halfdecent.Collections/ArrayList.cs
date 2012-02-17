@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -90,7 +90,7 @@ Create<
         count == null
             ? new SCG.List< T >()
             : new SCG.List< T >(
-                count.LT( Integer.From( int.MaxValue ) )
+                count.LT( Integer.Create( int.MaxValue ) )
                     ? (int)( count.GetValue() )
                     : int.MaxValue );
     if( items != null )

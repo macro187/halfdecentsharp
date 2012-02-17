@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Linq;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent;
@@ -54,7 +55,7 @@ GetAndReplaceWhereViaUniqueKeyedCollection<
     T
 >(
     IUniqueKeyedCollectionRC< TKey, T > col,
-    System.Predicate< T >               where
+    Predicate< T >                      where
 )
 {
     NonNull.CheckParameter( col, "col" );
@@ -73,10 +74,10 @@ GetAndReplaceWhereViaUniqueKeyedCollectionFilter<
     T
 >(
     IUniqueKeyedCollectionRC< TKey, T > col,
-    System.Predicate< T >               where,
-    System.Func< FilterState >          getState,
-    System.Func< T >                    get,
-    System.Action< T >                  put
+    Predicate< T >                      where,
+    Func< FilterState >                 getState,
+    Func< T >                           get,
+    Action< T >                         put
 )
 {
     // XXX
@@ -107,7 +108,7 @@ GetAndRemoveWhereViaUniqueKeyedCollection<
     T
 >(
     IUniqueKeyedCollectionRS< TKey, T > col,
-    System.Predicate< T >               where
+    Predicate< T >                      where
 )
 {
     NonNull.CheckParameter( col, "col" );
@@ -124,7 +125,7 @@ GetAndRemoveWhereViaUniqueKeyedCollectionIterator<
     T
 >(
     IUniqueKeyedCollectionRS< TKey, T > col,
-    System.Predicate< T >               where
+    Predicate< T >                      where
 )
 {
     restart:

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -53,7 +53,7 @@ IKeyedCollectionR<
 
 /// Stream all key-value pairs
 ///
-    IStream< ITuple< TKey, T > >
+    IStream< ITupleHD< TKey, T > >
 StreamPairs();
 
 
@@ -123,7 +123,7 @@ Covary<
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITuple< TKey, T > >
+    IStream< ITupleHD< TKey, T > >
 StreamPairs()
 {
     return
@@ -153,7 +153,7 @@ Stream(
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITuple< TKey, T > >
+    IStream< ITupleHD< TKey, T > >
 StreamPairs()
 {
     return this.From.StreamPairs();

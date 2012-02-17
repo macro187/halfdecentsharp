@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 
@@ -69,7 +70,7 @@ public IFilter< T, T > GetAndReplaceAll( IInteger key ) {
         .GetAndReplaceAllViaUniqueKeyedCollection( this, key ); }
 
 
-public IFilter< T, T > GetAndReplaceWhere( System.Predicate< T > where ) {
+public IFilter< T, T > GetAndReplaceWhere( Predicate< T > where ) {
     return Collection
         .GetAndReplaceWhereViaUniqueKeyedCollection( this, where ); }
 #endif

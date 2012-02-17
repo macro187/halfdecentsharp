@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -47,10 +47,10 @@ Create<
     TKey,
     T
 >(
-    IStream< ITuple< TKey, T > > items
+    IStream< ITupleHD< TKey, T > > items
 )
 {
-    items = items ?? Stream.Create< ITuple< TKey, T > >();
+    items = items ?? Stream.Create< ITupleHD< TKey, T > >();
     var dict = new SCG.Dictionary< TKey, T >();
     foreach( var tuple in items.AsEnumerable() )
         dict.Add( tuple.A, tuple.B );
