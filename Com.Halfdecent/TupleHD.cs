@@ -63,12 +63,16 @@ public static
     bool
 BothEqual<
     T1,
-    T2
+    T2,
+    U1,
+    U2
 >(
     this ITupleHD< T1, T2 > dis,
-    T1                      a,
-    T2                      b
+    U1                      a,
+    U2                      b
 )
+    where U1 : T1
+    where U2 : T2
 {
     return
         EqualityComparerHD.Create< T1 >().Equals( a, dis.A )
