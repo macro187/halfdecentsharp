@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -16,6 +16,7 @@
 // -----------------------------------------------------------------------------
 
 
+using System;
 using System.Linq;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Streams;
@@ -61,9 +62,9 @@ Lexer()
 private
     SCG.IEnumerator< FilterState >
 Process(
-    System.Func< FilterState >  getState,
-    System.Func< string >       get,
-    System.Action< Token >      put
+    Func< FilterState > getState,
+    Func< string >      get,
+    Action< Token >     put
 )
 {
     var indent = ArrayList.Create< char >();
@@ -90,7 +91,7 @@ Process(
         while( indent.Count.GT( newindent.Count ) ) {
             indent.RemoveLast(
                 stops.Get(
-                    stops.Count.Minus( Integer.From( 1 ) ) ) );
+                    stops.Count.Minus( Integer.Create( 1 ) ) ) );
             stops.RemoveLast();
 
             put( new DeindentToken( linenum ) );
@@ -100,11 +101,11 @@ Process(
         // Pop stops off the indent until it equals the same section of the
         // new indent
         while( !indent.Stream().SequenceEqual(
-            newindent.Slice( Integer.From( 0 ), indent.Count ).Stream() )
+            newindent.Slice( Integer.Create( 0 ), indent.Count ).Stream() )
         ) {
             indent.RemoveLast(
                 stops.Get(
-                    stops.Count.Minus( Integer.From( 1 ) ) ) );
+                    stops.Count.Minus( Integer.Create( 1 ) ) ) );
             stops.RemoveLast();
 
             put( new DeindentToken( linenum ) );
@@ -127,7 +128,7 @@ Process(
 
         // Yield the data
         // TODO Trim?
-        if( data.Count.Equals( Integer.From( 0 ) ) ) continue;
+        if( data.Count.Equals( Integer.Create( 0 ) ) ) continue;
 
         put(
             new DataToken(
