@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -25,9 +25,8 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// An exception indicating that two objects'
-/// <tt>IComparable<T>.CompareTo()</tt> implementations completely disagreed
-/// with one another
+/// An exception indicating that two objects' `IComparable<T>.CompareTo()`
+/// implementations completely disagreed with one another
 // =============================================================================
 
 public class
@@ -44,19 +43,19 @@ ComparisonDisagreementException
 internal
 ComparisonDisagreementException(
     Type    comparableType,
-    ///< The type of comparison involved, ie. the <tt>IComparable<T></tt> type
+    ///< The type of comparison involved, ie. the `IComparable<T>` type
     Type    thisType,
-    ///< The type of the object on the <tt>this</tt> side of the comparison
+    ///< The type of the object on the `this` side of the comparison
     object  thisValue,
-    ///< The value of the object on the <tt>this</tt> side of the comparison
+    ///< The value of the object on the `this` side of the comparison
     int     thisResult,
-    ///< The comparison result from the <tt>this</tt> side of the comparison
+    ///< The comparison result from the `this` side of the comparison
     Type    thatType,
-    ///< The type of the object on the <tt>that</tt> side of the comparison
+    ///< The type of the object on the `that` side of the comparison
     object  thatValue,
-    ///< The value of the object on the <tt>that</tt> side of the comparison
+    ///< The value of the object on the `that` side of the comparison
     int     thatResult
-    ///< The comparison result from the <tt>that</tt> side of the comparison
+    ///< The comparison result from the `that` side of the comparison
 )
     : base(
         string.Format(

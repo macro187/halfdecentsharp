@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -25,7 +25,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// (See <tt>EqualityComparerHD.Create<T>()</tt>)
+/// (See `EqualityComparerHD.Create<T>()`)
 // =============================================================================
 
 public class

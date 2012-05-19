@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -26,7 +26,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>EnumerableComparer<T></tt> Library
+/// `EnumerableComparer<T>` Library
 // =============================================================================
 
 public static class
@@ -39,7 +39,7 @@ EnumerableComparer
 // -----------------------------------------------------------------------------
 
 /// @exception NotSupportedException
-/// <tt>T</tt> is not <tt>System.IEquatable<T></tt> or <tt>IEquatableHD<T></tt>
+/// `T` is not `System.IEquatable<T>` or `IEquatableHD<T>`
 ///
 public static
     EnumerableComparer< T >

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -27,7 +27,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>System.Object</tt> Library
+/// `System.Object` Library
 // =============================================================================
 
 public static class
@@ -42,7 +42,7 @@ SystemObject
 
 /// Generate a string representation of the object
 ///
-/// Also handles <tt>null</tt>
+/// Also handles `null`
 ///
 public static
     string

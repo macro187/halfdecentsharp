@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -28,7 +28,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>System.Collections.Generic.IEnumerable</tt> Library
+/// `System.Collections.Generic.IEnumerable` Library
 // =============================================================================
 
 public static class
@@ -58,7 +58,7 @@ Create<
 
 
 /// Create an enumerable by recursively applying a function to its own result,
-/// starting with a seed item, until <tt>null</tt> is encountered
+/// starting with a seed item, until `null` is encountered
 ///
 /// Useful for descending through recursive data structures
 ///
@@ -109,7 +109,7 @@ Append<
 /// equatable items
 ///
 /// @exception NotSupportedException
-/// <tt>T</tt> is not <tt>System.IEquatable<T></tt> or <tt>IEquatableHD<T></tt>
+/// `T` is not `System.IEquatable<T>` or `IEquatableHD<T>`
 ///
 public static
     bool
@@ -176,7 +176,7 @@ StartsWith<
 /// meeting a specified sequence of criteria
 ///
 /// @exception ArgumentException
-/// <tt>criteria</tt> included a null value
+/// `criteria` included a null value
 ///
 public static
     bool
@@ -195,7 +195,7 @@ StartsWith<
 /// meeting a specified sequence of criteria
 ///
 /// @exception ArgumentException
-/// <tt>criteria</tt> included a null value
+/// `criteria` included a null value
 ///
 public static
     bool
@@ -225,12 +225,12 @@ StartsWith<
 /// Locate the first instance of a specified subsequence of equatable items
 ///
 /// @exception NotSupportedException
-/// <tt>T</tt> is not <tt>System.IEquatable<T></tt> or <tt>IEquatableHD<T></tt>
+/// `T` is not `System.IEquatable<T>` or `IEquatableHD<T>`
 ///
 public static
     int
     /// @returns
-    /// The index of the beginning of the subsequence, or <tt>-1</tt> if not
+    /// The index of the beginning of the subsequence, or `-1` if not
     /// found
 IndexOf<
     T
@@ -256,7 +256,7 @@ IndexOf<
 public static
     int
     /// @returns
-    /// The index of the beginning of the subsequence, or <tt>-1</tt> if not
+    /// The index of the beginning of the subsequence, or `-1` if not
     /// found
 IndexOf<
     T
@@ -285,7 +285,7 @@ IndexOf<
 public static
     int
     /// @returns
-    /// The index of the beginning of the subsequence, or <tt>-1</tt> if not
+    /// The index of the beginning of the subsequence, or `-1` if not
     /// found
 IndexOf<
     T
@@ -313,7 +313,7 @@ IndexOf<
 public static
     int
     /// @returns
-    /// The index of the beginning of the subsequence, or <tt>-1</tt> if not
+    /// The index of the beginning of the subsequence, or `-1` if not
     /// found
 IndexOf<
     T

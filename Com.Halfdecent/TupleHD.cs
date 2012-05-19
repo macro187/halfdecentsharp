@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -25,7 +25,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>ITupleHD< T1, T2 ></tt> Library
+/// `ITupleHD<T1,T2>` Library
 // =============================================================================
 
 public static class
@@ -53,11 +53,9 @@ Create<
 /// Determine whether both tuple values are equal to the specified values
 ///
 /// @exception NotSupportedException
-/// <tt>T1</tt> is not <tt>System.IEquatable<T1></tt> or
-/// <tt>IEquatableHD<T1></tt>
+/// `T1` is not `System.IEquatable<T1>` or `IEquatableHD<T1>`
 /// - OR -
-/// <tt>T2</tt> is not <tt>System.IEquatable<T2></tt> or
-/// <tt>IEquatableHD<T2></tt>
+/// `T2` is not `System.IEquatable<T2>` or `IEquatableHD<T2>`
 ///
 public static
     bool

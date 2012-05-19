@@ -54,7 +54,7 @@ Comparer
 
 /// Value at one end of the interval
 ///
-/// - <tt>NonNull</tt>
+/// - `Com.Halfdecent.RTypes.NonNull`
 ///
 T
 From
@@ -74,7 +74,7 @@ FromInclusive
 
 /// Value at the other end of the interval
 ///
-/// - <tt>NonNull</tt>
+/// - `Com.Halfdecent.RTypes.NonNull`
 ///
 T
 To

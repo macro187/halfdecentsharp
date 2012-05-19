@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -27,21 +27,19 @@ Com.Halfdecent
 // =============================================================================
 /// A type whose values have an inherent notion of equality
 ///
-/// This enhanced <tt>IEquatable<T></tt> carries its own <tt>GetHashCode()</tt>,
-/// allowing types to implement paired equality + hashcode for more than one
-/// interface.
+/// This enhanced `IEquatable<T>` carries its own `GetHashCode()`, allowing
+/// types to implement paired equality + hashcode for more than one interface.
 ///
 /// Note that to conclusively determine equality, <em>both</em> items'
-/// <tt>IEquatable<T>.Equals()</tt> must be consulted.  The reason is that the
-/// other item may be a subtype with a more specific definition of equality.
-/// A convenient way to do this is
-/// <tt>SystemEquatable.EqualsBidirectional()</tt>.
+/// `IEquatable<T>.Equals()` must be consulted.  The reason is that the other
+/// item may be a subtype with a more specific definition of equality.  A
+/// convenient way to do this is `SystemEquatable.EqualsBidirectional()`.
 ///
 /// Equatability is contravariant in nature but, for unknown reasons, the BCL
-/// designers chose not to make <tt>System.IEquatable<T></tt> contravariant in
-/// <tt>T</tt> - a decision that could be considered a mistake.  Whatever the
-/// case, <em>this</em> interface is contravariant in <tt>T</tt> and so,
-/// unfortunately, cannot imply <tt>System.IEquatable<T></tt>.
+/// designers chose not to make `System.IEquatable<T>` contravariant in `T` - a
+/// decision that could be considered a mistake.  Whatever the case,
+/// <em>this</em> interface is contravariant in `T` and so, unfortunately,
+/// cannot imply `System.IEquatable<T>`.
 // =============================================================================
 
 public interface
@@ -68,11 +66,10 @@ Equals(
 
 /// Generate a hash code for this item according to this definition of equality
 ///
-/// Subject to the same requirements as <tt>System.Object.GetHashCode()</tt>
-/// with respect to this definition of equality, specifically:
+/// Subject to the same requirements as `System.Object.GetHashCode()` with
+/// respect to this definition of equality, specifically:
 ///
-/// - If <tt>a.Equals( b )</tt> then <tt>a.GetHashCode()</tt> must equal
-///   <tt>b.GetHashCode()</tt>.
+/// - If `a.Equals( b )` then `a.GetHashCode()` must equal `b.GetHashCode()`.
 ///
     int
 GetHashCode();

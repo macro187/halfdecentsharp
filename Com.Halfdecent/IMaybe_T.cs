@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011
+// Copyright (c) 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -54,7 +54,7 @@ HasValue
 /// The underlying value, if there is one
 ///
 /// @exception System.InvalidOperationException
-/// There is no value, i.e. <tt>!HasValue</tt>
+/// There is no value, i.e. `!HasValue`
 ///
     T
 Value

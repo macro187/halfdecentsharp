@@ -26,7 +26,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>EqualityComparerHD<T></tt> Library
+/// `EqualityComparerHD<T>` Library
 // =============================================================================
 
 public static class
@@ -57,8 +57,8 @@ Create<
 /// Make an equality comparer out of an equality function and a hash code
 /// function
 ///
-/// IMPORTANT: <tt>equalsFunc</tt> and <tt>getHashCodeFunc</t> must work
-/// according to the same definition of equality.
+/// IMPORTANT: `equalsFunc` and `getHashCodeFunc` must work according to the
+/// same definition of equality.
 ///
 public static
     IEqualityComparerHD< T >

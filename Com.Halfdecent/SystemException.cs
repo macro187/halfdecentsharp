@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010
+// Copyright (c) 2009, 2010, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -26,7 +26,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>System.Exception</tt> Library
+/// `System.Exception` Library
 // =============================================================================
 
 public static class
@@ -35,7 +35,7 @@ SystemException
 
 
 
-/// Iterate from this exception down the <tt>.InnerException</tt> chain
+/// Iterate from this exception down the `.InnerException` chain
 ///
 public static
     IEnumerable< Exception >

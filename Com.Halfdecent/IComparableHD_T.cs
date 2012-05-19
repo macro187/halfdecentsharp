@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2009, 2010, 2011
+// Copyright (c) 2009, 2010, 2011, 2012
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -27,14 +27,13 @@ Com.Halfdecent
 // =============================================================================
 /// A type whose values have an inherent notion of order
 ///
-/// This enhanced <tt>IComparable<T></tt> implies <tt>IEquatableHD<T></tt>
-/// because comparability implies equatability.
+/// This enhanced `IComparable<T>` implies `IEquatableHD<T>` because
+/// comparability implies equatability.
 ///
-/// Note that to compare conclusively, <em>both</em> items'
-/// <tt>IComparable<T>.CompareTo()</tt> must be consulted.  The reason is that
-/// the other item may be a subtype with a more specific comparison definition.
-/// A convenient way to do this is
-/// <tt>SystemComparable.CompareToBidirectional()</tt>.
+/// Note that to compare conclusively, _both_ items'
+/// `IComparable<T>.CompareTo()` must be consulted.  The reason is that the
+/// other item may be a subtype with a more specific comparison definition.  A
+/// convenient way to do this is `SystemComparable.CompareToBidirectional()`.
 // =============================================================================
 
 public interface

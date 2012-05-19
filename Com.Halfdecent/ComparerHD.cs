@@ -26,7 +26,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// <tt>ComparerHD<T></tt> Library
+/// `ComparerHD<T>` Library
 // =============================================================================
 
 public static class
@@ -57,7 +57,7 @@ Create<
 ///
 /// The comparison function is used to derive an equality function.
 ///
-/// IMPORTANT: <tt>compareFunc</tt> and <tt>getHashCodeFunc</t> must work
+/// IMPORTANT: `compareFunc` and `getHashCodeFunc` must work
 /// according to the same definition of equality.
 ///
 public static
