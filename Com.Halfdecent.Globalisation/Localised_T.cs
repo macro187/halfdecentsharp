@@ -115,7 +115,7 @@ ILocalised.TryIn(
     CultureInfo culture
 )
 {
-    return this.TryIn( uiculture, culture );
+    return this.TryIn( uiculture, culture ).Covary< T, object >();
 }
 
 

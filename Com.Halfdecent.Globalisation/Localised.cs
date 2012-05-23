@@ -239,7 +239,8 @@ Covary<
     where TFrom : TTo
 {
     if( dis == null ) throw new ArgumentNullException( "dis" );
-    return Create< TTo >( dis.TryIn );
+    return Create< TTo >(
+        (uic,c) => dis.TryIn( uic, c ).Covary< TFrom, TTo >() );
 }
 
 
