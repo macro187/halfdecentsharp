@@ -32,10 +32,12 @@
 
     -   Com.Halfdecent.Numerics has abstract numeric types and operations
 
-    -   Com.Halfdecent.Streams, sinks, and filters
+    -   Com.Halfdecent.Streams has abstract streams, sinks, filters, and
+        pipelines
 
     -   Com.Halfdecent.Cursors are moveable pointers to items in collections
-        Com.Halfdecent.Collections has a variety of collections, each with
+
+    -   Com.Halfdecent.Collections has a variety of collections, each with
         variations for different combinations of mutability, and
         by-reference slices
 
