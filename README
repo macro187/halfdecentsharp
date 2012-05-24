@@ -1,129 +1,146 @@
 
-
-    README
-
-    Introduction to Halfdecent#
-
-
 --------------------------------------------------------------------------------
-
-
-    Copyright (c) 2009, 2010
-    Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
-
-    Permission to use, copy, modify, and distribute this software for any
-    purpose with or without fee is hereby granted, provided that the above
-    copyright notice and this permission notice appear in all copies.
-
-    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
-
+    Introduction
 --------------------------------------------------------------------------------
-
-
-x.  Introduction
 
     Halfdecent Sharp is a suite of libraries and tools for .NET software
-    development.  The libraries aim to apply certain object-oriented design
-    principles to existing functionality in the Base Class Library, and then
-    to extend that functionality according to the same principles.  The
-    tools aim to be small, task-specific, cross-platform, and suited for use
-    from the command line and scripts.
+    development.
 
 
-x.  Libraries
+--------------------------------------------------------------------------------
+    Libraries
+--------------------------------------------------------------------------------
 
-    - Com.Halfdecent
-    - Com.Halfdecent.Globalisation
-    - Com.Halfdecent.Resources
-    - Com.Halfdecent.Exceptions
-    - Com.Halfdecent.Meta
-    - Com.Halfdecent.RTypes
-    - Com.Halfdecent.Numerics
-    - Com.Halfdecent.Streams
-    - Com.Halfdecent.Cursors
-    - Com.Halfdecent.Collections
-    - Com.Halfdecent.TextTree
-    - Com.Halfdecent.Testing
+    The libraries variously fix, supplement, replace, and extend parts of
+    the Base Class Library.
 
+    -   Com.Halfdecent has tuples, intervals, comparables and comparers,
+        maybes, proxies, and pseudo-pattern matching
 
-x.  Tools
+    -   Com.Halfdecent.Resources is a simplified, strongly-typed API for
+        accessing embedded resources
 
-    -   Resbian, an embedded resource compiler
+    -   Com.Halfdecent.Globalisation has logical localised objects, culture
+        fallback algorithms, localised string operations, and localisable
+        exceptions
 
-    -   Traitor, a C# source code preprocessor implementing simple traits
-        (see http://en.wikipedia.org/wiki/Trait_%28computer_science%29)
+    -   Com.Halfdecent.Meta includes references to variables, parameters,
+        properties, etc. with mechanisms for mapping them across stack
+        frames, plus exceptions with references to offending values
 
-    -   Permuda, a C# source code preprocessor that generates permutations
-        of templated code
+    -   Com.Halfdecent.RTypes are reusable, composable value checks
 
+    -   Com.Halfdecent.Numerics has abstract numeric types and operations
 
-x.  Requirements
+    -   Com.Halfdecent.Streams, sinks, and filters
 
-    -   Microsoft .NET Framework 3.5 or newer, or Mono 2.0 or newer
+    -   Com.Halfdecent.Cursors are moveable pointers to items in collections
+        Com.Halfdecent.Collections has a variety of collections, each with
+        variations for different combinations of mutability, and
+        by-reference slices
 
-    -   A Unix shell and standard command-line tools (currently on Windows
-        this means cygwin, see the Makery documentation for more details)
+    -   Com.Halfdecent.TextTree is a simple text file format that uses
+        indentation to create structure
 
-    -   GNU Make 3.80 or newer
-
-    -   Makery build system, available from SVN at
-        http://makery.sourceforge.net/
-
-
-x.  Quick Start
-
-    1.  Check out a copy of the Halfdecent Sharp code
-
-    2.  Check out a copy of Makery
-
-    3.  $ export MAKERY="/path/to/makery/makery"
-
-    4.  $ echo "PROJ_PATHS += /path/to/halfdecentsharp/halfdecentsharp" >
-        ~/.makeryrc.mk
-
-    5.  $ cd one/of/the/libraries/
-
-    6.  $ make build
-
-    7.  $ make doxygen
-
-    8.  Look in out/ for your binaries and documentation
-
-    9.  $ make test
-
-    10. Watch tests run
-
-    11. $ make cleanall
+    -   Com.Halfdecent.Testing is a library for writing and running unit
+        tests
 
 
-x.  Design Principles
+--------------------------------------------------------------------------------
+    Tools
+--------------------------------------------------------------------------------
 
-    -   Use the Type System
+    The tools are lightweight and suited for use from the command line and
+    scripts.
+
+    -   Resbian is a tool for working with embedded resources
+
+    -   Traitor is a C# preprocessor allowing implementation code to be
+        included in interfaces
+
+    -   Permuda is a C# preprocessor that uses a single template file to
+        produce multiple similar files
+
+
+--------------------------------------------------------------------------------
+    Requirements
+--------------------------------------------------------------------------------
+
+    -   A .NET framework (Microsoft or Mono)
+
+    -   A Bourne (Unix) shell with standard command-line tools
+
+    -   GNU Make
+
+    -   Makery build system (http://github.com/macro187/makery)
+
+
+--------------------------------------------------------------------------------
+    Quick Start
+--------------------------------------------------------------------------------
+
+    1.  Get Makery
+
+        $ git clone git://github.com/macro187/makery.git
+
+    2.  Configure Makery
+
+        $ export MAKERY=/path/to/makery
+
+        $ echo "export MAKERY=/path/to/makery" >> ~/.profile
+
+    3.  Get Halfdecent Sharp
+
+        $ git clone git://github.com/macro187/halfdecentsharp.git
+
+    4.  Add Halfdecent Sharp to the Makery project search path
+
+        $ echo "PROJ_PATHS += /path/to/halfdecentsharp" >> ~/.makeryrc.mk
+
+    5.  Build everything
+
+        $ cd /path/to/halfdecentsharp
+
+        $ make buildall
+
+    6.  Test everything
+
+        $ make testall
+
+    7.  If you have Doxygen installed, generate documentation for everything
+
+        $ make doxygenall
+
+    8.  Look in each project's out/ sub directory for build outputs
+
+    9.  Clean up
+
+        $ make cleanall
+
+
+--------------------------------------------------------------------------------
+    Design Principles
+--------------------------------------------------------------------------------
+
+    Use the Type System
 
         Aggressively push concepts into the static type system, allowing the
         compiler to help verify their implementation and usage.
 
 
-    -   Abstract Types [1]
+    Abstract Types [1]
 
         Prefer defining and referencing abstract types.
 
 
-    -   Single Responsibility [2]
+    Single Responsibility [2]
 
         Make types "fine-grained" with each capturing a single aspect, idea,
         or responsibility reduced to its purest form.  Aggressively factor
         common aspects out into separate types.
 
 
-    -   Nouns over Verbs
+    Nouns over Verbs
 
         "Even the simplest procedural logic is hard for humans to verify,
         but quite complex data structures are fairly easy to model and
@@ -137,7 +154,7 @@ x.  Design Principles
         them in terms of the most general types possible.
 
 
-    -   Resist Optimisation
+    Resist Optimisation
 
         "Rule 1. You can't tell where a program is going to spend its time.
         Bottlenecks occur in surprising places, so don't try to second guess
@@ -162,7 +179,7 @@ x.  Design Principles
         Don't prevent future optimisation, but don't do it yet.
 
 
-    -   Source Code Centric
+    Source Code Centric
 
         Prefer source code over binaries.  Resist additional complexity in
         the name of binary compatibility, library versioning or related
@@ -172,14 +189,14 @@ x.  Design Principles
         version control systems.
 
 
-    -   Universal
+    Universal
 
         Assume use on various CLR implementations, various operating
         systems, various CPU architectures, in software for end users from
         various countries speaking various languages.
 
 
-    -   Be Polite
+    Be Polite
 
         Allow piecemeal, gradual adoption of the library.  Don't force users
         to accept the entire worldview at once.  Interoperate with the Base
@@ -199,5 +216,25 @@ x.  Design Principles
     [3] http://www.faqs.org/docs/artu/ch01s06.html
     [4] http://en.wikipedia.org/wiki/Solid_%28object-oriented_design%29
     [5] http://www.faqs.org/docs/artu/
+
+
+--------------------------------------------------------------------------------
+    Licence
+--------------------------------------------------------------------------------
+
+    Copyright (c) 2008, 2009, 2010, 2011, 2012
+    Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+
+    Permission to use, copy, modify, and distribute this software for any
+    purpose with or without fee is hereby granted, provided that the above
+    copyright notice and this permission notice appear in all copies.
+
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 
