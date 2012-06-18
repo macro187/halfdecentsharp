@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Copyright (c) 2010
+# Copyright (c) 2010, 2012
 # Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 #
 # Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,8 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet.exe.project
-MODULES_use += dotnet.csharp
+MODULES_use += dotnet-exe-project
+MODULES_use += dotnet-csharp
 
 DOTNET_outbase = traitor
 
