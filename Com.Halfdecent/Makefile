@@ -18,7 +18,7 @@
 
 MODULES_use += dotnet-lib-project
 MODULES_use += dotnet-csharp
-MODULES_use += testable
+MODULES_use += test
 
 DOTNET_required_generation = 35
 
