@@ -21,6 +21,8 @@ MODULES_use += dotnet-csharp
 
 DOTNET_required_generation = 20
 
+DOTNET_libs += System.dll
+
 
 include $(MAKERY)/makery.mk
 
