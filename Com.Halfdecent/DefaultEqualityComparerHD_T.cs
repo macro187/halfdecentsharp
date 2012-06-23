@@ -47,7 +47,7 @@ DefaultEqualityComparerHD()
         // IEquatableHD<T>.Equals()
         typeof( IEquatableHD< T > ).IsAssignableFrom( typeof( T ) )
             ? (EqualsFunc< T >)(
-                (x,y) => SystemEquatable.EqualsBidirectional< T >(
+                (x,y) => EquatableHD.EqualsBidirectional< T >(
                     x, y,
                     (a,b) => ((IEquatableHD< T >)a).Equals( b ),
                     (a,b) => ((IEquatableHD< T >)b).Equals( a ) ) )
@@ -55,14 +55,14 @@ DefaultEqualityComparerHD()
             // IEquatable<T>.Equals()
             : typeof( IEquatable< T > ).IsAssignableFrom( typeof( T ) )
                 ? (EqualsFunc< T >)(
-                    (x,y) => SystemEquatable.EqualsBidirectional< T >(
+                    (x,y) => EquatableHD.EqualsBidirectional< T >(
                         x, y,
                         (a,b) => ((IEquatable< T >)a).Equals( b ),
                         (a,b) => ((IEquatable< T >)b).Equals( a ) ) )
 
                 // System.Object.Equals()
                 : (EqualsFunc< T >)(
-                    (x,y) => SystemEquatable.EqualsBidirectional< T >(
+                    (x,y) => EquatableHD.EqualsBidirectional< T >(
                         x, y,
                         (a,b) => ((object)a).Equals( b ),
                         (a,b) => ((object)b).Equals( a ) ) ),

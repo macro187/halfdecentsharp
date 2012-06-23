@@ -367,19 +367,19 @@ Test_SystemEquatable()
 
     Print( "EqualsBidirectional() equates nulls correctly" );
     Assert(
-        SystemEquatable.EqualsBidirectional(
+        EquatableHD.EqualsBidirectional(
             null,
             null,
             never,
             never ) );
     Assert( !
-        SystemEquatable.EqualsBidirectional(
+        EquatableHD.EqualsBidirectional(
             null,
             new object(),
             always,
             always ) );
     Assert( !
-        SystemEquatable.EqualsBidirectional(
+        EquatableHD.EqualsBidirectional(
             new object(),
             null,
             always,

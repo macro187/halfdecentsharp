@@ -25,15 +25,16 @@ Com.Halfdecent
 
 
 // =============================================================================
-/// A type whose values have an inherent notion of equality
+/// A type whose values can be compared for equality
 ///
-/// This enhanced `IEquatable<T>` carries its own `GetHashCode()`, allowing
-/// types to implement paired equality + hashcode for more than one interface.
+/// This improved version of `System.IEquatable<T>` carries its own
+/// `IEquatable<T>.GetHashCode()`, allowing types to implement equality +
+/// hashcode pairs for more than one interface.
 ///
-/// Note that to conclusively determine equality, <em>both</em> items'
-/// `IEquatable<T>.Equals()` must be consulted.  The reason is that the other
-/// item may be a subtype with a more specific definition of equality.  A
-/// convenient way to do this is `SystemEquatable.EqualsBidirectional()`.
+/// To conclusively determine equality, _both_ items' `IEquatable<T>.Equals()`
+/// must be consulted, because one or the other item may be a subtype with a
+/// more specific definition of equality.  A convenient way to do this is
+/// `EquatableHD.EqualsBidirectional()`.
 ///
 /// Equatability is contravariant in nature but, for unknown reasons, the BCL
 /// designers chose not to make `System.IEquatable<T>` contravariant in `T` - a
