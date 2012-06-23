@@ -47,7 +47,7 @@ Lexer
 public
 Lexer()
     : base(
-        (getState,get,put) => this.Process( getState, get, put ),
+        (getState,get,put) => Process( getState, get, put ),
         null,
         () => {;} )
 {
@@ -59,7 +59,7 @@ Lexer()
 // Private
 // -----------------------------------------------------------------------------
 
-private
+private static
     SCG.IEnumerator< FilterState >
 Process(
     Func< FilterState > getState,
