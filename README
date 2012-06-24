@@ -81,41 +81,41 @@
     Quick Start
 --------------------------------------------------------------------------------
 
-    1.  Get Makery
+    1.  Get Makery and Halfdecent Sharp
 
         $ git clone git://github.com/macro187/makery.git
+
+        $ git clone git://github.com/macro187/halfdecentsharp.git
+
 
     2.  Configure Makery
 
         $ export MAKERY=/path/to/makery
 
-        $ echo "export MAKERY=/path/to/makery" >> ~/.profile
+        $ export MAKERYPATH=/path/to/halfdecentsharp
 
-    3.  Get Halfdecent Sharp
 
-        $ git clone git://github.com/macro187/halfdecentsharp.git
-
-    4.  Add Halfdecent Sharp to the Makery project search path
-
-        $ echo "PROJ_PATHS += /path/to/halfdecentsharp" >> ~/.makeryrc.mk
-
-    5.  Build everything
+    3.  Build everything
 
         $ cd /path/to/halfdecentsharp
 
         $ make buildall
 
-    6.  Test everything
+
+    4.  Test everything
 
         $ make testall
 
-    7.  If you have Doxygen installed, generate documentation for everything
+
+    5.  If you have Doxygen installed, generate documentation for everything
 
         $ make doxygenall
 
-    8.  Look in each project's out/ sub directory for build outputs
 
-    9.  Clean up
+    6.  Look in each project's out/ subdirectory for build outputs
+
+
+    7.  Clean up
 
         $ make cleanall
 
