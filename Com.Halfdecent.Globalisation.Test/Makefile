@@ -18,7 +18,7 @@
 
 MODULES_use += dotnet-exe-project
 MODULES_use += dotnet-csharp
-MODULES_use += dotnet-resbian
+MODULES_use += resbian
 
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Testing)
 DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Globalisation)

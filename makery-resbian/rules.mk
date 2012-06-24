@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------
 # Copyright (c) 2007, 2008, 2009, 2010, 2011, 2012
-# Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+# Ron MacNeil <macro@hotmail.com>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -16,15 +16,16 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet-exe-project
-MODULES_use += dotnet-csharp
-MODULES_use += resbian
+RULE_TARGETS := $(DOTNET_RESBIAN_outfiles)
+RULE_REQS := $(DOTNET_RESBIAN_srcs_abs)
+RULE_REQS += $(call PROJ_GetVar,RUN_reqs,$(DOTNET_RESBIAN_PROJ))
+RULE_OREQ := $(DOTNET_RESBIAN_outdir)
 
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Testing)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Resources)
+define RULE_COMMANDS
+$(foreach c,$(DOTNET_RESBIAN_cultures),$(foreach t,$(call DOTNET_RESBIAN_GetTypes,$(c)),\
+$(MAKE_CHAR_NEWLINE)	$(call PROJ_GetVar,RUN_run,$(DOTNET_RESBIAN_PROJ)) compile $(foreach f,$(call DOTNET_RESBIAN_GetFilesCT,$(c),$(t)) $(call MAKE_EncodeWord,$(call DOTNET_RESBIAN_GetOutfile,$(c),$(t))),$(call SYSTEM_ShellEscape,$(call RUN_ArgPathAbs,$(call MAKE_DecodeWord,$(f)),$(DOTNET_RESBIAN_PROJ))))\
+))
+endef
 
-DOTNET_required_generation = 35
-
-
-include $(MAKERY)/makery.mk
+$(call PROJ_Rule)
 

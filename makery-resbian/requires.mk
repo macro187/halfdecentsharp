@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------
 # Copyright (c) 2007, 2008, 2009, 2010, 2011, 2012
-# Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
+# Ron MacNeil <macro@hotmail.com>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -16,15 +16,6 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet-exe-project
-MODULES_use += dotnet-csharp
-MODULES_use += resbian
-
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Testing)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Resources)
-
-DOTNET_required_generation = 35
-
-
-include $(MAKERY)/makery.mk
+$(call MODULES_Use,dotnet)
+$(call MODULES_Use,out)
 
