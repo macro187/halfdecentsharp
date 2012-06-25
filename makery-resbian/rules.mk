@@ -16,14 +16,14 @@
 # ------------------------------------------------------------------------------
 
 
-RULE_TARGETS := $(DOTNET_RESBIAN_outfiles)
-RULE_REQS := $(DOTNET_RESBIAN_srcs_abs)
-RULE_REQS += $(call PROJ_GetVar,RUN_reqs,$(DOTNET_RESBIAN_PROJ))
-RULE_OREQ := $(DOTNET_RESBIAN_outdir)
+RULE_TARGETS := $(RESBIAN_outfiles)
+RULE_REQS := $(RESBIAN_srcs_abs)
+RULE_REQS += $(call PROJ_GetVar,RUN_reqs,$(RESBIAN_PROJ))
+RULE_OREQ := $(RESBIAN_outdir)
 
 define RULE_COMMANDS
-$(foreach c,$(DOTNET_RESBIAN_cultures),$(foreach t,$(call DOTNET_RESBIAN_GetTypes,$(c)),\
-$(MAKE_CHAR_NEWLINE)	$(call PROJ_GetVar,RUN_run,$(DOTNET_RESBIAN_PROJ)) compile $(foreach f,$(call DOTNET_RESBIAN_GetFilesCT,$(c),$(t)) $(call MAKE_EncodeWord,$(call DOTNET_RESBIAN_GetOutfile,$(c),$(t))),$(call SYSTEM_ShellEscape,$(call RUN_ArgPathAbs,$(call MAKE_DecodeWord,$(f)),$(DOTNET_RESBIAN_PROJ))))\
+$(foreach c,$(RESBIAN_cultures),$(foreach t,$(call RESBIAN_GetTypes,$(c)),\
+$(MAKE_CHAR_NEWLINE)	$(call PROJ_GetVar,RUN_run,$(RESBIAN_PROJ)) compile $(foreach f,$(call RESBIAN_GetFilesCT,$(c),$(t)) $(call MAKE_EncodeWord,$(call RESBIAN_GetOutfile,$(c),$(t))),$(call SYSTEM_ShellEscape,$(call RUN_ArgPathAbs,$(call MAKE_DecodeWord,$(f)),$(RESBIAN_PROJ))))\
 ))
 endef
 

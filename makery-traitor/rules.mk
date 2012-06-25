@@ -16,7 +16,7 @@
 # ------------------------------------------------------------------------------
 
 
-RULE_TARGET := $(TRAITOR_preq)
+RULE_TARGET := $(TRAITOR_dotfile)
 RULE_REQS := $(TRAITOR_srcpreq)
 RULE_REQS += $(call PROJ_GetVar,RUN_reqs,$(TRAITOR_PROJ))
 RULE_OREQ := $(TRAITOR_dir)
@@ -40,7 +40,7 @@ define RULE_COMMANDS
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Updating dotfile..."
-	touch $$(TRAITOR_preq)
+	touch $(call SYSTEM_ShellEscape,$(TRAITOR_dotfile))
 	@echo "=> ...done"
 endef
 

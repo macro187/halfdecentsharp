@@ -22,12 +22,12 @@ MODULES_use += permuda
 MODULES_use += traitor
 MODULES_use += test
 
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Globalisation)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Meta)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.RTypes)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Numerics)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Streams)
+DOTNET_projlibs += Com.Halfdecent
+DOTNET_projlibs += Com.Halfdecent.Globalisation
+DOTNET_projlibs += Com.Halfdecent.Meta
+DOTNET_projlibs += Com.Halfdecent.RTypes
+DOTNET_projlibs += Com.Halfdecent.Numerics
+DOTNET_projlibs += Com.Halfdecent.Streams
 
 DOTNET_required_generation = 35
 

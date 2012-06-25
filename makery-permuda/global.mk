@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Copyright (c) 2010, 2011
+# Copyright (c) 2010, 2011, 2012
 # Ron MacNeil <macro@hotmail.com>
 #
 # Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,9 @@
 # ------------------------------------------------------------------------------
 
 
-PERMUDA_PROJ := $(call PROJ_Locate,Com.Halfdecent.Permuda)
-PERMUDA_PROJ_DESC := Location of the Permuda project
+PERMUDA_PROJ_DESC := \
+Location of the Permuda project
+PERMUDA_PROJ := Com.Halfdecent.Permuda
 MAKERY_GLOBALS += PERMUDA_PROJ
 
 

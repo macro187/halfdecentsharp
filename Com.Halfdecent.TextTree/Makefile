@@ -20,12 +20,12 @@ MODULES_use += dotnet-lib-project
 MODULES_use += dotnet-csharp
 MODULES_use += test
 
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Globalisation)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Meta)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.RTypes)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Streams)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Numerics)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Collections)
+DOTNET_projlibs += Com.Halfdecent.Globalisation
+DOTNET_projlibs += Com.Halfdecent.Meta
+DOTNET_projlibs += Com.Halfdecent.RTypes
+DOTNET_projlibs += Com.Halfdecent.Streams
+DOTNET_projlibs += Com.Halfdecent.Numerics
+DOTNET_projlibs += Com.Halfdecent.Collections
 
 DOTNET_required_generation = 35
 

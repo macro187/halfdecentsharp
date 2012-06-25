@@ -17,7 +17,7 @@
 
 
 # Require the Traitor program
-PROJ_required += $(call MAKE_EncodeWord,$(TRAITOR_PROJ))
+PROJ_required += $(TRAITOR_PROJ)
 
 
 # upstream processor in the preprocessor pipeline
@@ -52,10 +52,13 @@ TRAITOR_dir_DEFAULT = $(OUT_base)/traitor
 OUT_all += $(call MAKE_EncodeWord,$(TRAITOR_dir))
 
 
-# dotfile
+TRAITOR_dotfile_DESC ?= \
+Temp file representing traitor output file(s)
+$(call PROJ_DeclareVar,TRAITOR_dotfile)
+TRAITOR_dotfile_DEFAULT = $(TRAITOR_dir)/dotfile
+
 $(call PROJ_DeclareVar,TRAITOR_preq)
-TRAITOR_preq_DESC ?= Temp file representing traitor output file(s)
-TRAITOR_preq_DEFAULT = $(TRAITOR_dir)/dotfile
+TRAITOR_preq_DEFAULT = $(call MAKE_EncodeWord,$(TRAITOR_dotfile))
 
 
 # subdirs (target)
@@ -67,7 +70,7 @@ TRAITOR_subdirs = $(filter-out ./,$(dir $(TRAITOR_srcs)))
 $(call PROJ_DeclareTargetVar,TRAITOR_rel)
 TRAITOR_rel_DESC ?= Traitor output files relative to TRAITOR_dir
 TRAITOR_rel = \
-$(shell \
+$(call MAKE_Shell,\
 cd $(call SYSTEM_ShellEscape,$(TRAITOR_dir)) && find * -type f -name \*.cs \
 | $(SYSTEM_SHELL_CLEANPATH) \
 | $(SYSTEM_SHELL_ENCODEWORD) \

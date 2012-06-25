@@ -22,8 +22,8 @@ MODULES_use += test
 
 DOTNET_required_generation = 35
 
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Resources)
+DOTNET_projlibs += Com.Halfdecent
+DOTNET_projlibs += Com.Halfdecent.Resources
 
 
 include $(MAKERY)/makery.mk

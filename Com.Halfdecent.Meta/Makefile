@@ -20,8 +20,8 @@ MODULES_use += dotnet-lib-project
 MODULES_use += dotnet-csharp
 MODULES_use += test
 
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Globalisation)
+DOTNET_projlibs += Com.Halfdecent
+DOTNET_projlibs += Com.Halfdecent.Globalisation
 
 DOTNET_required_generation = 35
 

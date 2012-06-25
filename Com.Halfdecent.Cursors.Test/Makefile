@@ -19,8 +19,8 @@
 MODULES_use += dotnet-exe-project
 MODULES_use += dotnet-csharp
 
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Testing)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Cursors)
+DOTNET_projlibs += Com.Halfdecent.Testing
+DOTNET_projlibs += Com.Halfdecent.Cursors
 
 DOTNET_required_generation = 35
 

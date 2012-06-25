@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Copyright (c) 2010, 2011
+# Copyright (c) 2010, 2011, 2012
 # Ron MacNeil <macro@hotmail.com>
 #
 # Permission to use, copy, modify, and distribute this software for any
@@ -16,8 +16,9 @@
 # ------------------------------------------------------------------------------
 
 
-TRAITOR_PROJ := $(call PROJ_Locate,Com.Halfdecent.Traitor)
-TRAITOR_PROJ_DESC := Location of the Resbian project
+TRAITOR_PROJ_DESC := \
+Name of the Traitor project
+TRAITOR_PROJ := Com.Halfdecent.Traitor
 MAKERY_GLOBALS += TRAITOR_PROJ
 
 

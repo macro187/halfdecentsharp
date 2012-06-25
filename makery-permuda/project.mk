@@ -17,7 +17,7 @@
 
 
 # Require the Permuda program
-PROJ_required += $(call MAKE_EncodeWord,$(PERMUDA_PROJ))
+PROJ_required += $(PERMUDA_PROJ)
 
 
 # upstream processor in the preprocessor pipeline
@@ -52,10 +52,14 @@ PERMUDA_dir_DEFAULT = $(OUT_base)/permuda
 OUT_all += $(call MAKE_EncodeWord,$(PERMUDA_dir))
 
 
-# dotfile
+PERMUDA_dotfile_DESC ?= \
+Temp file representing output file(s)
+$(call PROJ_DeclareVar,PERMUDA_dotfile)
+PERMUDA_dotfile_DEFAULT = $(PERMUDA_dir)/dotfile
+
+
 $(call PROJ_DeclareVar,PERMUDA_preq)
-PERMUDA_preq_DESC ?= Temp file representing output file(s)
-PERMUDA_preq_DEFAULT = $(PERMUDA_dir)/dotfile
+PERMUDA_preq_DEFAULT = $(call MAKE_EncodeWord,$(PERMUDA_dotfile))
 
 
 # subdirs (target)
@@ -67,7 +71,7 @@ PERMUDA_subdirs = $(filter-out ./,$(dir $(PERMUDA_srcs)))
 $(call PROJ_DeclareTargetVar,PERMUDA_rel)
 PERMUDA_rel_DESC ?= Permuda output files relative to PERMUDA_dir
 PERMUDA_rel = \
-$(shell \
+$(call MAKE_Shell,\
 cd $(call SYSTEM_ShellEscape,$(PERMUDA_dir)) && find * -type f -name \*.cs \
 | $(SYSTEM_SHELL_CLEANPATH) \
 | $(SYSTEM_SHELL_ENCODEWORD) \

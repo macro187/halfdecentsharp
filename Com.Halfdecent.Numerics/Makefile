@@ -21,9 +21,9 @@ MODULES_use += dotnet-csharp
 MODULES_use += permuda
 MODULES_use += test
 
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.Meta)
-DOTNET_projlibs += $(call MAKE_EncodeWord,../Com.Halfdecent.RTypes)
+DOTNET_projlibs += Com.Halfdecent
+DOTNET_projlibs += Com.Halfdecent.Meta
+DOTNET_projlibs += Com.Halfdecent.RTypes
 
 DOTNET_required_generation = 35
 

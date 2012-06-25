@@ -16,7 +16,7 @@
 # ------------------------------------------------------------------------------
 
 
-RULE_TARGET := $(PERMUDA_preq)
+RULE_TARGET := $(PERMUDA_dotfile)
 RULE_REQS := $(PERMUDA_srcpreq)
 RULE_REQS += $(call PROJ_GetVar,RUN_reqs,$(PERMUDA_PROJ))
 RULE_OREQ := $(PERMUDA_dir)
@@ -40,7 +40,7 @@ define RULE_COMMANDS
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Updating dotfile..."
-	touch $$(PERMUDA_preq)
+	touch $$(call SYSTEM_ShellEscape,$$(PERMUDA_dotfile))
 	@echo "=> ...done"
 endef
 
