@@ -23,8 +23,8 @@ DOTNET_outbase = permuda
 
 DOTNET_required_generation = 35
 
-DOTNET_libs += System.dll
-DOTNET_libs += System.Core.dll
+DOTNET_gaclibs += System.dll
+DOTNET_gaclibs += System.Core.dll
 
 
 include $(MAKERY)/makery.mk
