@@ -16,12 +16,11 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet-lib-project
-MODULES_use += dotnet-csharp
+MODULES_use += csharp-libproject
 
-DOTNET_required_generation = 20
+DOTNET_mingeneration = 20
 
-DOTNET_gaclibs += System.dll
+DOTNETREFERENCES_gac += System.dll
 
 
 include $(MAKERY)/makery.mk

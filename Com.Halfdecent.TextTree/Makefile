@@ -16,18 +16,17 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet-lib-project
-MODULES_use += dotnet-csharp
+MODULES_use += csharp-libproject
 MODULES_use += test
 
-DOTNET_projlibs += Com.Halfdecent.Globalisation
-DOTNET_projlibs += Com.Halfdecent.Meta
-DOTNET_projlibs += Com.Halfdecent.RTypes
-DOTNET_projlibs += Com.Halfdecent.Streams
-DOTNET_projlibs += Com.Halfdecent.Numerics
-DOTNET_projlibs += Com.Halfdecent.Collections
+DOTNETREFERENCES_proj += Com.Halfdecent.Globalisation
+DOTNETREFERENCES_proj += Com.Halfdecent.Meta
+DOTNETREFERENCES_proj += Com.Halfdecent.RTypes
+DOTNETREFERENCES_proj += Com.Halfdecent.Streams
+DOTNETREFERENCES_proj += Com.Halfdecent.Numerics
+DOTNETREFERENCES_proj += Com.Halfdecent.Collections
 
-DOTNET_required_generation = 35
+DOTNET_mingeneration = 35
 
 
 include $(MAKERY)/makery.mk

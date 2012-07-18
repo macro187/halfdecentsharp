@@ -16,15 +16,14 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet-exe-project
-MODULES_use += dotnet-csharp
+MODULES_use += csharp-exeproject
 
-DOTNET_outbase = permuda
+DOTNET_name = permuda
 
-DOTNET_required_generation = 35
+DOTNET_mingeneration = 35
 
-DOTNET_gaclibs += System.dll
-DOTNET_gaclibs += System.Core.dll
+DOTNETREFERENCES_gac += System.dll
+DOTNETREFERENCES_gac += System.Core.dll
 
 
 include $(MAKERY)/makery.mk

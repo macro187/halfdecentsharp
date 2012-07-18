@@ -16,10 +16,9 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet-lib-project
-MODULES_use += dotnet-csharp
+MODULES_use += csharp-libproject
 
-DOTNET_required_generation = 10
+DOTNET_mingeneration = 10
 
 
 include $(MAKERY)/makery.mk

@@ -16,13 +16,12 @@
 # ------------------------------------------------------------------------------
 
 
-MODULES_use += dotnet-lib-project
-MODULES_use += dotnet-csharp
+MODULES_use += csharp-libproject
 MODULES_use += test
 
-DOTNET_projlibs += Com.Halfdecent
+DOTNETREFERENCES_proj += Com.Halfdecent
 
-DOTNET_required_generation = 35
+DOTNET_mingeneration = 35
 
 
 include $(MAKERY)/makery.mk
