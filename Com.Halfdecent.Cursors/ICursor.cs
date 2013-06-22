@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2013
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -61,11 +61,11 @@ AtEnd
 
 /// Try to move the cursor forward a specified number of positions
 ///
-    IInteger
+    long
     /// @returns
     /// Actual number of positions moved
 TryMove(
-    IInteger count
+    long count
     ///< Number of positions to move
     ///  - <tt>GTE( 1 )</tt>
 );
@@ -86,7 +86,7 @@ TryMove(
 // -----------------------------------------------------------------------------
 public bool AtBeginning { get { return this.From.AtBeginning; } }
 public bool AtEnd { get { return this.From.AtEnd; } }
-public IInteger TryMove( IInteger count) { return this.From.TryMove( count ); }
+public long TryMove( long count) { return this.From.TryMove( count ); }
 #endif
 
 

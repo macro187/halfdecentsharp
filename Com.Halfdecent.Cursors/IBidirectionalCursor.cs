@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010
+// Copyright (c) 2010, 2013
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -36,11 +36,11 @@ IBidirectionalCursor
 
 /// Try to move the cursor backward a specified number of positions
 ///
-    IInteger
+    long
     /// @returns
     /// Actual number of positions moved
 TryMoveBack(
-    IInteger count
+    long count
     ///< Number of positions to move
     ///  - <tt>GTE( 1 )</tt>
 );
@@ -59,7 +59,7 @@ TryMoveBack(
 // -----------------------------------------------------------------------------
 // Trait IBidirectionalCursor.Proxy
 // -----------------------------------------------------------------------------
-public IInteger TryMoveBack( IInteger count) { return this.From.TryMoveBack( count ); }
+public long TryMoveBack( long count) { return this.From.TryMoveBack( count ); }
 #endif
 
 
