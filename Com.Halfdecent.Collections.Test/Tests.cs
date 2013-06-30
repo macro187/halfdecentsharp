@@ -207,17 +207,17 @@ Test_CollectionFromStringAdapter()
             new char[] { 'b' } ) );
 
     Print( ".Count" );
-    Assert( c.Count.Equals( 3 ) );
+    Assert( c.Count == 3 );
 
     Print( ".StreamPairs()" );
     IStream< ITupleHD< long, char > > ts = c.StreamPairs();
     ITupleHD< long, char > tup;
     Assert( ts.TryPull( out tup ) );
-    Assert( tup.A.Equals( 0 ) );  Assert( tup.B == 'a' );
+    Assert( tup.A == 0 );  Assert( tup.B == 'a' );
     Assert( ts.TryPull( out tup ) );
-    Assert( tup.A.Equals( 1 ) );  Assert( tup.B == 'b' );
+    Assert( tup.A == 1 );  Assert( tup.B == 'b' );
     Assert( ts.TryPull( out tup ) );
-    Assert( tup.A.Equals( 2 ) );  Assert( tup.B == 'c' );
+    Assert( tup.A == 2 );  Assert( tup.B == 'c' );
     Assert( !ts.TryPull( out tup ) );
 }
 
@@ -334,7 +334,7 @@ Test_CollectionFromSystemStringBuilderAdapter()
             Stream.Create( 'a', 'b', 'c', 'd', 'e', 'f' ) ) );
 
     Print( ".Count" );
-    Assert( c.Count.Equals( 6 ) );
+    Assert( c.Count == 6 );
 
     Print( ".StreamPairs()" );
     var ts = c.StreamPairs();
