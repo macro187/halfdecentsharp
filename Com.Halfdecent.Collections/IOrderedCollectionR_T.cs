@@ -21,7 +21,6 @@ using System.Linq;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 
 
@@ -43,7 +42,7 @@ IOrderedCollectionR<
 #endif
 >
     : IOrderedCollection
-    , IUniqueKeyedCollectionR< IInteger, T >
+    , IUniqueKeyedCollectionR< long, T >
 {
 
 
@@ -57,7 +56,7 @@ IOrderedCollectionR<
 /// specified criteria
 ///
 public static
-    IInteger
+    long
     /// @returns Index of the matching item
     /// - OR -
     /// -1 if no matching item
@@ -69,10 +68,10 @@ IndexWhere<
 )
 {
     NonNull.CheckParameter( where, "where" );
-    foreach( ITupleHD< IInteger, T > t in dis.StreamPairs().AsEnumerable() ) {
+    foreach( ITupleHD< long, T > t in dis.StreamPairs().AsEnumerable() ) {
         if( where( t.B ) ) return t.A;
     }
-    return Integer.Create( -1 );
+    return -1;
 }
 
 
@@ -98,28 +97,28 @@ Covary<
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITupleHD< IInteger, T > >
+    IStream< ITupleHD< long, T > >
 StreamPairs()
 {
     return
         this.From.StreamPairs()
         .AsEnumerable()
-        .Select( t => t.Covary< IInteger, TFrom, IInteger, T >() )
+        .Select( t => t.Covary< long, TFrom, long, T >() )
         .AsStream();
 }
 
-public bool Contains( IInteger key ) { return this.From.Contains( key ); }
+public bool Contains( long key ) { return this.From.Contains( key ); }
 
 public
     IStream< T >
 Stream(
-    IInteger key
+    long key
 )
 {
     return this.From.Stream().Covary< TFrom, T >();
 }
 
-public T Get( IInteger key ) { return this.From.Get( key ); }
+public T Get( long key ) { return this.From.Get( key ); }
 #endif
 
 
@@ -130,24 +129,24 @@ public T Get( IInteger key ) { return this.From.Get( key ); }
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITupleHD< IInteger, T > >
+    IStream< ITupleHD< long, T > >
 StreamPairs()
 {
     return this.From.StreamPairs();
 }
 
-public bool Contains( IInteger key ) { return this.From.Contains( key ); }
+public bool Contains( long key ) { return this.From.Contains( key ); }
 
 public
     IStream< T >
 Stream(
-    IInteger key
+    long key
 )
 {
     return this.From.Stream( key );
 }
 
-public T Get( IInteger key ) { return this.From.Get( key ); }
+public T Get( long key ) { return this.From.Get( key ); }
 #endif
 
 
@@ -160,7 +159,7 @@ public T Get( IInteger key ) { return this.From.Get( key ); }
 public
     T
 Get(
-    IInteger key
+    long key
 )
 {
     NonNull.CheckParameter( key, "key" );
@@ -170,22 +169,21 @@ Get(
 
 
 public
-    IStream< ITupleHD< IInteger, T > >
+    IStream< ITupleHD< long, T > >
 StreamPairs()
 {
     return this.StreamPairsIterator().AsStream();
 }
 
 private
-    SCG.IEnumerable< ITupleHD< IInteger, T > >
+    SCG.IEnumerable< ITupleHD< long, T > >
 StreamPairsIterator()
 {
-    IInteger to = this.SliceIndex.Plus( this.SliceCount );
-    IInteger one = Integer.Create( 1 );
+    long to = this.SliceIndex + this.SliceCount;
     for(
-        IInteger i = this.SliceIndex;
-        i.LT( to );
-        i = i.Plus( one )
+        long i = this.SliceIndex;
+        i < to;
+        i = i + 1
     ) {
         yield return TupleHD.Create( i, this.From.Get( i ) );
     }
@@ -195,15 +193,15 @@ StreamPairsIterator()
 public
     bool
 Contains(
-    IInteger key
+    long key
 )
 {
     NonNull.CheckParameter( key, "key" );
-    return key.GTE< IReal >( Integer.Create( 0 ) ) && key.LT( this.SliceCount );
+    return key.GTE( 0 ) && key < this.SliceCount;
 }
 
 
-public IStream< T > Stream( IInteger key ) {
+public IStream< T > Stream( long key ) {
     return KeyedCollection.StreamViaUniqueKeyedCollection( this, key ); }
 
 

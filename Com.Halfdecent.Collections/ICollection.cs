@@ -17,7 +17,6 @@
 
 
 using Com.Halfdecent;
-using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -43,7 +42,7 @@ ICollection
 
 /// The number of items in the collection
 ///
-IInteger
+long
 Count
 {
     get;
@@ -64,7 +63,7 @@ Count
 // Trait ICollection.Proxy
 // -----------------------------------------------------------------------------
 
-public IInteger Count { get {
+public long Count { get {
     return this.From.Count; } }
 #endif
 

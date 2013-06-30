@@ -20,7 +20,6 @@ using SCG = System.Collections.Generic;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -34,7 +33,7 @@ Com.Halfdecent.Collections
 
 public sealed class
 ExistingOrNextPositionIn
-    : CompositeRType< IInteger >
+    : CompositeRType< long >
 {
 
 
@@ -47,7 +46,7 @@ public static
     void
 CheckParameter(
     ICollection collection,
-    IInteger    item,
+    long        item,
     string      paramName
 )
 {
@@ -62,7 +61,7 @@ public static
     void
 Check(
     ICollection collection,
-    IInteger    item
+    long        item
 )
 {
     ValueReferenceException.Map(
@@ -73,7 +72,7 @@ Check(
 
 
 public static
-    RType< IInteger >
+    RType< long >
 Create(
     ICollection collection
 )
@@ -93,8 +92,8 @@ ExistingOrNextPositionIn(
 )
     : base(
         SystemEnumerable.Create(
-            GTE.Create< IReal >( Integer.Create( 0 ) ).Contravary< IInteger >(),
-            LTE.Create< IReal >( collection.Count ).Contravary< IInteger >() ),
+            GTE.Create< long >( 0 ),
+            LTE.Create< long >( collection.Count ) ),
         r => _S( "{0} is an existing or the next position in the collection", r ),
         r => _S( "{0} is not an existing or the next position in the collection", r ),
         r => _S( "{0} must be an existing or the next position in the collection", r ) )

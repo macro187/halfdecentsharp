@@ -20,9 +20,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -48,8 +45,8 @@ IOrderedCollection/*PERMUDA*/
 ///
     /*PERMUDA NEW*/ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 Slice(
-    IInteger    index,
-    IInteger    count
+    long    index,
+    long    count
 );
 
 

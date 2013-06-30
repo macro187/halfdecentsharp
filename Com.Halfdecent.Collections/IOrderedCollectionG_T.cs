@@ -18,7 +18,6 @@
 
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -39,7 +38,7 @@ IOrderedCollectionG<
 #endif
 >
     : IOrderedCollection
-    , IUniqueKeyedCollectionG< IInteger, T >
+    , IUniqueKeyedCollectionG< long, T >
     , IImplicitUniqueKeyedCollectionG< T >
 {
 
@@ -71,7 +70,7 @@ Contravary<
 // Trait IOrderedCollectionG.Proxy
 // -----------------------------------------------------------------------------
 
-public void Add( IInteger key, T item ) { this.From.Add( key, item ); }
+public void Add( long key, T item ) { this.From.Add( key, item ); }
 #endif
 
 
@@ -84,14 +83,14 @@ public void Add( IInteger key, T item ) { this.From.Add( key, item ); }
 public
     void
 Add(
-    IInteger    key,
-    T           item
+    long    key,
+    T       item
 )
 {
     NonNull.CheckParameter( key, "key" );
     ExistingOrNextPositionIn.CheckParameter( this, key, "key" );
     this.From.Add( this.Trans( key ), item );
-    this.SliceCount = this.SliceCount.Plus( Integer.Create( 1 ) );
+    this.SliceCount = this.SliceCount + 1;
 }
 
 

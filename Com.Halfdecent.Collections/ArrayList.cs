@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2011, 2012
+// Copyright (c) 2011, 2012, 2013
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -18,7 +18,6 @@
 
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 
 
@@ -82,16 +81,17 @@ Create<
     T
 >(
     IStream< T >    items,
-    IInteger        count
+    long?           count
 )
 {
     NonNull.CheckParameter( items, "items" );
+    
     var list =
         count == null
             ? new SCG.List< T >()
             : new SCG.List< T >(
-                count.LT( Integer.Create( int.MaxValue ) )
-                    ? (int)( count.GetValue() )
+                count < int.MaxValue
+                    ? (int)count
                     : int.MaxValue );
     if( items != null )
         items.EmptyTo( list.AsSink() );

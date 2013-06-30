@@ -16,9 +16,6 @@
 // -----------------------------------------------------------------------------
 
 
-using Com.Halfdecent.Numerics;
-
-
 namespace
 Com.Halfdecent.Collections
 {
@@ -38,7 +35,7 @@ IOrderedCollectionCG<
 >
     : IOrderedCollectionC< T >
     , IOrderedCollectionG< T >
-    , IUniqueKeyedCollectionCG< IInteger, T >
+    , IUniqueKeyedCollectionCG< long, T >
 {
 
 

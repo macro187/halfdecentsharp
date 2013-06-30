@@ -22,7 +22,6 @@ using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 
 

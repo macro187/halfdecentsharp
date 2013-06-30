@@ -26,7 +26,6 @@ using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -64,7 +63,7 @@ SplitWhere<
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( where, "where" );
     return
-        SplitWhereIterator< T >( dis, where, false, Integer.Create( -1 ) )
+        SplitWhereIterator< T >( dis, where, false, -1 )
         .AsStream();
 }
 
@@ -93,14 +92,14 @@ SplitAtFirstWhere<
     NonNull.CheckParameter( where, "where" );
 
     IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ > slices =
-        SplitWhereIterator< T >( dis, where, false, Integer.Create( 2 ) )
+        SplitWhereIterator< T >( dis, where, false, 2 )
         .AsStream();
 
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s1;
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s2;
     s1 = slices.Pull();
     if( !slices.TryPull( out s2 ) )
-        s2 = dis.Slice( dis.Count, Integer.Create( 0 ) );
+        s2 = dis.Slice( dis.Count, 0 );
 
     return TupleHD.Create( s1, s2 );
 }
@@ -126,7 +125,7 @@ SplitBeforeWhere<
     NonNull.CheckParameter( dis, "dis" );
     NonNull.CheckParameter( where, "where" );
     return
-        SplitWhereIterator< T >( dis, where, true, Integer.Create( -1 ) )
+        SplitWhereIterator< T >( dis, where, true, -1 )
         .AsStream();
 }
 
@@ -154,14 +153,14 @@ SplitBeforeFirstWhere<
     NonNull.CheckParameter( where, "where" );
 
     IStream< IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ > slices =
-        SplitWhereIterator< T >( dis, where, true, Integer.Create( 2 ) )
+        SplitWhereIterator< T >( dis, where, true, 2 )
         .AsStream();
 
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s1;
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ s2;
     s1 = slices.Pull();
     if( !slices.TryPull( out s2 ) )
-        s2 = dis.Slice( dis.Count, Integer.Create( 0 ) );
+        s2 = dis.Slice( dis.Count, 0 );
 
     return TupleHD.Create( s1, s2 );
 }
@@ -173,52 +172,52 @@ SplitWhereIterator<
     T
 >(
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ dis,
-    Predicate< T >          where,
-    bool                    includeSeparator,
-    IInteger                maxSlices
+    Predicate< T >  where,
+    bool            includeSeparator,
+    long            maxSlices
 )
 {
-    if( maxSlices.Equals( Integer.Create( 1 ) ) ) {
-        yield return dis.Slice( Integer.Create( 0 ), dis.Count );
+    if( maxSlices == 1 ) {
+        yield return dis.Slice( 0, dis.Count );
         yield break;
     }
 
-    IInteger from = Integer.Create( 0 );
-    IInteger count = Integer.Create( 0 );
-    IInteger slices = Integer.Create( 0 );
+    long from = 0;
+    long count = 0;
+    long slices = 0;
     for(
-        IInteger i = Integer.Create( 0 );
-        i.LT( dis.Count );
-        i = i.Plus( Integer.Create( 1 ) )
+        long i = 0;
+        i < dis.Count;
+        i++
     ){
         // This item is a separator
         if( where( dis.Get( i ) ) ) {
 
             // Yield the slice leading up to this separator
             yield return dis.Slice( from, count );
-            slices = slices.Plus( Integer.Create( 1 ) );
+            slices++;
 
             // Start the next slice
             if( includeSeparator ) {
                 from = i;
-                count = Integer.Create( 1 );
+                count = 1;
             } else {
-                from = i.Plus( Integer.Create( 1 ) );
-                count = Integer.Create( 0 );
+                from = i + 1;
+                count = 0;
             }
 
             // If we're one away from the desired number of slices, bail out
             // and use the rest as the last slice
-            if( maxSlices.GT( Integer.Create( 0 ) ) ) {
-                if( slices.GTE( maxSlices.Minus( Integer.Create( 1 ) ) ) ) {
-                    count = dis.Count.Minus( from );
+            if( maxSlices > 0 ) {
+                if( slices >= maxSlices - 1 ) {
+                    count = dis.Count - from;
                     break;
                 }
             }
 
         // This item is not a separator
         } else {
-            count = count.Plus( Integer.Create( 1 ) );
+            count = count + 1;
             continue;
         }
     }

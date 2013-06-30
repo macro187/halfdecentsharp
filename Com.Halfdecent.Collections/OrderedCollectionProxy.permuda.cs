@@ -84,8 +84,8 @@ IProxy.Underlying
 
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
-    IInteger index,
-    IInteger count
+    long index,
+    long count
 )
 {
     return this.From.Slice( index, count );
@@ -99,8 +99,8 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
 
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
-    IInteger index,
-    IInteger count
+    long index,
+    long count
 )
 {
     return this.From.Contravary< TFrom, T >().Slice( index, count );
@@ -114,8 +114,8 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
 
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
-    IInteger index,
-    IInteger count
+    long index,
+    long count
 )
 {
     return this.From.Covary< TFrom, T >().Slice( index, count );

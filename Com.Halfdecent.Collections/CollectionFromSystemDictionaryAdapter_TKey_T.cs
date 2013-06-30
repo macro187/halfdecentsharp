@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2012
+// Copyright (c) 2010, 2012, 2013
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -22,7 +22,6 @@ using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 
 
@@ -232,10 +231,10 @@ Stream(
 // -----------------------------------------------------------------------------
 
 public
-    IInteger
+    long
 Count
 {
-    get { return Integer.Create( this.From.Count ); }
+    get { return this.From.Count; }
 }
 
 

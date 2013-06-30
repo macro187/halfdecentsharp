@@ -18,7 +18,6 @@
 
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -39,7 +38,7 @@ IOrderedCollectionC<
 #endif
 >
     : IOrderedCollection
-    , IUniqueKeyedCollectionC< IInteger, T >
+    , IUniqueKeyedCollectionC< long, T >
 {
 
 
@@ -70,7 +69,7 @@ Contravary<
 // Trait IOrderedCollectionC.Proxy
 // -----------------------------------------------------------------------------
 
-public void Replace( IInteger key, T replacement ) {
+public void Replace( long key, T replacement ) {
     this.From.Replace( key, replacement ); }
 #endif
 
@@ -84,13 +83,13 @@ public void Replace( IInteger key, T replacement ) {
 public
     void
 Replace(
-    IInteger    key,
-    T           replacement
+    long    key,
+    T       replacement
 )
 {
     NonNull.CheckParameter( key, "key" );
-    GTE.CheckParameter< IReal >( Integer.Create( 0 ), key, "key" );
-    LTE.CheckParameter< IReal >( this.Count, key, "key" );
+    GTE.CheckParameter( 0, key, "key" );
+    LTE.CheckParameter( this.Count, key, "key" );
     this.From.Replace( this.Trans( key ), replacement );
 }
 #endif

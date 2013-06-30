@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2012
+// Copyright (c) 2010, 2012, 2013
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -21,7 +21,6 @@ using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 
 
@@ -71,40 +70,40 @@ From
 
 
 // -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionR< IInteger, char >
+// IUniqueKeyedCollectionR< long, char >
 // -----------------------------------------------------------------------------
 
 public
     char
 Get(
-    IInteger key
+    long key
 )
 {
     NonNull.CheckParameter( key, "key" );
     ExistingKeyIn.CheckParameter( this, key, "key" );
-    int i = (int)( key.GetValue() );
+    int i = (int)key;
     return this.From[ i ];
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IKeyedCollectionR< IInteger, char >
+// IKeyedCollectionR< long, char >
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITupleHD< IInteger, char > >
+    IStream< ITupleHD< long, char > >
 StreamPairs()
 {
     return this.StreamPairsIterator().AsStream();
 }
 
 private
-    SCG.IEnumerator< ITupleHD< IInteger, char > >
+    SCG.IEnumerator< ITupleHD< long, char > >
 StreamPairsIterator()
 {
     for( int i = 0; i < this.From.Length; i++ ) {
-        yield return TupleHD.Create( Integer.Create( i ), this.From[ i ] );
+        yield return TupleHD.Create( (long)i, this.From[ i ] );
     }
 }
 
@@ -112,12 +111,11 @@ StreamPairsIterator()
 public
     bool
 Contains(
-    IInteger key
+    long key
 )
 {
-    if( key == null ) return false;
-    if( key.LT( Integer.Create( 0 ) ) ) return false;
-    if( key.GTE( Integer.Create( this.From.Length ) ) ) return false;
+    if( key < 0 ) return false;
+    if( key >= this.From.Length ) return false;
     return true;
 }
 
@@ -125,7 +123,7 @@ Contains(
 public
     IStream< char >
 Stream(
-    IInteger key
+    long key
 )
 {
     return KeyedCollection.StreamViaUniqueKeyedCollection( this, key );
@@ -138,10 +136,10 @@ Stream(
 // -----------------------------------------------------------------------------
 
 public
-    IInteger
+    long
 Count
 {
-    get { return Integer.Create( this.From.Length ); }
+    get { return this.From.Length; }
 }
 
 

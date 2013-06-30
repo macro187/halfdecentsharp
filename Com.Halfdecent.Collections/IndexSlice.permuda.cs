@@ -22,7 +22,6 @@
 
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -47,27 +46,21 @@ public
 IndexSlice/*PERMUDA*/(
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/ from,
     ///< The underlying collection
-    IInteger                    sliceIndex,
+    long                        sliceIndex,
     ///< Index at which the slice begins
     ///  - <tt>GTE( 0 )</tt>
     ///  - <tt>LTE( from.Count )</tt>
-    IInteger                    sliceCount
+    long                        sliceCount
     ///< Length of the slice
     ///  - <tt>GTE( 0 )</tt>
     ///  - <tt>LTE( from.Count - sliceIndex )</tt>
 )
 {
     NonNull.CheckParameter( from, "from" );
-    NonNull.CheckParameter( sliceIndex, "sliceIndex" );
-    GTE.CheckParameter< IReal >(
-        Integer.Create( 0 ), sliceIndex, "sliceIndex" );
-    LTE.CheckParameter< IReal >( from.Count, sliceIndex, "sliceIndex" );
-    NonNull.CheckParameter( sliceCount, "sliceCount" );
-    GTE.CheckParameter< IReal >(
-        Integer.Create( 0 ), sliceCount, "sliceCount" );
-    LTE.CheckParameter<
-        IReal >(
-        from.Count.Minus( sliceIndex ), sliceCount, "sliceCount" );
+    GTE.CheckParameter( 0, sliceIndex, "sliceIndex" );
+    LTE.CheckParameter( from.Count, sliceIndex, "sliceIndex" );
+    GTE.CheckParameter( 0, sliceCount, "sliceCount" );
+    LTE.CheckParameter( from.Count - sliceIndex, sliceCount, "sliceCount" );
     this.From = from;
     this.SliceIndex = sliceIndex;
     this.SliceCount = sliceCount;
@@ -89,7 +82,7 @@ From
 
 
 protected
-    IInteger
+    long
 SliceIndex
 {
     get;
@@ -98,7 +91,7 @@ SliceIndex
 
 
 protected
-    IInteger
+    long
 SliceCount
 {
     get;
@@ -116,15 +109,15 @@ SliceCount
 // No null or bounds checking
 //
 private
-    IInteger
+    long
 Trans(
-    IInteger index
+    long index
 )
 {
     return
-        this.SliceIndex.Equals( Integer.Create( 0 ) )
+        this.SliceIndex == 0
             ? index
-            : this.SliceIndex.Plus( index );
+            : this.SliceIndex + index;
 }
 
 
@@ -142,8 +135,8 @@ Trans(
 
     IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/
 IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
-    IInteger index,
-    IInteger count
+    long index,
+    long count
 )
 {
     return new IndexSlice/*PERMUDA*//*PERMUDA TYPESUFFIX*/(
@@ -158,8 +151,8 @@ IOrderedCollection/*PERMUDA*//*PERMUDA TYPESUFFIX*/.Slice(
 
     IOrderedCollection/*PERMUDA*//*PERMUDA CHARSUFFIX*/
 IOrderedCollection/*PERMUDA*//*PERMUDA CHARSUFFIX*/.Slice(
-    IInteger index,
-    IInteger count
+    long index,
+    long count
 )
 {
     return new IndexSlice/*PERMUDA*//*PERMUDA CHARSUFFIX*/(

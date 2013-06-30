@@ -18,7 +18,6 @@
 
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -33,7 +32,7 @@ Com.Halfdecent.Collections
 public partial interface
 IOrderedCollectionS
     : IOrderedCollection
-    , IUniqueKeyedCollectionS< IInteger >
+    , IUniqueKeyedCollectionS< long >
 {
 
 
@@ -50,7 +49,7 @@ RemoveFirst(
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    dis.RemoveFirst( Integer.Create( 1 ) );
+    dis.RemoveFirst( 1 );
 }
 
 
@@ -58,16 +57,16 @@ public static
     void
 RemoveFirst(
     this IOrderedCollectionS    dis,
-    IInteger                    count
+    long                        count
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    GTE.CheckParameter< IReal >( Integer.Create( 0 ), count, "count" );
-    LTE.CheckParameter< IReal >( dis.Count, count, "count" );
+    GTE.CheckParameter( 0, count, "count" );
+    LTE.CheckParameter( dis.Count, count, "count" );
 
-    while( count.GT( Integer.Create( 0 ) ) ) {
-        dis.Remove( Integer.Create( 0 ) );
-        count = count.Minus( Integer.Create( 1 ) );
+    while( count > 0 ) {
+        dis.Remove( 0 );
+        count = count - 1;
     }
 }
 
@@ -79,7 +78,7 @@ RemoveLast(
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    dis.RemoveLast( Integer.Create( 1 ) );
+    dis.RemoveLast( 1 );
 }
 
 
@@ -87,16 +86,16 @@ public static
     void
 RemoveLast(
     this IOrderedCollectionS    dis,
-    IInteger                    count
+    long                        count
 )
 {
     NonNull.CheckParameter( dis, "dis" );
-    GTE.CheckParameter< IReal >( Integer.Create( 0 ), count, "count" );
-    LTE.CheckParameter< IReal >( dis.Count, count, "count" );
+    GTE.CheckParameter( 0, count, "count" );
+    LTE.CheckParameter( dis.Count, count, "count" );
 
-    while( count.GT( Integer.Create( 0 ) ) ) {
-        dis.Remove( dis.Count.Minus( Integer.Create( 1 ) ) );
-        count = count.Minus( Integer.Create( 1 ) );
+    while( count > 0 ) {
+        dis.Remove( dis.Count - 1 );
+        count = count - 1;
     }
 }
 #endif
@@ -108,9 +107,9 @@ RemoveLast(
 // Trait IOrderedCollectionS.Proxy
 // -----------------------------------------------------------------------------
 
-public void RemoveAll( IInteger key ) { this.From.RemoveAll( key ); }
+public void RemoveAll( long key ) { this.From.RemoveAll( key ); }
 
-public void Remove( IInteger key ) { this.From.Remove( key ); }
+public void Remove( long key ) { this.From.Remove( key ); }
 #endif
 
 
@@ -123,18 +122,17 @@ public void Remove( IInteger key ) { this.From.Remove( key ); }
 public
     void
 Remove(
-    IInteger key
+    long key
 )
 {
-    NonNull.CheckParameter( key, "key" );
-    GTE.CheckParameter< IReal >( Integer.Create( 0 ), key, "key" );
-    LTE.CheckParameter< IReal >( this.Count, key, "key" );
+    GTE.CheckParameter( 0, key, "key" );
+    LTE.CheckParameter( this.Count, key, "key" );
     this.From.Remove( this.Trans( key ) );
-    this.SliceCount = this.SliceCount.Minus( Integer.Create( 1 ) );
+    this.SliceCount = this.SliceCount - 1;
 }
 
 
-public void RemoveAll( IInteger key ) { this.Remove( key ); }
+public void RemoveAll( long key ) { this.Remove( key ); }
 #endif
 
 

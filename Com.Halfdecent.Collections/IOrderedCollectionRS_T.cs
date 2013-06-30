@@ -17,7 +17,6 @@
 
 
 using System;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
 
 
@@ -36,7 +35,7 @@ IOrderedCollectionRS<
 >
     : IOrderedCollectionR< T >
     , IOrderedCollectionS
-    , IUniqueKeyedCollectionRS< IInteger, T >
+    , IUniqueKeyedCollectionRS< long, T >
 {
 
 
@@ -54,7 +53,7 @@ IOrderedCollectionRS<
 // Trait IOrderedCollectionRS.Proxy
 // -----------------------------------------------------------------------------
 
-public IStream< T > GetAndRemoveAll( IInteger key ) {
+public IStream< T > GetAndRemoveAll( long key ) {
     return this.From.GetAndRemoveAll( key ); }
 #endif
 
@@ -65,7 +64,7 @@ public IStream< T > GetAndRemoveAll( IInteger key ) {
 // Trait IOrderedCollectionRS< T >.IndexSlice
 // -----------------------------------------------------------------------------
 
-public IStream< T > GetAndRemoveAll( IInteger key ) {
+public IStream< T > GetAndRemoveAll( long key ) {
     return KeyedCollection
         .GetAndRemoveAllViaUniqueKeyedCollection( this, key ); }
 

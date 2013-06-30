@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2012
+// Copyright (c) 2010, 2012, 2013
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -22,8 +22,8 @@ using System.Linq;
 using Com.Halfdecent;
 using Com.Halfdecent.Meta;
 using Com.Halfdecent.RTypes;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Streams;
+using Com.Halfdecent.Numerics;
 
 
 namespace
@@ -81,31 +81,29 @@ From
 public
     void
 Replace(
-    IInteger    key,
-    T           replacement
+    long    key,
+    T       replacement
 )
 {
-    NonNull.CheckParameter( key, "key" );
     ExistingKeyIn.CheckParameter( this, key, "key" );
-    int i = (int)( key.GetValue() );
+    int i = (int)key;
     this.From[ i ] = replacement;
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IUniqueKeyedCollectionR< IInteger, T >
+// IUniqueKeyedCollectionR< long, T >
 // -----------------------------------------------------------------------------
 
 public
     T
 Get(
-    IInteger key
+    long key
 )
 {
-    NonNull.CheckParameter( key, "key" );
     ExistingKeyIn.CheckParameter( this, key, "key" );
-    int i = (int)( key.GetValue() );
+    int i = (int)key;
     return this.From[ i ];
 }
 
@@ -118,25 +116,24 @@ Get(
 public
     void
 Remove(
-    IInteger key
+    long key
 )
 {
-    NonNull.CheckParameter( key, "key" );
     ExistingKeyIn.CheckParameter( this, key, "key" );
-    int i = (int)( key.GetValue() );
+    int i = (int)key;
     this.From.RemoveAt( i );
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IKeyedCollectionS< IInteger >
+// IKeyedCollectionS< long >
 // -----------------------------------------------------------------------------
 
 public
     void
 RemoveAll(
-    IInteger key
+    long key
 )
 {
     this.Remove( key );
@@ -145,33 +142,32 @@ RemoveAll(
 
 
 // -----------------------------------------------------------------------------
-// IKeyedCollectionG< IInteger, T >
+// IKeyedCollectionG< long, T >
 // -----------------------------------------------------------------------------
 
 public
     void
 Add(
-    IInteger    key,
-    T           item
+    long    key,
+    T       item
 )
 {
-    NonNull.CheckParameter( key, "key" );
     ExistingOrNextPositionIn.CheckParameter( this, key, "key" );
-    InInt32Range.CheckParameter( key, "key" );
-    int i = (int)( key.GetValue() );
+    InInt32Range.CheckParameter( Real.Create( key ), "key" );
+    int i = (int)key;
     this.From.Insert( i, item );
 }
 
 
 
 // -----------------------------------------------------------------------------
-// IKeyedCollectionRC< IInteger, T >
+// IKeyedCollectionRC< long, T >
 // -----------------------------------------------------------------------------
 
 public
     IFilter< T, T >
 GetAndReplaceAll(
-    IInteger key
+    long key
 )
 {
     return KeyedCollection
@@ -181,13 +177,13 @@ GetAndReplaceAll(
 
 
 // -----------------------------------------------------------------------------
-// IKeyedCollectionRS< IInteger, T >
+// IKeyedCollectionRS< long, T >
 // -----------------------------------------------------------------------------
 
 public
     IStream< T >
 GetAndRemoveAll(
-    IInteger key
+    long key
 )
 {
     return KeyedCollection
@@ -197,22 +193,22 @@ GetAndRemoveAll(
 
 
 // -----------------------------------------------------------------------------
-// IKeyedCollectionR< IInteger, T >
+// IKeyedCollectionR< long, T >
 // -----------------------------------------------------------------------------
 
 public
-    IStream< ITupleHD< IInteger, T > >
+    IStream< ITupleHD< long, T > >
 StreamPairs()
 {
     return this.StreamPairsIterator().AsStream();
 }
 
 private
-    SCG.IEnumerator< ITupleHD< IInteger, T > >
+    SCG.IEnumerator< ITupleHD< long, T > >
 StreamPairsIterator()
 {
     for( int i = 0; i < this.From.Count; i++ ) {
-        yield return TupleHD.Create( Integer.Create( i ), this.From[ i ] );
+        yield return TupleHD.Create( (long)i, this.From[ i ] );
     }
 }
 
@@ -220,12 +216,11 @@ StreamPairsIterator()
 public
     bool
 Contains(
-    IInteger key
+    long key
 )
 {
-    if( key == null ) return false;
-    if( key.LT( Integer.Create( 0 ) ) ) return false;
-    if( key.GTE( Integer.Create( this.From.Count ) ) ) return false;
+    if( key < 0 ) return false;
+    if( key >= this.From.Count ) return false;
     return true;
 }
 
@@ -233,7 +228,7 @@ Contains(
 public
     IStream< T >
 Stream(
-    IInteger key
+    long key
 )
 {
     return KeyedCollection.StreamViaUniqueKeyedCollection( this, key );
@@ -246,10 +241,10 @@ Stream(
 // -----------------------------------------------------------------------------
 
 public
-    IInteger
+    long
 Count
 {
-    get { return Integer.Create( this.From.Count ); }
+    get { return this.From.Count; }
 }
 
 

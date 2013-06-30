@@ -53,7 +53,7 @@ IOrderedCollection
 // Trait IOrderedCollection.IndexSlice
 // -----------------------------------------------------------------------------
 
-public IInteger Count { get { return this.SliceCount; } }
+public long Count { get { return this.SliceCount; } }
 #endif
 
 
