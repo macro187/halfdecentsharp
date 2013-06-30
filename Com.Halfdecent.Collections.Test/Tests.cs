@@ -761,6 +761,113 @@ Test_IOrderedCollectionR_T_SplitWhere()
 }
 
 
+[Test( "TreeNode<T>" )]
+public static
+void
+Test_TreeNode_T()
+{
+    TreeNode<string> root =
+        new TreeNode<string>( "A1",
+            new TreeNode<string>( "B1" ),
+            new TreeNode<string>( "B2" ) );
+
+    Assert( root.Item == "A1" );
+    Assert( root.Children.Count == 2 );
+    Assert( root.Children[0].Item == "B1" );
+    Assert( root.Children[0].Children.Count == 0 );
+    Assert( root.Children[1].Item == "B2" );
+    Assert( root.Children[1].Children.Count == 0 );
+}
+
+
+[Test( "Tree.TraverseDepthFirst()" )]
+public static
+void
+Test_Tree_TraverseDepthFirst()
+{
+    TreeNode<string> root =
+        new TreeNode<string>( "A",
+            new TreeNode<string>( "AA",
+                new TreeNode<string>( "AAA" ),
+                new TreeNode<string>( "AAB" ) ),
+            new TreeNode<string>( "AB",
+                new TreeNode<string>( "ABA" ),
+                new TreeNode<string>( "ABB" ) ) );
+
+    var events =
+        Tree.TraverseDepthFirst( root, n => n.Children )
+        .AsStream();
+
+    TreeEvent<TreeNode<string>> te;
+    NodeTreeEvent<TreeNode<string>> tne;
+
+    te = events.Pull();
+    tne = (NodeTreeEvent<TreeNode<string>>)te;
+    Assert( tne.Node.Item == "A" );
+
+    te = events.Pull();
+    Assert( te is DescendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    tne = (NodeTreeEvent<TreeNode<string>>)te;
+    Assert( tne.Node.Item == "AA" );
+
+    te = events.Pull();
+    Assert( te is DescendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    tne = (NodeTreeEvent<TreeNode<string>>)te;
+    Assert( tne.Node.Item == "AAA" );
+
+    te = events.Pull();
+    Assert( te is AscendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    Assert( te is DescendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    tne = (NodeTreeEvent<TreeNode<string>>)te;
+    Assert( tne.Node.Item == "AAB" );
+
+    te = events.Pull();
+    Assert( te is AscendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    Assert( te is AscendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    Assert( te is DescendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    tne = (NodeTreeEvent<TreeNode<string>>)te;
+    Assert( tne.Node.Item == "AB" );
+
+    te = events.Pull();
+    Assert( te is DescendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    tne = (NodeTreeEvent<TreeNode<string>>)te;
+    Assert( tne.Node.Item == "ABA" );
+
+    te = events.Pull();
+    Assert( te is AscendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    Assert( te is DescendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    tne = (NodeTreeEvent<TreeNode<string>>)te;
+    Assert( tne.Node.Item == "ABB" );
+
+    te = events.Pull();
+    Assert( te is AscendTreeEvent<TreeNode<string>> );
+
+    te = events.Pull();
+    Assert( te is AscendTreeEvent<TreeNode<string>> );
+
+    Assert( !events.TryPull().HasValue );
+}
+
 
 
 } // type
