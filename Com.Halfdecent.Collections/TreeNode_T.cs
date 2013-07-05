@@ -26,18 +26,14 @@ Com.Halfdecent.Collections
 {
 
 
-/// <summary>
 /// A tree node
-/// </summary>
 ///
 public class
 TreeNode<T>
 {
 
 
-/// <summary>
-/// Initialise a new <see cref="TreeNode<T>"/>
-/// </summary>
+/// Initialise a new `TreeNode<T>`
 ///
 public
 TreeNode(
@@ -48,13 +44,11 @@ TreeNode(
     NonNull.CheckParameter( item, "item" );
     children = children ?? new TreeNode<T>[]{};
     this.Item = item;
-    this.Children = children;
+    this.Children = children.AsHalfdecentCollection();
 }
 
 
-/// <summary>
 /// The item contained in the node
-/// </summary>
 ///
 public
     T
@@ -65,13 +59,10 @@ Item
 }
 
 
-/// <summary>
 /// The node's children
-/// </summary>
 ///
 public
-    // TODO This should be ReadOnlyList<T> in .NET 4.5
-    IList<TreeNode<T>>
+    IOrderedCollectionR<TreeNode<T>>
 Children
 {
     get;

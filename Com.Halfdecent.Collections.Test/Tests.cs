@@ -773,10 +773,10 @@ Test_TreeNode_T()
 
     Assert( root.Item == "A1" );
     Assert( root.Children.Count == 2 );
-    Assert( root.Children[0].Item == "B1" );
-    Assert( root.Children[0].Children.Count == 0 );
-    Assert( root.Children[1].Item == "B2" );
-    Assert( root.Children[1].Children.Count == 0 );
+    Assert( root.Children.Get(0).Item == "B1" );
+    Assert( root.Children.Get(0).Children.Count == 0 );
+    Assert( root.Children.Get(1).Item == "B2" );
+    Assert( root.Children.Get(1).Children.Count == 0 );
 }
 
 
@@ -794,9 +794,7 @@ Test_Tree_TraverseDepthFirst()
                 new TreeNode<string>( "ABA" ),
                 new TreeNode<string>( "ABB" ) ) );
 
-    var events =
-        Tree.TraverseDepthFirst( root, n => n.Children )
-        .AsStream();
+    var events = Tree.TraverseDepthFirst( root, n => n.Children.Stream() );
 
     TreeEvent<TreeNode<string>> te;
     NodeTreeEvent<TreeNode<string>> tne;

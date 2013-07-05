@@ -27,46 +27,47 @@ Com.Halfdecent.Collections
 {
 
 
-/// <summary>
 /// Operations on things shaped like trees
-/// </summary>
 ///
 public static class
 Tree
 {
 
 
-/// <summary>
 /// Traverse a tree in depth-first pre-order
-/// </summary>
-/// <param name="node">
-/// The root node
-/// [NonNull]
-/// </param>
-/// <param name="getChildrenFunc">
-/// A function that gets a node's child nodes
-/// [NonNull]
-/// </param>
-/// <returns>
-/// Lazily-evaluated stream of events that occur over the course of traversing
-/// the specified tree.
-/// </returns>
 ///
 public static
-    IEnumerable<TreeEvent<T>>
+    IStream<TreeEvent<T>>
+    /// @returns A lazy stream of descend, ascend, and node-visit events
 TraverseDepthFirst<T>(
-    T                       node,
-    Func<T,IEnumerable<T>>  getChildrenFunc
+    T                   node,
+    ///< The root node
+    ///  [NonNull]
+    Func<T,IStream<T>>  getChildrenFunc
+    ///< A function that gets a node's child nodes
+    ///  [NonNull]
+)
+{
+    return TraverseDepthFirstImpl( node, getChildrenFunc ).AsStream();
+}
+
+
+private static
+    IEnumerable<TreeEvent<T>>
+TraverseDepthFirstImpl<T>(
+    T                   node,
+    Func<T,IStream<T>>  getChildrenFunc
 )
 {
     NonNull.CheckParameter( node, "node" );
     NonNull.CheckParameter( getChildrenFunc, "getChildrenFunc" );
     yield return new NodeTreeEvent<T>( node );
-    foreach( T n in getChildrenFunc( node ) ) {
+    foreach( T n in getChildrenFunc( node ).AsEnumerable() ) {
         yield return new DescendTreeEvent<T>();
         foreach(
-            TreeEvent<T> e
-            in TraverseDepthFirst( n, getChildrenFunc ))
+            var e
+            in TraverseDepthFirst( n, getChildrenFunc ).AsEnumerable()
+        )
             yield return e;
         yield return new AscendTreeEvent<T>();
     }
@@ -74,6 +75,6 @@ TraverseDepthFirst<T>(
 
 
 
-} // type
-} // namespace
+}
+}
 

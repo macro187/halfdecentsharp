@@ -25,9 +25,7 @@ Com.Halfdecent.Collections
 
 
 
-/// <summary>
-/// An event in the course of traversing a tree
-/// </summary>
+/// A tree traversal event
 ///
 public abstract class
 TreeEvent<T>
@@ -42,9 +40,7 @@ TreeEvent()
 
 
 
-/// <summary>
-/// Visit a node in the course of traversing a tree
-/// </summary>
+/// A node was visited while traversing a tree
 ///
 public class
 NodeTreeEvent<T>
@@ -71,9 +67,8 @@ Node
 
 
 
-/// <summary>
-/// Descend to a node's child in the course of traversing a tree
-/// </summary>
+/// A descent to a child node occurred while traversing a tree
+///
 public class
 DescendTreeEvent<T>
     : TreeEvent<T>
@@ -88,9 +83,8 @@ DescendTreeEvent()
 
 
 
-/// <summary>
-/// Ascend to a node's parent in the course of traversing a tree
-/// </summary>
+/// An ascent to a parent node occurred while traversing a tree
+///
 public class
 AscendTreeEvent<T>
     : TreeEvent<T>
