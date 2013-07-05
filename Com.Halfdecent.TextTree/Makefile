@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Copyright (c) 2010, 2012
+# Copyright (c) 2010, 2012, 2013
 # Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 #
 # Permission to use, copy, modify, and distribute this software for any
@@ -23,7 +23,6 @@ DOTNETREFERENCES_proj += Com.Halfdecent.Globalisation
 DOTNETREFERENCES_proj += Com.Halfdecent.Meta
 DOTNETREFERENCES_proj += Com.Halfdecent.RTypes
 DOTNETREFERENCES_proj += Com.Halfdecent.Streams
-DOTNETREFERENCES_proj += Com.Halfdecent.Numerics
 DOTNETREFERENCES_proj += Com.Halfdecent.Collections
 
 DOTNET_mingeneration = 35

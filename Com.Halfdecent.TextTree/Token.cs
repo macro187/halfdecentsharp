@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011
+// Copyright (c) 2010, 2011, 2013
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -37,7 +37,7 @@ Token
 
 internal
 Token(
-    int lineNumber
+    long lineNumber
 )
 {
     this.LineNumber = lineNumber;
@@ -50,7 +50,7 @@ Token(
 // -----------------------------------------------------------------------------
 
 public
-int
+long
 LineNumber
 {
     get;

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011, 2012
+// Copyright (c) 2010, 2011, 2012, 2013
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -38,7 +38,7 @@ DeindentToken
 
 public
 DeindentToken(
-    int lineNumber
+    long lineNumber
 )
     : base( lineNumber )
 {

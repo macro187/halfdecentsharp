@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Copyright (c) 2010, 2011, 2012
+// Copyright (c) 2010, 2011, 2012, 2013
 // Ron MacNeil <macro187 AT users DOT sourceforge DOT net>
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -20,7 +20,6 @@ using System;
 using System.Linq;
 using SCG = System.Collections.Generic;
 using Com.Halfdecent.Streams;
-using Com.Halfdecent.Numerics;
 using Com.Halfdecent.Collections;
 
 
@@ -68,8 +67,8 @@ Process(
 )
 {
     var indent = ArrayList.Create< char >();
-    var stops = ArrayList.Create< IInteger >();
-    int linenum = 0;
+    var stops = ArrayList.Create< long >();
+    long linenum = 0;
 
     for( ;; ) {
 
@@ -88,10 +87,8 @@ Process(
 
         // Pop stops off indent until it's the same length (or shorter) than
         // the new indent
-        while( indent.Count.GT( newindent.Count ) ) {
-            indent.RemoveLast(
-                stops.Get(
-                    stops.Count.Minus( Integer.Create( 1 ) ) ) );
+        while( indent.Count > newindent.Count ) {
+            indent.RemoveLast( stops.Get( stops.Count - 1 ) );
             stops.RemoveLast();
 
             put( new DeindentToken( linenum ) );
@@ -101,11 +98,9 @@ Process(
         // Pop stops off the indent until it equals the same section of the
         // new indent
         while( !indent.Stream().SequenceEqual(
-            newindent.Slice( Integer.Create( 0 ), indent.Count ).Stream() )
+            newindent.Slice( 0, indent.Count ).Stream() )
         ) {
-            indent.RemoveLast(
-                stops.Get(
-                    stops.Count.Minus( Integer.Create( 1 ) ) ) );
+            indent.RemoveLast( stops.Get( stops.Count - 1 ) );
             stops.RemoveLast();
 
             put( new DeindentToken( linenum ) );
@@ -113,14 +108,13 @@ Process(
         }
 
         // If the new indent is longer than indent, push a new stop
-        if( newindent.Count.GT( indent.Count ) ) {
-            IInteger stoplen = newindent.Count.Minus( indent.Count );
+        if( newindent.Count > indent.Count ) {
+            long stoplen = newindent.Count - indent.Count;
             stops.Add( stoplen );
             newindent
                 .Slice( indent.Count, stoplen )
                 .Stream()
-                .EmptyTo(
-                    indent.AsSink() );
+                .EmptyTo( indent.AsSink() );
 
             put( new IndentToken( linenum ) );
             yield return FilterState.Have;
@@ -128,7 +122,7 @@ Process(
 
         // Yield the data
         // TODO Trim?
-        if( data.Count.Equals( Integer.Create( 0 ) ) ) continue;
+        if( data.Count == 0 ) continue;
 
         put(
             new DataToken(
@@ -137,8 +131,8 @@ Process(
         yield return FilterState.Have;
     }
 
-    int stopcount = (int)stops.Count.GetValue();
-    for( int i = 0; i < stopcount; i++ ) {
+    long stopcount = stops.Count;
+    for( long i = 0; i < stopcount; i++ ) {
         put( new DeindentToken( linenum ) );
         yield return FilterState.Have;
     }
