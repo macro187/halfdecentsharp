@@ -47,7 +47,7 @@ TRAITOR_srcpreq_DEFAULT = $($(TRAITOR_ppfrom)_preq)
 # output dir
 $(call PROJ_DeclareVar,TRAITOR_dir)
 TRAITOR_dir_DESC ?= Directory to put processed source code file(s) in
-TRAITOR_dir_DEFAULT = $(OUT_base)/traitor
+TRAITOR_dir_DEFAULT = $(OUT_dir)/traitor
 
 
 TRAITOR_dotfile_DESC ?= \

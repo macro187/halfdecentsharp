@@ -47,7 +47,7 @@ PERMUDA_srcpreq_DEFAULT = $($(PERMUDA_ppfrom)_preq)
 # output dir
 $(call PROJ_DeclareVar,PERMUDA_dir)
 PERMUDA_dir_DESC ?= Directory to put output file(s) in
-PERMUDA_dir_DEFAULT = $(OUT_base)/permuda
+PERMUDA_dir_DEFAULT = $(OUT_dir)/permuda
 
 
 PERMUDA_dotfile_DESC ?= \
