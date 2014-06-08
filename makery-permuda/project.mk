@@ -50,12 +50,6 @@ PERMUDA_dir_DESC ?= Directory to put output file(s) in
 PERMUDA_dir_DEFAULT = $(OUT_dir)/permuda
 
 
-PERMUDA_dotfile_DESC ?= \
-Temp file representing output file(s)
-$(call PROJ_DeclareVar,PERMUDA_dotfile)
-PERMUDA_dotfile_DEFAULT = $(PERMUDA_dir)/dotfile
-
-
 $(call PROJ_DeclareVar,PERMUDA_preq)
 PERMUDA_preq_DEFAULT = $(call MAKE_EncodeWord,$(PERMUDA_dotfile))
 

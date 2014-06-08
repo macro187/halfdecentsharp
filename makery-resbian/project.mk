@@ -54,12 +54,6 @@ RESBIAN_cultures = \
 $(sort $(call MAKE_PathParentName,$(RESBIAN_srcs)))
 
 
-RESBIAN_dotfile_DESC ?= \
-(read-only) Dotfile representing the resbian output files
-$(call PROJ_DeclareVar,RESBIAN_dotfile)
-RESBIAN_dotfile = $(OUT_dir)/_resbian
-
-
 RESBIAN_outfiles_DESC ?= \
 (read-only) Output .resources files (list)
 $(call PROJ_DeclareVar,RESBIAN_outfiles)

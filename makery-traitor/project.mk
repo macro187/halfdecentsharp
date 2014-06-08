@@ -50,11 +50,6 @@ TRAITOR_dir_DESC ?= Directory to put processed source code file(s) in
 TRAITOR_dir_DEFAULT = $(OUT_dir)/traitor
 
 
-TRAITOR_dotfile_DESC ?= \
-Temp file representing traitor output file(s)
-$(call PROJ_DeclareVar,TRAITOR_dotfile)
-TRAITOR_dotfile_DEFAULT = $(TRAITOR_dir)/dotfile
-
 $(call PROJ_DeclareVar,TRAITOR_preq)
 TRAITOR_preq_DEFAULT = $(call MAKE_EncodeWord,$(TRAITOR_dotfile))
 
