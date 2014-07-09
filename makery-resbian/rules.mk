@@ -19,15 +19,17 @@
 RULE_TARGET := $(RESBIAN_dotfile)
 RULE_REQDBYS := $(RESBIAN_outfiles)
 RULE_REQS := $(RESBIAN_srcs_abs)
-RULE_REQS += $(call PROJ_GetVar,RUN_reqs,$(RESBIAN_PROJ))
+RULE_REQS += $(call PROJ_GetVar,RUNNABLE_dotfile,$(RESBIAN_PROJ))
 RULE_OREQ := $(RESBIAN_outdir)
 
 define RULE_COMMANDS
+	rm -rf $(call SYSTEM_ShellEscape,$(RESBIAN_outdir))/*
+
 $(foreach c,$(RESBIAN_cultures),$(foreach t,$(call RESBIAN_GetTypes,$(c)),\
-$(MAKE_CHAR_NEWLINE)	$(call PROJ_GetVar,RUN_run,$(RESBIAN_PROJ)) compile $(foreach f,$(call RESBIAN_GetFilesCT,$(c),$(t)) $(call MAKE_EncodeWord,$(call RESBIAN_GetOutfile,$(c),$(t))),$(call SYSTEM_ShellEscape,$(call RUN_ArgPathAbs,$(call MAKE_DecodeWord,$(f)),$(RESBIAN_PROJ))))\
+$(MAKE_CHAR_NEWLINE)	$(call PROJ_GetVar,RUNNABLE_run,$(RESBIAN_PROJ)) compile $(foreach f,$(call RESBIAN_GetFilesCT,$(c),$(t)) $(call MAKE_EncodeWord,$(call RESBIAN_GetOutfile,$(c),$(t))),$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(call MAKE_DecodeWord,$(f)),$(RESBIAN_PROJ))))\
 ))
 
-	touch $(RESBIAN_dotfile)
+	touch $(call SYSTEM_ShellEscape,$(RESBIAN_dotfile))
 endef
 
 $(call PROJ_Rule)

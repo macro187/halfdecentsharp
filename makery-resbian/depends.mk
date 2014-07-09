@@ -17,5 +17,4 @@
 
 
 $(call MODULES_Use,dotnet)
-$(call MODULES_Use,out)
 

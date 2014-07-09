@@ -44,10 +44,8 @@ TRAITOR_srcpreq_DESC ?= Source code files prerequisite files (read-only)
 TRAITOR_srcpreq_DEFAULT = $($(TRAITOR_ppfrom)_preq)
 
 
-# output dir
 $(call PROJ_DeclareVar,TRAITOR_dir)
-TRAITOR_dir_DESC ?= Directory to put processed source code file(s) in
-TRAITOR_dir_DEFAULT = $(OUT_dir)/traitor
+TRAITOR_dir = $(TRAITOR_outdir)
 
 
 $(call PROJ_DeclareVar,TRAITOR_preq)
@@ -59,12 +57,12 @@ $(call PROJ_DeclareTargetVar,TRAITOR_subdirs)
 TRAITOR_subdirs = $(filter-out ./,$(dir $(TRAITOR_srcs)))
 
 
-# output files relative to TRAITOR_dir (target)
+# output files relative to TRAITOR_outdir (target)
 $(call PROJ_DeclareTargetVar,TRAITOR_rel)
-TRAITOR_rel_DESC ?= Traitor output files relative to TRAITOR_dir
+TRAITOR_rel_DESC ?= Traitor output files relative to TRAITOR_outdir
 TRAITOR_rel = \
 $(call MAKE_Shell,\
-cd $(call SYSTEM_ShellEscape,$(TRAITOR_dir)) && find * -type f -name \*.cs \
+cd $(call SYSTEM_ShellEscape,$(TRAITOR_outdir)) && find * -type f -name \*.cs \
 | $(SYSTEM_SHELL_CLEANPATH) \
 | $(SYSTEM_SHELL_ENCODEWORD) \
 )

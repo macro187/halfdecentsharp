@@ -44,10 +44,8 @@ PERMUDA_srcpreq_DESC ?= Source code files prerequisite files (read-only)
 PERMUDA_srcpreq_DEFAULT = $($(PERMUDA_ppfrom)_preq)
 
 
-# output dir
 $(call PROJ_DeclareVar,PERMUDA_dir)
-PERMUDA_dir_DESC ?= Directory to put output file(s) in
-PERMUDA_dir_DEFAULT = $(OUT_dir)/permuda
+PERMUDA_dir = $(PERMUDA_outdir)
 
 
 $(call PROJ_DeclareVar,PERMUDA_preq)
@@ -59,12 +57,12 @@ $(call PROJ_DeclareTargetVar,PERMUDA_subdirs)
 PERMUDA_subdirs = $(filter-out ./,$(dir $(PERMUDA_srcs)))
 
 
-# output files relative to PERMUDA_dir (target)
+# output files relative to PERMUDA_outdir (target)
 $(call PROJ_DeclareTargetVar,PERMUDA_rel)
-PERMUDA_rel_DESC ?= Permuda output files relative to PERMUDA_dir
+PERMUDA_rel_DESC ?= Permuda output files relative to PERMUDA_outdir
 PERMUDA_rel = \
 $(call MAKE_Shell,\
-cd $(call SYSTEM_ShellEscape,$(PERMUDA_dir)) && find * -type f -name \*.cs \
+cd $(call SYSTEM_ShellEscape,$(PERMUDA_outdir)) && find * -type f -name \*.cs \
 | $(SYSTEM_SHELL_CLEANPATH) \
 | $(SYSTEM_SHELL_ENCODEWORD) \
 )

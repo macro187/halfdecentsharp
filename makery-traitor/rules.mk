@@ -18,25 +18,25 @@
 
 RULE_TARGET := $(TRAITOR_dotfile)
 RULE_REQS := $(TRAITOR_srcpreq)
-RULE_REQS += $(call PROJ_GetVar,RUN_reqs,$(TRAITOR_PROJ))
-RULE_OREQ := $(TRAITOR_dir)
+RULE_REQS += $(call PROJ_GetVar,RUNNABLE_dotfile,$(TRAITOR_PROJ))
+RULE_OREQ := $(TRAITOR_outdir)
 
 
 define RULE_COMMANDS
 	@echo ""
 	@echo "=> Cleaning old output files..."
-	rm -rf $$(call SYSTEM_ShellEscape,$$(TRAITOR_dir))/*
+	rm -rf $$(call SYSTEM_ShellEscape,$$(TRAITOR_outdir))/*
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Making subdirs..."
-	$$(foreach dir,$$(TRAITOR_subdirs),$$(MAKE_CHAR_NEWLINE)	mkdir -p $$(TRAITOR_dir)/$$(call MAKE_DecodeWord,$$(dir)))
+	$$(foreach dir,$$(TRAITOR_subdirs),$$(MAKE_CHAR_NEWLINE)	mkdir -p $$(TRAITOR_outdir)/$$(call MAKE_DecodeWord,$$(dir)))
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Running Traitor..."
-	$(call PROJ_GetVar,RUN_run,$(TRAITOR_PROJ)) $(MAKE_CHAR_BS)
-	$(call SYSTEM_ShellEscape,$(call RUN_ArgPathAbs,$(TRAITOR_srcdir),$(TRAITOR_PROJ))) $(MAKE_CHAR_BS)
-	$$(foreach src,$$(TRAITOR_srcs),$$(call PROJ_RuleNewLine,$$(call SYSTEM_ShellEscape,$$(call RUN_ArgPath,$$(call MAKE_DecodeWord,$$(src)),$$(TRAITOR_PROJ))))) $(MAKE_CHAR_BS)
-	$(call SYSTEM_ShellEscape,$(call RUN_ArgPathAbs,$(TRAITOR_dir),$(TRAITOR_PROJ)))
+	$(call PROJ_GetVar,RUNNABLE_run,$(TRAITOR_PROJ)) $(MAKE_CHAR_BS)
+	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(TRAITOR_srcdir),$(TRAITOR_PROJ))) $(MAKE_CHAR_BS)
+	$$(foreach src,$$(TRAITOR_srcs),$$(call PROJ_RuleNewLine,$$(call SYSTEM_ShellEscape,$$(call RUNNABLE_ArgPath,$$(call MAKE_DecodeWord,$$(src)),$$(TRAITOR_PROJ))))) $(MAKE_CHAR_BS)
+	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(TRAITOR_outdir),$(TRAITOR_PROJ)))
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Updating dotfile..."

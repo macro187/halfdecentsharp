@@ -18,25 +18,25 @@
 
 RULE_TARGET := $(PERMUDA_dotfile)
 RULE_REQS := $(PERMUDA_srcpreq)
-RULE_REQS += $(call PROJ_GetVar,RUN_reqs,$(PERMUDA_PROJ))
-RULE_OREQ := $(PERMUDA_dir)
+RULE_REQS += $(call PROJ_GetVar,RUNNABLE_dotfile,$(PERMUDA_PROJ))
+RULE_OREQ := $(PERMUDA_outdir)
 
 
 define RULE_COMMANDS
 	@echo ""
 	@echo "=> Cleaning old output files..."
-	rm -rf $$(call SYSTEM_ShellEscape,$$(PERMUDA_dir))/*
+	rm -rf $$(call SYSTEM_ShellEscape,$$(PERMUDA_outdir))/*
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Making subdirs..."
-	$$(foreach dir,$$(PERMUDA_subdirs),$$(MAKE_CHAR_NEWLINE)	mkdir -p $$(PERMUDA_dir)/$$(call MAKE_DecodeWord,$$(dir)))
+	$$(foreach dir,$$(PERMUDA_subdirs),$$(MAKE_CHAR_NEWLINE)	mkdir -p $$(PERMUDA_outdir)/$$(call MAKE_DecodeWord,$$(dir)))
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Running Permuda..."
-	$(call PROJ_GetVar,RUN_run,$(PERMUDA_PROJ)) $(MAKE_CHAR_BS)
-	$(call SYSTEM_ShellEscape,$(call RUN_ArgPathAbs,$(PERMUDA_srcdir),$(PERMUDA_PROJ))) $(MAKE_CHAR_BS)
-	$$(foreach src,$$(PERMUDA_srcs),$$(call PROJ_RuleNewLine,$$(call SYSTEM_ShellEscape,$$(call RUN_ArgPath,$$(call MAKE_DecodeWord,$$(src)),$$(PERMUDA_PROJ))))) $(MAKE_CHAR_BS)
-	$(call SYSTEM_ShellEscape,$(call RUN_ArgPathAbs,$(PERMUDA_dir),$(PERMUDA_PROJ)))
+	$(call PROJ_GetVar,RUNNABLE_run,$(PERMUDA_PROJ)) $(MAKE_CHAR_BS)
+	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(PERMUDA_srcdir),$(PERMUDA_PROJ))) $(MAKE_CHAR_BS)
+	$$(foreach src,$$(PERMUDA_srcs),$$(call PROJ_RuleNewLine,$$(call SYSTEM_ShellEscape,$$(call RUNNABLE_ArgPath,$$(call MAKE_DecodeWord,$$(src)),$$(PERMUDA_PROJ))))) $(MAKE_CHAR_BS)
+	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(PERMUDA_outdir),$(PERMUDA_PROJ)))
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Updating dotfile..."
