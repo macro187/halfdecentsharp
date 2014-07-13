@@ -16,59 +16,39 @@
 # ------------------------------------------------------------------------------
 
 
-# Require the Traitor program
 PROJ_required += $(TRAITOR_PROJ)
 
 
-# upstream processor in the preprocessor pipeline
-$(call PROJ_DeclareVar,TRAITOR_ppfrom)
-TRAITOR_ppfrom_DESC ?= Upstream processor in preprocessor pipeline
-TRAITOR_ppfrom_DEFAULT := $(lastword $(SRCS_PREPROCESS_pipeline))
+TRAITOR_upstream_DESC ?= \
+Upstream processor in preprocessor pipeline
+$(call PROJ_DeclareVar,TRAITOR_upstream)
+TRAITOR_upstream := $(call SRCS_PREPROCESS_GetUpstream)
 
 
-# srcdir
+TRAITOR_srcdir_DESC ?= \
+Source code files root directory (read-only)
 $(call PROJ_DeclareVar,TRAITOR_srcdir)
-TRAITOR_srcdir_DESC ?= Source code files root directory (read-only)
-TRAITOR_srcdir_DEFAULT = $($(TRAITOR_ppfrom)_dir)
+TRAITOR_srcdir = $(call SRCS_PREPROCESS_GetDir,$(TRAITOR_upstream))
 
 
-# srcs (target)
+TRAITOR_srcs_DESC ?= \
+Source code files relative to TRAITOR_srcdir (read-only)
 $(call PROJ_DeclareTargetVar,TRAITOR_srcs)
-TRAITOR_srcs_DESC ?= Source code files relative to TRAITOR_srcdir (read-only)
-TRAITOR_srcs = $($(TRAITOR_ppfrom)_rel)
+TRAITOR_srcs = $(call SRCS_PREPROCESS_GetFiles,$(TRAITOR_upstream))
 
 
-# srcpreq
+TRAITOR_srcpreq_DESC ?= \
+Source code files prerequisite files (read-only)
 $(call PROJ_DeclareVar,TRAITOR_srcpreq)
-TRAITOR_srcpreq_DESC ?= Source code files prerequisite files (read-only)
-TRAITOR_srcpreq_DEFAULT = $($(TRAITOR_ppfrom)_preq)
+TRAITOR_srcpreq = $(call SRCS_PREPROCESS_GetPreqs,$(TRAITOR_upstream))
 
 
-$(call PROJ_DeclareVar,TRAITOR_dir)
-TRAITOR_dir = $(TRAITOR_outdir)
-
-
-$(call PROJ_DeclareVar,TRAITOR_preq)
-TRAITOR_preq_DEFAULT = $(call MAKE_EncodeWord,$(TRAITOR_dotfile))
-
-
-# subdirs (target)
 $(call PROJ_DeclareTargetVar,TRAITOR_subdirs)
 TRAITOR_subdirs = $(filter-out ./,$(dir $(TRAITOR_srcs)))
 
 
-# output files relative to TRAITOR_outdir (target)
-$(call PROJ_DeclareTargetVar,TRAITOR_rel)
-TRAITOR_rel_DESC ?= Traitor output files relative to TRAITOR_outdir
-TRAITOR_rel = \
-$(call MAKE_Shell,\
-cd $(call SYSTEM_ShellEscape,$(TRAITOR_outdir)) && find * -type f -name \*.cs \
-| $(SYSTEM_SHELL_CLEANPATH) \
-| $(SYSTEM_SHELL_ENCODEWORD) \
-)
-
-
-# hook to pipeline
-SRCS_PREPROCESS_pipeline += TRAITOR
-
+#
+# Hook up to srcs-preprocess pipeline
+#
+SRCS_PREPROCESS_pipeline += traitor
 

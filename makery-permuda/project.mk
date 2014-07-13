@@ -16,59 +16,39 @@
 # ------------------------------------------------------------------------------
 
 
-# Require the Permuda program
 PROJ_required += $(PERMUDA_PROJ)
 
 
-# upstream processor in the preprocessor pipeline
-$(call PROJ_DeclareVar,PERMUDA_ppfrom)
-PERMUDA_ppfrom_DESC ?= Upstream processor in preprocessor pipeline
-PERMUDA_ppfrom_DEFAULT := $(lastword $(SRCS_PREPROCESS_pipeline))
+PERMUDA_upstream_DESC ?= \
+Upstream srcs-preprocess module
+$(call PROJ_DeclareVar,PERMUDA_upstream)
+PERMUDA_upstream := $(call SRCS_PREPROCESS_GetUpstream)
 
 
-# srcdir
+PERMUDA_srcdir_DESC ?= \
+Input source code files root directory (read-only)
 $(call PROJ_DeclareVar,PERMUDA_srcdir)
-PERMUDA_srcdir_DESC ?= Source code files root directory (read-only)
-PERMUDA_srcdir_DEFAULT = $($(PERMUDA_ppfrom)_dir)
+PERMUDA_srcdir = $(call SRCS_PREPROCESS_GetDir,$(PERMUDA_upstream))
 
 
-# srcs (target)
+PERMUDA_srcs_DESC ?= \
+Input source code files relative to PERMUDA_srcdir (read-only)
 $(call PROJ_DeclareTargetVar,PERMUDA_srcs)
-PERMUDA_srcs_DESC ?= Source code files relative to PERMUDA_srcdir (read-only)
-PERMUDA_srcs = $($(PERMUDA_ppfrom)_rel)
+PERMUDA_srcs = $(call SRCS_PREPROCESS_GetFiles,$(PERMUDA_upstream))
 
 
-# srcpreq
+PERMUDA_srcpreq_DESC ?= \
+Source code files prerequisite files (read-only)
 $(call PROJ_DeclareVar,PERMUDA_srcpreq)
-PERMUDA_srcpreq_DESC ?= Source code files prerequisite files (read-only)
-PERMUDA_srcpreq_DEFAULT = $($(PERMUDA_ppfrom)_preq)
+PERMUDA_srcpreq = $(call SRCS_PREPROCESS_GetPreqs,$(PERMUDA_upstream))
 
 
-$(call PROJ_DeclareVar,PERMUDA_dir)
-PERMUDA_dir = $(PERMUDA_outdir)
-
-
-$(call PROJ_DeclareVar,PERMUDA_preq)
-PERMUDA_preq_DEFAULT = $(call MAKE_EncodeWord,$(PERMUDA_dotfile))
-
-
-# subdirs (target)
 $(call PROJ_DeclareTargetVar,PERMUDA_subdirs)
 PERMUDA_subdirs = $(filter-out ./,$(dir $(PERMUDA_srcs)))
 
 
-# output files relative to PERMUDA_outdir (target)
-$(call PROJ_DeclareTargetVar,PERMUDA_rel)
-PERMUDA_rel_DESC ?= Permuda output files relative to PERMUDA_outdir
-PERMUDA_rel = \
-$(call MAKE_Shell,\
-cd $(call SYSTEM_ShellEscape,$(PERMUDA_outdir)) && find * -type f -name \*.cs \
-| $(SYSTEM_SHELL_CLEANPATH) \
-| $(SYSTEM_SHELL_ENCODEWORD) \
-)
-
-
-# hook to pipeline
-SRCS_PREPROCESS_pipeline += PERMUDA
-
+#
+# Hook up to srcs-preprocess pipeline
+#
+SRCS_PREPROCESS_pipeline += permuda
 
