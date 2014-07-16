@@ -26,7 +26,7 @@ define RULE_COMMANDS
 	rm -rf $(call SYSTEM_ShellEscape,$(RESBIAN_outdir))/*
 
 $(foreach c,$(RESBIAN_cultures),$(foreach t,$(call RESBIAN_GetTypes,$(c)),\
-$(MAKE_CHAR_NEWLINE)	$(call PROJ_GetVar,RUNNABLE_run,$(RESBIAN_PROJ)) compile $(foreach f,$(call RESBIAN_GetFilesCT,$(c),$(t)) $(call MAKE_EncodeWord,$(call RESBIAN_GetOutfile,$(c),$(t))),$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(call MAKE_DecodeWord,$(f)),$(RESBIAN_PROJ))))\
+$(MAKE_CHAR_NEWLINE)	$(call PROJ_GetVar,RUNNABLE_run,$(RESBIAN_PROJ)) compile $(foreach f,$(call RESBIAN_GetFilesCT,$(c),$(t)) $(call MAKE_EncodeWord,$(call RESBIAN_GetOutfile,$(c),$(t))),$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPath,$(call MAKE_DecodeWord,$(f)),$(RESBIAN_PROJ))))\
 ))
 
 	touch $(call SYSTEM_ShellEscape,$(RESBIAN_dotfile))

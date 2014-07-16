@@ -34,9 +34,9 @@ define RULE_COMMANDS
 	@echo ""
 	@echo "=> Running Permuda..."
 	$(call PROJ_GetVar,RUNNABLE_run,$(PERMUDA_PROJ)) $(MAKE_CHAR_BS)
-	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(PERMUDA_srcdir),$(PERMUDA_PROJ))) $(MAKE_CHAR_BS)
-	$$(foreach src,$$(PERMUDA_srcs),$$(call PROJ_RuleNewLine,$$(call SYSTEM_ShellEscape,$$(call RUNNABLE_ArgPath,$$(call MAKE_DecodeWord,$$(src)),$$(PERMUDA_PROJ))))) $(MAKE_CHAR_BS)
-	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(PERMUDA_outdir),$(PERMUDA_PROJ)))
+	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPath,$(PERMUDA_srcdir),$(PERMUDA_PROJ))) $(MAKE_CHAR_BS)
+	$$(foreach src,$$(PERMUDA_srcs),$$(call PROJ_RuleNewLine,$$(call SYSTEM_ShellEscape,$$(call RUNNABLE_ArgPathFragment,$$(call MAKE_DecodeWord,$$(src)),$$(PERMUDA_PROJ))))) $(MAKE_CHAR_BS)
+	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPath,$(PERMUDA_outdir),$(PERMUDA_PROJ)))
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Updating dotfile..."

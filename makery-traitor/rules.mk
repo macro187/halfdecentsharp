@@ -34,9 +34,9 @@ define RULE_COMMANDS
 	@echo ""
 	@echo "=> Running Traitor..."
 	$(call PROJ_GetVar,RUNNABLE_run,$(TRAITOR_PROJ)) $(MAKE_CHAR_BS)
-	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(TRAITOR_srcdir),$(TRAITOR_PROJ))) $(MAKE_CHAR_BS)
-	$$(foreach src,$$(TRAITOR_srcs),$$(call PROJ_RuleNewLine,$$(call SYSTEM_ShellEscape,$$(call RUNNABLE_ArgPath,$$(call MAKE_DecodeWord,$$(src)),$$(TRAITOR_PROJ))))) $(MAKE_CHAR_BS)
-	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPathAbs,$(TRAITOR_outdir),$(TRAITOR_PROJ)))
+	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPath,$(TRAITOR_srcdir),$(TRAITOR_PROJ))) $(MAKE_CHAR_BS)
+	$$(foreach src,$$(TRAITOR_srcs),$$(call PROJ_RuleNewLine,$$(call SYSTEM_ShellEscape,$$(call RUNNABLE_ArgPathFragment,$$(call MAKE_DecodeWord,$$(src)),$$(TRAITOR_PROJ))))) $(MAKE_CHAR_BS)
+	$(call SYSTEM_ShellEscape,$(call RUNNABLE_ArgPath,$(TRAITOR_outdir),$(TRAITOR_PROJ)))
 	@echo "=> ...done"
 	@echo ""
 	@echo "=> Updating dotfile..."
