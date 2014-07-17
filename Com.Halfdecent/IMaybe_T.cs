@@ -22,7 +22,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-// A value that may or may not hold an underlying value
+/// A value that may or may not hold an underlying value
 // =============================================================================
 
 public interface

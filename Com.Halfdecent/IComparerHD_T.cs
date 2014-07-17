@@ -25,11 +25,11 @@ Com.Halfdecent
 
 
 // =============================================================================
-// An improved comparer
-//
-// - Is an equality comparer
-// - Is a hash code provider
-// - Can be compared for equality with other comparers
+/// An improved comparer
+///
+/// - Is an equality comparer
+/// - Is a hash code provider
+/// - Can be compared for equality with other comparers
 // =============================================================================
 
 public interface

@@ -22,7 +22,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-// A function that computes hash codes for items of a particular type
+/// A function that computes hash codes for items of a particular type
 // =============================================================================
 
 public delegate

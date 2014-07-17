@@ -25,7 +25,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-// An comparer that can be compared for equality with other comparers
+/// A comparer that can be compared for equality with other comparers
 // =============================================================================
 
 public interface

@@ -22,7 +22,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-// A function that compares two items of the same type
+/// A function that compares two items of the same type
 // =============================================================================
 
 public delegate

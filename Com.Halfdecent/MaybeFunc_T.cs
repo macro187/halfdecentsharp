@@ -22,7 +22,7 @@ Com.Halfdecent
 
 
 // =============================================================================
-// A function that may or may not be able to return a value
+/// A function that may or may not be able to return a value
 // =============================================================================
 
 public delegate

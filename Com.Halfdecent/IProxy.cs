@@ -23,7 +23,7 @@ Com.Halfdecent
 
 // =============================================================================
 /// An object acting as a proxy for another object
-///
+//
 // TODO
 // Discussion of exactly what it means to be a "proxy", i.e. adds an interface
 // to an underlying object, and is "proxy" indeed the right term for this?
