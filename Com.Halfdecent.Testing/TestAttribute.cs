@@ -46,6 +46,16 @@ TestAttribute
 // -----------------------------------------------------------------------------
 
 /// <summary>
+/// Create a <c>TestAttribute</c>
+/// </summary>
+public
+TestAttribute()
+    : this("")
+{
+}
+
+
+/// <summary>
 /// Create a <c>TestAttribute</c> with a given description
 /// </summary>
 public

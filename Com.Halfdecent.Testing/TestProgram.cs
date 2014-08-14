@@ -69,12 +69,13 @@ RunTests()
             testattr = (TestAttribute) attrs[0];
 
             if( !typeprinted ) {
-                Console.WriteLine( t.Name );
+                Console.WriteLine( t.FullName );
                 typeprinted = true;
             }
 
+            Console.WriteLine(string.Concat("  ", m.Name));
+
             // Run the test
-            Console.WriteLine( "  Testing {0}...", testattr.Description );
             bool passed = true;
             try {
                 ConsoleTraceListener listener = new ConsoleTraceListener();
