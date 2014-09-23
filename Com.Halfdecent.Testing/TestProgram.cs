@@ -52,7 +52,6 @@ RunTests()
     int tests_failed = 0;
 
     object[] attrs;
-    TestAttribute testattr;
 
     // Go through all types
     Assembly a = Assembly.GetCallingAssembly();
@@ -66,7 +65,6 @@ RunTests()
             // Check for the TestAttribute, indicating a test method
             attrs = m.GetCustomAttributes( typeof( TestAttribute ), true );
             if( attrs.Length <= 0 ) continue;
-            testattr = (TestAttribute) attrs[0];
 
             if( !typeprinted ) {
                 Console.WriteLine( t.FullName );
