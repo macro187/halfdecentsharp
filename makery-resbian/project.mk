@@ -35,7 +35,6 @@ $(call MAKE_Shell,\
 test -d $(call SYSTEM_ShellEscape,$(RESBIAN_srcdir)) \
 && cd $(call SYSTEM_ShellEscape,$(RESBIAN_srcdir)) \
 && find * -maxdepth 1 -type f \
-| $(SYSTEM_SHELL_CLEANPATH) \
 | $(SYSTEM_SHELL_ENCODEWORD) \
 )
 
