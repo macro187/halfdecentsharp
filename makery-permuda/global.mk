@@ -18,7 +18,7 @@
 
 PERMUDA_PROJ_DESC := \
 Location of the Permuda project
-PERMUDA_PROJ := Com.Halfdecent.Permuda
+PERMUDA_PROJ := Halfdecent.Permuda
 MAKERY_GLOBALS += PERMUDA_PROJ
 
 

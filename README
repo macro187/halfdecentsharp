@@ -14,37 +14,37 @@
     The libraries variously fix, supplement, replace, and extend parts of
     the Base Class Library.
 
-    -   Com.Halfdecent has tuples, intervals, comparables and comparers,
+    -   Halfdecent has tuples, intervals, comparables and comparers,
         maybes, proxies, and pseudo-pattern matching
 
-    -   Com.Halfdecent.Resources is a simplified, strongly-typed API for
+    -   Halfdecent.Resources is a simplified, strongly-typed API for
         accessing embedded resources
 
-    -   Com.Halfdecent.Globalisation has logical localised objects, culture
+    -   Halfdecent.Globalisation has logical localised objects, culture
         fallback algorithms, localised string operations, and localisable
         exceptions
 
-    -   Com.Halfdecent.Meta includes references to variables, parameters,
+    -   Halfdecent.Meta includes references to variables, parameters,
         properties, etc. with mechanisms for mapping them across stack
         frames, plus exceptions with references to offending values
 
-    -   Com.Halfdecent.RTypes are reusable, composable value checks
+    -   Halfdecent.RTypes are reusable, composable value checks
 
-    -   Com.Halfdecent.Numerics has abstract numeric types and operations
+    -   Halfdecent.Numerics has abstract numeric types and operations
 
-    -   Com.Halfdecent.Streams has abstract streams, sinks, filters, and
+    -   Halfdecent.Streams has abstract streams, sinks, filters, and
         pipelines
 
-    -   Com.Halfdecent.Cursors are moveable pointers to items in collections
+    -   Halfdecent.Cursors are moveable pointers to items in collections
 
-    -   Com.Halfdecent.Collections has a variety of collections, each with
+    -   Halfdecent.Collections has a variety of collections, each with
         variations for different combinations of mutability, and
         by-reference slices
 
-    -   Com.Halfdecent.TextTree is a simple text file format that uses
+    -   Halfdecent.TextTree is a simple text file format that uses
         indentation to create structure
 
-    -   Com.Halfdecent.Testing is a library for writing and running unit
+    -   Halfdecent.Testing is a library for writing and running unit
         tests
 
 

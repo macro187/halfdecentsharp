@@ -18,7 +18,7 @@
 
 RESBIAN_PROJ_DESC := \
 Name of the Resbian project
-RESBIAN_PROJ := Com.Halfdecent.Resbian
+RESBIAN_PROJ := Halfdecent.Resbian
 MAKERY_GLOBALS += RESBIAN_PROJ
 
 

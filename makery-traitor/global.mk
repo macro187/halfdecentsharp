@@ -18,7 +18,7 @@
 
 TRAITOR_PROJ_DESC := \
 Name of the Traitor project
-TRAITOR_PROJ := Com.Halfdecent.Traitor
+TRAITOR_PROJ := Halfdecent.Traitor
 MAKERY_GLOBALS += TRAITOR_PROJ
 
 
