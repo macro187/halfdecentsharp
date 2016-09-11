@@ -28,5 +28,5 @@ DOTNETREFERENCES_proj += Halfdecent.RTypes
 DOTNET_mingeneration = 35
 
 
-include $(MAKERY)/makery.mk
+include $(MAKERY)/makery-project.mk
 

@@ -21,5 +21,5 @@ MODULES_use += csharp-libproject
 DOTNET_mingeneration = 10
 
 
-include $(MAKERY)/makery.mk
+include $(MAKERY)/makery-project.mk
 

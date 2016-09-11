@@ -23,5 +23,5 @@ DOTNET_name = resbian
 DOTNET_mingeneration = 10
 
 
-include $(MAKERY)/makery.mk
+include $(MAKERY)/makery-project.mk
 

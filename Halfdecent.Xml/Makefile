@@ -27,5 +27,5 @@ DOTNETREFERENCES_gac += System.Xml.dll
 DOTNETREFERENCES_gac += System.Xml.Linq.dll
 
 
-include $(MAKERY)/makery.mk
+include $(MAKERY)/makery-project.mk
 

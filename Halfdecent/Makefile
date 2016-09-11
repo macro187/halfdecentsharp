@@ -25,5 +25,5 @@ DOTNETREFERENCES_gac += System.dll
 DOTNETREFERENCES_gac += System.Core.dll
 
 
-include $(MAKERY)/makery.mk
+include $(MAKERY)/makery-project.mk
 

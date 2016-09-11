@@ -23,5 +23,5 @@ DOTNET_mingeneration = 20
 DOTNETREFERENCES_gac += System.dll
 
 
-include $(MAKERY)/makery.mk
+include $(MAKERY)/makery-project.mk
 

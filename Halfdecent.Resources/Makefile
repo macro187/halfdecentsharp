@@ -24,5 +24,5 @@ DOTNETREFERENCES_proj += Halfdecent
 DOTNET_mingeneration = 35
 
 
-include $(MAKERY)/makery.mk
+include $(MAKERY)/makery-project.mk
 

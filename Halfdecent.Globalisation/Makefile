@@ -25,5 +25,5 @@ DOTNETREFERENCES_proj += Halfdecent
 DOTNETREFERENCES_proj += Halfdecent.Resources
 
 
-include $(MAKERY)/makery.mk
+include $(MAKERY)/makery-project.mk
 
